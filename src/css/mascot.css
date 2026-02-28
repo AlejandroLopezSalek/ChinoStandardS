@@ -38,19 +38,19 @@
         border-radius: 0.75rem;
         /* rounded-xl (Slightly less than 2xl which is 1rem) */
         border: 1px solid #e2e8f0;
-        /* border-slate-200 */
+        /* border-stone-200 */
     }
 }
 
 /* Dark Mode overrides */
 .dark-mode .capi-chat-modal {
     background-color: #0f172a;
-    /* slate-900 */
+    /* stone-900 */
 }
 
 @media (min-width: 768px) {
     .dark-mode .capi-chat-modal {
         border-color: #334155;
-        /* slate-700 */
+        /* stone-700 */
     }
 }

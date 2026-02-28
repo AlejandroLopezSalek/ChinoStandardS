@@ -30,7 +30,7 @@
     padding: 1rem;
     border-bottom: 1px solid #e2e8f0;
     color: #475569;
-    /* slate-600 */
+    /* stone-600 */
 }
 
 .dark-mode #modalContent td,
@@ -104,18 +104,18 @@
     margin: 1.5rem 0;
     padding: 1rem;
     background-color: #f8fafc;
-    /* slate-50 */
+    /* stone-50 */
     border-left: 4px solid #64748b;
-    /* slate-500 */
+    /* stone-500 */
     border-radius: 0 0.5rem 0.5rem 0;
     color: #1e293b;
 }
 
 .dark-mode .example-box {
     background-color: rgba(51, 65, 85, 0.5);
-    /* slate-700/50 */
+    /* stone-700/50 */
     color: #e2e8f0;
-    /* slate-200 */
+    /* stone-200 */
 }
 
 /* Inline Code in Examples */
@@ -131,9 +131,9 @@
 
 .dark-mode .example-box code {
     background-color: #1e293b;
-    /* slate-800 */
+    /* stone-800 */
     border-color: #475569;
-    /* slate-600 */
+    /* stone-600 */
 }
 
 /* Notices / Tips / Avisos (Generic) */

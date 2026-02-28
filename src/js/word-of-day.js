@@ -6,11 +6,11 @@
     'use strict';
 
     const LEVEL_COLORS = {
-        A1: { bg: 'bg-green-500', text: 'A1 – Principiante' },
+        A1: { bg: 'bg-red-500', text: 'A1 – Principiante' },
         A2: { bg: 'bg-orange-500', text: 'A2 – Elemental' },
         B1: { bg: 'bg-red-500', text: 'B1 – Intermedio' },
-        B2: { bg: 'bg-red-500', text: 'B2 – Intermedio Alto' },
-        C1: { bg: 'bg-orange-500', text: 'C1 – Avanzado' }
+        B2: { bg: 'bg-orange-500', text: 'B2 – Intermedio Alto' },
+        C1: { bg: 'bg-red-500', text: 'C1 – Avanzado' }
     };
 
     // ---- State ----
@@ -20,7 +20,7 @@
     const getEl = (id) => document.getElementById(id);
 
     // Local storage key helper
-    const getStorageKey = () => 'wod_answered_' + new Date().toISOString().slice(0, 10);
+    const getStorageKey = () => 'wod_answered_' + (localStorage.getItem('language') || 'es') + '_' + new Date().toISOString().slice(0, 10);
 
     // ---- Fetch word of the day ----
     async function loadWordOfDay() {
@@ -30,7 +30,8 @@
         showSkeleton();
 
         try {
-            const res = await fetch('/api/chat/word-of-day');
+            const lang = localStorage.getItem('language') || 'es';
+            const res = await fetch(`/api/chat/word-of-day?lang=${lang}`);
             if (!res.ok) throw new Error('Network error');
             wodData = await res.json();
             renderWidget(wodData);
@@ -80,6 +81,7 @@
             <!-- Example sentence -->
             <div class="bg-white/10 rounded-xl p-4 my-4 text-center">
                 <p class="text-white/90 italic text-sm">"${escHtml(data.example)}"</p>
+                <p class="text-white/70 text-xs mt-2">${escHtml(data.examplePronunciation)}</p>
                 <p id="wodExampleTranslation" class="text-white/50 text-xs mt-1 transition-all duration-300 hidden">${escHtml(data.exampleTranslation)}</p>
             </div>
 

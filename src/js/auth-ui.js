@@ -27,7 +27,7 @@ function updateLengthRequirement(pass, reqLength) {
         if (icon) icon.className = 'fas fa-check-circle text-[8px] mr-1 text-green-500';
         reqLength.classList.add('text-green-600');
     } else {
-        if (icon) icon.className = 'fas fa-circle text-[8px] mr-1 text-slate-300';
+        if (icon) icon.className = 'fas fa-circle text-[8px] mr-1 text-stone-300';
         reqLength.classList.remove('text-green-600');
     }
 }
@@ -61,7 +61,7 @@ function updateSubmitButton(isValid, submitBtn) {
         submitBtn.className = 'w-full py-3 mt-4 bg-gradient-to-r from-red-600 to-orange-600 text-white rounded-lg font-bold shadow-lg transform transition hover:-translate-y-0.5 hover:shadow-red-500/30 active:scale-[0.98] cursor-pointer';
     } else {
         submitBtn.disabled = true;
-        submitBtn.className = 'w-full py-3 mt-4 bg-slate-300 dark:bg-slate-700 text-slate-500 cursor-not-allowed rounded-lg font-bold transition';
+        submitBtn.className = 'w-full py-3 mt-4 bg-stone-300 dark:bg-stone-700 text-stone-500 cursor-not-allowed rounded-lg font-bold transition';
     }
 }
 

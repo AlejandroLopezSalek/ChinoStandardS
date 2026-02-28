@@ -19,40 +19,40 @@ scripts:
     <div class="page-header relative z-10">
         <!-- Main Card Container -->
         <div
-            class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-6 md:p-8 backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95 border border-white/20 dark:border-slate-700/50">
+            class="bg-white dark:bg-stone-800 rounded-3xl shadow-2xl p-6 md:p-8 backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95 border border-white/20 dark:border-stone-700/50">
 
             <!-- Contribution Selection (Selection Cards) -->
             <div id="selectionContainer" class="selection-container">
-                <h2 class="text-center text-2xl md:text-3xl font-bold mb-2 text-slate-800 dark:text-white">¡Ayuda a tu
+                <h2 class="text-center text-2xl md:text-3xl font-bold mb-2 text-stone-800 dark:text-white">¡Ayuda a tu
                     comunidad!</h2>
-                <p class="text-center text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto">Comparte tus
+                <p class="text-center text-stone-500 dark:text-stone-400 mb-8 max-w-lg mx-auto">Comparte tus
                     conocimientos creando lecciones o recomendando libros útiles.</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <button type="button"
-                        class="flex flex-col items-center text-center p-6 rounded-2xl bg-gradient-to-br from-red-50 to-red-50 dark:from-slate-700 dark:to-slate-700/50 border-2 border-transparent hover:border-red-400 dark:hover:border-red-500 transition-all duration-300 hover:shadow-lg group"
+                        class="flex flex-col items-center text-center p-6 rounded-2xl bg-gradient-to-br from-red-50 to-red-50 dark:from-stone-700 dark:to-stone-700/50 border-2 border-transparent hover:border-red-400 dark:hover:border-red-500 transition-all duration-300 hover:shadow-lg group"
                         onclick="selectContributionType('lesson')">
                         <span
                             class="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform block">
                             <i class="fas fa-book-open"></i>
                         </span>
-                        <strong class="text-xl font-bold text-slate-800 dark:text-white mb-2 block">Crear
+                        <strong class="text-xl font-bold text-stone-800 dark:text-white mb-2 block">Crear
                             Lección</strong>
-                        <span class="text-sm text-slate-600 dark:text-slate-300 block">Crea una lección completa con
+                        <span class="text-sm text-stone-600 dark:text-stone-300 block">Crea una lección completa con
                             formato
                             profesional, secciones y explicaciones.</span>
                     </button>
 
                     <button type="button"
-                        class="flex flex-col items-center text-center p-6 rounded-2xl bg-gradient-to-br from-orange-50 to-pink-50 dark:from-slate-700 dark:to-slate-700/50 border-2 border-transparent hover:border-orange-400 dark:hover:border-orange-500 transition-all duration-300 hover:shadow-lg group"
+                        class="flex flex-col items-center text-center p-6 rounded-2xl bg-gradient-to-br from-orange-50 to-pink-50 dark:from-stone-700 dark:to-stone-700/50 border-2 border-transparent hover:border-orange-400 dark:hover:border-orange-500 transition-all duration-300 hover:shadow-lg group"
                         onclick="selectContributionType('book')">
                         <span
                             class="w-16 h-16 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform block">
                             <i class="fas fa-file-pdf"></i>
                         </span>
-                        <strong class="text-xl font-bold text-slate-800 dark:text-white mb-2 block">Compartir
+                        <strong class="text-xl font-bold text-stone-800 dark:text-white mb-2 block">Compartir
                             Libro</strong>
-                        <span class="text-sm text-slate-600 dark:text-slate-300 block">Comparte un enlace a un libro o
+                        <span class="text-sm text-stone-600 dark:text-stone-300 block">Comparte un enlace a un libro o
                             recurso
                             PDF útil para la comunidad.</span>
                     </button>
@@ -63,12 +63,12 @@ scripts:
             <form id="lessonEditForm"
                 class="contribution-form hidden space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div
-                    class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100 dark:border-slate-700">
+                    class="flex items-center justify-between mb-6 pb-4 border-b border-stone-100 dark:border-stone-700">
                     <h2 class="text-2xl font-bold text-red-600 dark:text-red-400 flex items-center gap-2">
                         <i class="fas fa-edit"></i> Editor de Lección
                     </h2>
                     <button type="button"
-                        class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white flex items-center gap-2 font-medium transition-colors"
+                        class="text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-white flex items-center gap-2 font-medium transition-colors"
                         onclick="showSelection()">
                         <i class="fas fa-arrow-left"></i> Volver
                     </button>
@@ -77,18 +77,18 @@ scripts:
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <label for="lessonTitle"
-                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Título de la Lección
+                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Título de la Lección
                             <span class="text-red-500">*</span></label>
                         <input type="text" id="lessonTitle" required placeholder="Ej: Presente Simple - Nivel A1"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all">
+                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all">
                     </div>
 
                     <div class="space-y-2">
                         <label for="lessonLevel"
-                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Nivel <span
+                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Nivel <span
                                 class="text-red-500">*</span></label>
                         <select id="lessonLevel" required
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
                             <option value="">Seleccionar nivel</option>
                             <option value="A1">A1 - Principiante</option>
                             <option value="A2">A2 - Elemental</option>
@@ -100,10 +100,10 @@ scripts:
 
                     <div class="space-y-2">
                         <label for="lessonBadge"
-                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Dificultad <span
+                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Dificultad <span
                                 class="text-red-500">*</span></label>
                         <select id="lessonBadge" required
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
                             <option value="">Seleccionar dificultad</option>
                             <option value="Básico">Básico</option>
                             <option value="Intermedio">Intermedio</option>
@@ -115,34 +115,34 @@ scripts:
 
                 <div class="space-y-2">
                     <label for="lessonDescription"
-                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Descripción Breve <span
+                        class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Descripción Breve <span
                             class="text-red-500">*</span></label>
                     <textarea id="lessonDescription" required rows="2"
                         placeholder="Breve descripción de qué trata la lección..."
-                        class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all resize-none"></textarea>
+                        class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all resize-none"></textarea>
                 </div>
 
                 <div class="space-y-2">
-                    <div class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Contenido de la
+                    <div class="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">Contenido de la
                         Lección <span class="text-red-500">*</span></div>
                     <div
-                        class="lesson-editor rounded-xl border border-slate-300 dark:border-slate-600 overflow-hidden focus-within:ring-2 focus-within:ring-red-500 transition-all">
+                        class="lesson-editor rounded-xl border border-stone-300 dark:border-stone-600 overflow-hidden focus-within:ring-2 focus-within:ring-red-500 transition-all">
                         <div id="lessonContentEditor"
-                            class="min-h-[400px] p-6 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 prose dark:prose-invert max-w-none focus:outline-none">
+                            class="min-h-[400px] p-6 bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200 prose dark:prose-invert max-w-none focus:outline-none">
                             <h2 class="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">Título de la
                                 Sección</h2>
                             <p>Escribe aquí el contenido de tu lección...</p>
                         </div>
                     </div>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1">
+                    <p class="text-xs text-stone-500 dark:text-stone-400 flex items-center gap-1 mt-1">
                         <i class="fas fa-info-circle"></i> Usa la barra de herramientas que aparece arriba para dar
                         formato.
                     </p>
                 </div>
 
-                <div class="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-700">
+                <div class="flex justify-end gap-3 pt-4 border-t border-stone-100 dark:border-stone-700">
                     <button type="button"
-                        class="px-6 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                        class="px-6 py-2.5 rounded-xl border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 font-medium hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors"
                         onclick="showSelection()">
                         Cancelar
                     </button>
@@ -157,12 +157,12 @@ scripts:
             <form id="bookUploadForm"
                 class="contribution-form hidden space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div
-                    class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100 dark:border-slate-700">
+                    class="flex items-center justify-between mb-6 pb-4 border-b border-stone-100 dark:border-stone-700">
                     <h2 class="text-2xl font-bold text-orange-600 dark:text-orange-400 flex items-center gap-2">
                         <i class="fas fa-book"></i> Compartir Libro
                     </h2>
                     <button type="button"
-                        class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white flex items-center gap-2 font-medium transition-colors"
+                        class="text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-white flex items-center gap-2 font-medium transition-colors"
                         onclick="showSelection()">
                         <i class="fas fa-arrow-left"></i> Volver
                     </button>
@@ -177,26 +177,26 @@ scripts:
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <label for="bookTitle"
-                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Título del Libro
+                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Título del Libro
                             <span class="text-red-500">*</span></label>
                         <input type="text" id="bookTitle" required placeholder="Ej: Gramática Turca Completa"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all">
+                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all">
                     </div>
 
                     <div class="space-y-2">
                         <label for="bookAuthor"
-                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Autor <span
+                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Autor <span
                                 class="text-red-500">*</span></label>
                         <input type="text" id="bookAuthor" required placeholder="Nombre del autor"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all">
+                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all">
                     </div>
 
                     <div class="space-y-2">
                         <label for="bookLevel"
-                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Nivel <span
+                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Nivel <span
                                 class="text-red-500">*</span></label>
                         <select id="bookLevel" required
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
                             <option value="">Seleccionar nivel</option>
                             <option value="A1">A1 - Principiante</option>
                             <option value="A2">A2 - Elemental</option>
@@ -209,10 +209,10 @@ scripts:
 
                     <div class="space-y-2">
                         <label for="bookCategory"
-                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Categoría <span
+                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Categoría <span
                                 class="text-red-500">*</span></label>
                         <select id="bookCategory" required
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
                             <option value="">Seleccionar categoría</option>
                             <option value="Gramática">Gramática</option>
                             <option value="Vocabulario">Vocabulario</option>
@@ -225,21 +225,21 @@ scripts:
                 </div>
 
                 <div class="space-y-2">
-                    <label for="bookUrl" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Enlace
+                    <label for="bookUrl" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Enlace
                         al Libro <span class="text-red-500">*</span></label>
                     <input type="url" id="bookUrl" required placeholder="https://ejemplo.com/libro.pdf"
-                        class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all">
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Google Drive, Dropbox, o cualquier enlace
+                        class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all">
+                    <p class="text-xs text-stone-500 dark:text-stone-400">Google Drive, Dropbox, o cualquier enlace
                         público</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <label for="bookFormat"
-                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Formato <span
+                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Formato <span
                                 class="text-red-500">*</span></label>
                         <select id="bookFormat" required
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
                             <option value="">Seleccionar formato</option>
                             <option value="PDF">PDF</option>
                             <option value="EPUB">EPUB</option>
@@ -250,28 +250,28 @@ scripts:
 
                     <div class="space-y-2">
                         <label for="bookSize"
-                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Tamaño
+                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Tamaño
                             Aproximado</label>
                         <input type="text" id="bookSize" placeholder="Ej: 5 MB"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all">
+                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all">
                     </div>
                 </div>
 
                 <div class="space-y-2">
                     <label for="bookDescription"
-                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Descripción <span
+                        class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Descripción <span
                             class="text-red-500">*</span></label>
                     <textarea id="bookDescription" required rows="4"
                         placeholder="Describe el contenido del libro y por qué es útil..."
-                        class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all resize-none"></textarea>
+                        class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all resize-none"></textarea>
                 </div>
 
                 <div class="space-y-2">
                     <label for="bookLanguage"
-                        class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Idioma del Libro <span
+                        class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Idioma del Libro <span
                             class="text-red-500">*</span></label>
                     <select id="bookLanguage" required
-                        class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                        class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
                         <option value="">Seleccionar idioma</option>
                         <option value="Español">Español</option>
                         <option value="Chino">Chino</option>
@@ -280,9 +280,9 @@ scripts:
                     </select>
                 </div>
 
-                <div class="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-700">
+                <div class="flex justify-end gap-3 pt-4 border-t border-stone-100 dark:border-stone-700">
                     <button type="button"
-                        class="px-6 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                        class="px-6 py-2.5 rounded-xl border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 font-medium hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors"
                         onclick="window.location.href='/'">
                         Cancelar
                     </button>
@@ -294,8 +294,8 @@ scripts:
             </form>
 
             <!-- My Contributions Section -->
-            <div class="my-contributions mt-12 pt-8 border-t-2 border-slate-100 dark:border-slate-700">
-                <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+            <div class="my-contributions mt-12 pt-8 border-t-2 border-stone-100 dark:border-stone-700">
+                <h2 class="text-xl font-bold text-stone-800 dark:text-white mb-6 flex items-center gap-2">
                     <i class="fas fa-list text-red-500"></i> Mis Contribuciones
                 </h2>
                 <div id="myContributionsList" class="contributions-list grid grid-cols-1 md:grid-cols-2 gap-4">

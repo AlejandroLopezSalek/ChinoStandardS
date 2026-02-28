@@ -515,16 +515,16 @@ async function handleLogout() {
     modal.id = 'logoutConfirmModal';
 
     modal.innerHTML = `
-        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm p-6 transform transition-all scale-100 animate-slide-up border border-slate-100 dark:border-slate-700">
+        <div class="bg-white dark:bg-stone-800 rounded-2xl shadow-2xl w-full max-w-sm p-6 transform transition-all scale-100 animate-slide-up border border-stone-100 dark:border-stone-700">
             <div class="text-center">
                 <div class="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500 dark:text-red-400">
                     <i class="fas fa-sign-out-alt text-2xl"></i>
                 </div>
-                <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">¿Cerrar Sesión?</h3>
-                <p class="text-slate-500 dark:text-slate-400 mb-6">¿Estás seguro de que deseas salir de tu cuenta?</p>
+                <h3 class="text-xl font-bold text-stone-800 dark:text-stone-100 mb-2">¿Cerrar Sesión?</h3>
+                <p class="text-stone-500 dark:text-stone-400 mb-6">¿Estás seguro de que deseas salir de tu cuenta?</p>
                 
                 <div class="flex gap-3 justify-center">
-                    <button id="cancelLogout" class="px-5 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                    <button id="cancelLogout" class="px-5 py-2.5 rounded-xl text-stone-600 dark:text-stone-300 font-medium hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors">
                         Cancelar
                     </button>
                     <button id="confirmLogout" class="px-5 py-2.5 rounded-xl bg-red-500 text-white font-medium hover:bg-red-600 shadow-lg shadow-red-500/30 transition-all hover:scale-105">
@@ -606,13 +606,13 @@ function openChangePasswordModal() {
         modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in';
 
         modal.innerHTML = `
-            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-md p-0 overflow-hidden transform transition-all scale-100 animate-slide-up border border-slate-100 dark:border-slate-700">
+            <div class="bg-white dark:bg-stone-800 rounded-2xl shadow-xl w-full max-w-md p-0 overflow-hidden transform transition-all scale-100 animate-slide-up border border-stone-100 dark:border-stone-700">
                 <!-- Header -->
-                <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-700/50">
-                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                <div class="px-6 py-4 border-b border-stone-100 dark:border-stone-700 flex justify-between items-center bg-stone-50 dark:bg-stone-700/50">
+                    <h3 class="text-lg font-bold text-stone-800 dark:text-stone-100 flex items-center gap-2">
                         <i class="fas fa-key text-red-500"></i> Cambiar Contraseña
                     </h3>
-                    <button class="text-slate-400 hover:text-red-500 transition-colors bg-transparent border-0 cursor-pointer p-1" onclick="closeChangePasswordModal()">
+                    <button class="text-stone-400 hover:text-red-500 transition-colors bg-transparent border-0 cursor-pointer p-1" onclick="closeChangePasswordModal()">
                         <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
@@ -621,7 +621,7 @@ function openChangePasswordModal() {
                 <div class="p-6">
                     <form id="changePasswordForm" class="flex flex-col gap-4">
                         <div class="space-y-1">
-                            <label for="currentPassword" class="text-sm font-medium text-slate-700 dark:text-slate-300 block">
+                            <label for="currentPassword" class="text-sm font-medium text-stone-700 dark:text-stone-300 block">
                                 <i class="fas fa-lock w-5 text-red-500"></i> Contraseña Actual
                             </label>
                             <input 
@@ -629,12 +629,12 @@ function openChangePasswordModal() {
                                 id="currentPassword" 
                                 required
                                 placeholder="Ingresa tu contraseña actual"
-                                class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700/50 text-slate-800 dark:text-white focus:border-red-500 focus:ring-2 focus:ring-red-200 transition-all outline-none"
+                                class="w-full px-4 py-2 rounded-xl border border-stone-200 dark:border-stone-600 bg-stone-50 dark:bg-stone-700/50 text-stone-800 dark:text-white focus:border-red-500 focus:ring-2 focus:ring-red-200 transition-all outline-none"
                             >
                         </div>
                         
                         <div class="space-y-1">
-                            <label for="newPassword" class="text-sm font-medium text-slate-700 dark:text-slate-300 block">
+                            <label for="newPassword" class="text-sm font-medium text-stone-700 dark:text-stone-300 block">
                                 <i class="fas fa-key w-5 text-red-500"></i> Nueva Contraseña
                             </label>
                             <input 
@@ -643,15 +643,15 @@ function openChangePasswordModal() {
                                 required
                                 minlength="8"
                                 placeholder="Mínimo 8 caracteres"
-                                class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700/50 text-slate-800 dark:text-white focus:border-red-500 focus:ring-2 focus:ring-red-200 transition-all outline-none"
+                                class="w-full px-4 py-2 rounded-xl border border-stone-200 dark:border-stone-600 bg-stone-50 dark:bg-stone-700/50 text-stone-800 dark:text-white focus:border-red-500 focus:ring-2 focus:ring-red-200 transition-all outline-none"
                             >
-                            <p class="text-xs text-slate-500 dark:text-slate-400 pl-1">
+                            <p class="text-xs text-stone-500 dark:text-stone-400 pl-1">
                                 Mínimo 8 caracteres, incluye mayúsculas, minúsculas y números
                             </p>
                         </div>
                         
                         <div class="space-y-1">
-                            <label for="confirmPassword" class="text-sm font-medium text-slate-700 dark:text-slate-300 block">
+                            <label for="confirmPassword" class="text-sm font-medium text-stone-700 dark:text-stone-300 block">
                                 <i class="fas fa-check w-5 text-red-500"></i> Confirmar Nueva Contraseña
                             </label>
                             <input 
@@ -659,12 +659,12 @@ function openChangePasswordModal() {
                                 id="confirmPassword" 
                                 required
                                 placeholder="Confirma tu nueva contraseña"
-                                class="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700/50 text-slate-800 dark:text-white focus:border-red-500 focus:ring-2 focus:ring-red-200 transition-all outline-none"
+                                class="w-full px-4 py-2 rounded-xl border border-stone-200 dark:border-stone-600 bg-stone-50 dark:bg-stone-700/50 text-stone-800 dark:text-white focus:border-red-500 focus:ring-2 focus:ring-red-200 transition-all outline-none"
                             >
                         </div>
                         
                         <div class="flex gap-3 pt-2 mt-2">
-                            <button type="button" class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors" onclick="closeChangePasswordModal()">
+                            <button type="button" class="flex-1 px-4 py-2.5 rounded-xl border border-stone-200 dark:border-stone-600 text-stone-600 dark:text-stone-300 font-medium hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors" onclick="closeChangePasswordModal()">
                                 Cancelar
                             </button>
                             <button type="submit" class="flex-1 px-4 py-2.5 rounded-xl bg-red-600 text-white font-medium hover:bg-red-700 shadow-lg shadow-red-500/30 transition-all hover:scale-[1.02]">

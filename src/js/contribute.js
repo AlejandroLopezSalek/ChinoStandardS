@@ -352,12 +352,12 @@ async function editLesson(lessonId) {
     if (titleInput) {
         titleInput.value = lesson.title; // No prefix
         titleInput.disabled = true;
-        titleInput.classList.add('bg-slate-100', 'cursor-not-allowed', 'opacity-75');
+        titleInput.classList.add('bg-stone-100', 'cursor-not-allowed', 'opacity-75');
     }
     if (levelInput) {
         levelInput.value = lesson.level;
         levelInput.disabled = true;
-        levelInput.classList.add('bg-slate-100', 'cursor-not-allowed', 'opacity-75');
+        levelInput.classList.add('bg-stone-100', 'cursor-not-allowed', 'opacity-75');
     }
     if (descInput) {
         descInput.value = lesson.description; // No prefix
@@ -368,7 +368,7 @@ async function editLesson(lessonId) {
         // User said "solo se edite la leccion" (content).
         // Let's lock description to prevent drift for now.
         // descInput.disabled = true; 
-        // descInput.classList.add('bg-slate-100', 'cursor-not-allowed', 'opacity-75');
+        // descInput.classList.add('bg-stone-100', 'cursor-not-allowed', 'opacity-75');
         // Actually, let's keep description editable as it explains the lesson, but title/level are structural.
     }
 
@@ -459,7 +459,7 @@ async function loadMyContributions() {
 
         if (requests.length === 0) {
             container.innerHTML = `
-            <div class="flex flex-col items-center justify-center py-12 text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800/50 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700">
+            <div class="flex flex-col items-center justify-center py-12 text-stone-400 dark:text-stone-500 bg-stone-50 dark:bg-stone-800/50 rounded-xl border-2 border-dashed border-stone-200 dark:border-stone-700">
                 <i class="fas fa-inbox text-4xl mb-3"></i>
                 <p>No has enviado ninguna contribución todavía</p>
             </div>
@@ -473,10 +473,10 @@ async function loadMyContributions() {
                 'approved': 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 border-orange-200 dark:border-orange-800',
                 'rejected': 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-200 dark:border-red-800'
             };
-            const statusClass = statusColors[request.status] || 'bg-slate-100 text-slate-700';
+            const statusClass = statusColors[request.status] || 'bg-stone-100 text-stone-700';
 
             return `
-            <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div class="bg-white dark:bg-stone-800 p-6 rounded-xl border border-stone-200 dark:border-stone-700 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
                 <div class="flex justify-between items-start mb-3">
                     <div class="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold bg-red-50 dark:bg-red-900/30 px-3 py-1 rounded-lg text-sm">
                         <i class="fas ${request.type === 'lesson_edit' ? 'fa-book-open' : 'fa-file-pdf'}"></i>
@@ -486,15 +486,15 @@ async function loadMyContributions() {
                         ${getStatusText(request.status)}
                     </span>
                 </div>
-                <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">${request.title}</h3>
-                <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-2">${request.description}</p>
-                <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700">
-                    <div class="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-500">
+                <h3 class="text-xl font-bold text-stone-800 dark:text-stone-100 mb-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">${request.title}</h3>
+                <p class="text-stone-600 dark:text-stone-400 text-sm mb-4 line-clamp-2">${request.description}</p>
+                <div class="flex items-center justify-between pt-4 border-t border-stone-100 dark:border-stone-700">
+                    <div class="flex items-center gap-4 text-xs text-stone-500 dark:text-stone-500">
                         <span><i class="fas fa-calendar mr-1"></i> ${formatDate(request.submittedAt)}</span>
                         ${request.data.level ? `<span><i class="fas fa-layer-group mr-1"></i> ${request.data.level}</span>` : ''}
                     </div>
                     <button onclick="deleteContribution('${request.id || request._id}')" 
-                            class="p-2 text-slate-400 hover:text-red-500 dark:text-slate-500 dark:hover:text-red-400 transition-colors" 
+                            class="p-2 text-stone-400 hover:text-red-500 dark:text-stone-500 dark:hover:text-red-400 transition-colors" 
                             title="Eliminar del historial">
                         <i class="fas fa-trash-alt"></i>
                     </button>

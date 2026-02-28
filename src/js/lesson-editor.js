@@ -17,41 +17,41 @@ class LessonEditor {
     setupToolbar() {
         // Create Carousel Container (now standard flex/scroll)
         const carouselContainer = document.createElement('div');
-        carouselContainer.className = 'w-full mb-4 border-b border-slate-200 dark:border-slate-700 pb-2';
+        carouselContainer.className = 'w-full mb-4 border-b border-stone-200 dark:border-stone-700 pb-2';
 
         // Toolbar
         const toolbar = document.createElement('div');
         toolbar.className = 'flex gap-4 overflow-x-auto pb-2 scrollbar-none';
         toolbar.innerHTML = `
             <!-- Text Formatting -->
-            <div class="flex gap-1 pr-4 border-r border-slate-200 dark:border-slate-700 shrink-0">
-                <button type="button" class="p-2 text-slate-600 dark:text-slate-400 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors" data-command="bold" title="Negrita">
+            <div class="flex gap-1 pr-4 border-r border-stone-200 dark:border-stone-700 shrink-0">
+                <button type="button" class="p-2 text-stone-600 dark:text-stone-400 hover:text-red-600 hover:bg-stone-100 dark:hover:bg-stone-700 rounded transition-colors" data-command="bold" title="Negrita">
                     <i class="fas fa-bold"></i>
                 </button>
-                <button type="button" class="p-2 text-slate-600 dark:text-slate-400 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors" data-command="italic" title="Cursiva">
+                <button type="button" class="p-2 text-stone-600 dark:text-stone-400 hover:text-red-600 hover:bg-stone-100 dark:hover:bg-stone-700 rounded transition-colors" data-command="italic" title="Cursiva">
                     <i class="fas fa-italic"></i>
                 </button>
-                <button type="button" class="p-2 text-slate-600 dark:text-slate-400 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors" data-command="underline" title="Subrayado">
+                <button type="button" class="p-2 text-stone-600 dark:text-stone-400 hover:text-red-600 hover:bg-stone-100 dark:hover:bg-stone-700 rounded transition-colors" data-command="underline" title="Subrayado">
                     <i class="fas fa-underline"></i>
                 </button>
             </div>
 
             <!-- Headings -->
-            <div class="flex gap-1 pr-4 border-r border-slate-200 dark:border-slate-700 shrink-0">
-                <button type="button" class="p-2 text-slate-600 dark:text-slate-400 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors font-bold text-sm" data-command="h2" title="TÃ­tulo Grande">
+            <div class="flex gap-1 pr-4 border-r border-stone-200 dark:border-stone-700 shrink-0">
+                <button type="button" class="p-2 text-stone-600 dark:text-stone-400 hover:text-red-600 hover:bg-stone-100 dark:hover:bg-stone-700 rounded transition-colors font-bold text-sm" data-command="h2" title="TÃ­tulo Grande">
                     H2
                 </button>
-                <button type="button" class="p-2 text-slate-600 dark:text-slate-400 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors font-bold text-xs" data-command="h3" title="TÃ­tulo Mediano">
+                <button type="button" class="p-2 text-stone-600 dark:text-stone-400 hover:text-red-600 hover:bg-stone-100 dark:hover:bg-stone-700 rounded transition-colors font-bold text-xs" data-command="h3" title="TÃ­tulo Mediano">
                     H3
                 </button>
             </div>
 
             <!-- Lists -->
-            <div class="flex gap-1 pr-4 border-r border-slate-200 dark:border-slate-700 shrink-0">
-                <button type="button" class="p-2 text-slate-600 dark:text-slate-400 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors" data-command="insertUnorderedList" title="Lista">
+            <div class="flex gap-1 pr-4 border-r border-stone-200 dark:border-stone-700 shrink-0">
+                <button type="button" class="p-2 text-stone-600 dark:text-stone-400 hover:text-red-600 hover:bg-stone-100 dark:hover:bg-stone-700 rounded transition-colors" data-command="insertUnorderedList" title="Lista">
                     <i class="fas fa-list-ul"></i>
                 </button>
-                <button type="button" class="p-2 text-slate-600 dark:text-slate-400 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors" data-command="insertOrderedList" title="Lista Numerada">
+                <button type="button" class="p-2 text-stone-600 dark:text-stone-400 hover:text-red-600 hover:bg-stone-100 dark:hover:bg-stone-700 rounded transition-colors" data-command="insertOrderedList" title="Lista Numerada">
                     <i class="fas fa-list-ol"></i>
                 </button>
             </div>
@@ -61,17 +61,17 @@ class LessonEditor {
                 <button type="button" class="p-2 px-3 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 rounded transition-colors flex items-center gap-2 text-sm font-semibold" data-action="pronounce" title="Agregar Sonido (Pronunciación)">
                     <i class="fas fa-volume-high"></i> <span class="hidden sm:inline">Sonido</span>
                 </button>
-                <div class="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
-                <button type="button" class="p-2 px-3 text-slate-600 dark:text-slate-400 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors flex items-center gap-2 text-sm" data-action="table" title="Insertar Tabla">
+                <div class="w-px h-6 bg-stone-200 dark:bg-stone-700 mx-1"></div>
+                <button type="button" class="p-2 px-3 text-stone-600 dark:text-stone-400 hover:text-red-600 hover:bg-stone-100 dark:hover:bg-stone-700 rounded transition-colors flex items-center gap-2 text-sm" data-action="table" title="Insertar Tabla">
                     <i class="fas fa-table"></i> <span class="hidden sm:inline">Tabla</span>
                 </button>
-                <button type="button" class="p-2 px-3 text-slate-600 dark:text-slate-400 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors flex items-center gap-2 text-sm" data-action="highlight" title="Caja de Resaltado">
+                <button type="button" class="p-2 px-3 text-stone-600 dark:text-stone-400 hover:text-red-600 hover:bg-stone-100 dark:hover:bg-stone-700 rounded transition-colors flex items-center gap-2 text-sm" data-action="highlight" title="Caja de Resaltado">
                     <i class="fas fa-highlighter"></i> <span class="hidden sm:inline">Resaltar</span>
                 </button>
-                <button type="button" class="p-2 px-3 text-slate-600 dark:text-slate-400 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors flex items-center gap-2 text-sm" data-action="tip" title="Consejo">
+                <button type="button" class="p-2 px-3 text-stone-600 dark:text-stone-400 hover:text-red-600 hover:bg-stone-100 dark:hover:bg-stone-700 rounded transition-colors flex items-center gap-2 text-sm" data-action="tip" title="Consejo">
                     <i class="fas fa-lightbulb"></i> <span class="hidden sm:inline">Tip</span>
                 </button>
-                <button type="button" class="p-2 px-3 text-slate-600 dark:text-slate-400 hover:text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded transition-colors flex items-center gap-2 text-sm" data-action="example" title="Ejemplo">
+                <button type="button" class="p-2 px-3 text-stone-600 dark:text-stone-400 hover:text-red-600 hover:bg-stone-100 dark:hover:bg-stone-700 rounded transition-colors flex items-center gap-2 text-sm" data-action="example" title="Ejemplo">
                     <i class="fas fa-code"></i> <span class="hidden sm:inline">Ejemplo</span>
                 </button>
             </div>
@@ -231,10 +231,10 @@ class LessonEditor {
 
     createExampleBox() {
         const div = document.createElement('div');
-        div.className = 'my-6 p-4 bg-slate-50 dark:bg-slate-700/50 border-l-4 border-slate-500 rounded-r-lg';
+        div.className = 'my-6 p-4 bg-stone-50 dark:bg-stone-700/50 border-l-4 border-stone-500 rounded-r-lg';
         div.innerHTML = `
-            <strong class="block text-slate-700 dark:text-slate-300 mb-2">Ejemplo:</strong>
-            <p class="m-0">Ben <code class="bg-white dark:bg-slate-800 px-1 py-0.5 rounded border border-slate-200 dark:border-slate-600 text-red-500">okula</code> gidiyorum - Yo voy <code class="bg-white dark:bg-slate-800 px-1 py-0.5 rounded border border-slate-200 dark:border-slate-600 text-red-500">a la escuela</code></p>
+            <strong class="block text-stone-700 dark:text-stone-300 mb-2">Ejemplo:</strong>
+            <p class="m-0">Ben <code class="bg-white dark:bg-stone-800 px-1 py-0.5 rounded border border-stone-200 dark:border-stone-600 text-red-500">okula</code> gidiyorum - Yo voy <code class="bg-white dark:bg-stone-800 px-1 py-0.5 rounded border border-stone-200 dark:border-stone-600 text-red-500">a la escuela</code></p>
         `;
         return div;
     }
@@ -285,25 +285,25 @@ class LessonEditor {
         modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden';
         modal.id = 'tableBuilderModal';
         modal.innerHTML = `
-            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-xl w-full max-w-md border border-slate-200 dark:border-slate-700 animate-in fade-in zoom-in duration-200">
-                <h3 class="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100 flex items-center gap-2">
+            <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-xl w-full max-w-md border border-stone-200 dark:border-stone-700 animate-in fade-in zoom-in duration-200">
+                <h3 class="text-xl font-bold mb-4 text-stone-800 dark:text-stone-100 flex items-center gap-2">
                     <i class="fas fa-table text-red-600 dark:text-red-400"></i> Crear Tabla
                 </h3>
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
-                        <label class="block text-sm font-semibold mb-1 text-slate-600 dark:text-slate-400">Filas:</label>
+                        <label class="block text-sm font-semibold mb-1 text-stone-600 dark:text-stone-400">Filas:</label>
                         <input type="number" id="tableRows" min="2" max="15" value="3" 
-                               class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 focus:ring-2 focus:ring-red-500 outline-none">
+                               class="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-700 focus:ring-2 focus:ring-red-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1 text-slate-600 dark:text-slate-400">Columnas:</label>
+                        <label class="block text-sm font-semibold mb-1 text-stone-600 dark:text-stone-400">Columnas:</label>
                         <input type="number" id="tableCols" min="2" max="15" value="2"
-                               class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 focus:ring-2 focus:ring-red-500 outline-none">
+                               class="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-700 focus:ring-2 focus:ring-red-500 outline-none">
                     </div>
                 </div>
-                <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-2 max-h-48 overflow-auto mb-6" id="tablePreview"></div>
+                <div class="bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-700 rounded-lg p-2 max-h-48 overflow-auto mb-6" id="tablePreview"></div>
                 <div class="flex justify-end gap-3">
-                    <button class="px-4 py-2 text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" id="cancelTableBtn">
+                    <button class="px-4 py-2 text-stone-600 dark:text-stone-400 font-medium hover:bg-stone-100 dark:hover:bg-stone-700 rounded-lg transition-colors" id="cancelTableBtn">
                         Cancelar
                     </button>
                     <button class="px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors shadow-md" id="insertTableBtn">
@@ -426,12 +426,12 @@ class LessonEditor {
 
         // Body rows
         for (let r = 1; r < rows; r++) {
-            html += `<tr class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">`;
+            html += `<tr class="bg-white dark:bg-stone-800 border-b border-stone-200 dark:border-stone-700">`;
             for (let c = 0; c < cols; c++) {
                 if (editable) {
-                    html += `<td class="p-2 border border-slate-200 dark:border-slate-700"><input type="text" placeholder="Dato" data-row="${r}" data-col="${c}" class="w-full bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white p-1 rounded border border-slate-300 dark:border-slate-600 outline-none"></td>`;
+                    html += `<td class="p-2 border border-stone-200 dark:border-stone-700"><input type="text" placeholder="Dato" data-row="${r}" data-col="${c}" class="w-full bg-stone-50 dark:bg-stone-700 text-stone-800 dark:text-white p-1 rounded border border-stone-300 dark:border-stone-600 outline-none"></td>`;
                 } else {
-                    html += `<td class="p-3 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">Dato</td>`;
+                    html += `<td class="p-3 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300">Dato</td>`;
                 }
             }
             html += '</tr>';
@@ -473,9 +473,9 @@ class LessonEditor {
 
         // Body
         for (let r = 1; r < rows; r++) {
-            html += `<tr class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">`;
+            html += `<tr class="bg-white dark:bg-stone-800 border-b border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors">`;
             for (let c = 0; c < cols; c++) {
-                html += `<td class="p-3 border-r border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 last:border-r-0">${data[r][c]}</td>`;
+                html += `<td class="p-3 border-r border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 last:border-r-0">${data[r][c]}</td>`;
             }
             html += '</tr>';
         }

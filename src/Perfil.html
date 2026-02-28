@@ -10,7 +10,7 @@ scripts:
 {% import "components.njk" as components %}
 
 
-<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden mb-8 transition-all duration-300">
+<div class="bg-white dark:bg-stone-800 rounded-2xl shadow-xl overflow-hidden mb-8 transition-all duration-300">
     <!-- Profile Header with Avatar -->
     <div
         class="flex flex-col md:flex-row items-center gap-8 p-8 bg-gradient-to-br from-red-600 to-orange-700 text-white">
@@ -36,8 +36,8 @@ scripts:
     </div>
 
     <!-- Streak Section -->
-    <div class="p-8 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
-        <h3 class="flex items-center gap-3 text-2xl font-bold mb-6 text-slate-800 dark:text-slate-100">
+    <div class="p-8 bg-stone-50 dark:bg-stone-800/50 border-b border-stone-200 dark:border-stone-700">
+        <h3 class="flex items-center gap-3 text-2xl font-bold mb-6 text-stone-800 dark:text-stone-100">
             <i class="fas fa-fire text-orange-500 text-3xl"></i>
             Tu Racha
         </h3>
@@ -70,15 +70,15 @@ scripts:
                 </div>
             </div>
         </div>
-        <div class="mt-6 p-4 bg-white dark:bg-slate-700 rounded-xl text-center text-lg text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 shadow-sm"
+        <div class="mt-6 p-4 bg-white dark:bg-stone-700 rounded-xl text-center text-lg text-stone-700 dark:text-stone-200 border border-stone-200 dark:border-stone-600 shadow-sm"
             id="streakMessage"></div>
     </div>
 
 
 
     <!-- Preferences Section -->
-    <div class="p-8 border-b border-slate-200 dark:border-slate-700">
-        <h3 class="flex items-center gap-3 text-2xl font-bold mb-6 text-slate-800 dark:text-slate-100">
+    <div class="p-8 border-b border-stone-200 dark:border-stone-700">
+        <h3 class="flex items-center gap-3 text-2xl font-bold mb-6 text-stone-800 dark:text-stone-100">
             <i class="fas fa-sliders-h text-red-600 dark:text-red-400"></i>
             Preferencias
         </h3>
@@ -124,7 +124,7 @@ scripts:
 
             <div class="mt-8">
                 <button
-                    class="w-full sm:w-auto px-8 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold rounded-xl hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors flex items-center justify-center gap-2"
+                    class="w-full sm:w-auto px-8 py-3 bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-200 font-semibold rounded-xl hover:bg-stone-300 dark:hover:bg-stone-600 transition-colors flex items-center justify-center gap-2"
                     id="savePreferencesBtn">
                     <i class="fas fa-save"></i>
                     Guardar Preferencias
@@ -141,14 +141,14 @@ scripts:
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <a href="/Admin-Contributions/"
-                    class="flex items-center gap-3 p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all border border-red-100 dark:border-red-800 group">
+                    class="flex items-center gap-3 p-4 bg-white dark:bg-stone-800 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all border border-red-100 dark:border-red-800 group">
                     <div
                         class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-colors">
                         <i class="fas fa-tasks"></i>
                     </div>
                     <div>
-                        <div class="font-bold text-slate-800 dark:text-slate-200">Contribuciones</div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400">Revisar lecciones</div>
+                        <div class="font-bold text-stone-800 dark:text-stone-200">Contribuciones</div>
+                        <div class="text-xs text-stone-500 dark:text-stone-400">Revisar lecciones</div>
                     </div>
                 </a>
                 <!-- Add more admin links here -->
@@ -160,13 +160,13 @@ scripts:
 
         <!-- Account Actions -->
         <div class="p-8">
-            <h3 class="flex items-center gap-3 text-2xl font-bold mb-6 text-slate-800 dark:text-slate-100">
+            <h3 class="flex items-center gap-3 text-2xl font-bold mb-6 text-stone-800 dark:text-stone-100">
                 <i class="fas fa-shield-alt text-red-600 dark:text-red-400"></i>
                 Cuenta
             </h3>
             <div class="flex flex-col sm:flex-row gap-4">
                 <button
-                    class="flex-1 sm:flex-none px-6 py-3 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2"
+                    class="flex-1 sm:flex-none px-6 py-3 border-2 border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-200 font-semibold rounded-xl hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors flex items-center justify-center gap-2"
                     id="changePasswordBtn">
                     <i class="fas fa-key"></i>
                     Cambiar Contraseña

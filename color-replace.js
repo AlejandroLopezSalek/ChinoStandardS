@@ -12,6 +12,8 @@ const REPLACEMENTS = [
     { regex: /emerald/g, replace: 'orange' },
     { regex: /cyan/g, replace: 'red' },
     { regex: /teal/g, replace: 'orange' },
+    { regex: /sky/g, replace: 'orange' },
+    { regex: /slate/g, replace: 'stone' }, // Warmer gray
     // Some components might have been missed by my previous precise regex because of other prefixes like `text-white bg-blue-500`
     // I already replaced `bg-blue-`, but maybe not all. Just mass replacing indigo->red, purple->orange, etc. works for tailwind.
 ];

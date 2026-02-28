@@ -176,7 +176,7 @@ function setupDeleteButton(modal, item) {
         if (targetContainer.querySelector('.admin-delete-container')) return;
 
         const deleteContainer = document.createElement('div');
-        deleteContainer.className = 'admin-delete-container mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 flex justify-end';
+        deleteContainer.className = 'admin-delete-container mt-6 pt-4 border-t border-stone-200 dark:border-stone-700 flex justify-end';
 
         const deleteBtn = document.createElement('button');
         // Icon-only button style
@@ -242,7 +242,7 @@ function renderDynamicCards(lessons) {
 
         const card = document.createElement('div');
         // Match existing card styles (based on components.njk grammarCard)
-        card.className = 'grammar-card bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-100 dark:border-slate-700 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative group';
+        card.className = 'grammar-card bg-white dark:bg-stone-800 rounded-xl p-6 shadow-lg border border-stone-100 dark:border-stone-700 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative group';
         card.dataset.topic = id;
 
         // Badge configuration with colors
@@ -259,7 +259,7 @@ function renderDynamicCards(lessons) {
             <div class="absolute top-4 right-4 text-xs font-bold px-2 py-1 rounded ${badgeStyle.bg} ${badgeStyle.text}">
                 ${badgeType}
             </div>
-            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2 transition-colors">
+            <h3 class="text-xl font-bold text-stone-800 dark:text-stone-100 mb-2 transition-colors">
                 ${lesson.title}
             </h3>
             <div class="flex items-center gap-2 mb-4">
@@ -267,7 +267,7 @@ function renderDynamicCards(lessons) {
                     Básico
                 </span>
             </div>
-            <p class="card-description text-slate-600 dark:text-slate-400 text-sm mb-6 line-clamp-3">
+            <p class="card-description text-stone-600 dark:text-stone-400 text-sm mb-6 line-clamp-3">
                 ${lesson.description || 'Sin descripción'}
             </p>
             <button class="explanation-btn w-full py-2.5 rounded-lg font-semibold bg-red-600 text-white shadow-md hover:bg-red-700 hover:shadow-lg hover:shadow-red-500/30 transition-all flex items-center justify-center gap-2"

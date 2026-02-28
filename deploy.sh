@@ -33,8 +33,8 @@ npm run build
 # 4. Restart Server with PM2
 echo "🔄 Reloading PM2..."
 # Check if app is running, if so reload, else start
-if pm2 list | grep -q "turkamerica"; then
-    pm2 reload turkamerica
+if pm2 list | grep -q "chinostandards"; then
+    pm2 reload chinostandards
 else
     npm run start:prod
 fi

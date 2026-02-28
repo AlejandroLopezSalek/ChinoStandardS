@@ -324,7 +324,7 @@ async function appendDynamicBooks(existingBooks) {
 
 function buildBookCard(book) {
     const card = document.createElement('div');
-    card.className = 'group bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col items-center text-center gap-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-red-300 dark:hover:border-slate-600 h-full relative';
+    card.className = 'group bg-white dark:bg-stone-800 rounded-xl p-6 shadow-sm border border-stone-200 dark:border-stone-700 flex flex-col items-center text-center gap-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-red-300 dark:hover:border-stone-600 h-full relative';
 
     if (book.isCommunity) {
         const badge = document.createElement('span');
@@ -338,15 +338,15 @@ function buildBookCard(book) {
     icon.innerHTML = '<i class="fas fa-file-pdf text-3xl"></i>';
 
     const titleEl = document.createElement('h3');
-    titleEl.className = 'text-xl font-bold text-slate-800 dark:text-slate-100 m-0';
+    titleEl.className = 'text-xl font-bold text-stone-800 dark:text-stone-100 m-0';
     titleEl.textContent = book.title;
 
     const descEl = document.createElement('p');
-    descEl.className = 'text-slate-600 dark:text-slate-400 text-sm leading-relaxed m-0 flex-grow';
+    descEl.className = 'text-stone-600 dark:text-stone-400 text-sm leading-relaxed m-0 flex-grow';
     descEl.textContent = book.description;
 
     const meta = document.createElement('div');
-    meta.className = 'flex flex-wrap items-center justify-center gap-3 text-xs font-semibold text-slate-500 dark:text-slate-500 uppercase tracking-wide mt-2';
+    meta.className = 'flex flex-wrap items-center justify-center gap-3 text-xs font-semibold text-stone-500 dark:text-stone-500 uppercase tracking-wide mt-2';
     meta.innerHTML = buildBookMetaHtml(book);
 
     const actions = document.createElement('div');
@@ -383,7 +383,7 @@ function buildBookViewBtn(url) {
         : url;
     btn.target = '_blank';
     btn.rel = 'noopener noreferrer';
-    btn.className = 'flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-colors bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600';
+    btn.className = 'flex-1 py-2.5 px-4 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-colors bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600';
     btn.innerHTML = '<i class="fas fa-eye"></i> Ver';
     return btn;
 }
@@ -456,7 +456,7 @@ function loadLessons(searchTerm = '') {
 
 function buildEmptyState() {
     const el = document.createElement('div');
-    el.className = 'col-span-3 text-center py-20 text-slate-400 dark:text-slate-500';
+    el.className = 'col-span-3 text-center py-20 text-stone-400 dark:text-stone-500';
     el.innerHTML = `
         <i class="fas fa-book-open text-6xl mb-4 opacity-50"></i>
         <p class="text-xl">No hay lecciones encontradas</p>
@@ -466,7 +466,7 @@ function buildEmptyState() {
 
 function buildLessonCard(lesson) {
     const card = document.createElement('div');
-    card.className = 'group bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col gap-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-red-300 dark:hover:border-red-600/50 relative h-full';
+    card.className = 'group bg-white dark:bg-stone-800 rounded-xl p-6 shadow-sm border border-stone-200 dark:border-stone-700 flex flex-col gap-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-red-300 dark:hover:border-red-600/50 relative h-full';
 
     const header = document.createElement('div');
     header.className = 'flex justify-between items-start';
@@ -481,18 +481,18 @@ function buildLessonCard(lesson) {
     `;
 
     const titleEl = document.createElement('h3');
-    titleEl.className = 'text-xl font-bold text-slate-800 dark:text-slate-100 m-0 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors';
+    titleEl.className = 'text-xl font-bold text-stone-800 dark:text-stone-100 m-0 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors';
     titleEl.textContent = lesson.title;
 
     const descEl = document.createElement('p');
-    descEl.className = 'text-slate-600 dark:text-slate-400 text-base leading-relaxed m-0 line-clamp-2';
+    descEl.className = 'text-stone-600 dark:text-stone-400 text-base leading-relaxed m-0 line-clamp-2';
     descEl.textContent = lesson.description;
 
     const meta = document.createElement('div');
-    meta.className = 'flex items-center justify-between pt-4 mt-auto border-t border-slate-100 dark:border-slate-700/50 text-sm text-slate-500';
+    meta.className = 'flex items-center justify-between pt-4 mt-auto border-t border-stone-100 dark:border-stone-700/50 text-sm text-stone-500';
     meta.innerHTML = `
-        <span class="flex items-center gap-2"><i class="fas fa-user text-slate-400"></i> ${lesson.author}</span>
-        <span class="flex items-center gap-2"><i class="fas fa-calendar text-slate-400"></i> ${formatDate(lesson.publishedAt)}</span>
+        <span class="flex items-center gap-2"><i class="fas fa-user text-stone-400"></i> ${lesson.author}</span>
+        <span class="flex items-center gap-2"><i class="fas fa-calendar text-stone-400"></i> ${formatDate(lesson.publishedAt)}</span>
     `;
 
     const actions = buildLessonActions(lesson);
@@ -519,12 +519,12 @@ function buildLessonActions(lesson) {
     dropdownContainer.className = 'relative inline-block';
 
     const moreBtn = document.createElement('button');
-    moreBtn.className = 'w-12 h-full rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors flex items-center justify-center';
+    moreBtn.className = 'w-12 h-full rounded-lg border border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-700 text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-600 transition-colors flex items-center justify-center';
     moreBtn.innerHTML = '<i class="fas fa-ellipsis-v"></i>';
     moreBtn.setAttribute('aria-label', 'Más opciones');
 
     const dropdownMenu = document.createElement('div');
-    dropdownMenu.className = 'absolute right-0 top-full mt-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-20 hidden overflow-hidden flex-col';
+    dropdownMenu.className = 'absolute right-0 top-full mt-2 w-48 bg-white dark:bg-stone-800 rounded-xl shadow-xl border border-stone-200 dark:border-stone-700 z-20 hidden overflow-hidden flex-col';
 
     moreBtn.onclick = (e) => {
         e.stopPropagation();
@@ -555,10 +555,10 @@ function buildLessonActions(lesson) {
 
 function buildDropdownItem(innerHtml, isDanger, onClick) {
     const btn = document.createElement('button');
-    const baseClass = 'w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors border-b border-slate-100 dark:border-slate-700 last:border-0';
+    const baseClass = 'w-full text-left px-4 py-3 text-sm flex items-center gap-3 transition-colors border-b border-stone-100 dark:border-stone-700 last:border-0';
     const colorClass = isDanger
         ? 'text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20'
-        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700';
+        : 'text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-700';
     btn.className = `${baseClass} ${colorClass}`;
     btn.innerHTML = innerHtml;
     btn.onclick = (e) => { e.stopPropagation(); onClick(); };
@@ -597,7 +597,7 @@ function renderPagination(containerId, totalItems, currentPage, onPageChange) {
     pageNumbers.forEach(entry => {
         if (entry === '...') {
             const ellipsis = document.createElement('span');
-            ellipsis.className = 'px-3 py-2 text-slate-400 font-semibold select-none';
+            ellipsis.className = 'px-3 py-2 text-stone-400 font-semibold select-none';
             ellipsis.textContent = '…';
             container.appendChild(ellipsis);
         } else {
@@ -641,7 +641,7 @@ function buildPaginationBtn(html, disabled, onClick, isActive = false) {
     const btn = document.createElement('button');
     const activeClass = isActive
         ? 'bg-red-600 text-white shadow-md cursor-default'
-        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700';
+        : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 border border-stone-200 dark:border-stone-700';
     btn.className = `inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all ${activeClass} ${disabled ? 'opacity-40 cursor-not-allowed' : ''}`;
     btn.innerHTML = html;
     btn.disabled = disabled || isActive;
@@ -688,27 +688,27 @@ function buildLessonModalContent(lesson) {
     }
 
     return `
-        <div class="mb-8 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl border border-slate-200 dark:border-slate-700">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-2">
+        <div class="mb-8 p-4 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-200 dark:border-stone-700">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-3 flex items-center gap-2">
                 <i class="fas fa-info-circle"></i> Información
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
                 <div>
-                    <strong class="text-slate-700 dark:text-slate-300 block mb-1">Nivel:</strong>
+                    <strong class="text-stone-700 dark:text-stone-300 block mb-1">Nivel:</strong>
                     <span class="bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 px-2 py-0.5 rounded font-semibold">${lesson.level || 'N/A'}</span>
                 </div>
                 <div>
-                    <strong class="text-slate-700 dark:text-slate-300 block mb-1">Autor:</strong>
-                    <span class="text-slate-600 dark:text-slate-400">${lesson.author || 'Anónimo'}</span>
+                    <strong class="text-stone-700 dark:text-stone-300 block mb-1">Autor:</strong>
+                    <span class="text-stone-600 dark:text-stone-400">${lesson.author || 'Anónimo'}</span>
                 </div>
                 <div>
-                    <strong class="text-slate-700 dark:text-slate-300 block mb-1">Fecha:</strong>
-                    <span class="text-slate-600 dark:text-slate-400">${formatDate(lesson.publishedAt)}</span>
+                    <strong class="text-stone-700 dark:text-stone-300 block mb-1">Fecha:</strong>
+                    <span class="text-stone-600 dark:text-stone-400">${formatDate(lesson.publishedAt)}</span>
                 </div>
             </div>
         </div>
         <div>
-            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2 border-b border-slate-200 dark:border-slate-700 pb-2">
+            <h3 class="text-lg font-bold text-stone-800 dark:text-stone-100 mb-4 flex items-center gap-2 border-b border-stone-200 dark:border-stone-700 pb-2">
                 <i class="fas fa-book text-red-600 dark:text-red-400"></i> Contenido
             </h3>
             <div class="prose dark:prose-invert max-w-none lesson-content">${contentHtml}</div>
@@ -765,16 +765,16 @@ async function showLessonHistory(id) {
         if (!contentEl) return;
 
         if (history.length === 0) {
-            contentEl.innerHTML = '<p class="text-slate-500 text-center py-8">No hay historial de versiones.</p>';
+            contentEl.innerHTML = '<p class="text-stone-500 text-center py-8">No hay historial de versiones.</p>';
             return;
         }
 
         const historyItems = history.map(v => `
-            <div class="border-b border-slate-200 dark:border-slate-700 py-3 flex justify-between items-center">
+            <div class="border-b border-stone-200 dark:border-stone-700 py-3 flex justify-between items-center">
                 <div>
-                    <span class="font-bold text-slate-700 dark:text-slate-300">v${v.version}</span>
-                    <span class="text-xs text-slate-500 ml-2">${new Date(v.editedAt).toLocaleString()}</span>
-                    <div class="text-xs text-slate-500">Editor: ${v.editedBy || 'Desconocido'}</div>
+                    <span class="font-bold text-stone-700 dark:text-stone-300">v${v.version}</span>
+                    <span class="text-xs text-stone-500 ml-2">${new Date(v.editedAt).toLocaleString()}</span>
+                    <div class="text-xs text-stone-500">Editor: ${v.editedBy || 'Desconocido'}</div>
                 </div>
                 <button onclick="revertLesson('${id}', ${v.version})" class="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded hover:bg-amber-200">
                     Restaurar
@@ -785,8 +785,8 @@ async function showLessonHistory(id) {
         contentEl.innerHTML = `
             <div class="mb-4">
                 <button onclick="viewLesson('${id}')" class="text-sm text-red-500 hover:underline mb-2"><i class="fas fa-arrow-left"></i> Volver a la lección</button>
-                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4">Historial de Versiones</h3>
-                <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 max-h-96 overflow-y-auto">${historyItems}</div>
+                <h3 class="text-lg font-bold text-stone-800 dark:text-stone-100 mb-4">Historial de Versiones</h3>
+                <div class="bg-stone-50 dark:bg-stone-800 rounded-lg p-4 max-h-96 overflow-y-auto">${historyItems}</div>
             </div>
         `;
     } catch (e) {

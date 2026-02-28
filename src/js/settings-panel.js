@@ -82,8 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const lang = languageSelect.value;
             localStorage.setItem('language', lang);
             console.log(`🌐 Language set to: ${lang}`);
-            // Here you would trigger a translation function or reload
-            // location.reload(); // Optional: reload to apply language
+            location.reload();
         });
     }
 
@@ -91,15 +90,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (resetSettingsBtn) {
         // Create custom confirm modal with Tailwind classes
         const confirmOverlay = document.createElement('div');
-        confirmOverlay.className = 'fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300';
+        confirmOverlay.className = 'fixed inset-0 z-[150] flex items-center justify-center bg-stone-900/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300';
         confirmOverlay.id = 'confirmResetOverlay';
 
         confirmOverlay.innerHTML = `
-            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4 transform scale-95 transition-transform duration-300 border border-slate-200 dark:border-slate-700">
-                <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2">Restaurar Valores</h3>
-                <p class="text-slate-600 dark:text-slate-300 mb-6 text-sm">¿Estás seguro de que quieres restaurar todos los ajustes a sus valores predeterminados?</p>
+            <div class="bg-white dark:bg-stone-800 rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4 transform scale-95 transition-transform duration-300 border border-stone-200 dark:border-stone-700">
+                <h3 class="text-xl font-bold text-stone-800 dark:text-white mb-2">Restaurar Valores</h3>
+                <p class="text-stone-600 dark:text-stone-300 mb-6 text-sm">¿Estás seguro de que quieres restaurar todos los ajustes a sus valores predeterminados?</p>
                 <div class="flex gap-3 justify-end">
-                    <button class="btn-confirm-cancel px-4 py-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors font-medium">Cancelar</button>
+                    <button class="btn-confirm-cancel px-4 py-2 rounded-xl text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors font-medium">Cancelar</button>
                     <button class="btn-confirm-ok px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-500/30 transition-all transform hover:-translate-y-0.5 font-bold">Restaurar</button>
                 </div>
             </div>

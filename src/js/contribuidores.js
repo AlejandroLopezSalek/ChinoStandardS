@@ -96,7 +96,7 @@ function renderContributors() {
 function createContributorCard(author) {
     const link = document.createElement('a');
     link.href = `/Community-Lessons/?search=${encodeURIComponent(author.name)}`;
-    link.className = 'bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col items-center text-center hover:shadow-md transition-all duration-300 animate-fadeIn hover:-translate-y-1 block no-underline cursor-pointer group';
+    link.className = 'bg-white dark:bg-stone-800 rounded-xl p-4 shadow-sm border border-stone-200 dark:border-stone-700 flex flex-col items-center text-center hover:shadow-md transition-all duration-300 animate-fadeIn hover:-translate-y-1 block no-underline cursor-pointer group';
 
     // Generate an arbitrary color based on name for the avatar
     const colors = [
@@ -124,10 +124,10 @@ function createContributorCard(author) {
         <div class="w-16 h-16 rounded-full ${colorSet.light} ${colorSet.dark} flex items-center justify-center text-xl font-bold mb-3 shadow-inner transition-colors group-hover:scale-105 duration-300">
             ${initials}
         </div>
-        <h5 class="font-bold text-slate-800 dark:text-slate-100 text-lg mb-1 truncate w-full group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors" title="${author.name}">
+        <h5 class="font-bold text-stone-800 dark:text-stone-100 text-lg mb-1 truncate w-full group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors" title="${author.name}">
             ${author.name}
         </h5>
-        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400">
+        <div class="text-xs font-semibold text-stone-500 dark:text-stone-400">
             <i class="fas fa-book-open mr-1"></i> ${author.count} ${author.count === 1 ? 'Lección' : 'Lecciones'}
         </div>
     `;
