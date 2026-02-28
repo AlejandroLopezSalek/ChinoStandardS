@@ -1,0 +1,15 @@
+meta {
+  name: Get Pending Requests
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/contributions/pending
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{authToken}}
+}

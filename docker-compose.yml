@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  turkamerica:
+    build: .
+    container_name: turkamerica_app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # Agrega aquí otras variables de entorno necesarias como MONGO_URI
+      # Si quieres usar MongoDB en contenedor localmente, descomenta lo siguiente:
+      # depends_on:
+      #   - mongo
+
+      # mongo:
+      #   image: mongo:latest
+      #   container_name: turkamerica_db
+      #   ports:
+      #     - "27017:27017"
+      #   volumes:
+      #     - mongo-data:/data/db
+
+      # volumes:
+      #   mongo-data:

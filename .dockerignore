@@ -1,0 +1,16 @@
+node_modules
+npm-debug.log
+Dockerfile
+.dockerignore
+.git
+.gitignore
+README.md
+*.md
+*.pdf
+.vscode
+.env
+_site_tmp
+generate_keys.js
+server/scripts
+docker-compose.yml
+docker-compose.*

@@ -1,0 +1,22 @@
+meta {
+  name: Send Request
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/chat
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{authToken}}
+}
+
+body:json {
+  {
+    "message": "Hola, ¿cómo se dice 'gato' en turco?",
+    "context": "learning_A1"
+  }
+}

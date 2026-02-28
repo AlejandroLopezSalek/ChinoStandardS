@@ -1,0 +1,199 @@
+/* Restored Styles for Content (Tables, Notices, Tips) */
+/* Matching the new Blue Theme */
+
+/* Tables */
+/* Global Table Styles inside Modal Content */
+#modalContent table,
+.prose table {
+    width: 100%;
+    margin-bottom: 2rem;
+    border-collapse: collapse;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+/* Header Cells (Blue Background) */
+#modalContent th,
+.prose th {
+    background: linear-gradient(to right, #2563eb, #1d4ed8) !important;
+    /* fallback or per-cell */
+    background-color: #2563eb !important;
+    color: white !important;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+#modalContent td,
+.prose td {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    color: #475569;
+    /* slate-600 */
+}
+
+.dark-mode #modalContent td,
+.dark-mode .prose td {
+    border-bottom: 1px solid #334155;
+    color: #e2e8f0;
+}
+
+#modalContent tr:nth-child(even),
+.prose tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+.dark-mode #modalContent tr:nth-child(even),
+.dark-mode .prose tr:nth-child(even) {
+    background-color: #1e293b;
+}
+
+/* Ensure headings are visible in dark mode */
+.dark-mode #modalContent h1,
+.dark-mode #modalContent h2,
+.dark-mode #modalContent h3,
+.dark-mode .prose h1,
+.dark-mode .prose h2,
+.dark-mode .prose h3 {
+    color: #f1f5f9;
+}
+
+/* COMPONENT BOXES (Matching lesson-editor.js colors) */
+
+/* Highlight Box (Indigo) */
+.highlight-box {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: #eef2ff;
+    /* red-50 */
+    border-left: 4px solid #6366f1;
+    /* red-500 */
+    border-radius: 0 0.5rem 0.5rem 0;
+    color: #1e293b;
+}
+
+.dark-mode .highlight-box {
+    background-color: rgba(49, 46, 129, 0.2);
+    /* red-900/20 */
+    color: #c7d2fe;
+    /* red-200 */
+}
+
+/* Tip Box (Emerald/Green) */
+.tip-box {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: #ecfdf5;
+    /* orange-50 */
+    border-left: 4px solid #10b981;
+    /* orange-500 */
+    border-radius: 0 0.5rem 0.5rem 0;
+    color: #1e293b;
+}
+
+.dark-mode .tip-box {
+    background-color: rgba(6, 78, 59, 0.2);
+    /* orange-900/20 */
+    color: #a7f3d0;
+    /* orange-200 */
+}
+
+/* Example Box (Slate) */
+.example-box {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: #f8fafc;
+    /* slate-50 */
+    border-left: 4px solid #64748b;
+    /* slate-500 */
+    border-radius: 0 0.5rem 0.5rem 0;
+    color: #1e293b;
+}
+
+.dark-mode .example-box {
+    background-color: rgba(51, 65, 85, 0.5);
+    /* slate-700/50 */
+    color: #e2e8f0;
+    /* slate-200 */
+}
+
+/* Inline Code in Examples */
+.example-box code {
+    background-color: white;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    border: 1px solid #e2e8f0;
+    color: #6366f1;
+    /* red-500 */
+    font-family: monospace;
+}
+
+.dark-mode .example-box code {
+    background-color: #1e293b;
+    /* slate-800 */
+    border-color: #475569;
+    /* slate-600 */
+}
+
+/* Notices / Tips / Avisos (Generic) */
+.notice,
+.tip,
+.warning,
+.info-box {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid;
+    color: #1e293b;
+}
+
+/* Blue Info / Notice */
+.notice,
+.info-box {
+    background-color: #eff6ff;
+    border-color: #3b82f6;
+    color: #1e40af;
+}
+
+.dark-mode .notice,
+.dark-mode .info-box {
+    background-color: rgba(30, 58, 138, 0.3);
+    color: #93c5fd;
+}
+
+/* Green Tip */
+.tip {
+    background-color: #f0fdf4;
+    border-color: #22c55e;
+    color: #166534;
+}
+
+.dark-mode .tip {
+    background-color: rgba(20, 83, 45, 0.3);
+    color: #86efac;
+}
+
+/* Red Warning */
+.warning {
+    background-color: #fef2f2;
+    border-color: #ef4444;
+    color: #991b1b;
+}
+
+.dark-mode .warning {
+    background-color: rgba(127, 29, 29, 0.3);
+    color: #fca5a5;
+}
+
+/* Yellow Caution */
+.caution {
+    background-color: #fefce8;
+    border-color: #eab308;
+    color: #854d0e;
+}
+
+.dark-mode .caution {
+    background-color: rgba(113, 63, 18, 0.3);
+    color: #fde047;
+}

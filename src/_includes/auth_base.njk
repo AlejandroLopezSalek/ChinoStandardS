@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<script>
+        (function() {
+            const savedTheme = localStorage.getItem('darkMode');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            // Si el usuario guardó 'enabled' O no guardó nada y prefiere oscuro,
+            // aplica la clase 'dark-mode' inmediatamente.
+            if (savedTheme === 'enabled' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark-mode');
+                // Se usa document.documentElement (<html>) en lugar de <body> 
+                // para asegurar que el fondo de la página se aplique antes
+                // de que cualquier contenido se cargue.
+            }
+        })();
+    </script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { font-size: 16px; }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        body.loaded { opacity: 1;
+        }
+
+        /* Hide native password eye in Edge/IE */
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - ChinoAmerica</title>
+    <link rel="icon" type="image/x-icon" href="/assets/ChinoAmerica.ico">
+    
+    <!-- CSS -->
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/tailwind-output.css?v={{ timestamp }}">
+    <!-- <link rel="stylesheet" href="/css/auth.css?v={{ timestamp }}"> -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Auth UI Logic (Loaded early to define globals) -->
+    <script src="/js/auth-ui.js?v={{ timestamp }}"></script>
+</head>
+<body class="auth-page">
+    {{ content | safe }}
+    
+    <!-- Scripts in correct order -->
+    <!-- 1. Cache Manager FIRST -->
+    <script src="/js/cache-manager.js?v={{ timestamp }}"></script>
+    
+    <!-- 2. General utilities -->
+    <script src="/js/general.js?v={{ timestamp }}"></script>
+    
+    <!-- 3. Core systems needed for auth -->
+    <script src="/js/config.js?v={{ timestamp }}"></script>
+    <script src="/js/toast.js?v={{ timestamp }}"></script>
+    <script src="/js/loader.js?v={{ timestamp }}"></script>
+    
+    <!-- 4. Auth system -->
+    <script src="/js/auth.js?v={{ timestamp }}"></script>
+    
+    <!-- Load indicator -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('loaded');
+        });
+    </script>
+</body>
+</html>

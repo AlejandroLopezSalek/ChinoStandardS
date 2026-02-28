@@ -1,0 +1,196 @@
+---
+layout: base.njk
+styles:
+- tailwind-output.css
+scripts:
+- consejos.js
+---
+
+{% import "components.njk" as components %}
+
+<div class="px-4 md:px-8 py-6">
+
+    <h2 class="flex items-center justify-center gap-3 text-3xl font-bold text-slate-800 dark:text-slate-100 
+               mb-8 pb-4 border-b-2 border-slate-200 dark:border-slate-700">
+        <i class="fas fa-clock text-red-600 dark:text-red-400"></i>
+        Horario de Estudio Intensivo
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        {# Bloque Mañana #}
+        <div class="bg-slate-50 dark:bg-slate-800 
+                    border-2 border-slate-200 dark:border-slate-700
+                    border-t-4 border-t-yellow-400
+                    rounded-2xl overflow-hidden
+                    hover:border-slate-300 dark:hover:border-slate-600
+                    hover:shadow-xl transition-all duration-300">
+            <div class="flex items-center gap-3 px-6 py-5
+                        bg-slate-100 dark:bg-slate-700
+                        text-lg font-semibold text-slate-700 dark:text-slate-200">
+                <i class="fas fa-sun text-yellow-400"></i>
+                <span>Mañana</span>
+            </div>
+
+            <div class="activities p-3">
+                {{ components.activityItem("7:30 - 8:15", "Leer un texto en chino", "İstanbul book PDF/sacar un texto de
+                noticias", "book-open") }}
+                {{ components.activityItem("8:15 - 8:45", "Practicar vocabulario", "Sozluk.gov.tr o pdfs de verbos o
+                vocabularios", "language") }}
+                {{ components.activityItem("9:00 - 9:45", "Podcast Türkçe o noticias", "Luego tomar resumen", "podcast")
+                }}
+                {{ components.activityItem("9:45 - 10:30", "Gramática", "Usar una web de gramática o texto o clases",
+                "book") }}
+            </div>
+        </div>
+
+        {# Bloque Tarde #}
+        <div class="bg-slate-50 dark:bg-slate-800 
+                    border-2 border-slate-200 dark:border-slate-700
+                    border-t-4 border-t-orange-500
+                    rounded-2xl overflow-hidden
+                    hover:border-slate-300 dark:hover:border-slate-600
+                    hover:shadow-xl transition-all duration-300">
+            <div class="flex items-center gap-3 px-6 py-5
+                        bg-slate-100 dark:bg-slate-700
+                        text-lg font-semibold text-slate-700 dark:text-slate-200">
+                <i class="fas fa-cloud text-orange-500"></i>
+                <span>Tarde</span>
+            </div>
+
+            <div class="activities p-3">
+                {{ components.activityItem("11:15 - 12:00", "Práctica de escritura", "Tema diario, pedir a AI o buscar
+                en internet", "pen") }}
+                {{ components.activityItem("13:00 - 13:45", "Leer un texto avanzado", "Tratar de reconocer patrones",
+                "book") }}
+                {{ components.activityItem("13:45 - 14:15", "Mirar video sin subtítulos", "Práctica de comprensión
+                auditiva", "video") }}
+                {{ components.activityItem("14:15 - 14:45", "Práctica de refranes", "Buscar en Sozluk.gov.tr o internet
+                o AI", "quote-right") }}
+                {{ components.activityItem("15:00 - 15:45", "Gramática avanzada", "Yunus emre o cualquiera",
+                "graduation-cap") }}
+                {{ components.activityItem("17:15 - 18:00", "Revisión general", "Escritura + recitarlo (Tema diario)",
+                "check-circle") }}
+            </div>
+        </div>
+    </div>
+
+    <h2 class="flex items-center justify-center gap-3 text-3xl font-bold text-slate-800 dark:text-slate-100 
+               mb-8 pb-4 border-b-2 border-slate-200 dark:border-slate-700">
+        <i class="fab fa-youtube text-red-600"></i>
+        Canales de YouTube
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {# Blogs de aventura #}
+        <div class="bg-slate-50 dark:bg-slate-800
+                    border-2 border-slate-200 dark:border-slate-700
+                    rounded-2xl p-6
+                    hover:border-red-500 hover:shadow-xl
+                    transition-all duration-300">
+            <h3 class="flex items-center gap-3 text-xl font-semibold 
+                       text-slate-800 dark:text-slate-100
+                       mb-5 pb-3 border-b-2 border-slate-200 dark:border-slate-700">
+                <i class="fas fa-plane text-red-600"></i>
+                Blogs de aventura
+            </h3>
+            <ul class="channel-list flex flex-col gap-2">
+                {{ components.channelItem("https://www.youtube.com/@gunesinpesinde", "Güneşin Peşinde") }}
+                {{ components.channelItem("https://www.youtube.com/c/sumeyracenetvideolari", "Sümeyra Çenet Videoları")
+                }}
+                {{ components.channelItem("https://www.youtube.com/@MertAktasTravel", "Mert Aktas Travel") }}
+                {{ components.channelItem("https://www.youtube.com/channel/UCWpk9PSGHoJW1hZT4egxTNQ", "Ruhi Çenet") }}
+                {{ components.channelItem("https://www.youtube.com/@japonhamzaa", "Japon Hamza") }}
+            </ul>
+        </div>
+
+        {# Entretenimiento #}
+        <div class="bg-slate-50 dark:bg-slate-800
+                    border-2 border-slate-200 dark:border-slate-700
+                    rounded-2xl p-6
+                    hover:border-red-500 hover:shadow-xl
+                    transition-all duration-300">
+            <h3 class="flex items-center gap-3 text-xl font-semibold 
+                       text-slate-800 dark:text-slate-100
+                       mb-5 pb-3 border-b-2 border-slate-200 dark:border-slate-700">
+                <i class="fas fa-tv text-red-600"></i>
+                Entretenimiento
+            </h3>
+            <ul class="channel-list flex flex-col gap-2">
+                {{ components.channelItem("https://www.youtube.com/@tepkikolik", "Tepkikolik") }}
+                {{ components.channelItem("https://www.youtube.com/@muratsoner", "Murat Soner") }}
+            </ul>
+        </div>
+
+        {# Noticieros #}
+        <div class="bg-slate-50 dark:bg-slate-800
+                    border-2 border-slate-200 dark:border-slate-700
+                    rounded-2xl p-6
+                    hover:border-red-500 hover:shadow-xl
+                    transition-all duration-300">
+            <h3 class="flex items-center gap-3 text-xl font-semibold 
+                       text-slate-800 dark:text-slate-100
+                       mb-5 pb-3 border-b-2 border-slate-200 dark:border-slate-700">
+                <i class="fas fa-newspaper text-red-600"></i>
+                Noticieros
+            </h3>
+            <ul class="channel-list flex flex-col gap-2">
+                {{ components.channelItem("https://www.youtube.com/@ContextTürkçe", "Context Türkçe") }}
+                {{ components.channelItem("https://www.youtube.com/@49W", "49W") }}
+                {{ components.channelItem("https://www.youtube.com/cnnturk", "CNN TÜRK") }}
+            </ul>
+        </div>
+
+        {# Canales de Gramática Turca #}
+        <div class="bg-slate-50 dark:bg-slate-800
+                    border-2 border-slate-200 dark:border-slate-700
+                    rounded-2xl p-6
+                    hover:border-red-500 hover:shadow-xl
+                    transition-all duration-300">
+            <h3 class="flex items-center gap-3 text-xl font-semibold 
+                       text-slate-800 dark:text-slate-100
+                       mb-5 pb-3 border-b-2 border-slate-200 dark:border-slate-700">
+                <i class="fas fa-language text-red-600"></i>
+                Canales de Gramática Turca
+            </h3>
+            <ul class="channel-list flex flex-col gap-2">
+                {{ components.channelItem("https://www.youtube.com/@learnchineselanguagesandmusic",
+                "learnchinesewithmusic") }}
+                {{ components.channelItem("https://www.youtube.com/@ChineseClass101", "Learn Chinese with
+                ChineseClass101") }}
+                {{ components.channelItem("https://www.youtube.com/@Chinesele", "Chinesele") }}
+                {{ components.channelItem("https://www.youtube.com/@teacheraliyilmaz", "Teacher Ali Yılmaz") }}
+                {{ components.channelItem("https://www.youtube.com/@LearnChineseTheEasyWay", "Learn Chinese The Easy
+                Way") }}
+                {{ components.channelItem("https://www.youtube.com/@LearnChinesewithJihan", "Learn Chinese with Jihan")
+                }}
+                {{ components.channelItem("https://www.youtube.com/@LearnChineseWithChineseCoffee", "Learn Chinese with
+                Chinese Coffee") }}
+                {{ components.channelItem("https://www.youtube.com/@yeeorgtr", "Yunus Emre Enstitüsü") }}
+                {{ components.channelItem("https://www.youtube.com/@budapesteyunusemre", "Budapeşte Yunus Emre
+                Enstitüsü") }}
+            </ul>
+        </div>
+
+        {# Canales en Español #}
+        <div class="bg-slate-50 dark:bg-slate-800
+                    border-2 border-slate-200 dark:border-slate-700
+                    rounded-2xl p-6
+                    hover:border-red-500 hover:shadow-xl
+                    transition-all duration-300">
+            <h3 class="flex items-center gap-3 text-xl font-semibold 
+                       text-slate-800 dark:text-slate-100
+                       mb-5 pb-3 border-b-2 border-slate-200 dark:border-slate-700">
+                <i class="fas fa-flag text-red-600"></i>
+                Canales en Español
+            </h3>
+            <ul class="channel-list flex flex-col gap-2">
+                {{ components.channelItem("https://www.youtube.com/@estambulmagico", "ESTAMBUL MÁGICO vivir en TURQUÍA")
+                }}
+                {{ components.channelItem("https://www.youtube.com/@colegiochino", "Colegio Chino") }}
+                {{ components.channelItem("https://www.youtube.com/@AprenderChino", "Aprender Chino") }}
+                {{ components.channelItem("https://www.youtube.com/@FabianEnTurquia", "Fabian en China") }}
+            </ul>
+        </div>
+    </div>
+
+</div>

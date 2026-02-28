@@ -1,0 +1,10 @@
+{
+  "a1-intro-chino": {
+    "id": "a1-intro-chino",
+    "title": "Introducción al Chino A1",
+    "level": "A1",
+    "order": 1,
+    "description": "Lección introductoria para el nivel A1 de chino mandarín.",
+    "content": "<h2>Bienvenidos al nivel A1</h2><p>Aquí irá el contenido de chino mandarín para este nivel. Por favor usa el panel de administración (/Contribute.html) para agregar las nuevas lecciones.</p>"
+  }
+}

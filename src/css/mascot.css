@@ -1,0 +1,56 @@
+/* Capi Mascot Chat Styles */
+
+.capi-chat-modal {
+    position: fixed;
+    z-index: 9991;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    /* bg-white */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    /* shadow-2xl */
+    transition: all 0.3s ease;
+
+    /* Mobile Default (Full Screen & Square) */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    /* Square on mobile */
+    border: none;
+}
+
+/* Desktop Overrides (Min-width 768px matches Tailwind 'md') */
+@media (min-width: 768px) {
+    .capi-chat-modal {
+        top: auto !important;
+        left: auto !important;
+        bottom: 6rem;
+        /* bottom-24 */
+        right: 1.5rem;
+        /* right-6 */
+        width: 24rem;
+        /* w-96 */
+        height: 500px;
+        max-height: 70vh;
+        max-width: calc(100vw - 3rem);
+        border-radius: 0.75rem;
+        /* rounded-xl (Slightly less than 2xl which is 1rem) */
+        border: 1px solid #e2e8f0;
+        /* border-slate-200 */
+    }
+}
+
+/* Dark Mode overrides */
+.dark-mode .capi-chat-modal {
+    background-color: #0f172a;
+    /* slate-900 */
+}
+
+@media (min-width: 768px) {
+    .dark-mode .capi-chat-modal {
+        border-color: #334155;
+        /* slate-700 */
+    }
+}
