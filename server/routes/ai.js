@@ -172,18 +172,19 @@ router.get('/word-of-day', async (req, res) => {
         const userPrompt = `Generate a Chinese "Word or Phrase of the Day" for ${speakerType} learning Chinese.
 Return ONLY a JSON object with these exact fields (no markdown, no code block):
 {
-  "word": "<Chinese word or short useful phrase>",
-  "pronunciation": "<Pinyin pronunciation for the word>",
-  "translation": "<${translationText}>",
-  "example": "<Short example sentence in Chinese using the word/phrase>",
-  "examplePronunciation": "<Pinyin pronunciation for the entire example sentence>",
-  "exampleTranslation": "<${translationText} of the example, BUT LEAVE THE TARGET WORD IN CHINESE so the user has to guess it>",
+  "word": "<Target word in pure Chinese characters ONLY>",
+  "pronunciation": "<Pinyin for the target word WITH TONE MARKS>",
+  "translation": "<${translationText} of the target word>",
+  "example": "<Short example sentence using the word in pure Chinese characters ONLY. NO PINYIN HERE.>",
+  "examplePronunciation": "<Pinyin for the entire example sentence WITH TONE MARKS. NO CHINESE CHARACTERS HERE.>",
+  "exampleTranslation": "<${translationText} of the example sentence. CRITICAL: Do NOT translate the target word itself, insert the Chinese characters of the target word directly into this translated sentence>",
   "level": "<one of: A1, A2, B1, B2, C1>",
   "tip": "<Short memory tip in ${lang === 'en' ? 'English' : 'Spanish'} to remember this>"
 }
 Pick a useful, everyday term. It can be a single word or a common short phrase.
-IMPORTANT: DO NOT use extremely basic greetings like "ni hao", "zao shang hao" (unless it is for a specific level like C1 in a complex idiom).
-CRITICAL: In 'exampleTranslation', you MUST NOT translate the target 'word'. Leave the target 'word' exactly as it is in Chinese within the ${lang === 'en' ? 'English' : 'Spanish'} sentence.
+IMPORTANT: DO NOT use extremely basic greetings like "ni hao" (unless for a specific level idiom).
+CRITICAL RULE 1: The 'example' field MUST contain ONLY Hanzi characters. Do not mix pinyin and characters.
+CRITICAL RULE 2: The 'exampleTranslation' field MUST leave the target word in Chinese characters within the ${lang === 'en' ? 'English' : 'Spanish'} sentence. For example, if the word is 苹果, write: "I ate a 苹果 today."
 Provide variety across different levels (A1 to C1).${avoidPrompt}`;
 
         const completion = await groq.chat.completions.create({

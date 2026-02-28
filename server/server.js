@@ -37,7 +37,8 @@ const getAllowedOrigins = () => {
     'http://127.0.0.1:5500',
     // Production domains (HTTPS only)
     'https://odl-turquia.club',
-    'https://www.odl-turquia.club'
+    'https://www.odl-turquia.club',
+    'https://chinese.odl-turquia.club'
   ];
 
   if (process.env.ALLOWED_ORIGINS) {
