@@ -1,11 +1,11 @@
-# TurkAmerica - Turkish Learning Platform
+# ChinoAmerica - Chinese Learning Platform
 
 [![Code Quality](https://img.shields.io/badge/SonarQube-Passed-success?style=flat-square&logo=sonarqube&logoColor=white)](https://www.sonarqube.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18.0.0-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-4.4%2B-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://opensource.org/licenses/MIT)
 
-> **TurkAmerica** is a high-performance educational platform engineered to bridge the linguistic gap for Spanish speakers learning Turkish. This project utilizes a sophisticated hybrid architecture, merging the lightning-fast performance of Static Site Generation (SSG) with the robustness of a scalable RESTful API. It integrates context-aware Artificial Intelligence to deliver a personalized, adaptive learning experience that evolves with the user.
+> **ChinoAmerica** is a high-performance educational platform engineered to bridge the linguistic gap for Spanish speakers learning Chinese. This project utilizes a sophisticated hybrid architecture, merging the lightning-fast performance of Static Site Generation (SSG) with the robustness of a scalable RESTful API. It integrates context-aware Artificial Intelligence to deliver a personalized, adaptive learning experience that evolves with the user.
 
 ---
 
