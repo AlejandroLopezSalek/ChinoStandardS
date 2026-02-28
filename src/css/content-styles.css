@@ -1,0 +1,290 @@
+/* Restored Styles for Content (Tables, Notices, Tips) */
+/* Matching the new Blue Theme */
+
+/* Tables */
+/* Global Table Styles inside Modal Content */
+/* Global Table Styles inside Modal Content */
+/* Targeting both IDs to be safe */
+#modalContent table,
+#universalModalContent table,
+.prose table,
+.comparison-table {
+    width: 100% !important;
+    margin-bottom: 2rem;
+    border-collapse: collapse !important;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+    background-color: white;
+    font-size: 0.95rem;
+    table-layout: auto;
+    /* Allow auto layout to respect content, or fixed for strict columns */
+}
+
+/* Header Cells (Blue Background) */
+#modalContent th,
+#universalModalContent th,
+.prose th,
+.comparison-table th {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+    color: white !important;
+    padding: 1rem 1.25rem !important;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    border-bottom: 2px solid #1e40af;
+}
+
+#modalContent td,
+#universalModalContent td,
+.prose td,
+.comparison-table td {
+    padding: 1rem 1.25rem !important;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+    vertical-align: middle;
+}
+
+/* Pronunciation Button - Global Reset */
+.pronounce-btn {
+    /* ZERO-LAYOUT WIDTH TRICK */
+    /* Position absolute removes it from flow (stopping the "push"), 
+       but without top/left coords, it stays at the static inline position next to the text. */
+    position: absolute !important;
+    margin-left: 0.3rem !important;
+
+    /* Decoration */
+    background: transparent;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+
+    /* Ensure it doesn't overlap next cell's content drastically */
+    width: 1.5rem;
+    height: 1.5rem;
+    white-space: nowrap;
+}
+
+/* Ensure the cell is the positioning context */
+.comparison-table td:has(.pronounce-btn),
+#modalContent td:has(.pronounce-btn),
+#universalModalContent td:has(.pronounce-btn) {
+    position: relative !important;
+    /* Context for abstract button */
+    display: table-cell !important;
+    vertical-align: middle !important;
+    text-align: left !important;
+}
+
+/* MOBILE RESPONSIVE TABLE */
+@media (max-width: 768px) {
+
+    #modalContent table,
+    #universalModalContent table,
+    .prose table,
+    .comparison-table {
+        display: block;
+        width: 100% !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scrolling on iOS */
+        /* white-space: nowrap; REMOVED to prevent infinite width expansion */
+    }
+
+    /* Ensure borders look right when scrolling */
+    #modalContent th,
+    #universalModalContent th {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+}
+
+.dark-mode #modalContent td,
+.dark-mode #universalModalContent td,
+.dark-mode .prose td,
+.dark-mode .comparison-table td {
+    border-bottom: 1px solid #334155;
+    color: #cbd5e1;
+    background-color: #1e293b;
+}
+
+/* Zebra Striping */
+#modalContent tr:nth-child(even),
+#universalModalContent tr:nth-child(even),
+.prose tr:nth-child(even),
+.comparison-table tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+#modalContent tr:hover,
+#universalModalContent tr:hover,
+.prose tr:hover,
+.comparison-table tr:hover {
+    background-color: #f1f5f9;
+}
+
+.dark-mode #modalContent tr:nth-child(even),
+.dark-mode #universalModalContent tr:nth-child(even),
+.dark-mode .prose tr:nth-child(even),
+.dark-mode .comparison-table tr:nth-child(even) {
+    background-color: #0f172a;
+}
+
+.dark-mode #modalContent tr:hover,
+.dark-mode #universalModalContent tr:hover,
+.dark-mode .prose tr:hover,
+.dark-mode .comparison-table tr:hover {
+    background-color: #334155;
+}
+
+/* Ensure headings are visible in dark mode */
+.dark-mode #modalContent h1,
+.dark-mode #universalModalContent h1,
+.dark-mode #modalContent h2,
+.dark-mode #universalModalContent h2,
+.dark-mode #modalContent h3,
+.dark-mode #universalModalContent h3 {
+    color: #f1f5f9;
+}
+
+/* COMPONENT BOXES (Matching lesson-editor.js colors) */
+
+/* Highlight Box (Indigo) */
+.highlight-box {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: #eef2ff;
+    /* red-50 */
+    border-left: 4px solid #6366f1;
+    /* red-500 */
+    border-radius: 0 0.5rem 0.5rem 0;
+    color: #1e293b;
+}
+
+.dark-mode .highlight-box {
+    background-color: rgba(49, 46, 129, 0.2);
+    /* red-900/20 */
+    color: #c7d2fe;
+    /* red-200 */
+}
+
+/* Tip Box (Emerald/Green) */
+.tip-box {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: #ecfdf5;
+    /* orange-50 */
+    border-left: 4px solid #10b981;
+    /* orange-500 */
+    border-radius: 0 0.5rem 0.5rem 0;
+    color: #1e293b;
+}
+
+.dark-mode .tip-box {
+    background-color: rgba(6, 78, 59, 0.2);
+    /* orange-900/20 */
+    color: #a7f3d0;
+    /* orange-200 */
+}
+
+/* Example Box (Slate) */
+.example-box {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: #f8fafc;
+    /* slate-50 */
+    border-left: 4px solid #64748b;
+    /* slate-500 */
+    border-radius: 0 0.5rem 0.5rem 0;
+    color: #1e293b;
+}
+
+.dark-mode .example-box {
+    background-color: rgba(51, 65, 85, 0.5);
+    /* slate-700/50 */
+    color: #e2e8f0;
+    /* slate-200 */
+}
+
+/* Inline Code in Examples */
+.example-box code {
+    background-color: white;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    border: 1px solid #e2e8f0;
+    color: #4f46e5;
+    /* red-600 for better contrast */
+    font-family: monospace;
+}
+
+.dark-mode .example-box code {
+    background-color: #1e293b;
+    /* slate-800 */
+    border-color: #475569;
+    /* slate-600 */
+}
+
+/* Notices / Tips / Avisos (Generic) */
+.notice,
+.tip,
+.warning,
+.info-box {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid;
+    color: #1e293b;
+}
+
+/* Blue Info / Notice */
+.notice,
+.info-box {
+    background-color: #eff6ff;
+    border-color: #3b82f6;
+    color: #1e40af;
+}
+
+.dark-mode .notice,
+.dark-mode .info-box {
+    background-color: rgba(30, 58, 138, 0.3);
+    color: #93c5fd;
+}
+
+/* Green Tip */
+.tip {
+    background-color: #f0fdf4;
+    border-color: #22c55e;
+    color: #166534;
+}
+
+.dark-mode .tip {
+    background-color: rgba(20, 83, 45, 0.3);
+    color: #86efac;
+}
+
+/* Red Warning */
+.warning {
+    background-color: #fef2f2;
+    border-color: #ef4444;
+    color: #991b1b;
+}
+
+.dark-mode .warning {
+    background-color: rgba(127, 29, 29, 0.3);
+    color: #fca5a5;
+}
+
+/* Yellow Caution */
+.caution {
+    background-color: #fefce8;
+    border-color: #eab308;
+    color: #854d0e;
+}
+
+.dark-mode .caution {
+    background-color: rgba(113, 63, 18, 0.3);
+    color: #fde047;
+}

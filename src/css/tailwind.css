@@ -1,0 +1,279 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Components Layer */
+@layer components {
+
+    /* Main Content Container - White box with rounded borders */
+    .main-container {
+        @apply bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-6xl mx-auto my-8 p-8 min-h-[60vh];
+    }
+
+    /* Primary Button */
+    .btn-primary {
+        @apply bg-gradient-to-br from-orange-500 to-orange-700 text-white px-6 py-3 rounded-full font-semibold shadow-lg shadow-orange-500/30 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange-500/40 transition-all duration-300;
+    }
+
+    /* Secondary Button */
+    .btn-secondary {
+        @apply bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 px-6 py-3 rounded-full font-semibold hover:bg-slate-300 dark:hover:bg-slate-600 transition-all duration-300;
+    }
+
+    /* Card Base */
+    .card {
+        @apply bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300;
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+        @apply fixed inset-0 bg-black/70 dark:bg-black/80 flex items-center justify-center z-[9999];
+    }
+
+    /* Modal Content */
+    .modal-content {
+        @apply bg-white dark:bg-slate-800 rounded-3xl max-w-4xl w-11/12 max-h-[95vh] overflow-hidden shadow-2xl;
+    }
+
+    /* =========================================
+       COMMUNITY LESSONS COMPONENTS
+       ========================================= */
+
+    /* Filter Tabs */
+    .filter-tab {
+        @apply px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-base border-2 border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl cursor-pointer font-bold flex-shrink-0 text-center shadow-md hover:border-orange-500 hover:text-orange-600 dark:hover:text-orange-400 hover:-translate-y-1 hover:shadow-lg hover:shadow-orange-500/15 transition-all duration-300 snap-center;
+    }
+
+    .filter-tab.active {
+        @apply bg-gradient-to-br from-orange-600 to-orange-800 text-white border-transparent shadow-lg shadow-orange-500/30;
+    }
+
+    /* Type Filter Tabs (Libros / Lecciones) */
+    .type-tab {
+        @apply px-4 py-2 border-2 border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg cursor-pointer font-semibold text-sm flex items-center gap-1.5 shadow-sm hover:border-red-400 hover:text-red-600 dark:hover:text-red-400 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200;
+    }
+
+    .type-tab.active {
+        @apply bg-gradient-to-br from-red-600 to-red-700 text-white border-transparent shadow-md shadow-red-500/30;
+    }
+
+    /* Modal Styles Removed to prevent conflicts with Universal Modal Component */
+    /* Books Grid - Mobile Static (Stacked) */
+    .books-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    @media (min-width: 1024px) {
+        .books-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+    }
+
+    /* Book Cards */
+    .book-card {
+        /* Mobile: Full Width Static */
+        @apply w-full
+        /* Shared */
+        bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-md transition-all duration-300 transform
+        /* Desktop: Flex basis ~50% minus gap for 2 columns */
+        lg:w-[calc(50%-1rem)];
+    }
+
+    .book-card:hover {
+        @apply -translate-y-2 shadow-2xl shadow-orange-500/25 border-orange-500;
+    }
+
+    .book-card-content {
+        /* Mobile: Column layout, centered */
+        @apply flex flex-col items-center text-center p-6 gap-5
+        /* Desktop: Row layout, left aligned */
+        md:flex-row md:items-start md:text-left md:p-8;
+    }
+
+    .book-icon {
+        @apply flex items-center justify-center w-20 h-20 min-w-[80px] rounded-2xl shadow-lg mx-auto md:mx-0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .book-icon i {
+        @apply text-4xl text-white;
+    }
+
+    .book-info {
+        @apply flex-1 w-full;
+    }
+
+    .book-title {
+        @apply text-xl font-bold text-slate-900 dark:text-slate-100 mb-3 leading-tight;
+    }
+
+    .book-description {
+        @apply text-slate-600 dark:text-slate-400 text-base leading-relaxed mb-4 line-clamp-2;
+    }
+
+    .book-meta {
+        @apply flex gap-6 text-sm text-slate-500 dark:text-slate-400 flex-wrap justify-center md:justify-start;
+    }
+
+    .book-meta span {
+        @apply flex items-center gap-2 font-medium;
+    }
+
+    .book-meta i {
+        @apply text-orange-600 text-base;
+    }
+
+    .book-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        border-top: 2px solid #e2e8f0;
+    }
+
+    .dark .book-actions {
+        border-top-color: #334155;
+    }
+
+    @media (min-width: 768px) {
+        .book-actions {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    .book-btn {
+        @apply px-4 py-4 text-base font-bold no-underline flex items-center justify-center gap-3 border-none transition-all duration-300 md:px-6 md:py-5 md:text-lg text-center;
+    }
+
+    .btn-view {
+        @apply text-white border-b border-white/20 md:border-b-0 md:border-r;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .btn-view:hover {
+        background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+        box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-download {
+        @apply bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border-t border-slate-200 dark:border-slate-600 md:border-t-0 md:border-l;
+    }
+
+    .btn-download:hover {
+        @apply bg-slate-200 dark:bg-slate-600 text-orange-600 dark:text-orange-400;
+    }
+
+    /* Lesson Cards */
+    .contribution-card {
+        @apply bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-2xl p-6 mb-6 shadow-md transition-all duration-300;
+    }
+
+    .contribution-card:hover {
+        @apply shadow-xl border-orange-300 dark:border-orange-600;
+    }
+
+    .contribution-header {
+        @apply flex flex-col items-start gap-2 mb-4 pb-4 border-b-2 border-slate-200 dark:border-slate-700 md:flex-row md:items-center md:justify-between;
+    }
+
+    .contribution-type {
+        @apply flex items-center gap-2 text-orange-600 dark:text-orange-400 font-semibold;
+    }
+
+    .contribution-status {
+        @apply px-4 py-1.5 rounded-full text-sm font-semibold self-start md:self-auto;
+    }
+
+    .status-published {
+        @apply bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400;
+    }
+
+    .contribution-card h3 {
+        @apply text-xl font-bold text-slate-900 dark:text-slate-100 mb-3 text-center md:text-left;
+    }
+
+    .contribution-card p {
+        @apply text-slate-600 dark:text-slate-400 mb-4 text-center md:text-left;
+    }
+
+    .contribution-meta {
+        @apply flex gap-6 text-sm text-slate-500 dark:text-slate-400 mb-4 justify-center flex-wrap md:justify-start;
+    }
+
+    .contribution-meta span {
+        @apply flex items-center gap-2;
+    }
+
+    /* Lesson Actions - Mobile First */
+    .lesson-actions {
+        @apply flex flex-wrap gap-3 mt-4 justify-center w-full md:justify-start;
+    }
+
+    .btn-view-lesson {
+        @apply px-4 py-2.5 text-sm bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-200 hover:bg-slate-200 dark:hover:bg-slate-600 flex-1 min-w-[120px] md:flex-none md:px-5 md:py-3 md:text-base;
+    }
+
+    .lesson-edit-btn {
+        @apply px-4 py-2.5 text-sm bg-transparent text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-600 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-200 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-red-600 dark:hover:text-red-400 hover:border-red-600 dark:hover:border-red-400 flex-1 min-w-[120px] md:flex-none md:px-5 md:py-3 md:text-base;
+    }
+
+    .lesson-delete-btn {
+        @apply px-4 py-2.5 text-sm bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-lg font-medium flex items-center justify-center gap-2 shadow-sm transition-all duration-200 hover:bg-red-200 dark:hover:bg-red-900/50 hover:shadow-md w-full mt-2 md:w-auto md:mt-0 md:px-5 md:py-3 md:text-base;
+    }
+
+    /* Modal Details & Content */
+    .detail-section h3 {
+        @apply flex items-center gap-3 text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4;
+    }
+
+    .detail-grid {
+        @apply grid grid-cols-1 md:grid-cols-3 gap-4 mb-5;
+    }
+
+    .detail-item {
+        @apply flex flex-col gap-1;
+    }
+
+    .detail-item strong {
+        @apply text-slate-500 dark:text-slate-400 text-sm;
+    }
+
+    .detail-item span {
+        @apply text-slate-900 dark:text-slate-100 text-base;
+    }
+
+    .lesson-content {
+        @apply prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300;
+    }
+
+    .empty-state {
+        @apply text-center py-16 text-slate-400 dark:text-slate-500;
+    }
+
+    /* INLINE EDITOR TABLE STYLES - FORCED */
+    .editor-content table {
+        @apply w-full border-collapse my-4 table-auto;
+    }
+
+    .editor-content th {
+        @apply bg-red-600 text-white p-3 border border-red-700 text-left font-semibold;
+    }
+
+    .editor-content td {
+        @apply p-3 border border-slate-300 dark:border-slate-600;
+    }
+
+    .editor-content tr {
+        @apply bg-white dark:bg-slate-800;
+    }
+
+    /* Input within tables (for editable state) */
+    .editor-content td input {
+        @apply w-full bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white p-1 rounded border border-slate-300 dark:border-slate-600 outline-none;
+    }
+
+}

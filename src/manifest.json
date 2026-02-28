@@ -1,0 +1,71 @@
+{
+  "name": "ChinoAmerica - Aprender Chino",
+  "short_name": "ChinoAmerica",
+  "description": "Plataforma completa para aprender chino en español",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "es",
+  "dir": "ltr",
+  "icons": [],
+  "categories": [
+    "education",
+    "productivity"
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "Pantalla principal con niveles"
+    },
+    {
+      "src": "/screenshots/grammar.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "Sección de gramática"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nivel A1",
+      "short_name": "A1",
+      "description": "Acceso rápido al nivel A1",
+      "url": "/NivelA1.html",
+      "icons": [
+        {
+          "src": "/icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Gramática",
+      "short_name": "Gramática",
+      "description": "Recursos de gramática",
+      "url": "/Gramatica.html",
+      "icons": [
+        {
+          "src": "/icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Mi Perfil",
+      "short_name": "Perfil",
+      "description": "Ver tu perfil y racha",
+      "url": "/Perfil.html",
+      "icons": [
+        {
+          "src": "/icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
+}

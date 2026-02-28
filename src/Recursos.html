@@ -1,0 +1,62 @@
+---
+layout: base.njk
+title: Recursos Recomendados | Aprende Chino
+description: "Las mejores apps y recursos para aprender chino."
+---
+{% import "components.njk" as components %}
+
+<div class="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <!-- Header -->
+    <header class="text-center mb-16 max-w-3xl mx-auto">
+        <h1
+            class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-600 mb-6">
+            Herramientas Recomendadas
+        </h1>
+        <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+            Hemos seleccionado las mejores plataformas para ayudarte a dominar el chino.
+            Ya sea que busques <span class="text-red-600 dark:text-red-400 font-semibold">profesores nativos</span> o
+            <span class="text-red-600 dark:text-red-400 font-semibold">clases estructuradas</span>,
+            estas son nuestras recomendaciones top.
+        </p>
+    </header>
+
+    <!-- Top Recommendations Grid -->
+    <div class="flex justify-center mb-20">
+
+        <!-- italki -->
+        {{ components.affiliateCard(
+        title="italki",
+        description="La mejor plataforma para encontrar <b>profesores nativos</b> y practicar conversación 1-a-1. Ideal
+        para todos los niveles. <br><br><b>Recomendado por ODL (Organización de Desarrollo Latino).</b>",
+        link="https://www.italki.com/affshare?ref=af30849267",
+        btnText="Encontrar Profesor",
+        badge="Mejor para Conversación",
+        icon="comments",
+        footer="Obtén $10 en créditos al registrarte"
+        ) }}
+    </div>
+
+    <!-- Additional Resources Section (Can be expanded later) -->
+    <div class="bg-red-50 dark:bg-slate-800 rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden">
+        <div class="relative z-10 max-w-2xl mx-auto">
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100 mb-4">¿Por qué recomendamos
+                Italki?</h2>
+            <p class="text-slate-600 dark:text-slate-400 mb-8">
+                Al usar Italki para aprender chino, apoyas directamente a <b>proyectos como Turkamerica de ODL</b>.
+                Esto nos permite seguir creando contenido gratuito y mejorando la plataforma para toda la comunidad.
+            </p>
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-700 rounded-lg text-sm text-slate-500 shadow-sm">
+                <span>Gracias por tu apoyo</span>
+            </div>
+        </div>
+
+        <!-- Decorative bg elements -->
+        <div
+            class="absolute top-0 left-0 w-64 h-64 bg-red-500/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2">
+        </div>
+        <div
+            class="absolute bottom-0 right-0 w-64 h-64 bg-red-500/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2">
+        </div>
+    </div>
+</div>

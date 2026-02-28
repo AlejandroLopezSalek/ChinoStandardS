@@ -1,0 +1,26 @@
+meta {
+  name: Register
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "jugador123",
+    "email": "jugador123@gmail.com",
+    "password": "123456",
+    "confirmPassword": "123456"
+  }
+}
+
+script:post-response {
+  if (res.status === 201) {
+    bru.setEnvVar("authToken", res.body.token);
+  }
+}

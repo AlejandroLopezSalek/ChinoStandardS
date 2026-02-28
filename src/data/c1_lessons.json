@@ -1,0 +1,10 @@
+{
+  "c1-intro-chino": {
+    "id": "c1-intro-chino",
+    "title": "Introducción al Chino C1",
+    "level": "C1",
+    "order": 1,
+    "description": "Lección introductoria para el nivel C1 de chino mandarín.",
+    "content": "<h2>Bienvenidos al nivel C1</h2><p>Aquí irá el contenido de chino mandarín para este nivel. Por favor usa el panel de administración (/Contribute.html) para agregar las nuevas lecciones.</p>"
+  }
+}

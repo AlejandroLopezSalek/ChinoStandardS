@@ -1,0 +1,24 @@
+meta {
+  name: Create Contribution
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/contributions
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "type": "lesson_edit",
+    "title": "Corrección Lección A1",
+    "description": "Corrigiendo un error de tipeo en la tabla de saludos.",
+    "data": {
+      "level": "A1",
+      "lessonId": "saludos-1",
+      "newContent": "<p>Hola</p>"
+    }
+  }
+}

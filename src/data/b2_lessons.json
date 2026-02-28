@@ -1,0 +1,10 @@
+{
+  "b2-intro-chino": {
+    "id": "b2-intro-chino",
+    "title": "Introducción al Chino B2",
+    "level": "B2",
+    "order": 1,
+    "description": "Lección introductoria para el nivel B2 de chino mandarín.",
+    "content": "<h2>Bienvenidos al nivel B2</h2><p>Aquí irá el contenido de chino mandarín para este nivel. Por favor usa el panel de administración (/Contribute.html) para agregar las nuevas lecciones.</p>"
+  }
+}

@@ -1,0 +1,89 @@
+---
+layout: niveles.njk
+---
+{% import "components.njk" as components %}
+
+<section class="mt-10 px-4 max-w-7xl mx-auto">
+    <div class="grammar-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {{ components.grammarCard("Modo Imperativo (Emir Kipi)", "Intermedio", "Órdenes y comandos: gel, gelin,
+        gelsin.", "imperativo") }}
+
+        {{ components.grammarCard("Modo Optativo (İstek Kipi)", "Intermedio", "Expresar deseos y sugerencias: gidelim,
+        alayım.", "optativo") }}
+
+        {{ components.grammarCard("Sufijos Derivativos (-lI, -sIz, -lIk)", "Intermedio", "Crear adjetivos y sustantivos:
+        tuzlu, tuzsuz, güzellik.", "derivativos") }}
+
+        {{ components.grammarCard("Pasado Simple (-DI)", "Intermedio", "Eventos pasados confirmados: geldim, geldin,
+        geldi.", "pasado-simple") }}
+
+        {{ components.grammarCard("Pasado del Verbo 'Ser/Estar' (idi)", "Intermedio", "Estados pasados: öğrenciydim,
+        hastaydı.", "pasado-ser") }}
+
+        {{ components.grammarCard("Conjunciones Causales", "Intermedio", "Conectores: çünkü, bu sebeple, bu yüzden, bu
+        nedenle.", "conjunciones") }}
+
+        {{ components.grammarCard("Posposición 'ile' (con)", "Intermedio", "Compañía e instrumento: benimle, kalemle.",
+        "ile") }}
+
+        {{ components.grammarCard("Tiempo Futuro (-AcAk)", "Intermedio", "Acciones futuras: geleceğim, yapacak,
+        olacaksınız.", "futuro") }}
+
+        {{ components.grammarCard("Comparaciones (gibi, kadar)", "Intermedio", "Similitud e igualdad: senin gibi, benim
+        kadar.", "comparaciones") }}
+
+        {{ components.grammarCard("Pasado Reportado (-mIş)", "Intermedio", "Información indirecta: gelmiş, yapmış,
+        varmış.", "pasado-reportado") }}
+
+        {{ components.grammarCard("Adjetivos Intensivos", "Intermedio", "Reduplicación: kıpkırmızı, bembeyaz, sapsarı.",
+        "intensivos") }}
+
+        {{ components.grammarCard("Sufijos Diminutivos (-CIk, -CA)", "Intermedio", "Tamaño y manera: küçücük, yavaşça.",
+        "diminutivos") }}
+
+        {{ components.grammarCard("Discurso Directo (diye)", "Intermedio", "Citas directas: 'Merhaba' diye söyledi.",
+        "discurso-directo") }}
+
+        {{ components.grammarCard("Conjunciones Dobles", "Intermedio", "Pares correlativas: hem...hem, ne...ne,
+        ya...ya.", "conjunciones-dobles") }}
+
+        {{ components.grammarCard("Presente Habitual (Geniş Zaman)", "Intermedio", "Acciones habituales: gelir, yapar,
+        içerim.", "presente-habitual") }}
+
+        {{ components.grammarCard("Sufijo -DIr (énfasis)", "Intermedio", "Énfasis y suposición: gelecektir,
+        öğrencidir.", "dir-sufijo") }}
+
+        {{ components.grammarCard("Modal de Habilidad (-Abil/-Ebil)", "Intermedio", "Capacidad y posibilidad: gelebilir,
+        yapabilir.", "habilidad") }}
+
+        {{ components.grammarCard("Gerundios (-(y)Ip, -mAdAn)", "Intermedio", "Acciones consecutivas: gidip, okumadan.",
+        "gerundios") }}
+    </div>
+</section>
+
+<section class="mt-16 mb-12">
+    <div class="flex items-center gap-3 mb-8">
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Potencia tu nivel A2</h2>
+        <div class="h-px flex-grow bg-slate-200 dark:bg-slate-700"></div>
+    </div>
+
+    <div class="flex justify-center max-w-4xl mx-auto">
+        {{ components.affiliateCard(
+        title="italki",
+        description="Mejora tu fluidez conversando con nativos. Rompe el miedo a hablar.",
+        link="https://www.italki.com/affshare?ref=af30849267",
+        btnText="Practicar Conversación",
+        icon="comments"
+        ) }}
+    </div>
+</section>
+
+
+<div class="sr-only">
+    {% for key, lesson in a2_lessons %}
+    <article id="seo-lesson-{{ key }}">
+        <h2>{{ lesson.title }}</h2>
+        <div>{{ lesson.content | safe }}</div>
+    </article>
+    {% endfor %}
+</div>
