@@ -108,7 +108,7 @@
 
         // Base classes that change on toggle
         // We toggle generic borders/bg classes off when completed, and specific orange ones on.
-        const baseClasses = ['bg-white', 'dark:bg-slate-700', 'border-slate-200', 'dark:border-slate-600', 'hover:border-orange-300', 'hover:shadow-md'];
+        const baseClasses = ['bg-white', 'dark:bg-stone-700', 'border-stone-200', 'dark:border-stone-600', 'hover:border-orange-300', 'hover:shadow-md'];
         const completedClasses = ['bg-orange-50', 'dark:bg-orange-900/20', 'border-orange-500', 'dark:border-orange-500', 'shadow-md', 'shadow-orange-500/20'];
 
         if (isCompleted) {

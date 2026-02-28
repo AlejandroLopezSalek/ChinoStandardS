@@ -8,9 +8,9 @@ let confirmAction = null;
 
 // Tailwind Classes Configuration
 const TAB_ACTIVE_CLASSES = ['bg-red-600', 'text-white', 'shadow-md', 'shadow-red-500/20'];
-const TAB_INACTIVE_CLASSES = ['text-slate-600', 'hover:bg-slate-100', 'dark:text-slate-400', 'dark:hover:bg-slate-800'];
+const TAB_INACTIVE_CLASSES = ['text-stone-600', 'hover:bg-stone-100', 'dark:text-stone-400', 'dark:hover:bg-stone-800'];
 const BADGE_ACTIVE_CLASSES = ['bg-white/20', 'text-white'];
-const BADGE_INACTIVE_CLASSES = ['bg-slate-100', 'dark:bg-slate-700', 'text-slate-600', 'dark:text-slate-300'];
+const BADGE_INACTIVE_CLASSES = ['bg-stone-100', 'dark:bg-stone-700', 'text-stone-600', 'dark:text-stone-300'];
 
 // New Global for Lessons Cache
 let allPublishedLessons = [];
@@ -80,8 +80,8 @@ globalThis.switchMainTab = function (tabName) {
     const tabRequests = document.getElementById('tabRequests');
     const tabLessons = document.getElementById('tabLessons');
 
-    const activeClasses = 'px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm bg-white dark:bg-slate-700 text-red-600 dark:text-red-400';
-    const inactiveClasses = 'px-6 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-700/50';
+    const activeClasses = 'px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm bg-white dark:bg-stone-700 text-red-600 dark:text-red-400';
+    const inactiveClasses = 'px-6 py-2.5 rounded-lg text-sm font-medium transition-all text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-700/50';
 
     if (tabName === 'requests') {
         requestsSection.classList.remove('hidden');
@@ -167,43 +167,43 @@ async function loadRequests() {
 
         if (requests.length === 0) {
             container.innerHTML = `
-                <div class="col-span-full flex flex-col items-center justify-center p-12 text-center bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+                <div class="col-span-full flex flex-col items-center justify-center p-12 text-center bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-dashed border-stone-300 dark:border-stone-700">
                     <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center text-orange-600 dark:text-orange-400 text-3xl mb-4">
                         <i class="fas fa-check-circle"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2">¡Todo al día!</h3>
-                    <p class="text-slate-500 dark:text-slate-400">No hay solicitudes pendientes de revisión</p>
+                    <h3 class="text-xl font-bold text-stone-800 dark:text-white mb-2">¡Todo al día!</h3>
+                    <p class="text-stone-500 dark:text-stone-400">No hay solicitudes pendientes de revisión</p>
                 </div>
             `;
             return;
         }
 
         container.innerHTML = requests.map(request => `
-            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-300 group relative overflow-hidden" data-id="${request.id}">
-                <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-100 dark:border-slate-700/50">
+            <div class="bg-white dark:bg-stone-800 rounded-2xl p-6 border border-stone-200 dark:border-stone-700 shadow-sm hover:shadow-md transition-all duration-300 group relative overflow-hidden" data-id="${request.id}">
+                <div class="flex items-center justify-between mb-4 pb-4 border-b border-stone-100 dark:border-stone-700/50">
                     <div class="flex items-center gap-3">
                          <div class="w-10 h-10 rounded-xl flex items-center justify-center ${request.type === 'lesson_edit' ? 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400' : 'bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400'}">
                              <i class="fas ${request.type === 'lesson_edit' ? 'fa-book-open' : 'fa-file-pdf'}"></i>
                          </div>
-                         <span class="font-semibold text-slate-700 dark:text-slate-200 text-sm">
+                         <span class="font-semibold text-stone-700 dark:text-stone-200 text-sm">
                              ${request.type === 'lesson_edit' ? 'Edición de Lección' : 'Libro Compartido'}
                          </span>
                     </div>
-                    <span class="text-xs font-medium text-slate-500 bg-slate-100 dark:bg-slate-700 dark:text-slate-300 px-2.5 py-1 rounded-full">
+                    <span class="text-xs font-medium text-stone-500 bg-stone-100 dark:bg-stone-700 dark:text-stone-300 px-2.5 py-1 rounded-full">
                         ${formatDate(request.submittedAt)}
                     </span>
                 </div>
 
-                <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2 line-clamp-1">${escHtml(request.title)}</h3>
-                <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-2 leading-relaxed">${escHtml(truncate(request.description, 150))}</p>
+                <h3 class="text-lg font-bold text-stone-800 dark:text-white mb-2 line-clamp-1">${escHtml(request.title)}</h3>
+                <p class="text-stone-600 dark:text-stone-400 text-sm mb-4 line-clamp-2 leading-relaxed">${escHtml(truncate(request.description, 150))}</p>
 
-                <div class="flex items-center gap-4 mb-6 text-sm text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-100 dark:border-slate-700/50">
+                <div class="flex items-center gap-4 mb-6 text-sm text-stone-500 dark:text-stone-400 bg-stone-50 dark:bg-stone-800/50 p-3 rounded-xl border border-stone-100 dark:border-stone-700/50">
                      <span class="flex items-center gap-2"><i class="fas fa-user text-red-500"></i> ${escHtml(request.submittedBy?.username || 'Usuario Desconocido')}</span>
-                     ${request.data.level ? `<span class="flex items-center gap-2 border-l border-slate-200 dark:border-slate-700 pl-4"><i class="fas fa-layer-group text-orange-500"></i> ${escHtml(request.data.level)}</span>` : ''}
+                     ${request.data.level ? `<span class="flex items-center gap-2 border-l border-stone-200 dark:border-stone-700 pl-4"><i class="fas fa-layer-group text-orange-500"></i> ${escHtml(request.data.level)}</span>` : ''}
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-2">
-                    <button class="px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2" onclick="viewRequest('${request._id}')">
+                    <button class="px-4 py-2 bg-stone-100 dark:bg-stone-700 hover:bg-stone-200 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-200 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2" onclick="viewRequest('${request._id}')">
                         <i class="fas fa-eye"></i> Ver
                     </button>
                     <button class="w-9 h-9 flex items-center justify-center bg-orange-100 hover:bg-orange-200 text-orange-600 dark:bg-orange-900/30 dark:hover:bg-orange-900/50 dark:text-orange-400 rounded-lg transition-colors" onclick="handleApprove('${request._id}')" title="Aprobar Rápido">
@@ -230,7 +230,7 @@ async function loadRequests() {
             <div class="col-span-full flex flex-col items-center justify-center p-12 text-center text-red-500">
                 <i class="fas fa-exclamation-triangle text-3xl mb-4"></i>
                 <h3 class="text-xl font-bold mb-2">Error al cargar las solicitudes</h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Por favor, intenta recargar la página</p>
+                <p class="text-sm text-stone-600 dark:text-stone-400 mb-4">Por favor, intenta recargar la página</p>
                 <button onclick="loadRequests()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
                     <i class="fas fa-sync-alt mr-2"></i>Reintentar
                 </button>
@@ -272,40 +272,40 @@ async function viewRequest(id) {
     if (request.type === 'lesson_edit') {
         modalBody.innerHTML = `
             <div class="space-y-6">
-                <div class="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
-                    <h3 class="flex items-center gap-2 mb-4 text-slate-800 dark:text-white font-bold pb-2 border-b border-slate-200 dark:border-slate-700">
+                <div class="bg-stone-50 dark:bg-stone-800/50 p-6 rounded-2xl border border-stone-200 dark:border-stone-700">
+                    <h3 class="flex items-center gap-2 mb-4 text-stone-800 dark:text-white font-bold pb-2 border-b border-stone-200 dark:border-stone-700">
                         <i class="fas fa-info-circle text-red-500"></i> Información General
                     </h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         <div class="flex flex-col gap-1">
-                            <strong class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Nivel</strong>
-                            <span class="font-semibold text-slate-800 dark:text-white">${request.data.level}</span>
+                            <strong class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">Nivel</strong>
+                            <span class="font-semibold text-stone-800 dark:text-white">${request.data.level}</span>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <strong class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">ID de Lección</strong>
-                            <span class="font-semibold text-slate-800 dark:text-white">${request.data.lessonId || 'Nueva lección'}</span>
+                            <strong class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">ID de Lección</strong>
+                            <span class="font-semibold text-stone-800 dark:text-white">${request.data.lessonId || 'Nueva lección'}</span>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <strong class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Enviado por</strong>
-                            <span class="font-semibold text-slate-800 dark:text-white">${request.submittedBy?.username || 'Usuario Desconocido'}</span>
+                            <strong class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">Enviado por</strong>
+                            <span class="font-semibold text-stone-800 dark:text-white">${request.submittedBy?.username || 'Usuario Desconocido'}</span>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <strong class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Fecha</strong>
-                            <span class="font-semibold text-slate-800 dark:text-white">${formatDate(request.submittedAt)}</span>
+                            <strong class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">Fecha</strong>
+                            <span class="font-semibold text-stone-800 dark:text-white">${formatDate(request.submittedAt)}</span>
                         </div>
                     </div>
                 </div>
                 
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
-                    <h3 class="flex items-center gap-2 mb-4 text-slate-800 dark:text-white font-bold">
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-200 dark:border-stone-700">
+                    <h3 class="flex items-center gap-2 mb-4 text-stone-800 dark:text-white font-bold">
                         <i class="fas fa-align-left text-red-500"></i> Descripción
                     </h3>
-                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">${request.description}</p>
+                    <p class="text-stone-600 dark:text-stone-300 leading-relaxed">${request.description}</p>
                 </div>
                 
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-200 dark:border-stone-700">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="flex items-center gap-2 text-slate-800 dark:text-white font-bold">
+                        <h3 class="flex items-center gap-2 text-stone-800 dark:text-white font-bold">
                             <i class="fas fa-file-alt text-red-500"></i> Contenido
                         </h3>
                         <button class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold shadow-lg shadow-red-500/20 hover:bg-red-700 transition-all flex items-center gap-2" id="toggleEditBtn" onclick="toggleAdminEditor()">
@@ -314,8 +314,8 @@ async function viewRequest(id) {
                     </div>
                     
                     <!-- View Mode -->
-                    <div id="contentPreview" class="prose dark:prose-invert max-w-none bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl border border-slate-200 dark:border-slate-700 max-h-[500px] overflow-y-auto">
-                        ${request.data.newContent ? sanitizeHtml(request.data.newContent) : '<p class="text-slate-400 italic">Sin contenido</p>'}
+                    <div id="contentPreview" class="prose dark:prose-invert max-w-none bg-stone-50 dark:bg-stone-900/50 p-6 rounded-xl border border-stone-200 dark:border-stone-700 max-h-[500px] overflow-y-auto">
+                        ${request.data.newContent ? sanitizeHtml(request.data.newContent) : '<p class="text-stone-400 italic">Sin contenido</p>'}
                     </div>
                     
                     <!-- Edit Mode -->
@@ -338,43 +338,43 @@ async function viewRequest(id) {
     } else {
         modalBody.innerHTML = `
             <div class="space-y-6">
-                <div class="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
-                    <h3 class="flex items-center gap-2 mb-4 text-slate-800 dark:text-white font-bold pb-2 border-b border-slate-200 dark:border-slate-700">
+                <div class="bg-stone-50 dark:bg-stone-800/50 p-6 rounded-2xl border border-stone-200 dark:border-stone-700">
+                    <h3 class="flex items-center gap-2 mb-4 text-stone-800 dark:text-white font-bold pb-2 border-b border-stone-200 dark:border-stone-700">
                         <i class="fas fa-info-circle text-red-500"></i> Información del Libro
                     </h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div class="flex flex-col gap-1">
-                            <strong class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Autor</strong>
-                            <span class="font-semibold text-slate-800 dark:text-white">${request.data.author}</span>
+                            <strong class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">Autor</strong>
+                            <span class="font-semibold text-stone-800 dark:text-white">${request.data.author}</span>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <strong class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Nivel</strong>
-                            <span class="font-semibold text-slate-800 dark:text-white">${request.data.level}</span>
+                            <strong class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">Nivel</strong>
+                            <span class="font-semibold text-stone-800 dark:text-white">${request.data.level}</span>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <strong class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Categoría</strong>
-                            <span class="font-semibold text-slate-800 dark:text-white">${request.data.category}</span>
+                            <strong class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">Categoría</strong>
+                            <span class="font-semibold text-stone-800 dark:text-white">${request.data.category}</span>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <strong class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Idioma</strong>
-                            <span class="font-semibold text-slate-800 dark:text-white">${request.data.language}</span>
+                            <strong class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">Idioma</strong>
+                            <span class="font-semibold text-stone-800 dark:text-white">${request.data.language}</span>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <strong class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Formato</strong>
-                            <span class="font-semibold text-slate-800 dark:text-white">${request.data.format}</span>
+                            <strong class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">Formato</strong>
+                            <span class="font-semibold text-stone-800 dark:text-white">${request.data.format}</span>
                         </div>
                         <div class="flex flex-col gap-1">
-                            <strong class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Tamaño</strong>
-                            <span class="font-semibold text-slate-800 dark:text-white">${request.data.fileSize}</span>
+                            <strong class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">Tamaño</strong>
+                            <span class="font-semibold text-stone-800 dark:text-white">${request.data.fileSize}</span>
                         </div>
                     </div>
                 </div>
                 
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
-                    <h3 class="flex items-center gap-2 mb-4 text-slate-800 dark:text-white font-bold">
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-200 dark:border-stone-700">
+                    <h3 class="flex items-center gap-2 mb-4 text-stone-800 dark:text-white font-bold">
                         <i class="fas fa-align-left text-red-500"></i> Descripción
                     </h3>
-                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">${request.description}</p>
+                    <p class="text-stone-600 dark:text-stone-300 leading-relaxed">${request.description}</p>
                 </div>
                 
                 <div class="bg-red-50 dark:bg-red-900/20 p-6 rounded-2xl border border-red-100 dark:border-red-800">
@@ -386,13 +386,13 @@ async function viewRequest(id) {
                     </a>
                 </div>
                 
-                <div class="flex items-center gap-3 p-4 bg-slate-100 dark:bg-slate-800 rounded-xl">
-                    <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-500">
+                <div class="flex items-center gap-3 p-4 bg-stone-100 dark:bg-stone-800 rounded-xl">
+                    <div class="w-10 h-10 rounded-full bg-stone-200 dark:bg-stone-700 flex items-center justify-center text-stone-500">
                         <i class="fas fa-user"></i>
                     </div>
                     <div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">Enviado por</p>
-                        <p class="font-semibold text-slate-800 dark:text-white">${request.submittedBy?.username || 'Usuario Desconocido'} <span class="text-slate-400 font-normal">(${request.submittedBy?.email || 'Sin email'})</span></p>
+                        <p class="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wide">Enviado por</p>
+                        <p class="font-semibold text-stone-800 dark:text-white">${request.submittedBy?.username || 'Usuario Desconocido'} <span class="text-stone-400 font-normal">(${request.submittedBy?.email || 'Sin email'})</span></p>
                     </div>
                 </div>
             </div>
@@ -640,7 +640,7 @@ function showToast(message, type = 'info') {
             colors = 'bg-orange-500';
             icon = 'fa-check-circle';
         } else {
-            colors = 'bg-slate-800';
+            colors = 'bg-stone-800';
             icon = 'fa-info-circle';
         }
         div.className = `fixed bottom-5 right-5 ${colors} text-white px-6 py-3 rounded-xl shadow-lg z-[100] flex items-center gap-3 animate-fade-in-up`;
@@ -682,25 +682,25 @@ function renderLessonsTable(lessons) {
     const tableBody = document.getElementById('lessonsTableBody');
 
     if (lessons.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-500">No hay lecciones publicadas.</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-stone-500">No hay lecciones publicadas.</td></tr>';
         return;
     }
 
     tableBody.innerHTML = lessons.map(lesson => `
-        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors border-b border-slate-100 dark:border-slate-700 last:border-0">
+        <tr class="hover:bg-stone-50 dark:hover:bg-stone-700/30 transition-colors border-b border-stone-100 dark:border-stone-700 last:border-0">
             <td class="p-4">
-                <div class="font-bold text-slate-800 dark:text-white">${lesson.title}</div>
-                <div class="text-xs text-slate-500 font-mono mt-1 opacity-75">${lesson.id}</div>
+                <div class="font-bold text-stone-800 dark:text-white">${lesson.title}</div>
+                <div class="text-xs text-stone-500 font-mono mt-1 opacity-75">${lesson.id}</div>
             </td>
             <td class="p-4">
                 <span class="px-2 py-1 rounded-md text-xs font-bold bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400">
                     ${lesson.level}
                 </span>
             </td>
-            <td class="p-4 text-sm text-slate-600 dark:text-slate-400">
+            <td class="p-4 text-sm text-stone-600 dark:text-stone-400">
                 ${lesson.author || 'Sistema'}
             </td>
-            <td class="p-4 text-sm text-slate-600 dark:text-slate-400">
+            <td class="p-4 text-sm text-stone-600 dark:text-stone-400">
                 ${formatDate(lesson.publishedAt || lesson.updatedAt)}
             </td>
             <td class="p-4 text-right">
@@ -769,9 +769,9 @@ globalThis.showHistoryAdmin = async function (id, title) {
 
         if (history.length === 0) {
             modalBody.innerHTML = `
-                <div class="text-center p-12 bg-slate-50 dark:bg-slate-800 rounded-xl">
-                    <i class="fas fa-history text-4xl text-slate-300 mb-4"></i>
-                    <p class="text-slate-500">No hay versiones anteriores de esta lección.</p>
+                <div class="text-center p-12 bg-stone-50 dark:bg-stone-800 rounded-xl">
+                    <i class="fas fa-history text-4xl text-stone-300 mb-4"></i>
+                    <p class="text-stone-500">No hay versiones anteriores de esta lección.</p>
                 </div>
             `;
             return;
@@ -780,14 +780,14 @@ globalThis.showHistoryAdmin = async function (id, title) {
         modalBody.innerHTML = `
             <div class="space-y-4">
                 ${history.map(v => `
-                    <div class="flex items-center justify-between p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:shadow-md transition-all">
+                    <div class="flex items-center justify-between p-4 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl hover:shadow-md transition-all">
                         <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-600 dark:text-slate-300">
+                            <div class="w-10 h-10 rounded-full bg-stone-100 dark:bg-stone-700 flex items-center justify-center font-bold text-stone-600 dark:text-stone-300">
                                 v${v.version}
                             </div>
                             <div>
-                                <div class="font-bold text-slate-800 dark:text-white">Modificado por: ${escHtml(v.editedBy || 'Desconocido')}</div>
-                                <div class="text-sm text-slate-500">${formatDate(v.editedAt)}</div>
+                                <div class="font-bold text-stone-800 dark:text-white">Modificado por: ${escHtml(v.editedBy || 'Desconocido')}</div>
+                                <div class="text-sm text-stone-500">${formatDate(v.editedAt)}</div>
                             </div>
                         </div>
                         <button onclick="revertLessonAdmin('${id}', ${v.version})" 

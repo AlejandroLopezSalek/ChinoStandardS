@@ -81,7 +81,7 @@ Content: ${cleanContent.substring(0, 1500)}...
 };
 
 // Helper to construct system prompt
-const buildSystemPrompt = (user, context, lessonContentContext, memoryContext) => {
+const buildSystemPrompt = (user, context, lessonContentContext, memoryContext, lang = 'es') => {
     let userContext = "User: Guest";
 
     if (user) {
@@ -99,8 +99,16 @@ If the user is viewing a lesson, answer based on the ACTIVE LESSON CONTEXT provi
 `;
     }
 
+    const languageRules = lang === 'en'
+        ? `1. **Language**: EXPLAIN in English, but PROVIDE EXAMPLES in Chinese.`
+        : `1. **Language**: EXPLAIN in Spanish, but PROVIDE EXAMPLES in Chinese.`;
+
+    const instructionsLang = lang === 'en'
+        ? `Your goal: Help English speakers learn Chinese correctly.`
+        : `Your goal: Help Spanish speakers learn Chinese correctly.`;
+
     return `You are "Panda", the AI mascot for "ChinoAmerica".
-Your goal: Help Spanish speakers learn Chinese correctly.
+${instructionsLang}
 
 CONTEXT:
 ${userContext}
@@ -108,22 +116,22 @@ ${lessonContentContext}
 Current Page: ${contextStr || 'General Dashboard'}${memoryContext || ''}
 
 CRITICAL RULES:
-1. **Language**: EXPLAIN in Spanish, but PROVIDE EXAMPLES in Chinese.
+${languageRules}
 2. **Clarity**: Finish your sentences. Do not trail off.
-3. **Grammar**: When explaining grammar, be structured. Don't mix Spanish endings into Chinese words unless comparing them.
+3. **Grammar**: When explaining grammar, be structured. Don't mix Spanish/English endings into Chinese words unless comparing them.
 4. **Personality**: You can use emojis to be friendly! 🌟
 5. **Length**: If the answer is long, break it into bullet points.
 
 ${specialInstructions}
 
 NAVIGATION:
-- Only navigate if explicitly asked (e.g., "Ir a perfil").
+- Only navigate if explicitly asked (e.g., "Go to profile" or "Ir a perfil").
 - Valid: /Inicio, /Consejos/, /Gramatica/, /Community-Lessons/, /NivelA1/ thru /NivelC1/, /Perfil/
-- Example: "Llevame a perfil" -> "Vamos al perfil. [[NAVIGATE:/Perfil/]]"`;
+- Example: "Take me to profile" -> "Let's go. [[NAVIGATE:/Perfil/]]"`;
 };
 
 // Daily cache - in-memory fast layer
-let wodCache = { date: null, data: null };
+let wodCache = {};
 
 // GET /word-of-day (Mounted at /api/chat/word-of-day)
 const DailyWord = require('../models/DailyWord');
@@ -134,51 +142,60 @@ router.get('/word-of-day', async (req, res) => {
             return res.status(503).json({ error: 'AI service not configured' });
         }
 
-        const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+        const lang = req.query.lang === 'en' ? 'en' : 'es';
+        const todayStr = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+        const cacheKey = todayStr + '_' + lang;
 
         // 1. Check in-memory first (fastest)
-        if (wodCache.date === today && wodCache.data) {
-            return res.json(wodCache.data);
+        if (wodCache[cacheKey]) {
+            return res.json(wodCache[cacheKey]);
         }
 
         // 2. Check MongoDB (for consistency across processes)
-        const existing = await DailyWord.findOne({ date: today });
+        const existing = await DailyWord.findOne({ date: cacheKey });
         if (existing) {
-            wodCache = { date: today, data: existing.data };
+            wodCache[cacheKey] = existing.data;
             return res.json(existing.data);
         }
 
         // 3. Generate new word via AI
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        const recentWordsDocs = await DailyWord.find({ createdAt: { $gte: thirtyDaysAgo } }, { 'data.word': 1 }).sort({ createdAt: -1 });
+        // Only avoid words generated in the same language to prevent cross-language blocking issues causing bad generation
+        const recentWordsDocs = await DailyWord.find({ date: { $regex: '_' + lang + '$' }, createdAt: { $gte: thirtyDaysAgo } }, { 'data.word': 1 }).sort({ createdAt: -1 });
         const recentWords = recentWordsDocs.map(d => d.data?.word).filter(Boolean);
         const avoidPrompt = recentWords.length > 0 ? `\n\nNOTE: Try to avoid these words that were provided in the last 30 days: ${recentWords.join(', ')}. You can repeat them occasionally if they are very important, but prefer providing new words.` : '';
+
+        const speakerType = lang === 'en' ? 'English speakers' : 'Spanish speakers';
+        const translationText = lang === 'en' ? 'English translation' : 'Spanish translation';
+
+        const userPrompt = `Generate a Chinese "Word or Phrase of the Day" for ${speakerType} learning Chinese.
+Return ONLY a JSON object with these exact fields (no markdown, no code block):
+{
+  "word": "<Chinese word or short useful phrase>",
+  "pronunciation": "<Pinyin pronunciation for the word>",
+  "translation": "<${translationText}>",
+  "example": "<Short example sentence in Chinese using the word/phrase>",
+  "examplePronunciation": "<Pinyin pronunciation for the entire example sentence>",
+  "exampleTranslation": "<${translationText} of the example, BUT LEAVE THE TARGET WORD IN CHINESE so the user has to guess it>",
+  "level": "<one of: A1, A2, B1, B2, C1>",
+  "tip": "<Short memory tip in ${lang === 'en' ? 'English' : 'Spanish'} to remember this>"
+}
+Pick a useful, everyday term. It can be a single word or a common short phrase.
+IMPORTANT: DO NOT use extremely basic greetings like "ni hao", "zao shang hao" (unless it is for a specific level like C1 in a complex idiom).
+CRITICAL: In 'exampleTranslation', you MUST NOT translate the target 'word'. Leave the target 'word' exactly as it is in Chinese within the ${lang === 'en' ? 'English' : 'Spanish'} sentence.
+Provide variety across different levels (A1 to C1).${avoidPrompt}`;
 
         const completion = await groq.chat.completions.create({
             model: 'llama-3.1-8b-instant',
             messages: [
                 {
                     role: 'system',
-                    content: 'You are a Chinese language teacher for Spanish speakers. Respond ONLY with valid JSON, no markdown, no extra text.'
+                    content: `You are a Chinese language teacher for ${speakerType}. Respond ONLY with valid JSON, no markdown, no extra text.`
                 },
                 {
                     role: 'user',
-                    content: `Generate a Chinese "Word or Phrase of the Day" for Spanish speakers learning Chinese.
-Return ONLY a JSON object with these exact fields (no markdown, no code block):
-{
-  "word": "<Chinese word or short useful phrase>",
-  "pronunciation": "<phonetic pronunciation for Spanish speakers>",
-  "translation": "<Spanish translation>",
-  "example": "<Short example sentence in Chinese using the word/phrase>",
-  "exampleTranslation": "<Spanish translation of the example, BUT LEAVE THE TARGET WORD IN TURKISH so the user has to guess it>",
-  "level": "<one of: A1, A2, B1, B2, C1>",
-  "tip": "<Short memory tip in Spanish to remember this>"
-}
-Pick a useful, everyday term. It can be a single word or a common short phrase. 
-IMPORTANT: DO NOT use extremely basic greetings like "merhaba", "selam", "nasılsın", "günaydın", or "iyi akşamlar" (unless it is for a specific level like C1 in a complex idiom).
-CRITICAL: In 'exampleTranslation', you MUST NOT translate the target 'word'. Leave the target 'word' exactly as it is in Chinese within the Spanish sentence.
-Provide variety across different levels (A1 to C1).${avoidPrompt}`
+                    content: userPrompt
                 }
             ],
             temperature: 0.9,
@@ -197,25 +214,28 @@ Provide variety across different levels (A1 to C1).${avoidPrompt}`
 
         // 4. Save to MongoDB & memory (upsert to handle rare races)
         await DailyWord.findOneAndUpdate(
-            { date: today },
+            { date: cacheKey },
             { data: wordData },
             { upsert: true, new: true }
         );
 
-        wodCache = { date: today, data: wordData };
+        wodCache[cacheKey] = wordData;
         res.json(wordData);
     } catch (err) {
         console.error('[word-of-day] Error:', err.message);
-        // Fallback word so the widget never shows an error on AI failure
-        res.json({
-            word: 'merhaba',
-            pronunciation: 'mehr-ah-bah',
-            translation: 'hola',
-            example: 'Merhaba, nasılsınız?',
-            exampleTranslation: '¿Hola, cómo están?',
+        // Fallback to a hardcoded word so the widget never breaks
+        const isEn = req.query.lang === 'en';
+        const fallback = {
+            word: 'Nǐ hǎo (你好)',
+            translation: isEn ? 'Hello' : 'Hola',
+            pronunciation: 'nǐ hǎo',
+            example: 'Nǐ hǎo, nǐ zěnme yàng?',
+            examplePronunciation: 'nǐ hǎo, nǐ zěnme yàng?',
+            exampleTranslation: isEn ? 'Hello, how are you?' : '¿Hola, cómo estás?',
             level: 'A1',
-            tip: 'Suena como "mer-aba" — el saludo más básico en chino.'
-        });
+            tip: isEn ? 'Nǐ hǎo is the most common greeting in Chinese.' : 'Nǐ hǎo es el saludo más común en chino.'
+        };
+        res.json(fallback);
     }
 });
 
@@ -238,7 +258,7 @@ router.get('/past-words', async (req, res) => {
 router.post('/', async (req, res) => {
 
     try {
-        const { message, context, history } = req.body;
+        const { message, context, history, lang } = req.body;
         const user = await getUserFromRequest(req);
 
         if (!process.env.GROQ_API_KEY) {
@@ -259,7 +279,7 @@ router.post('/', async (req, res) => {
             memoryContext = `\nMEMORY: The user was last studying "${user.stats.lastViewedLesson.title}".`;
         }
 
-        const systemPrompt = buildSystemPrompt(user, context, lessonContentContext, memoryContext);
+        const systemPrompt = buildSystemPrompt(user, context, lessonContentContext, memoryContext, lang);
 
         const messages = [{ role: "system", content: systemPrompt }];
 
@@ -336,83 +356,6 @@ async function logChatInteraction(user, message, reply, context, lessonContentCo
 }
 
 
-// ========================================
-// WORD OF THE DAY
-// ========================================
 
-/**
- * In-memory cache: one entry per calendar day (UTC date string).
- * Format: { date: 'YYYY-MM-DD', data: { word, translation, ... } }
- */
-let wordOfDayCache = null;
-
-const WORD_OF_DAY_PROMPT = `You are a Chinese language teacher for Spanish speakers.
-Generate a "Chinese Word of the Day" for language learners.
-Choose a word appropriate for any level (A1–C1). Vary difficulty each day.
-Respond ONLY with a valid JSON object — no markdown, no extra text:
-{
-  "word": "<Chinese word or short phrase>",
-  "translation": "<Spanish translation>",
-  "pronunciation": "<phonetic guide in Spanish e.g. 'mer-AB-a'>",
-  "example": "<short Chinese example sentence using the word>",
-  "exampleTranslation": "<Spanish translation of the example>",
-  "level": "<A1|A2|B1|B2|C1>",
-  "tip": "<A hint about the word's meaning, like a Spanglish sentence mixing Spanish and the Chinese word (e.g., 'Ayer fui a la [ev] para descansar'), to help them guess>"
-}`;
-
-router.get('/word-of-day', async (req, res) => {
-    const todayUtc = new Date().toISOString().slice(0, 10); // 'YYYY-MM-DD'
-
-    // Return cached result if still today
-    if (wordOfDayCache?.date === todayUtc) {
-        return res.json(wordOfDayCache.data);
-    }
-
-    if (!process.env.GROQ_API_KEY) {
-        return res.status(503).json({ error: 'AI service not configured.' });
-    }
-
-    try {
-        const completion = await groq.chat.completions.create({
-            messages: [
-                { role: 'system', content: 'You are a JSON-only API. Never add markdown or extra text.' },
-                { role: 'user', content: WORD_OF_DAY_PROMPT }
-            ],
-            model: 'llama-3.3-70b-versatile',
-            temperature: 0.9,
-            max_tokens: 400,
-        });
-
-        const raw = completion.choices[0]?.message?.content || '{}';
-
-        // Strip any accidental markdown fences
-        const cleaned = raw.replaceAll(/```json|```/g, '').trim();
-        const data = JSON.parse(cleaned);
-
-        // Validate required fields
-        const required = ['word', 'translation', 'pronunciation', 'example', 'exampleTranslation', 'level', 'tip'];
-        for (const field of required) {
-            if (!data[field]) throw new Error(`Missing field: ${field}`);
-        }
-
-        wordOfDayCache = { date: todayUtc, data };
-        return res.json(data);
-
-    } catch (err) {
-        console.error('Word of Day generation error:', err.message);
-        // Fallback to a hardcoded word so the widget never breaks
-        const fallback = {
-            word: 'Merhaba',
-            translation: 'Hola',
-            pronunciation: 'mer-HA-ba',
-            example: 'Merhaba, nasılsın?',
-            exampleTranslation: '¡Hola, cómo estás?',
-            level: 'A1',
-            tip: 'Merhaba es el saludo más común en chino. Úsalo en cualquier situación.'
-        };
-        wordOfDayCache = { date: todayUtc, data: fallback };
-        return res.json(fallback);
-    }
-});
 
 module.exports = router;

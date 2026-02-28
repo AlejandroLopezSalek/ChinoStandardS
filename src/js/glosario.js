@@ -38,7 +38,7 @@
         } catch (err) {
             console.error('[Glossary] Error loading past words:', err);
             container.innerHTML = `
-                <div class="text-center py-20 text-slate-500">
+                <div class="text-center py-20 text-stone-500">
                     <i class="fas fa-exclamation-triangle text-4xl mb-4 text-red-400"></i>
                     <p class="text-lg">Error al cargar el glosario. Por favor, intenta más tarde.</p>
                 </div>
@@ -60,7 +60,7 @@
 
     function renderGlossary(words, container) {
         if (!words || words.length === 0) {
-            container.innerHTML = '<p class="text-center text-slate-500 py-10">Aún no hay palabras en el glosario.</p>';
+            container.innerHTML = '<p class="text-center text-stone-500 py-10">Aún no hay palabras en el glosario.</p>';
             return;
         }
 
@@ -90,9 +90,9 @@
 
             html += `
                 <div class="mb-4">
-                    <h3 class="text-3xl font-black text-slate-300 dark:text-slate-600 mb-6 flex items-center gap-4">
+                    <h3 class="text-3xl font-black text-stone-300 dark:text-stone-600 mb-6 flex items-center gap-4">
                         <span>${letter}</span>
-                        <div class="h-px bg-slate-200 dark:bg-slate-700 flex-grow mt-2"></div>
+                        <div class="h-px bg-stone-200 dark:bg-stone-700 flex-grow mt-2"></div>
                     </h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         ${groups[letter].map(w => {
@@ -101,20 +101,20 @@
                 const storageKey = 'wod_answered_' + w.date;
                 const isAnswered = localStorage.getItem(storageKey) === w.word;
                 const checkIcon = isAnswered
-                    ? '<div class="absolute -top-2 -right-2 bg-white dark:bg-slate-800 rounded-full shadow-sm p-1"><i class="fas fa-check-circle text-green-500 text-lg leading-none"></i></div>'
+                    ? '<div class="absolute -top-2 -right-2 bg-white dark:bg-stone-800 rounded-full shadow-sm p-1"><i class="fas fa-check-circle text-green-500 text-lg leading-none"></i></div>'
                     : '';
 
                 return `
-                                <div class="word-card cursor-pointer group bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-lg hover:-translate-y-1 hover:border-red-400 dark:hover:border-red-500 transition-all relative flex flex-col h-full" data-date="${escHtml(w.date)}">
+                                <div class="word-card cursor-pointer group bg-white dark:bg-stone-800 rounded-xl p-5 shadow-sm border border-stone-200 dark:border-stone-700 hover:shadow-lg hover:-translate-y-1 hover:border-red-400 dark:hover:border-red-500 transition-all relative flex flex-col h-full" data-date="${escHtml(w.date)}">
                                     ${checkIcon}
                                     <div class="flex items-center gap-2 mb-3">
                                         <span class="px-2 py-0.5 rounded text-[10px] font-bold text-white shadow-sm ${lvl.bg}">${w.level || 'A1'}</span>
-                                        <span class="text-xs text-slate-400 font-medium ml-auto flex items-center gap-1"><i class="fas fa-calendar-alt opacity-50"></i> ${new Date(w.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}</span>
+                                        <span class="text-xs text-stone-400 font-medium ml-auto flex items-center gap-1"><i class="fas fa-calendar-alt opacity-50"></i> ${new Date(w.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}</span>
                                     </div>
-                                    <h4 class="text-xl font-bold text-slate-800 dark:text-slate-100 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors line-clamp-2 mb-2 break-words" title="${escHtml(w.word)}">${escHtml(w.word)}</h4>
+                                    <h4 class="text-xl font-bold text-stone-800 dark:text-stone-100 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors line-clamp-2 mb-2 break-words" title="${escHtml(w.word)}">${escHtml(w.word)}</h4>
                                     
-                                    <div class="mt-auto pt-3 border-t border-slate-100 dark:border-slate-700/50">
-                                        <p class="text-sm font-medium ${isAnswered ? 'text-slate-600 dark:text-slate-300' : 'text-slate-400 font-semibold'}" title="${escHtml(w.translation)}">${isAnswered ? escHtml(w.translation) : 'Falta completar'}</p>
+                                    <div class="mt-auto pt-3 border-t border-stone-100 dark:border-stone-700/50">
+                                        <p class="text-sm font-medium ${isAnswered ? 'text-stone-600 dark:text-stone-300' : 'text-stone-400 font-semibold'}" title="${escHtml(w.translation)}">${isAnswered ? escHtml(w.translation) : 'Falta completar'}</p>
                                     </div>
                                 </div>
                             `;

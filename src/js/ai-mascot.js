@@ -56,10 +56,10 @@ function createMascotUI() {
                  
                  <!-- Mobile Backgrounds -->
                  <div class="absolute inset-0 bg-gradient-to-tr from-red-500 via-orange-500 to-pink-500 opacity-20 dark:opacity-40 rounded-2xl md:hidden"></div>
-                 <div class="absolute inset-[2px] bg-white dark:bg-slate-800 rounded-xl md:hidden"></div>
+                 <div class="absolute inset-[2px] bg-white dark:bg-stone-800 rounded-xl md:hidden"></div>
 
                  <!-- Desktop Speech Bubble -->
-                 <div class="absolute -top-12 right-0 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-sm py-1 px-3 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-slate-200 dark:border-slate-700 hidden md:block">
+                 <div class="absolute -top-12 right-0 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm py-1 px-3 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-stone-200 dark:border-stone-700 hidden md:block">
                     ¡Merhaba! Soy Panda
                 </div>
 
@@ -270,9 +270,9 @@ function showWelcomeModal() {
 
     const modal = document.createElement('div');
     modal.id = modalId;
-    modal.className = 'fixed inset-0 z-[10000] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300 px-4';
+    modal.className = 'fixed inset-0 z-[10000] flex items-center justify-center bg-stone-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300 px-4';
     modal.innerHTML = `
-        <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 w-full max-w-md transform scale-95 transition-transform duration-300 border border-slate-200 dark:border-slate-700 text-center relative overflow-hidden">
+        <div class="bg-white dark:bg-stone-800 rounded-3xl shadow-2xl p-8 w-full max-w-md transform scale-95 transition-transform duration-300 border border-stone-200 dark:border-stone-700 text-center relative overflow-hidden">
             <!-- Decorative Back -->
             <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-red-500 to-orange-600 opacity-10"></div>
             
@@ -281,8 +281,8 @@ function showWelcomeModal() {
                  <img src="/assets/mascotaODLw.svg" class="w-full h-full object-contain filter drop-shadow-xl animate-bounce-slow" alt="Panda" fetchpriority="high">
             </div>
 
-            <h3 class="text-2xl font-bold text-slate-800 dark:text-white mb-3">¡Bienvenido a ChinoAmerica! 🌎</h3>
-            <p class="text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
+            <h3 class="text-2xl font-bold text-stone-800 dark:text-white mb-3">¡Bienvenido a ChinoAmerica! 🌎</h3>
+            <p class="text-stone-600 dark:text-stone-300 mb-8 leading-relaxed">
                 Soy <strong>Panda</strong>, tu asistente de inteligencia artificial. <br>
                 ¿Quieres que te haga una guía rápida por el sitio web?
             </p>
@@ -291,7 +291,7 @@ function showWelcomeModal() {
                 <button id="welcome-yes" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white shadow-lg shadow-red-500/30 transition-all transform hover:-translate-y-0.5 font-bold text-lg">
                     ¡Sí, por favor! 🚀
                 </button>
-                <button id="welcome-no" class="w-full py-3 rounded-xl text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors font-medium">
+                <button id="welcome-no" class="w-full py-3 rounded-xl text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200 hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors font-medium">
                     No, gracias, exploraré solo
                 </button>
             </div>
@@ -416,6 +416,7 @@ async function handleSend(e) {
 
         const contextData = await gatherContext();
 
+        const lang = localStorage.getItem('language') || 'es';
         const API_URL = `${globalThis.API_BASE_URL}/chat`;
         const response = await fetch(API_URL, {
             method: 'POST',
@@ -423,7 +424,8 @@ async function handleSend(e) {
             body: JSON.stringify({
                 message: message,
                 context: contextData,
-                history: history
+                history: history,
+                lang: lang
             })
         });
 
@@ -486,7 +488,7 @@ function addMessage(role, text, animate = true) {
     // Assistant: Prose (Markdown), dark mode support
     const bubbleClass = role === 'user'
         ? 'bg-red-600 text-white rounded-br-none'
-        : 'bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-bl-none border border-slate-100 dark:border-slate-600 w-full'; // Added w-full for assistant to allow prose to expand
+        : 'bg-white dark:bg-stone-700 text-stone-800 dark:text-stone-200 rounded-bl-none border border-stone-100 dark:border-stone-600 w-full'; // Added w-full for assistant to allow prose to expand
 
     const textClass = role === 'user'
         ? 'leading-relaxed'
@@ -537,11 +539,11 @@ function addLoadingIndicator() {
     div.id = id;
     div.className = 'flex justify-start';
     div.innerHTML = `
-        <div class="bg-white dark:bg-slate-700 rounded-2xl rounded-bl-none px-4 py-3 border border-slate-100 dark:border-slate-600">
+        <div class="bg-white dark:bg-stone-700 rounded-2xl rounded-bl-none px-4 py-3 border border-stone-100 dark:border-stone-600">
             <div class="flex gap-1.5">
-                <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
-                <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-                <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                <div class="w-2 h-2 bg-stone-400 rounded-full animate-bounce"></div>
+                <div class="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                <div class="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
             </div>
         </div>
     `;
