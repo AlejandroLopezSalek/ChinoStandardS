@@ -1,0 +1,57 @@
+---
+layout: niveles.njk
+---
+{% import "components.njk" as components %}
+
+<section class="mt-10 px-4 max-w-7xl mx-auto">
+  <div class="grammar-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {{ components.grammarCard("İsim Cümleleri (Avanzado)", "Avanzado", "Oraciones Nominales combinadas con tiempos
+    compuestos (idi, imiş, ise) y modales.", "isim-cumleleri-c1") }}
+
+    {{ components.grammarCard("Zarf-Fiiller (-DIkçA / -sIn diye)", "Avanzado", "Adverbios verbales: 'cuanto más...'
+    (-DIkçA) y 'para que...' (-sIn diye).", "zarf-fiil-dikca-diye") }}
+
+    {{ components.grammarCard("Yeterlilik Fiili (Avanzado)", "Avanzado", "Verbo de Capacidad (Poder): -(y)Abilmek y su
+    negativo irregular -(y)AmAmAk.", "yeterlilik-fiili-c1") }}
+
+    {{ components.grammarCard("Sıfat-Fiiller (Participios)", "Avanzado", "Cláusulas relativas con -An (sujeto), -DIğI
+    (objeto) y -(y)AcAk (objeto futuro).", "sifat-fiiller-c1") }}
+
+    {{ components.grammarCard("Bağlaçlar (Causa)", "Avanzado", "Conjunciones: çünkü, zira (porque), bu yüzden,
+    dolayısıyla (por eso), nitekim (de hecho).", "baglaclar-c1-zaman") }}
+
+    {{ components.grammarCard("Bağlaçlar (Contraste)", "Avanzado", "Conjunciones: ama, fakat (pero), oysa, halbuki
+    (mientras que), ne var ki (lo que pasa es que).", "baglaclar-c1-karsilastirma") }}
+
+    {{ components.grammarCard("Bağlaçlar (Conjunciones Dobles)", "Avanzado", "hem... hem (tanto... como), ne... ne
+    (ni... ni), ya... ya (o... o), ister... ister (ya sea...).", "baglaclar-c1-ciftli") }}
+  </div>
+</section>
+
+<section class="mt-16 mb-12">
+  <div class="flex items-center gap-3 mb-8">
+    <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100">Perfeccionamiento (C1+)</h2>
+    <div class="h-px flex-grow bg-stone-200 dark:bg-stone-700"></div>
+  </div>
+
+  <div class="flex justify-center max-w-4xl mx-auto">
+    {{ components.affiliateCard(
+    title="italki",
+    description="Mantén tu nivel alto. Conversa sobre política, cultura y literatura con expertos.",
+    link="https://www.italki.com/affshare?ref=af30849267",
+    btnText="Debates Avanzados",
+    badge="Mantenimiento",
+    icon="comments"
+    ) }}
+  </div>
+</section>
+
+
+<div class="sr-only">
+  {% for key, lesson in c1_lessons %}
+  <article id="seo-lesson-{{ key }}">
+    <h2>{{ lesson.title }}</h2>
+    <div>{{ lesson.content | safe }}</div>
+  </article>
+  {% endfor %}
+</div>

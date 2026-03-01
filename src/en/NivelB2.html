@@ -1,0 +1,92 @@
+---
+layout: niveles.njk
+---
+{% import "components.njk" as components %}
+
+<section class="mt-10 px-4 max-w-7xl mx-auto">
+  <h2 class="text-3xl font-bold text-stone-800 dark:text-white mb-8 flex items-center gap-3">
+    <i class="fas fa-book text-red-600 dark:text-red-400"></i>
+    Gramática Nivel B2
+  </h2>
+  <div class="grammar-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {{ components.grammarCard("Bildirme Ekleri (-DIr) (Presente)", "Avanzado", "Expresar hechos, verdades generales y
+    suposiciones (probablemente).", "bildirme-eki-present") }}
+
+    {{ components.grammarCard("Zarf-Fiiller (-IncAyA kadar, -dIkçA)", "Avanzado", "Expresar 'hasta que...' y 'a medida
+    que...'.", "zarf-fiil-kadar-dikce") }}
+
+    {{ components.grammarCard("Sıfat-Fiiller (Ortaçlar) - Parte 1", "Avanzado", "Participios adjetivales (que hace):
+    -An, -AsI, -mAz, -Ar.", "sifat-fiiller-1") }}
+
+    {{ components.grammarCard("Sıfat-Fiiller (Ortaçlar) - Parte 2", "Avanzado", "Participios adjetivales (que
+    hizo/hará): -DIk, -AcAk, -mIş.", "sifat-fiiller-2") }}
+
+    {{ components.grammarCard("Edilgen Çatı (Voz Pasiva)", "Avanzado", "Expresar acciones donde el sujeto recibe la
+    acción ('ser hecho').", "edilgen-cati") }}
+
+    {{ components.grammarCard("Ettirgen Çatı (Causativa) - Parte 1", "Avanzado", "Hacer que alguien haga algo (Sufijos:
+    -dIr, -t).", "ettirgen-cati-1") }}
+
+    {{ components.grammarCard("Ettirgen Çatı (Causativa) - Parte 2", "Avanzado", "Hacer que alguien haga algo (Sufijos:
+    -Ir, -Ar, -Er, -It).", "ettirgen-cati-2") }}
+
+    {{ components.grammarCard("Oldurgan Çatı (Factitiva)", "Avanzado", "Convertir verbos intransitivos en transitivos
+    (ej. dormir -> hacer dormir).", "oldurgan-cati") }}
+
+    {{ components.grammarCard("Zarf-Fiiller (-mAdAn önce, -dIktAn sonra)", "Avanzado", "Secuenciación de tiempo: 'antes
+    de...' y 'después de...'.", "zarf-fiil-sonra-once") }}
+
+    {{ components.grammarCard("Zarf-Fiiller (Modo/Secuencia - Repaso)", "Intermedio", "Repaso de B1: -(y)Ip (y),
+    -(y)A...-(y)A (repetición), -(y)ArAk (modo).", "zarf-fiil-ip-arak") }}
+
+    {{ components.grammarCard("Bağlaçlar (Conjunciones: ki, diye, vb.)", "Avanzado", "Uso de conjunciones clave: ki
+    (que), diye (diciendo/para), bu yüzden (por eso).", "baglaclar-ki-diye") }}
+
+    {{ components.grammarCard("Dolaylı Anlatım (Estilo Indirecto) - Afirmativas", "Avanzado", "Reportar lo que alguien
+    dijo ('Dijo que...'): -DIğI, -AcAğI.", "dolayli-anlatim-duz") }}
+
+    {{ components.grammarCard("Dolaylı Anlatım (Estilo Indirecto) - Preguntas", "Avanzado", "Reportar preguntas
+    ('Preguntó si...'): -DIğInI, -AcAğInI.", "dolayli-anlatim-soru") }}
+
+    {{ components.grammarCard("Dolaylı Anlatım (Estilo Indirecto) - Imperativo", "Avanzado", "Reportar órdenes ('Dijo
+    que hiciera...'): -mAsInI.", "dolayli-anlatim-emir") }}
+
+    {{ components.grammarCard("Zarf-Fiiller (Repaso: -Ir -mAz, -(y)AlI)", "Intermedio", "Repaso de B1: 'tan pronto
+    como...' y 'desde que...'.", "zarf-fiil-irmaz-ali") }}
+
+    {{ components.grammarCard("İsim Cümleleri (Cláusulas: -mAsI, -DIğI)", "Avanzado", "Cláusulas sustantivas: 'El hecho
+    de que...' y 'Que (alguien) haga...'.", "isim-cumleleri-masi-digi") }}
+
+    {{ components.grammarCard("Bağlaçlar (Repaso: hem... hem, ne... ne)", "Intermedio", "Repaso de conjunciones dobles:
+    'tanto... como...', 'ni... ni...', 'o... o...'.", "baglaclar-hem-ne-ya") }}
+  </div>
+</section>
+
+<section class="mt-16 mb-12">
+  <div class="flex items-center gap-3 mb-8">
+    <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100">Domina la Fluidez (B2)</h2>
+    <div class="h-px flex-grow bg-stone-200 dark:bg-stone-700"></div>
+  </div>
+
+  <div class="flex justify-center max-w-4xl mx-auto">
+    {{ components.affiliateCard(
+    title="italki",
+    description="En este nivel, necesitas práctica real. Encuentra hablantes nativos para perfeccionar tu acento y
+    dialecto.",
+    link="https://www.italki.com/affshare?ref=af30849267",
+    btnText="Conectar con Nativos",
+    badge="Esencial para B2",
+    icon="comments"
+    ) }}
+  </div>
+</section>
+
+
+<div class="sr-only">
+  {% for key, lesson in b2_lessons %}
+  <article id="seo-lesson-{{ key }}">
+    <h2>{{ lesson.title }}</h2>
+    <div>{{ lesson.content | safe }}</div>
+  </article>
+  {% endfor %}
+</div>

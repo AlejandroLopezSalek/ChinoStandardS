@@ -82,7 +82,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const lang = languageSelect.value;
             localStorage.setItem('language', lang);
             console.log(`🌐 Language set to: ${lang}`);
-            location.reload();
+
+            // Redirect based on language selection
+            const currentPath = window.location.pathname;
+            if (lang === 'en') {
+                if (!currentPath.startsWith('/en/')) {
+                    // Append matching directory path
+                    window.location.href = '/en' + (currentPath === '/' ? '/' : currentPath);
+                } else {
+                    location.reload();
+                }
+            } else { // lang === 'es'
+                if (currentPath.startsWith('/en/')) {
+                    // Remove '/en'
+                    const newPath = currentPath.substring(3);
+                    window.location.href = newPath === '' ? '/' : newPath;
+                } else {
+                    location.reload();
+                }
+            }
         });
     }
 
