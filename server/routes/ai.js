@@ -202,10 +202,11 @@ You must output ONLY strictly valid JSON. Do not include any markdown formatting
 The user's interface language is: ${languageName}.
 
 CRITICAL INSTRUCTIONS:
-1. Choose a legitimate Chinese vocabulary word (ranging from beginner HSK 1 to advanced HSK 6). Do NOT hallucinate fake characters. Do NOT choose extremely obscure, archaic, or non-dictionary characters.
+1. Choose a legitimate Simplified Chinese vocabulary word (ranging from beginner HSK 1 to advanced HSK 6). You MUST output ONLY Simplified Chinese characters. You MUST NOT output any Japanese characters (Kanji, Hiragana, Katakana) or Traditional Chinese. Do NOT hallucinate fake characters.
 2. Pinyin fields MUST use the Latin alphabet with tone marks (e.g. mǔ qīn). NO Chinese characters allowed in pinyin fields.
 3. Translation fields MUST be written entirely in ${languageName}. NO Chinese characters allowed, EXCEPT for rule 4 below.
-4. For 'sentence_translation': You MUST NOT translate the target word itself. You MUST keep the target word as its original Chinese character. Translate the rest of the sentence around it into ${languageName}.
+4. For 'sentence_character': You MUST write a grammatically correct sentence using ONLY Simplified Chinese characters. ABSOLUTELY NO Japanese characters allowed.
+5. For 'sentence_translation': You MUST NOT translate the target word itself. You MUST keep the target word as its original Chinese character. Translate the rest of the sentence around it into ${languageName}.
 
 EXAMPLE OUTPUT FORMAT (for a ${languageName} user learning the word 母亲):
 {
@@ -226,7 +227,7 @@ Create a JSON object for the daily word following the exact structure from the e
             messages: [
                 {
                     role: 'system',
-                    content: `You are a Chinese language teacher. Respond ONLY with valid JSON, no markdown, no extra text.`
+                    content: `You are a strict native Simplified Chinese language teacher. You ONLY speak and output Simplified Chinese, English, and Spanish. You NEVER output Japanese characters (no Hiragana, no Katakana, no Japanese Kanji). Respond ONLY with valid JSON, no markdown, no extra text.`
                 },
                 {
                     role: 'user',
