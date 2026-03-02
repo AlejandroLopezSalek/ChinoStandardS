@@ -20,7 +20,7 @@
     const getEl = (id) => document.getElementById(id);
 
     // Local storage key helper
-    const getStorageKey = () => 'wod_answered_' + (localStorage.getItem('language') || 'es') + '_' + new Date().toISOString().slice(0, 10);
+    const getStorageKey = () => 'wod_answered_global_' + new Date().toISOString().slice(0, 10);
 
     // ---- Fetch word of the day ----
     async function loadWordOfDay() {
@@ -59,15 +59,23 @@
         const inner = getEl('wodInner');
         if (!inner) return;
 
-        answered = false;
+        const lang = localStorage.getItem('language') || 'es';
+        const isEn = lang === 'en';
 
-        const lvl = LEVEL_COLORS[data.level] || LEVEL_COLORS['A1'];
+        const currentTranslation = isEn ? data.translationEn : data.translationEs;
+        const currentExampleTranslation = isEn ? data.exampleTranslationEn : data.exampleTranslationEs;
+        const currentTip = isEn ? data.tipEn : data.tipEs;
+        const answerLabel = isEn ? "How do you translate it?" : "¿Cómo se traduce?";
+        const answerPlaceholder = isEn ? "English translation..." : "Traducción al español...";
+        const verifyText = isEn ? "Verify" : "Verificar";
+        const glossaryText = isEn ? "View past words glossary" : "Ver glosario de palabras anteriores";
+        const translationLabel = isEn ? "Translation" : "Traducción";
 
         inner.innerHTML = `
             <!-- Header row -->
             <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
                 <div class="flex items-center gap-2 text-white/70 text-xs sm:text-sm font-semibold uppercase tracking-wider">
-                    <i class="fas fa-star text-yellow-300"></i> Palabra del Día
+                    <i class="fas fa-star text-yellow-300"></i> ${isEn ? "Word of the Day" : "Palabra del Día"}
                 </div>
                 <span class="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold text-white ${lvl.bg} shadow whitespace-nowrap">${lvl.text}</span>
             </div>
@@ -82,23 +90,23 @@
             <div class="bg-white/10 rounded-xl p-4 my-4 text-center">
                 <p class="text-white/90 italic text-sm">"${escHtml(data.example)}"</p>
                 <p class="text-white/70 text-xs mt-2">${escHtml(data.examplePronunciation)}</p>
-                <p id="wodExampleTranslation" class="text-white/50 text-xs mt-1 transition-all duration-300 hidden">${escHtml(data.exampleTranslation)}</p>
+                <p id="wodExampleTranslation" class="text-white/50 text-xs mt-1 transition-all hidden">${escHtml(currentExampleTranslation)}</p>
             </div>
 
             <!-- Answer input zone -->
             <div id="wodAnswerZone" class="mb-4">
                 <label class="block text-white/70 text-xs font-semibold uppercase tracking-wider mb-2">
-                    <i class="fas fa-pencil mr-1"></i>¿Cómo se traduce?
+                    <i class="fas fa-pencil mr-1"></i>${answerLabel}
                 </label>
                 <div class="flex gap-2">
                     <input id="wodAnswerInput"
                         type="text"
-                        placeholder="Traducción al español..."
+                        placeholder="${answerPlaceholder}"
                         class="flex-1 min-w-0 px-3 py-2.5 rounded-lg bg-white/15 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-white/40 focus:bg-white/20 transition-all"
                     />
                     <button id="wodCheckBtn"
                         class="shrink-0 px-3 sm:px-4 py-2.5 bg-white text-red-700 font-bold rounded-lg text-sm hover:bg-white/90 transition-all shadow hover:shadow-lg active:scale-95">
-                        <span class="hidden sm:inline">Verificar</span>
+                        <span class="hidden sm:inline">${verifyText}</span>
                         <i class="fas fa-check sm:hidden"></i>
                     </button>
                 </div>
@@ -108,9 +116,9 @@
 
             <!-- View Glossary link -->
             <div class="flex gap-3 mt-2">
-                <a href="/Glosario/" id="wodRevealGlossary"
+                <a href="${isEn ? '/en/Glosario/' : '/Glosario/'}" id="wodRevealGlossary"
                     class="flex-1 py-2.5 px-4 rounded-lg border border-white/30 text-white/80 text-sm font-semibold hover:bg-white/10 transition-all flex items-center justify-center gap-2">
-                    <i class="fas fa-book"></i> Ver glosario de palabras anteriores
+                    <i class="fas fa-book"></i> ${glossaryText}
                 </a>
                 <button id="wodTipBtn"
                     class="py-2.5 px-4 rounded-lg border border-white/30 text-white/80 text-sm font-semibold hover:bg-white/10 transition-all flex items-center justify-center gap-2">
@@ -121,14 +129,14 @@
             <!-- Translation (hidden until revealed) -->
             <div id="wodTranslation"
                 class="hidden mt-4 text-center p-4 bg-white/15 rounded-xl border border-white/20 transition-all">
-                <div class="text-white/60 text-xs uppercase tracking-wider mb-1">Traducción</div>
-                <div class="text-2xl font-bold text-white">${escHtml(data.translation)}</div>
+                <div class="text-white/60 text-xs uppercase tracking-wider mb-1">${translationLabel}</div>
+                <div class="text-2xl font-bold text-white">${escHtml(currentTranslation)}</div>
             </div>
 
             <!-- Tip (hidden until tapped) -->
             <div id="wodTip"
                 class="hidden mt-3 p-3 bg-yellow-400/15 border border-yellow-300/30 rounded-xl text-yellow-100 text-sm">
-                <i class="fas fa-lightbulb text-yellow-300 mr-2"></i>${escHtml(data.tip)}
+                <i class="fas fa-lightbulb text-yellow-300 mr-2"></i>${escHtml(currentTip)}
             </div>
         `;
 
@@ -143,11 +151,12 @@
 
         if (!isUserLoggedIn) {
             const az = getEl('wodAnswerZone');
+            const isEn = localStorage.getItem('language') === 'en';
             if (az) {
                 az.innerHTML = `
                     <div class="bg-red-900/40 border border-red-400/30 rounded-xl p-4 text-center mt-4">
-                        <p class="text-white text-sm mb-3 font-medium">Regístrate para participar en el desafío diario y ver tu progreso.</p>
-                        <a href="/Registro/" class="inline-block bg-white text-red-700 px-6 py-2 rounded-lg font-bold text-sm hover:bg-red-50 transition-all shadow-lg active:scale-95">Registrarme gratis</a>
+                        <p class="text-white text-sm mb-3 font-medium">${isEn ? "Register to participate in the daily challenge and see your progress." : "Regístrate para participar en el desafío diario y ver tu progreso."}</p>
+                        <a href="${isEn ? '/en/register/' : '/Registro/'}" class="inline-block bg-white text-red-700 px-6 py-2 rounded-lg font-bold text-sm hover:bg-red-50 transition-all shadow-lg active:scale-95">${isEn ? "Register for free" : "Registrarme gratis"}</a>
                     </div>
                 `;
             }
@@ -162,9 +171,10 @@
             getEl('wodExampleTranslation')?.classList.remove('hidden');
 
             const feedback = getEl('wodFeedback');
+            const isEn = localStorage.getItem('language') === 'en';
             if (feedback) {
                 feedback.className = 'mt-3 rounded-lg px-4 py-3 text-sm font-medium bg-red-400/20 border border-red-400/40 text-red-100';
-                feedback.innerHTML = '<i class="fas fa-check-circle mr-2 text-red-300"></i>¡Ya has completado el desafío de hoy!';
+                feedback.innerHTML = `<i class="fas fa-check-circle mr-2 text-red-300"></i>${isEn ? 'You already completed today\\'s challenge!' : '¡Ya has completado el desafío de hoy!'}`;
                 feedback.classList.remove('hidden');
             }
         }
@@ -183,7 +193,8 @@
                 if (answered) return;
                 const userAnswer = input.value.trim();
                 if (!userAnswer) return;
-                checkAnswer(userAnswer, wodData.translation);
+                const isEn = localStorage.getItem('language') === 'en';
+                checkAnswer(userAnswer, isEn ? wodData.translationEn : wodData.translationEs);
             };
             checkBtn.addEventListener('click', doCheck);
             input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doCheck(); });
@@ -238,8 +249,9 @@
             const answerZone = getEl('wodAnswerZone');
             if (answerZone) answerZone.classList.add('hidden');
 
+            const isEn = localStorage.getItem('language') === 'en';
             feedback.className = 'mt-3 rounded-lg px-4 py-3 text-sm font-medium transition-all bg-green-400/20 border border-green-400/40 text-green-100';
-            feedback.innerHTML = '<i class="fas fa-circle-check mr-2 text-green-300"></i>¡Correcto! 🎉 Bien hecho.';
+            feedback.innerHTML = `<i class="fas fa-circle-check mr-2 text-green-300"></i>${isEn ? 'Correct! 🎉 Well done.' : '¡Correcto! 🎉 Bien hecho.'}`;
             if (input) {
                 input.classList.add('border-green-400/60', 'bg-green-400/10');
                 input.classList.remove('border-white/20', 'border-red-400/60', 'bg-red-400/10');
@@ -252,9 +264,9 @@
 
             answered = true;
             localStorage.setItem(getStorageKey(), wodData.word);
-        } else {
+            const isEn = localStorage.getItem('language') === 'en';
             feedback.className = 'mt-3 rounded-lg px-4 py-3 text-sm font-medium transition-all bg-red-400/20 border border-red-400/40 text-red-100';
-            feedback.innerHTML = `<i class="fas fa-circle-xmark mr-2 text-red-300"></i>Incorrecto, ¡intenta de nuevo!`;
+            feedback.innerHTML = `<i class="fas fa-circle-xmark mr-2 text-red-300"></i>${isEn ? 'Incorrect, try again!' : 'Incorrecto, ¡intenta de nuevo!'}`;
             if (input) {
                 input.classList.add('border-red-400/60', 'bg-red-400/10');
                 input.classList.remove('border-white/20', 'border-green-400/60', 'bg-green-400/10');
