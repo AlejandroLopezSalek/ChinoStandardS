@@ -17,51 +17,59 @@ let allLessons = []; // cached lessons
 const booksData = {
     'A1': [
         {
-            title: 'İstanbul A1 Ders Kitabı',
-            url: '/assets/docs/A1.pdf',
-            size: '~8 MB',
-            pages: '104',
-            description: 'Libro oficial de texto para nivel A1',
+            title: 'HSK 1',
+            url: '',
+            size: '',
+            pages: '',
+            description: 'Libro oficial de texto para nivel HSK 1',
             level: 'A1'
         }
     ],
     'A2': [
         {
-            title: 'A2 Türkçe Kitabı',
-            url: '/assets/docs/A2.pdf',
-            size: '~10 MB',
-            pages: '120',
-            description: 'Libro de texto para nivel A2',
+            title: 'HSK 2',
+            url: '',
+            size: '',
+            pages: '',
+            description: 'Libro de texto para nivel HSK 2',
             level: 'A2'
         }
     ],
     'B1': [
         {
-            title: 'B1 Ders Kitabı',
-            url: '/assets/docs/B1.pdf',
-            size: '~12 MB',
-            pages: '150',
-            description: 'Libro de texto para nivel B1',
+            title: 'HSK 3',
+            url: '',
+            size: '',
+            pages: '',
+            description: 'Libro de texto para nivel HSK 3',
             level: 'B1'
         }
     ],
     'B2': [
         {
-            title: 'B2 Ders Kitabı',
-            url: '/assets/docs/B2.pdf',
-            size: '~14 MB',
-            pages: '160',
-            description: 'Libro de texto para nivel B2',
+            title: 'HSK 4',
+            url: '',
+            size: '',
+            pages: '',
+            description: 'Libro de texto para nivel HSK 4',
             level: 'B2'
         }
     ],
     'C1': [
         {
-            title: 'C1 Ders Kitabı',
-            url: '/assets/docs/C1.pdf',
-            size: '~15 MB',
-            pages: '180',
-            description: 'Libro de texto para nivel C1',
+            title: 'HSK 5',
+            url: '',
+            size: '',
+            pages: '',
+            description: 'Libro de texto para nivel HSK 5',
+            level: 'C1'
+        },
+        {
+            title: 'HSK 6',
+            url: '',
+            size: '',
+            pages: '',
+            description: 'Libro de texto para nivel HSK 6',
             level: 'C1'
         }
     ]
