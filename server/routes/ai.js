@@ -145,8 +145,8 @@ router.get('/word-of-day', async (req, res) => {
         const lang = req.query.lang === 'en' ? 'en' : 'es';
         const languageName = lang === 'en' ? 'English' : 'Spanish';
         const todayStr = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
-        // Cache per language
-        const cacheKey = todayStr + '_' + lang;
+        // Cache per language (v2 string appended to bust corrupted production caches)
+        const cacheKey = todayStr + '_v2_' + lang;
 
         // 1. Check in-memory first (fastest)
         if (wodCache[cacheKey]) {
@@ -162,7 +162,7 @@ router.get('/word-of-day', async (req, res) => {
 
         // 2.5 Check if the OTHER language generated a word today
         const otherLang = lang === 'en' ? 'es' : 'en';
-        const otherCacheKey = todayStr + '_' + otherLang;
+        const otherCacheKey = todayStr + '_v2_' + otherLang;
         const existingOther = await DailyWord.findOne({ date: otherCacheKey });
 
         let targetWordPrompt = "";
@@ -202,9 +202,10 @@ You must output ONLY strictly valid JSON. Do not include any markdown formatting
 The user's interface language is: ${languageName}.
 
 CRITICAL INSTRUCTIONS:
-1. Pinyin fields MUST use the Latin alphabet with tone marks (e.g. mǔ qīn). NO Chinese characters allowed in pinyin fields.
-2. Translation fields MUST be written entirely in ${languageName}. NO Chinese characters allowed, EXCEPT for rule 3 below.
-3. For 'sentence_translation': You MUST NOT translate the target word itself. You MUST keep the target word as its original Chinese character. Translate the rest of the sentence around it into ${languageName}.
+1. Choose a legitimate Chinese vocabulary word (ranging from beginner HSK 1 to advanced HSK 6). Do NOT hallucinate fake characters. Do NOT choose extremely obscure, archaic, or non-dictionary characters.
+2. Pinyin fields MUST use the Latin alphabet with tone marks (e.g. mǔ qīn). NO Chinese characters allowed in pinyin fields.
+3. Translation fields MUST be written entirely in ${languageName}. NO Chinese characters allowed, EXCEPT for rule 4 below.
+4. For 'sentence_translation': You MUST NOT translate the target word itself. You MUST keep the target word as its original Chinese character. Translate the rest of the sentence around it into ${languageName}.
 
 EXAMPLE OUTPUT FORMAT (for a ${languageName} user learning the word 母亲):
 {
