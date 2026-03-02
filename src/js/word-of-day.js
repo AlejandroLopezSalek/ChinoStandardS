@@ -13,55 +13,31 @@
         C1: { bg: 'bg-red-500', text: 'C1 – Avanzado' }
     };
 
-    // ---- State ----
-    let wodData = null;
-    let answered = false;
+    const normalizeAnswer = (s) => s.toLowerCase()
+        .normalize('NFD').replaceAll(/[\u0300-\u036f]/gu, '')
+        .replaceAll(/[^a-z0-9\s]/gu, '').trim();
 
-    const getEl = (id) => document.getElementById(id);
-
-    // Local storage key helper
-    const getStorageKey = () => 'wod_answered_global_' + new Date().toISOString().slice(0, 10);
-
-    // ---- Fetch word of the day ----
-    async function loadWordOfDay() {
-        const card = getEl('wodCard');
-        if (!card) return;
-
-        showSkeleton();
-
-        try {
-            const lang = localStorage.getItem('language') || 'es';
-            const res = await fetch(`/api/chat/word-of-day?lang=${lang}`);
-            if (!res.ok) throw new Error('Network error');
-            wodData = await res.json();
-            renderWidget(wodData);
-        } catch (err) {
-            console.warn('[WoD] Failed to load word of day:', err.message);
-            renderError();
+    function displayFeedback(feedback, input, isCorrect, isEn) {
+        if (isCorrect) {
+            feedback.className = 'mt-3 rounded-lg px-4 py-3 text-sm font-medium transition-all bg-green-400/20 border border-green-400/40 text-green-100';
+            feedback.innerHTML = `<i class="fas fa-circle-check mr-2 text-green-300"></i>${isEn ? 'Correct! 🎉 Well done.' : '¡Correcto! 🎉 Bien hecho.'}`;
+            if (input) {
+                input.classList.add('border-green-400/60', 'bg-green-400/10');
+                input.classList.remove('border-white/20', 'border-red-400/60', 'bg-red-400/10');
+            }
+        } else {
+            feedback.className = 'mt-3 rounded-lg px-4 py-3 text-sm font-medium transition-all bg-red-400/20 border border-red-400/40 text-red-100';
+            feedback.innerHTML = `<i class="fas fa-circle-xmark mr-2 text-red-300"></i>${isEn ? "Incorrect, try again!" : "Incorrecto, ¡intenta de nuevo!"}`;
+            if (input) {
+                input.classList.add('border-red-400/60', 'bg-red-400/10');
+                input.classList.remove('border-white/20', 'border-green-400/60', 'bg-green-400/10');
+                input.value = '';
+                input.focus();
+            }
         }
     }
 
-    // ---- Skeleton loader ----
-    function showSkeleton() {
-        const inner = getEl('wodInner');
-        if (!inner) return;
-        inner.innerHTML = `
-            <div class="animate-pulse space-y-4 p-6">
-                <div class="h-4 bg-white/20 rounded w-1/4"></div>
-                <div class="h-8 bg-white/30 rounded w-1/2 mx-auto"></div>
-                <div class="h-4 bg-white/20 rounded w-3/4 mx-auto"></div>
-                <div class="h-10 bg-white/20 rounded w-full mt-4"></div>
-            </div>`;
-    }
-
-    // ---- Render widget ----
-    function renderWidget(data) {
-        const inner = getEl('wodInner');
-        if (!inner) return;
-
-        const lang = localStorage.getItem('language') || 'es';
-        const isEn = lang === 'en';
-
+    function getWidgetHTML(data, isEn, lvl) {
         const currentTranslation = isEn ? data.translationEn : data.translationEs;
         const currentExampleTranslation = isEn ? data.exampleTranslationEn : data.exampleTranslationEs;
         const currentTip = isEn ? data.tipEn : data.tipEs;
@@ -71,7 +47,7 @@
         const glossaryText = isEn ? "View past words glossary" : "Ver glosario de palabras anteriores";
         const translationLabel = isEn ? "Translation" : "Traducción";
 
-        inner.innerHTML = `
+        return `
             <!-- Header row -->
             <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
                 <div class="flex items-center gap-2 text-white/70 text-xs sm:text-sm font-semibold uppercase tracking-wider">
@@ -139,6 +115,59 @@
                 <i class="fas fa-lightbulb text-yellow-300 mr-2"></i>${escHtml(currentTip)}
             </div>
         `;
+    }
+
+    // ---- State ----
+    let wodData = null;
+    let answered = false;
+
+    const getEl = (id) => document.getElementById(id);
+
+    // Local storage key helper
+    const getStorageKey = () => 'wod_answered_global_' + new Date().toISOString().slice(0, 10);
+
+    // ---- Fetch word of the day ----
+    async function loadWordOfDay() {
+        const card = getEl('wodCard');
+        if (!card) return;
+
+        showSkeleton();
+
+        try {
+            const lang = localStorage.getItem('language') || 'es';
+            const res = await fetch(`/api/chat/word-of-day?lang=${lang}`);
+            if (!res.ok) throw new Error('Network error');
+            wodData = await res.json();
+            renderWidget(wodData);
+        } catch (err) {
+            console.warn('[WoD] Failed to load word of day:', err.message);
+            renderError();
+        }
+    }
+
+    // ---- Skeleton loader ----
+    function showSkeleton() {
+        const inner = getEl('wodInner');
+        if (!inner) return;
+        inner.innerHTML = `
+            <div class="animate-pulse space-y-4 p-6">
+                <div class="h-4 bg-white/20 rounded w-1/4"></div>
+                <div class="h-8 bg-white/30 rounded w-1/2 mx-auto"></div>
+                <div class="h-4 bg-white/20 rounded w-3/4 mx-auto"></div>
+                <div class="h-10 bg-white/20 rounded w-full mt-4"></div>
+            </div>`;
+    }
+
+    // ---- Render widget ----
+    function renderWidget(data) {
+        const inner = getEl('wodInner');
+        if (!inner) return;
+
+        const lang = localStorage.getItem('language') || 'es';
+        const isEn = lang === 'en';
+        const lvl = LEVEL_COLORS[data.level] || LEVEL_COLORS['A1'];
+
+        inner.innerHTML = getWidgetHTML(data, isEn, lvl);
 
         // Check if user is logged in (using global auth state if available)
         const isUserLoggedIn = !!(
@@ -174,7 +203,7 @@
             const isEn = localStorage.getItem('language') === 'en';
             if (feedback) {
                 feedback.className = 'mt-3 rounded-lg px-4 py-3 text-sm font-medium bg-red-400/20 border border-red-400/40 text-red-100';
-                feedback.innerHTML = `<i class="fas fa-check-circle mr-2 text-red-300"></i>${isEn ? 'You already completed today\\'s challenge!' : '¡Ya has completado el desafío de hoy!'}`;
+                feedback.innerHTML = `<i class="fas fa-check-circle mr-2 text-red-300"></i>${isEn ? "You already completed today's challenge!" : "¡Ya has completado el desafío de hoy!"}`;
                 feedback.classList.remove('hidden');
             }
         }
@@ -228,13 +257,8 @@
         const input = getEl('wodAnswerInput');
         if (!feedback) return;
 
-        // Normalize both answers: lowercase, remove accents, trim punctuation
-        const normalize = (s) => s.toLowerCase()
-            .normalize('NFD').replaceAll(/[\u0300-\u036f]/gu, '')
-            .replaceAll(/[^a-z0-9\s]/gu, '').trim();
-
-        const normUser = normalize(userAnswer);
-        const normCorrect = normalize(correctAnswer);
+        const normUser = normalizeAnswer(userAnswer);
+        const normCorrect = normalizeAnswer(correctAnswer);
 
         // Check for exact match or near-match (contains the key word)
         const isCorrect = normUser === normCorrect ||
@@ -249,14 +273,6 @@
             const answerZone = getEl('wodAnswerZone');
             if (answerZone) answerZone.classList.add('hidden');
 
-            const isEn = localStorage.getItem('language') === 'en';
-            feedback.className = 'mt-3 rounded-lg px-4 py-3 text-sm font-medium transition-all bg-green-400/20 border border-green-400/40 text-green-100';
-            feedback.innerHTML = `<i class="fas fa-circle-check mr-2 text-green-300"></i>${isEn ? 'Correct! 🎉 Well done.' : '¡Correcto! 🎉 Bien hecho.'}`;
-            if (input) {
-                input.classList.add('border-green-400/60', 'bg-green-400/10');
-                input.classList.remove('border-white/20', 'border-red-400/60', 'bg-red-400/10');
-            }
-
             const div = getEl('wodTranslation');
             const exTr = getEl('wodExampleTranslation');
             if (div) div.classList.remove('hidden');
@@ -264,16 +280,10 @@
 
             answered = true;
             localStorage.setItem(getStorageKey(), wodData.word);
-            const isEn = localStorage.getItem('language') === 'en';
-            feedback.className = 'mt-3 rounded-lg px-4 py-3 text-sm font-medium transition-all bg-red-400/20 border border-red-400/40 text-red-100';
-            feedback.innerHTML = `<i class="fas fa-circle-xmark mr-2 text-red-300"></i>${isEn ? 'Incorrect, try again!' : 'Incorrecto, ¡intenta de nuevo!'}`;
-            if (input) {
-                input.classList.add('border-red-400/60', 'bg-red-400/10');
-                input.classList.remove('border-white/20', 'border-green-400/60', 'bg-green-400/10');
-                input.value = '';
-                input.focus();
-            }
         }
+
+        const isEn = localStorage.getItem('language') === 'en';
+        displayFeedback(feedback, input, isCorrect, isEn);
 
         feedback.classList.remove('hidden');
     }
@@ -293,8 +303,8 @@
                     username = userObj.username || 'guest';
                     country = userObj.country || 'unknown';
                 }
-            } catch (e) {
-                console.warn('Could not parse user info for analytics');
+            } catch (error) {
+                console.warn('Could not parse user info for analytics', error);
             }
 
             await fetch('/api/analytics', {
