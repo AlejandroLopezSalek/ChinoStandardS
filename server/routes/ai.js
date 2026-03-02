@@ -144,7 +144,8 @@ router.get('/word-of-day', async (req, res) => {
 
         const lang = req.query.lang === 'en' ? 'en' : 'es';
         const todayStr = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
-        const cacheKey = todayStr + '_' + lang;
+        // Unify the cache key so the same underlying Chinese word is used globally for the day.
+        const cacheKey = todayStr + '_global';
 
         // 1. Check in-memory first (fastest)
         if (wodCache[cacheKey]) {
@@ -162,29 +163,29 @@ router.get('/word-of-day', async (req, res) => {
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
         // Only avoid words generated in the same language to prevent cross-language blocking issues causing bad generation
-        const recentWordsDocs = await DailyWord.find({ date: { $regex: '_' + lang + '$' }, createdAt: { $gte: thirtyDaysAgo } }, { 'data.word': 1 }).sort({ createdAt: -1 });
+        const recentWordsDocs = await DailyWord.find({ date: { $regex: '_global$' }, createdAt: { $gte: thirtyDaysAgo } }, { 'data.word': 1 }).sort({ createdAt: -1 });
         const recentWords = recentWordsDocs.map(d => d.data?.word).filter(Boolean);
         const avoidPrompt = recentWords.length > 0 ? `\n\nNOTE: Try to avoid these words that were provided in the last 30 days: ${recentWords.join(', ')}. You can repeat them occasionally if they are very important, but prefer providing new words.` : '';
 
-        const speakerType = lang === 'en' ? 'English speakers' : 'Spanish speakers';
-        const translationText = lang === 'en' ? 'English translation' : 'Spanish translation';
-
-        const userPrompt = `Generate a Chinese "Word or Phrase of the Day" for ${speakerType} learning Chinese.
+        const userPrompt = `Generate a Chinese "Word or Phrase of the Day" for language learners.
 Return ONLY a JSON object with these exact fields (no markdown, no code block):
 {
   "word": "<Target word in pure Chinese characters ONLY>",
   "pronunciation": "<Pinyin for the target word WITH TONE MARKS>",
-  "translation": "<${translationText} of the target word>",
+  "translationEn": "<English translation of the target word>",
+  "translationEs": "<Spanish translation of the target word>",
   "example": "<Short example sentence using the word in pure Chinese characters ONLY. NO PINYIN HERE.>",
   "examplePronunciation": "<Pinyin for the entire example sentence WITH TONE MARKS. NO CHINESE CHARACTERS HERE.>",
-  "exampleTranslation": "<${translationText} of the example sentence. CRITICAL: Do NOT translate the target word itself, insert the Chinese characters of the target word directly into this translated sentence>",
+  "exampleTranslationEn": "<English translation of the example sentence. CRITICAL: Do NOT translate the target word itself, insert the Chinese characters of the target word directly into this translated sentence>",
+  "exampleTranslationEs": "<Spanish translation of the example sentence. CRITICAL: Do NOT translate the target word itself, insert the Chinese characters of the target word directly into this translated sentence>",
   "level": "<one of: A1, A2, B1, B2, C1>",
-  "tip": "<Short memory tip in ${lang === 'en' ? 'English' : 'Spanish'} to remember this>"
+  "tipEn": "<Short memory tip in English to remember this>",
+  "tipEs": "<Short memory tip in Spanish to remember this>"
 }
 Pick a useful, everyday term. It can be a single word or a common short phrase.
 IMPORTANT: DO NOT use extremely basic greetings like "ni hao" (unless for a specific level idiom).
 CRITICAL RULE 1: The 'example' field MUST contain ONLY Hanzi characters. Do not mix pinyin and characters.
-CRITICAL RULE 2: The 'exampleTranslation' field MUST leave the target word in Chinese characters within the ${lang === 'en' ? 'English' : 'Spanish'} sentence. For example, if the word is 苹果, write: "I ate a 苹果 today."
+CRITICAL RULE 2: The 'exampleTranslationEn' and 'exampleTranslationEs' fields MUST leave the target word in Chinese characters within the sentence. For example, if the word is 苹果, write: "I ate a 苹果 today." and "Comí una 苹果 hoy."
 Provide variety across different levels (A1 to C1).${avoidPrompt}`;
 
         const completion = await groq.chat.completions.create({
@@ -192,7 +193,7 @@ Provide variety across different levels (A1 to C1).${avoidPrompt}`;
             messages: [
                 {
                     role: 'system',
-                    content: `You are a Chinese language teacher for ${speakerType}. Respond ONLY with valid JSON, no markdown, no extra text.`
+                    content: `You are a Chinese language teacher. Respond ONLY with valid JSON, no markdown, no extra text.`
                 },
                 {
                     role: 'user',
@@ -208,7 +209,7 @@ Provide variety across different levels (A1 to C1).${avoidPrompt}`;
         const wordData = JSON.parse(jsonStr);
 
         // Validate required fields
-        const required = ['word', 'pronunciation', 'translation', 'example', 'exampleTranslation', 'level', 'tip'];
+        const required = ['word', 'pronunciation', 'translationEn', 'translationEs', 'example', 'exampleTranslationEn', 'exampleTranslationEs', 'level', 'tipEn', 'tipEs'];
         for (const field of required) {
             if (!wordData[field]) throw new Error(`Missing field: ${field}`);
         }
