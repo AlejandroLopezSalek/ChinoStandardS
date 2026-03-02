@@ -5,75 +5,56 @@ layout: niveles.njk
 
 <section class="mt-10 px-4 max-w-7xl mx-auto">
   <div class="grammar-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {{ components.grammarCard("Türk Alfabeti", "Básico", "Las 29 letras del alfabeto chino con sus sonidos
-    específicos.", "alfabeto") }}
+    {{ components.grammarCard("Chinese Alphabet (Pinyin)", "Basic", "The Pinyin romanization system and the 4
+    fundamental tones.", "pinyin") }}
+    {{ components.grammarCard("Personal Pronouns", "Basic", "I (我), You (你), He/She (他/她) and their plurals with 'men'
+    (们).", "pronombres") }}
+    {{ components.grammarCard("The Verb 'To Be' (是)", "Basic", "Use of 是 (shì) to identify people or things. It is NOT
+    conjugated.", "verbo-shi") }}
+    {{ components.grammarCard("Question Particle 'ma' (吗)", "Basic", "Turns a statement into a yes/no question at the
+    end of the sentence.", "particula-ma") }}
+    {{ components.grammarCard("Possession with 'de' (的)", "Basic", "Indicates possession or relationship: my book
+    (我的书).", "posesion-de") }}
+    {{ components.grammarCard("SVO Word Order", "Basic", "The basic order: Subject + Verb + Object, just like in
+    English.", "orden-svo") }}
+    {{ components.grammarCard("To Have / There Is (有)", "Basic", "The verb 有 (yǒu) means 'to have' or 'there is'. Its
+    negation is 没 (méi).", "verbo-you") }}
+    {{ components.grammarCard("Basic Measure Words (个)", "Basic", "Measure words between a number and a noun. 'One' (个)
+    person.", "clasificadores") }}
+    {{ components.grammarCard("Basic Questions", "Basic", "What (什么), Who (谁), Where (哪里), When (什么时候).",
+    "preguntas-basicas") }}
+    {{ components.grammarCard("To Be At / In (在)", "Basic", "Use of 在 (zài) to express location or where an action
+    happens.", "verbo-zai") }}
+    {{ components.grammarCard("Numbers &amp; Dates", "Basic", "Number system from 1 to 100, time, days, and months.",
+    "numeros-fechas") }}
+    {{ components.grammarCard("To Want (想 / 要)", "Basic", "Differences between Xiǎng (would like) and Yào (want/need).",
+    "querer-xiang-yao") }}
+  </div>
+</section>
 
-    {{ components.grammarCard("Caso Locativo da,de /ta,te", "Básico", "Equivalente de la preposición 'en'.",
-    "preposicion") }}
-
-    {{ components.grammarCard("Var y Yok - Existencia", "Básico", "Expresa la presencia o ausencia de algo con 'var'
-    (hay/existe) y 'yok' (no hay/no existe).", "var-yok") }}
-
-    {{ components.grammarCard("Orden de Oraciones (SOV)", "Básico", "Comprende el orden típico Chino: Sujeto + Objeto +
-    Verbo, a diferencia del Español SVO.", "orden") }}
-
-    {{ components.grammarCard("Preguntas Básicas", "Básico", "Interrogativos fundamentales: nerede, ne zaman, neden, ne
-    kadar, kaç, nerelisin, nere(ye).", "preguntas-basicas") }}
-
-    {{ components.grammarCard("Demostrativos: Bu • Şu • O", "Básico", "Indica proximidad: bu (cerca del hablante), şu
-    (cerca del oyente), o (lejos de ambos).", "demostrativos") }}
-
-    {{ components.grammarCard("Çoğul eki (-lAr)", "Básico", "Sufijo plural aplicando armonía vocálica: -lar / -ler.",
-    "plural") }}
-
-    {{ components.grammarCard("Soru eki (mi/mı/mu/mü)", "Básico", "Enclítico interrogativo ajustado a la vocal
-    precedente.", "sufijo-pregunta") }}
-
-    {{ components.grammarCard("Presente Simple (Şimdiki Zaman)", "Básico", "Raíz verbal + -yor + terminaciones
-    personales.", "tiempo-presente") }}
-
-    {{ components.grammarCard("Casos Locativos (-yA / -DAn)", "Básico", "-yA para dirección (a), -DAn para origen
-    (de).", "casos") }}
-
-    {{ components.grammarCard("-mAk istemek", "Básico", "Infinitivo + istemek para expresar deseo o intención.",
-    "deseo") }}
-
-    {{ components.grammarCard("Ilişki Ekleri", "Básico", "Sufijos de posesión (-ın/-in) y ubicación (-de/-da).",
-    "relacion") }}
-
-    {{ components.grammarCard("Países y Gentilicios", "Básico", "Nombres de países y lenguas: Türkiye, İspanya,
-    İngilizce, vs.", "paises") }}
-
-    {{ components.grammarCard("Kendi & Hep", "Básico", "Palabras de énfasis: kendi (propio), hep (siempre).", "enfasis")
-    }}
-
-    {{ components.grammarCard("Intervalos de Tiempo", "Básico", "-DAn hasta -(y)A kadar, antes/después y desde hace.",
-    "tiempo-intervalos") }}
+<section class="mt-16 mb-12">
+  <div class="flex items-center gap-3 mb-8">
+    <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100">Recommended Tools for A1</h2>
+    <div class="h-px flex-grow bg-stone-200 dark:bg-stone-700"></div>
   </div>
 
-  <section class="mt-16 mb-12">
-    <div class="flex items-center gap-3 mb-8">
-      <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100">Herramientas Recomendadas para A1</h2>
-      <div class="h-px flex-grow bg-stone-200 dark:bg-stone-700"></div>
-    </div>
-
-    <div class="flex justify-center max-w-4xl mx-auto">
-      {{ components.affiliateCard(
-      title="italki",
-      description="No esperes a ser 'fluido'. Encuentra un profesor paciente y empieza a hablar hoy mismo.",
-      link="https://www.italki.com/affshare?ref=af30849267",
-      btnText="Encontrar Profesor",
-      icon="comments"
-      ) }}
-    </div>
-  </section>
-
-
-  <div class="sr-only">
-    {% for key, lesson in a1_lessons %}
-    <article id="seo-lesson-{{ key }}">
-      <h2>{{ lesson.title }}</h2>
-      <div>{{ lesson.content | safe }}</div>
-    </article>
-    {% endfor %}
+  <div class="flex justify-center max-w-4xl mx-auto">
+    {{ components.affiliateCard(
+    title="italki",
+    description="Don't wait to be 'fluent'. Find a patient teacher and start speaking today.",
+    link="https://www.italki.com/affshare?ref=af30849267",
+    btnText="Find a Teacher",
+    icon="comments"
+    ) }}
   </div>
+</section>
+
+
+<div class="sr-only">
+  {% for key, lesson in a1_lessons %}
+  <article id="seo-lesson-{{key}}">
+    <h2>{{ lesson.title }}</h2>
+    <div>{{ lesson.content | safe }}</div>
+  </article>
+  {% endfor %}
+</div>
