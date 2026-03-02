@@ -13,7 +13,7 @@ const isDevelopment = isLocalhost;
 // Configuración de API
 const API_CONFIG = {
   development: {
-    baseURL: 'http://localhost:3000',
+    baseURL: globalThis.location.origin, // Usa el puerto actual (3000 o 3001) dinámicamente
     apiPath: '/api'
   },
   production: {

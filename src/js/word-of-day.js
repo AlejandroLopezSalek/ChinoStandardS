@@ -5,12 +5,13 @@
 (function () {
     'use strict';
 
+    // Level Colors mapped to CEFR code at start of string
     const LEVEL_COLORS = {
-        A1: { bg: 'bg-red-500', text: 'A1 – Principiante' },
-        A2: { bg: 'bg-orange-500', text: 'A2 – Elemental' },
-        B1: { bg: 'bg-red-500', text: 'B1 – Intermedio' },
-        B2: { bg: 'bg-orange-500', text: 'B2 – Intermedio Alto' },
-        C1: { bg: 'bg-red-500', text: 'C1 – Avanzado' }
+        A1: 'bg-red-500',
+        A2: 'bg-orange-500',
+        B1: 'bg-red-500',
+        B2: 'bg-orange-500',
+        C1: 'bg-red-500'
     };
 
     const normalizeAnswer = (s) => s.toLowerCase()
@@ -37,10 +38,10 @@
         }
     }
 
-    function getWidgetHTML(data, isEn, lvl) {
-        const currentTranslation = isEn ? data.translationEn : data.translationEs;
-        const currentExampleTranslation = isEn ? data.exampleTranslationEn : data.exampleTranslationEs;
-        const currentTip = isEn ? data.tipEn : data.tipEs;
+    function getWidgetHTML(data, isEn, lvlBg, lvlText) {
+        const currentTranslation = data.word_translation;
+        const currentExampleTranslation = data.sentence_translation;
+        const currentTip = data.tip;
         const answerLabel = isEn ? "How do you translate it?" : "¿Cómo se traduce?";
         const answerPlaceholder = isEn ? "English translation..." : "Traducción al español...";
         const verifyText = isEn ? "Verify" : "Verificar";
@@ -53,20 +54,20 @@
                 <div class="flex items-center gap-2 text-white/70 text-xs sm:text-sm font-semibold uppercase tracking-wider">
                     <i class="fas fa-star text-yellow-300"></i> ${isEn ? "Word of the Day" : "Palabra del Día"}
                 </div>
-                <span class="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold text-white ${lvl.bg} shadow whitespace-nowrap">${lvl.text}</span>
+                <span class="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold text-white ${lvlBg} shadow whitespace-nowrap">${lvlText}</span>
             </div>
 
             <!-- Chinese word (big) -->
             <div class="text-center mb-2">
-                <div id="wodWord" class="text-2xl sm:text-4xl font-black text-white tracking-tight mb-1">${escHtml(data.word)}</div>
-                <div class="text-white/60 text-xs sm:text-sm"><i class="fas fa-volume-low mr-1"></i>${escHtml(data.pronunciation)}</div>
+                <div id="wodWord" class="text-2xl sm:text-4xl font-black text-white tracking-tight mb-1">${escHtml(data.character)}</div>
+                <div class="text-white/60 text-xs sm:text-sm"><i class="fas fa-volume-low mr-1"></i>${escHtml(data.pinyin)}</div>
             </div>
 
             <!-- Example sentence -->
             <div class="bg-white/10 rounded-xl p-4 my-4 text-center">
-                <p class="text-white/90 italic text-sm">"${escHtml(data.example)}"</p>
-                <p class="text-white/70 text-xs mt-2">${escHtml(data.examplePronunciation)}</p>
-                <p id="wodExampleTranslation" class="text-white/50 text-xs mt-1 transition-all hidden">${escHtml(currentExampleTranslation)}</p>
+                <p class="text-white/90 italic text-sm">"${escHtml(data.sentence_character)}"</p>
+                <p class="text-white/70 text-xs mt-2">${escHtml(data.sentence_pinyin)}</p>
+                <p id="wodExampleTranslation" class="text-white/50 text-xs mt-1 transition-all">${escHtml(currentExampleTranslation)}</p>
             </div>
 
             <!-- Answer input zone -->
@@ -158,6 +159,33 @@
             </div>`;
     }
 
+    function handleNotLoggedIn(az, isEn) {
+        if (!az) return;
+        az.innerHTML = `
+            <div class="bg-red-900/40 border border-red-400/30 rounded-xl p-4 text-center mt-4">
+                <p class="text-white text-sm mb-3 font-medium">${isEn ? "Register to participate in the daily challenge and see your progress." : "Regístrate para participar en el desafío diario y ver tu progreso."}</p>
+                <a href="${isEn ? '/en/register/' : '/Registro/'}" class="inline-block bg-white text-red-700 px-6 py-2 rounded-lg font-bold text-sm hover:bg-red-50 transition-all shadow-lg active:scale-95">${isEn ? "Register for free" : "Registrarme gratis"}</a>
+            </div>
+        `;
+        // Only unhide the example sentence translation so they have some context, 
+        // but DO NOT unhide the main translation block at the bottom
+        getEl('wodExampleTranslation')?.classList.remove('hidden');
+    }
+
+    function handleAlreadyAnswered(az, feedback, isEn) {
+        if (az) az.classList.add('hidden');
+
+        // Show translation and persistent message
+        getEl('wodTranslation')?.classList.remove('hidden');
+        getEl('wodExampleTranslation')?.classList.remove('hidden');
+
+        if (feedback) {
+            feedback.className = 'mt-3 rounded-lg px-4 py-3 text-sm font-medium bg-red-400/20 border border-red-400/40 text-red-100';
+            feedback.innerHTML = `<i class="fas fa-check-circle mr-2 text-red-300"></i>${isEn ? "You already completed today's challenge!" : "¡Ya has completado el desafío de hoy!"}`;
+            feedback.classList.remove('hidden');
+        }
+    }
+
     // ---- Render widget ----
     function renderWidget(data) {
         const inner = getEl('wodInner');
@@ -165,47 +193,29 @@
 
         const lang = localStorage.getItem('language') || 'es';
         const isEn = lang === 'en';
-        const lvl = LEVEL_COLORS[data.level] || LEVEL_COLORS['A1'];
 
-        inner.innerHTML = getWidgetHTML(data, isEn, lvl);
+        const lvlCode = data.level_badge ? data.level_badge.substring(0, 2) : 'A1';
+        const lvlBg = LEVEL_COLORS[lvlCode] || LEVEL_COLORS['A1'];
+        const lvlText = data.level_badge;
+
+        inner.innerHTML = getWidgetHTML(data, isEn, lvlBg, lvlText);
 
         // Check if user is logged in (using global auth state if available)
         const isUserLoggedIn = !!(
             localStorage.getItem('token') ||
             localStorage.getItem('authToken') ||
+            localStorage.getItem('currentUser') ||
             globalThis.AuthService?.isLoggedIn()
         );
         const storageKey = getStorageKey();
-        const localAnswered = localStorage.getItem(storageKey) === data.word;
+        const localAnswered = localStorage.getItem(storageKey) === data.character;
 
         if (!isUserLoggedIn) {
-            const az = getEl('wodAnswerZone');
-            const isEn = localStorage.getItem('language') === 'en';
-            if (az) {
-                az.innerHTML = `
-                    <div class="bg-red-900/40 border border-red-400/30 rounded-xl p-4 text-center mt-4">
-                        <p class="text-white text-sm mb-3 font-medium">${isEn ? "Register to participate in the daily challenge and see your progress." : "Regístrate para participar en el desafío diario y ver tu progreso."}</p>
-                        <a href="${isEn ? '/en/register/' : '/Registro/'}" class="inline-block bg-white text-red-700 px-6 py-2 rounded-lg font-bold text-sm hover:bg-red-50 transition-all shadow-lg active:scale-95">${isEn ? "Register for free" : "Registrarme gratis"}</a>
-                    </div>
-                `;
-            }
+            handleNotLoggedIn(getEl('wodAnswerZone'), isEn);
         } else if (localAnswered) {
             // Already answered today
             answered = true;
-            const az = getEl('wodAnswerZone');
-            if (az) az.classList.add('hidden');
-
-            // Show translation and persistent message
-            getEl('wodTranslation')?.classList.remove('hidden');
-            getEl('wodExampleTranslation')?.classList.remove('hidden');
-
-            const feedback = getEl('wodFeedback');
-            const isEn = localStorage.getItem('language') === 'en';
-            if (feedback) {
-                feedback.className = 'mt-3 rounded-lg px-4 py-3 text-sm font-medium bg-red-400/20 border border-red-400/40 text-red-100';
-                feedback.innerHTML = `<i class="fas fa-check-circle mr-2 text-red-300"></i>${isEn ? "You already completed today's challenge!" : "¡Ya has completado el desafío de hoy!"}`;
-                feedback.classList.remove('hidden');
-            }
+            handleAlreadyAnswered(getEl('wodAnswerZone'), getEl('wodFeedback'), isEn);
         }
 
         bindEvents();
@@ -222,8 +232,7 @@
                 if (answered) return;
                 const userAnswer = input.value.trim();
                 if (!userAnswer) return;
-                const isEn = localStorage.getItem('language') === 'en';
-                checkAnswer(userAnswer, isEn ? wodData.translationEn : wodData.translationEs);
+                checkAnswer(userAnswer, wodData.word_translation);
             };
             checkBtn.addEventListener('click', doCheck);
             input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doCheck(); });
@@ -240,9 +249,9 @@
             const answerZone = getEl('wodAnswerZone');
             if (answerZone) answerZone.classList.add('hidden');
 
-            saveWodAnalytics(wodData.word, null, false, wodData.level);
+            saveWodAnalytics(wodData.character, null, false, wodData.level_badge);
             answered = true;
-            localStorage.setItem(getStorageKey(), wodData.word); // Persist locally
+            localStorage.setItem(getStorageKey(), wodData.character); // Persist locally
         });
 
         // Show tip
@@ -266,7 +275,7 @@
             normUser.includes(normCorrect);
 
         // Save to analytics
-        saveWodAnalytics(wodData.word, userAnswer, isCorrect, wodData.level);
+        saveWodAnalytics(wodData.character, userAnswer, isCorrect, wodData.level_badge);
 
         if (isCorrect) {
             // Hide answer zone after submitting correctly
@@ -279,7 +288,7 @@
             if (exTr) exTr.classList.remove('hidden');
 
             answered = true;
-            localStorage.setItem(getStorageKey(), wodData.word);
+            localStorage.setItem(getStorageKey(), wodData.character);
         }
 
         const isEn = localStorage.getItem('language') === 'en';

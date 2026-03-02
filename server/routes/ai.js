@@ -143,50 +143,82 @@ router.get('/word-of-day', async (req, res) => {
         }
 
         const lang = req.query.lang === 'en' ? 'en' : 'es';
+        const languageName = lang === 'en' ? 'English' : 'Spanish';
         const todayStr = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
-        // Unify the cache key so the same underlying Chinese word is used globally for the day.
-        const cacheKey = todayStr + '_global';
+        // Cache per language
+        const cacheKey = todayStr + '_' + lang;
 
         // 1. Check in-memory first (fastest)
         if (wodCache[cacheKey]) {
             return res.json(wodCache[cacheKey]);
         }
 
-        // 2. Check MongoDB (for consistency across processes)
+        // 2. Check MongoDB for EXACT cache
         const existing = await DailyWord.findOne({ date: cacheKey });
         if (existing) {
             wodCache[cacheKey] = existing.data;
             return res.json(existing.data);
         }
 
+        // 2.5 Check if the OTHER language generated a word today
+        const otherLang = lang === 'en' ? 'es' : 'en';
+        const otherCacheKey = todayStr + '_' + otherLang;
+        const existingOther = await DailyWord.findOne({ date: otherCacheKey });
+
+        let targetWordPrompt = "";
+        if (existingOther && existingOther.data && existingOther.data.character) {
+            targetWordPrompt = `
+
+CRITICAL INSTRUCTION - SYNC REQUIRED:
+You MUST use these exact Chinese values for the following fields. DO NOT alter them:
+- "character": "${existingOther.data.character}"
+- "pinyin": "${existingOther.data.pinyin}"
+- "sentence_character": "${existingOther.data.sentence_character}"
+- "sentence_pinyin": "${existingOther.data.sentence_pinyin}"
+
+Your ONLY task is to provide the ${languageName} translations for 'word_translation', 'level_badge', 'tip', and 'sentence_translation'. 
+REMEMBER RULE 3: You MUST NOT translate the target word itself in the 'sentence_translation'. You MUST keep the target word as its original Chinese character.`;
+        }
+
         // 3. Generate new word via AI
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        // Only avoid words generated in the same language to prevent cross-language blocking issues causing bad generation
-        const recentWordsDocs = await DailyWord.find({ date: { $regex: '_global$' }, createdAt: { $gte: thirtyDaysAgo } }, { 'data.word': 1 }).sort({ createdAt: -1 });
-        const recentWords = recentWordsDocs.map(d => d.data?.word).filter(Boolean);
-        const avoidPrompt = recentWords.length > 0 ? `\n\nNOTE: Try to avoid these words that were provided in the last 30 days: ${recentWords.join(', ')}. You can repeat them occasionally if they are very important, but prefer providing new words.` : '';
 
-        const userPrompt = `Generate a Chinese "Word or Phrase of the Day" for language learners.
-Return ONLY a JSON object with these exact fields (no markdown, no code block):
+        // Avoid recently generated words
+        const recentWordsDocs = await DailyWord.find({ date: { $regex: '^' + todayStr.substring(0, 7) }, createdAt: { $gte: thirtyDaysAgo } }, { 'data.character': 1 }).sort({ createdAt: -1 });
+        const recentWords = recentWordsDocs.map(d => d.data?.character).filter(Boolean);
+        const avoidPrompt = recentWords.length > 0 && !targetWordPrompt ? `\n\nNOTE: Try to avoid these words that were provided recently: ${recentWords.join(', ')}.` : '';
+
+        // Dynamic examples based on language to avoid confusing the AI
+        const exampleWordTrans = lang === 'en' ? 'Mother' : 'Madre';
+        const exampleLevel = lang === 'en' ? 'A1 - Beginner' : 'A1 - Principiante';
+        const exampleTip = lang === 'en' ? 'Remember the character naturally looks like a mother holding a baby.' : 'Recuerda que el carácter parece una madre sosteniendo a un bebé.';
+        const exampleSentenceTrans = lang === 'en' ? 'I want to see my 母亲' : 'Quiero ver a mi 母亲';
+
+        const userPrompt = `Act as a Chinese language learning API. Your task is to generate a 'Word of the Day' for a learning application.
+
+You must output ONLY strictly valid JSON. Do not include any markdown formatting, conversational text, or explanations.
+
+The user's interface language is: ${languageName}.
+
+CRITICAL INSTRUCTIONS:
+1. Pinyin fields MUST use the Latin alphabet with tone marks (e.g. mǔ qīn). NO Chinese characters allowed in pinyin fields.
+2. Translation fields MUST be written entirely in ${languageName}. NO Chinese characters allowed, EXCEPT for rule 3 below.
+3. For 'sentence_translation': You MUST NOT translate the target word itself. You MUST keep the target word as its original Chinese character. Translate the rest of the sentence around it into ${languageName}.
+
+EXAMPLE OUTPUT FORMAT (for a ${languageName} user learning the word 母亲):
 {
-  "word": "<Target word in pure Chinese characters ONLY>",
-  "pronunciation": "<Pinyin for the target word WITH TONE MARKS>",
-  "translationEn": "<English translation of the target word>",
-  "translationEs": "<Spanish translation of the target word>",
-  "example": "<Short example sentence using the word in pure Chinese characters ONLY. NO PINYIN HERE.>",
-  "examplePronunciation": "<Pinyin for the entire example sentence WITH TONE MARKS. NO CHINESE CHARACTERS HERE.>",
-  "exampleTranslationEn": "<English translation of the example sentence. CRITICAL: Do NOT translate the target word itself, insert the Chinese characters of the target word directly into this translated sentence>",
-  "exampleTranslationEs": "<Spanish translation of the example sentence. CRITICAL: Do NOT translate the target word itself, insert the Chinese characters of the target word directly into this translated sentence>",
-  "level": "<one of: A1, A2, B1, B2, C1>",
-  "tipEn": "<Short memory tip in English to remember this>",
-  "tipEs": "<Short memory tip in Spanish to remember this>"
+  "character": "母亲",
+  "pinyin": "mǔ qīn",
+  "word_translation": "${exampleWordTrans}",
+  "level_badge": "${exampleLevel}",
+  "tip": "${exampleTip}",
+  "sentence_character": "我想见到我的母亲",
+  "sentence_pinyin": "wǒ xiǎng jiàn dào wǒ de mǔ qīn",
+  "sentence_translation": "${exampleSentenceTrans}"
 }
-Pick a useful, everyday term. It can be a single word or a common short phrase.
-IMPORTANT: DO NOT use extremely basic greetings like "ni hao" (unless for a specific level idiom).
-CRITICAL RULE 1: The 'example' field MUST contain ONLY Hanzi characters. Do not mix pinyin and characters.
-CRITICAL RULE 2: The 'exampleTranslationEn' and 'exampleTranslationEs' fields MUST leave the target word in Chinese characters within the sentence. For example, if the word is 苹果, write: "I ate a 苹果 today." and "Comí una 苹果 hoy."
-Provide variety across different levels (A1 to C1).${avoidPrompt}`;
+
+Create a JSON object for the daily word following the exact structure from the example above.${targetWordPrompt}${avoidPrompt}`;
 
         const completion = await groq.chat.completions.create({
             model: 'llama-3.1-8b-instant',
@@ -209,7 +241,7 @@ Provide variety across different levels (A1 to C1).${avoidPrompt}`;
         const wordData = JSON.parse(jsonStr);
 
         // Validate required fields
-        const required = ['word', 'pronunciation', 'translationEn', 'translationEs', 'example', 'exampleTranslationEn', 'exampleTranslationEs', 'level', 'tipEn', 'tipEs'];
+        const required = ['character', 'pinyin', 'word_translation', 'level_badge', 'tip', 'sentence_character', 'sentence_pinyin', 'sentence_translation'];
         for (const field of required) {
             if (!wordData[field]) throw new Error(`Missing field: ${field}`);
         }
@@ -228,14 +260,14 @@ Provide variety across different levels (A1 to C1).${avoidPrompt}`;
         // Fallback to a hardcoded word so the widget never breaks
         const isEn = req.query.lang === 'en';
         const fallback = {
-            word: 'Nǐ hǎo (你好)',
-            translation: isEn ? 'Hello' : 'Hola',
-            pronunciation: 'nǐ hǎo',
-            example: 'Nǐ hǎo, nǐ zěnme yàng?',
-            examplePronunciation: 'nǐ hǎo, nǐ zěnme yàng?',
-            exampleTranslation: isEn ? 'Hello, how are you?' : '¿Hola, cómo estás?',
-            level: 'A1',
-            tip: isEn ? 'Nǐ hǎo is the most common greeting in Chinese.' : 'Nǐ hǎo es el saludo más común en chino.'
+            character: '你好',
+            pinyin: 'nǐ hǎo',
+            word_translation: isEn ? 'Hello' : 'Hola',
+            level_badge: isEn ? 'A1 - Beginner' : 'A1 - Principiante',
+            tip: isEn ? 'Nǐ hǎo is the most common greeting in Chinese.' : 'Nǐ hǎo es el saludo más común en chino.',
+            sentence_character: '你好，你怎么样？',
+            sentence_pinyin: 'Nǐ hǎo, nǐ zěnme yàng?',
+            sentence_translation: isEn ? 'Hello, how are you?' : '¿Hola, cómo estás?'
         };
         res.json(fallback);
     }
