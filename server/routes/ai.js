@@ -167,6 +167,13 @@ router.get('/word-of-day', async (req, res) => {
 
         let targetWordPrompt = "";
         if (existingOther && existingOther.data && existingOther.data.character) {
+            // Extract the CEFR/HSK level prefix (e.g., "HSK 2" from "HSK 2 - Elemental" or "B2" from "B2 - Intermediate")
+            const sourceLevelBadge = existingOther.data.level_badge || "";
+            const levelPrefixMatch = sourceLevelBadge.match(/^([a-zA-Z0-9]+)\s*-/);
+            const levelInstruction = levelPrefixMatch
+                ? `\n- "level_badge": MUST start with "${levelPrefixMatch[1]} - " followed by the ${languageName} translated level name.`
+                : "";
+
             targetWordPrompt = `
 
 CRITICAL INSTRUCTION - SYNC REQUIRED:
@@ -174,10 +181,10 @@ You MUST use these exact Chinese values for the following fields. DO NOT alter t
 - "character": "${existingOther.data.character}"
 - "pinyin": "${existingOther.data.pinyin}"
 - "sentence_character": "${existingOther.data.sentence_character}"
-- "sentence_pinyin": "${existingOther.data.sentence_pinyin}"
+- "sentence_pinyin": "${existingOther.data.sentence_pinyin}"${levelInstruction}
 
 Your ONLY task is to provide the ${languageName} translations for 'word_translation', 'level_badge', 'tip', and 'sentence_translation'. 
-REMEMBER RULE 3: You MUST NOT translate the target word itself in the 'sentence_translation'. You MUST keep the target word as its original Chinese character.`;
+CRITICAL RULE: You MUST NOT translate the target word itself in the 'sentence_translation'. Keep the target word "${existingOther.data.character}" in its original Chinese character form inside the translated sentence!`;
         }
 
         // 3. Generate new word via AI
@@ -206,7 +213,7 @@ CRITICAL INSTRUCTIONS:
 2. Pinyin fields MUST use the Latin alphabet with tone marks (e.g. mǔ qīn). NO Chinese characters allowed in pinyin fields.
 3. Translation fields MUST be written entirely in ${languageName}. NO Chinese characters allowed, EXCEPT for rule 4 below.
 4. For 'sentence_character': You MUST write a grammatically correct sentence using ONLY Simplified Chinese characters. ABSOLUTELY NO Japanese characters allowed.
-5. For 'sentence_translation': You MUST NOT translate the target word itself. You MUST keep the target word as its original Chinese character. Translate the rest of the sentence around it into ${languageName}.
+5. For 'sentence_translation': You MUST NOT translate the target word itself. You MUST keep the target word as its original Chinese character. For example, if the word is 苹果, the translation should be "She ate an 苹果", NOT "She ate an apple". Translate the rest of the sentence around it into ${languageName}.
 
 EXAMPLE OUTPUT FORMAT (for a ${languageName} user learning the word 母亲):
 {
