@@ -1,63 +1,63 @@
 ---
-layout: auth_base.njk
-title: Registrarse
+layout: auth_base_en.njk
+title: Sign Up
 ---
 <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-stone-900 px-4">
     <div
         class="bg-white dark:bg-stone-800 p-8 rounded-2xl shadow-xl w-full max-w-md border border-stone-200 dark:border-stone-700 transition-all">
-        <h1 class="text-3xl font-bold text-center mb-8 text-stone-800 dark:text-stone-100">Crear Cuenta</h1>
+        <h1 class="text-3xl font-bold text-center mb-8 text-stone-800 dark:text-stone-100">Create Account</h1>
         <form id="registerForm" class="space-y-5">
             <div class="space-y-2">
                 <label for="username"
-                    class="block text-sm font-semibold text-stone-600 dark:text-stone-400">Usuario:</label>
-                <input type="text" id="username" required minlength="3" placeholder="Mínimo 3 caracteres"
+                    class="block text-sm font-semibold text-stone-600 dark:text-stone-400">Username:</label>
+                <input type="text" id="username" required minlength="3" placeholder="Minimum 3 characters"
                     class="w-full px-4 py-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all">
             </div>
             <div class="space-y-2">
                 <label for="email" class="block text-sm font-semibold text-stone-600 dark:text-stone-400">Email:</label>
-                <input type="email" id="email" required placeholder="tu@email.com"
+                <input type="email" id="email" required placeholder="your@email.com"
                     class="w-full px-4 py-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all">
             </div>
             <div class="space-y-2">
                 <label for="country"
-                    class="block text-sm font-semibold text-stone-600 dark:text-stone-400">País:</label>
+                    class="block text-sm font-semibold text-stone-600 dark:text-stone-400">Country:</label>
                 <select id="country" required
                     class="w-full px-4 py-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all">
-                    <option value="" disabled selected>Selecciona tu país</option>
+                    <option value="" disabled selected>Select your country</option>
                     <option value="AR">Argentina</option>
                     <option value="BO">Bolivia</option>
                     <option value="CL">Chile</option>
                     <option value="CO">Colombia</option>
                     <option value="CR">Costa Rica</option>
                     <option value="CU">Cuba</option>
-                    <option value="DO">República Dominicana</option>
+                    <option value="DO">Dominican Republic</option>
                     <option value="EC">Ecuador</option>
                     <option value="SV">El Salvador</option>
-                    <option value="GQ">Guinea Ecuatorial</option>
+                    <option value="GQ">Equatorial Guinea</option>
                     <option value="GT">Guatemala</option>
                     <option value="HN">Honduras</option>
-                    <option value="MX">México</option>
+                    <option value="MX">Mexico</option>
                     <option value="NI">Nicaragua</option>
-                    <option value="PA">Panamá</option>
+                    <option value="PA">Panama</option>
                     <option value="PY">Paraguay</option>
-                    <option value="PE">Perú</option>
+                    <option value="PE">Peru</option>
                     <option value="PR">Puerto Rico</option>
-                    <option value="ES">España</option>
+                    <option value="ES">Spain</option>
                     <option value="UY">Uruguay</option>
                     <option value="VE">Venezuela</option>
-                    <option value="US">Estados Unidos</option>
-                    <option value="OTHER">Otro</option>
+                    <option value="US">United States</option>
+                    <option value="OTHER">Other</option>
                 </select>
             </div>
             <!-- Password Field -->
             <div class="space-y-2">
                 <label for="password"
-                    class="block text-sm font-semibold text-stone-600 dark:text-stone-400">Contraseña:</label>
+                    class="block text-sm font-semibold text-stone-600 dark:text-stone-400">Password:</label>
                 <div class="relative">
-                    <input type="password" id="password" required minlength="6" placeholder="Mínimo 6 caracteres"
+                    <input type="password" id="password" required minlength="6" placeholder="Minimum 6 characters"
                         autocomplete="new-password"
                         class="w-full px-4 py-3 pr-12 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all">
-                    <button type="button" onclick="togglePassword('password')" aria-label="Mostrar/Ocultar contraseña"
+                    <button type="button" onclick="togglePassword('password')" aria-label="Show/Hide password"
                         class="absolute right-3 top-1/2 -translate-y-1/2 z-10 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 transition-colors">
                         <i class="fas fa-eye" id="password-icon"></i>
                     </button>
@@ -66,27 +66,27 @@ title: Registrarse
                 <div class="h-1.5 w-full bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden mt-2">
                     <div id="strengthBar" class="h-full w-0 transition-all duration-300 bg-red-500"></div>
                 </div>
-                <p id="strengthText" class="text-xs text-stone-500 dark:text-stone-400 text-right">Fuerza: <span
-                        id="strengthLabel">Vacía</span></p>
+                <p id="strengthText" class="text-xs text-stone-500 dark:text-stone-400 text-right">Strength: <span
+                        id="strengthLabel">Empty</span></p>
                 <!-- Requirements -->
                 <ul class="text-xs text-stone-500 dark:text-stone-400 space-y-1 mt-1 pl-1">
-                    <li id="req-length"><i class="fas fa-circle text-[8px] mr-1 text-stone-300"></i> Mínimo 8 caracteres
+                    <li id="req-length"><i class="fas fa-circle text-[8px] mr-1 text-stone-300"></i> Minimum 8
+                        characters
                     </li>
-                    <li id="req-safe"><i class="fas fa-circle text-[8px] mr-1 text-stone-300"></i> Número o símbolo se
-                        recomienda</li>
+                    <li id="req-safe"><i class="fas fa-circle text-[8px] mr-1 text-stone-300"></i> Number or symbol
+                        recommended</li>
                 </ul>
             </div>
 
             <!-- Confirm Password Field -->
             <div class="space-y-2">
                 <label for="confirmPassword"
-                    class="block text-sm font-semibold text-stone-600 dark:text-stone-400">Confirmar Contraseña:</label>
+                    class="block text-sm font-semibold text-stone-600 dark:text-stone-400">Confirm Password:</label>
                 <div class="relative">
-                    <input type="password" id="confirmPassword" required placeholder="Repite tu contraseña"
+                    <input type="password" id="confirmPassword" required placeholder="Repeat your password"
                         autocomplete="new-password"
                         class="w-full px-4 py-3 pr-12 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all">
-                    <button type="button" onclick="togglePassword('confirmPassword')"
-                        aria-label="Mostrar/Ocultar contraseña"
+                    <button type="button" onclick="togglePassword('confirmPassword')" aria-label="Show/Hide password"
                         class="absolute right-3 top-1/2 -translate-y-1/2 z-10 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 transition-colors">
                         <i class="fas fa-eye" id="confirmPassword-icon"></i>
                     </button>
@@ -96,10 +96,10 @@ title: Registrarse
 
             <button type="submit" id="submitBtn"
                 class="w-full py-3 mt-4 bg-stone-400 text-white rounded-lg font-bold shadow-lg transform transition disabled:opacity-70 disabled:hover:translate-y-0">
-                Registrarse
+                Sign Up
             </button>
             <div class="relative flex items-center justify-center my-6">
-                <span class="absolute px-3 bg-white dark:bg-stone-800 text-stone-400 text-sm">O regístrate con</span>
+                <span class="absolute px-3 bg-white dark:bg-stone-800 text-stone-400 text-sm">Or sign up with</span>
                 <div class="w-full h-px bg-stone-200 dark:bg-stone-700"></div>
             </div>
 
@@ -122,13 +122,13 @@ title: Registrarse
                 id="errorMessage"></div>
         </form>
         <p class="text-center mt-8 text-stone-600 dark:text-stone-400 text-sm">
-            ¿Ya tienes cuenta? <a href="/login/"
-                class="text-red-600 dark:text-red-400 font-semibold hover:underline">Inicia sesión</a>
+            Already have an account? <a href="/en/login/"
+                class="text-red-600 dark:text-red-400 font-semibold hover:underline">Sign In</a>
         </p>
         <p class="text-center mt-4">
-            <a href="/"
-                class="text-stone-500 dark:text-stone-500 text-sm hover:text-stone-700 dark:hover:text-stone-300 transition-colors">Volver
-                al inicio</a>
+            <a href="/en/"
+                class="text-stone-500 dark:text-stone-500 text-sm hover:text-stone-700 dark:hover:text-stone-300 transition-colors">Back
+                to home</a>
         </p>
     </div>
 </div>

@@ -13,7 +13,7 @@ scripts:
     <h2 class="flex items-center justify-center gap-3 text-3xl font-bold text-stone-800 dark:text-stone-100 
                mb-8 pb-4 border-b-2 border-stone-200 dark:border-stone-700">
         <i class="fas fa-clock text-red-600 dark:text-red-400"></i>
-        Horario de Estudio Intensivo
+        Intensive Study Schedule
     </h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -28,17 +28,17 @@ scripts:
                         bg-stone-100 dark:bg-stone-700
                         text-lg font-semibold text-stone-700 dark:text-stone-200">
                 <i class="fas fa-sun text-yellow-400"></i>
-                <span>Mañana</span>
+                <span>Morning</span>
             </div>
 
             <div class="activities p-3">
-                {{ components.activityItem("7:30 - 8:15", "Leer un texto en chino", "İstanbul book PDF/sacar un texto de
-                noticias", "book-open") }}
-                {{ components.activityItem("8:15 - 8:45", "Practicar vocabulario", "Sozluk.gov.tr o pdfs de verbos o
-                vocabularios", "language") }}
-                {{ components.activityItem("9:00 - 9:45", "Podcast Türkçe o noticias", "Luego tomar resumen", "podcast")
+                {{ components.activityItem("7:30 - 8:15", "Read a Chinese text", "İstanbul book PDF/extract a news
+                text", "book-open") }}
+                {{ components.activityItem("8:15 - 8:45", "Practice vocabulary", "Sozluk.gov.tr or verb/vocabulary
+                PDFs", "language") }}
+                {{ components.activityItem("9:00 - 9:45", "Podcast Türkçe or news", "Take notes afterwards", "podcast")
                 }}
-                {{ components.activityItem("9:45 - 10:30", "Gramática", "Usar una web de gramática o texto o clases",
+                {{ components.activityItem("9:45 - 10:30", "Grammar", "Use a grammar website or textbook or classes",
                 "book") }}
             </div>
         </div>
@@ -54,21 +54,21 @@ scripts:
                         bg-stone-100 dark:bg-stone-700
                         text-lg font-semibold text-stone-700 dark:text-stone-200">
                 <i class="fas fa-cloud text-orange-500"></i>
-                <span>Tarde</span>
+                <span>Afternoon</span>
             </div>
 
             <div class="activities p-3">
-                {{ components.activityItem("11:15 - 12:00", "Práctica de escritura", "Tema diario, pedir a AI o buscar
-                en internet", "pen") }}
-                {{ components.activityItem("13:00 - 13:45", "Leer un texto avanzado", "Tratar de reconocer patrones",
+                {{ components.activityItem("11:15 - 12:00", "Writing practice", "Daily topic, ask AI or search online",
+                "pen") }}
+                {{ components.activityItem("13:00 - 13:45", "Read an advanced text", "Try to recognize patterns",
                 "book") }}
-                {{ components.activityItem("13:45 - 14:15", "Mirar video sin subtítulos", "Práctica de comprensión
-                auditiva", "video") }}
-                {{ components.activityItem("14:15 - 14:45", "Práctica de refranes", "Buscar en Sozluk.gov.tr o internet
-                o AI", "quote-right") }}
-                {{ components.activityItem("15:00 - 15:45", "Gramática avanzada", "Yunus emre o cualquiera",
+                {{ components.activityItem("13:45 - 14:15", "Watch video without subtitles", "Listening comprehension
+                practice", "video") }}
+                {{ components.activityItem("14:15 - 14:45", "Sayings practice", "Search on Sozluk.gov.tr or internet or
+                AI", "quote-right") }}
+                {{ components.activityItem("15:00 - 15:45", "Advanced grammar", "Yunus emre or any other",
                 "graduation-cap") }}
-                {{ components.activityItem("17:15 - 18:00", "Revisión general", "Escritura + recitarlo (Tema diario)",
+                {{ components.activityItem("17:15 - 18:00", "General review", "Writing + reciting (Daily topic)",
                 "check-circle") }}
             </div>
         </div>
@@ -77,7 +77,7 @@ scripts:
     <h2 class="flex items-center justify-center gap-3 text-3xl font-bold text-stone-800 dark:text-stone-100 
                mb-8 pb-4 border-b-2 border-stone-200 dark:border-stone-700">
         <i class="fab fa-youtube text-red-600"></i>
-        Canales de YouTube
+        YouTube Channels
     </h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -91,7 +91,7 @@ scripts:
                        text-stone-800 dark:text-stone-100
                        mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
                 <i class="fas fa-plane text-red-600"></i>
-                Blogs de aventura
+                Adventure Blogs
             </h3>
             <ul class="channel-list flex flex-col gap-2">
                 {{ components.channelItem("https://www.youtube.com/@gunesinpesinde", "Güneşin Peşinde") }}
@@ -113,7 +113,7 @@ scripts:
                        text-stone-800 dark:text-stone-100
                        mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
                 <i class="fas fa-tv text-red-600"></i>
-                Entretenimiento
+                Entertainment
             </h3>
             <ul class="channel-list flex flex-col gap-2">
                 {{ components.channelItem("https://www.youtube.com/@tepkikolik", "Tepkikolik") }}
@@ -131,7 +131,7 @@ scripts:
                        text-stone-800 dark:text-stone-100
                        mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
                 <i class="fas fa-newspaper text-red-600"></i>
-                Noticieros
+                News
             </h3>
             <ul class="channel-list flex flex-col gap-2">
                 {{ components.channelItem("https://www.youtube.com/@ContextTürkçe", "Context Türkçe") }}
@@ -150,7 +150,7 @@ scripts:
                        text-stone-800 dark:text-stone-100
                        mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
                 <i class="fas fa-language text-red-600"></i>
-                Canales de Gramática Turca
+                Chinese Grammar Channels
             </h3>
             <ul class="channel-list flex flex-col gap-2">
                 {{ components.channelItem("https://www.youtube.com/@learnchineselanguagesandmusic",
@@ -181,7 +181,7 @@ scripts:
                        text-stone-800 dark:text-stone-100
                        mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
                 <i class="fas fa-flag text-red-600"></i>
-                Canales en Español
+                Channels in Spanish
             </h3>
             <ul class="channel-list flex flex-col gap-2">
                 {{ components.channelItem("https://www.youtube.com/@estambulmagico", "ESTAMBUL MÁGICO vivir en TURQUÍA")
