@@ -107,7 +107,7 @@ If the user is viewing a lesson, answer based on the ACTIVE LESSON CONTEXT provi
         ? `Your goal: Help English speakers learn Chinese correctly.`
         : `Your goal: Help Spanish speakers learn Chinese correctly.`;
 
-    return `You are "Panda", the AI mascot for "ChinoAmerica".
+    return `You are "Panda", the AI mascot for "PandaLatam".
 ${instructionsLang}
 
 CONTEXT:

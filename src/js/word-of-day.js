@@ -271,8 +271,7 @@
 
         // Check for exact match or near-match (contains the key word)
         const isCorrect = normUser === normCorrect ||
-            normCorrect.includes(normUser) ||
-            normUser.includes(normCorrect);
+            (normCorrect.includes(normUser) && normUser.length >= Math.max(3, normCorrect.length / 2));
 
         // Save to analytics
         saveWodAnalytics(wodData.character, userAnswer, isCorrect, wodData.level_badge);

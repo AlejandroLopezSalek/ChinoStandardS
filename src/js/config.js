@@ -1,5 +1,5 @@
 // ================================
-// CONFIGURACIÓN GLOBAL - ChinoAmerica
+// CONFIGURACIÓN GLOBAL - PandaLatam
 // ================================
 
 // Detectar entorno
@@ -42,7 +42,7 @@ globalThis.APP_CONFIG = {
 
   // Configuración de la aplicación
   APP: {
-    NAME: 'ChinoAmerica',
+    NAME: 'PandaLatam',
     VERSION: '1.0.0',
     ENVIRONMENT: isDevelopment ? 'development' : 'production',
     DEFAULT_LANGUAGE: 'es',
@@ -150,7 +150,7 @@ globalThis.APP_CONFIG = {
 // Suppress logs in production
 if (isDevelopment) {
   // Log de configuración SOLO en desarrollo
-  console.log('🔧 ChinoAmerica Configuration:', {
+  console.log('🔧 PandaLatam Configuration:', {
     Environment: globalThis.APP_CONFIG.APP.ENVIRONMENT,
     API_URL: globalThis.APP_CONFIG.API_BASE_URL,
     Version: globalThis.APP_CONFIG.APP.VERSION

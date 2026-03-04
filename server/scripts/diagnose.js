@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 console.log('\n╔═══════════════════════════════════════╗');
-console.log('║  ChinoAmerica MVP Diagnostic Tool     ║');
+console.log('║  PandaLatam MVP Diagnostic Tool     ║');
 console.log('╚═══════════════════════════════════════╝\n');
 
 let errors = 0;

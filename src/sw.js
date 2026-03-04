@@ -1,5 +1,5 @@
 // ================================
-// SERVICE WORKER - ChinoAmerica PWA
+// SERVICE WORKER - PandaLatam PWA
 // Smart caching with quick updates
 // ================================
 
@@ -288,7 +288,7 @@ async function networkFirstWithExpiry(request, cacheName, maxAge) {
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Offline - ChinoAmerica</title>
+                <title>Offline - PandaLatam</title>
                 <style>
                     body {
                         font-family: 'Inter', sans-serif;
@@ -396,7 +396,7 @@ self.addEventListener('push', (event) => {
     console.log('[SW] Push notification received');
 
     const data = event.data ? event.data.json() : {};
-    const title = data.title || 'ChinoAmerica';
+    const title = data.title || 'PandaLatam';
     const options = {
         body: data.body || 'Nueva notificación',
         icon: '/icons/icon-192x192.png',

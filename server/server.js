@@ -182,7 +182,7 @@ app.get('/health', (req, res) => {
 
   res.json({
     status: 'OK',
-    message: 'ChinoAmerica MVP Server is running',
+    message: 'PandaLatam MVP Server is running',
     timestamp: new Date().toISOString(),
     uptime: Math.floor(process.uptime()),
     environment: process.env.NODE_ENV || 'development',
@@ -347,7 +347,7 @@ const startServer = async () => {
   // even if MongoDB is slow to connect on cold start
   app.listen(PORT, () => {
     console.log('\n╔═══════════════════════════════════════╗');
-    console.log('║   ChinoAmerica MVP Server Started   ║');
+    console.log('║   PandaLatam MVP Server Started   ║');
     console.log('╚═══════════════════════════════════════╝');
     console.log(` Server (API): http://localhost:${PORT}`);
     console.log(` Health:       http://localhost:${PORT}/health`);

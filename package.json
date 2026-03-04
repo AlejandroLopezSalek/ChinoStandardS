@@ -1,7 +1,7 @@
 {
   "name": "chinostandard-proyecto-completo",
   "version": "3",
-  "description": "Frontend (Eleventy) y Backend (Express) para ChinoAmerica",
+  "description": "Frontend (Eleventy) y Backend (Express) para PandaLatam",
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
