@@ -64,16 +64,19 @@
             return;
         }
 
-        // Group by first letter
+        // Group by first letter (using pinyin if available, fallback to character)
         const groups = {};
         words.forEach(w => {
-            if (!w.word) return;
+            if (!w.character) return;
             const data = { ...w };
-            if (!data.pronunciation) data.pronunciation = data.word;
+            if (!data.pinyin) data.pinyin = data.character;
             if (!data.tip) data.tip = "Practica esta palabra para mejorar tu vocabulario.";
 
-            let firstLetter = data.word.trim().charAt(0).toUpperCase();
-            if (!/[A-ZÇĞİÖŞÜ]/.test(firstLetter)) firstLetter = '#';
+            // Try to extract first English letter from pinyin
+            let firstLetter = data.pinyin.trim().charAt(0).toUpperCase();
+            // Remove diacritics for sorting
+            firstLetter = firstLetter.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (!/[A-Z]/.test(firstLetter)) firstLetter = '#';
 
             if (!groups[firstLetter]) groups[firstLetter] = [];
             groups[firstLetter].push(data);
@@ -85,8 +88,8 @@
         let html = '';
 
         sortedLetters.forEach(letter => {
-            // Sort words within the letter alphabetically
-            groups[letter].sort((a, b) => a.word.localeCompare(b.word, 'tr'));
+            // Sort words within the letter alphabetically by pinyin
+            groups[letter].sort((a, b) => a.pinyin.localeCompare(b.pinyin, 'en'));
 
             html += `
                 <div class="mb-4">
@@ -96,10 +99,11 @@
                     </h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         ${groups[letter].map(w => {
-                const lvl = LEVEL_COLORS[w.level] || LEVEL_COLORS['A1'];
+                const lvlCode = w.level_badge ? w.level_badge.substring(0, 2) : 'A1';
+                const lvl = LEVEL_COLORS[lvlCode] || LEVEL_COLORS['A1'];
                 // Check if answered locally
                 const storageKey = 'wod_answered_' + w.date;
-                const isAnswered = localStorage.getItem(storageKey) === w.word;
+                const isAnswered = localStorage.getItem(storageKey) === w.character;
                 const checkIcon = isAnswered
                     ? '<div class="absolute -top-2 -right-2 bg-white dark:bg-stone-800 rounded-full shadow-sm p-1"><i class="fas fa-check-circle text-green-500 text-lg leading-none"></i></div>'
                     : '';
@@ -108,13 +112,14 @@
                                 <div class="word-card cursor-pointer group bg-white dark:bg-stone-800 rounded-xl p-5 shadow-sm border border-stone-200 dark:border-stone-700 hover:shadow-lg hover:-translate-y-1 hover:border-red-400 dark:hover:border-red-500 transition-all relative flex flex-col h-full" data-date="${escHtml(w.date)}">
                                     ${checkIcon}
                                     <div class="flex items-center gap-2 mb-3">
-                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold text-white shadow-sm ${lvl.bg}">${w.level || 'A1'}</span>
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold text-white shadow-sm ${lvl.bg}">${w.level_badge || 'A1'}</span>
                                         <span class="text-xs text-stone-400 font-medium ml-auto flex items-center gap-1"><i class="fas fa-calendar-alt opacity-50"></i> ${new Date(w.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}</span>
                                     </div>
-                                    <h4 class="text-xl font-bold text-stone-800 dark:text-stone-100 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors line-clamp-2 mb-2 break-words" title="${escHtml(w.word)}">${escHtml(w.word)}</h4>
+                                    <h4 class="text-xl font-bold text-stone-800 dark:text-stone-100 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors line-clamp-2 mb-2 break-words" title="${escHtml(w.character)}">${escHtml(w.character)}</h4>
+                                    <span class="text-xs text-stone-500 mb-2">${escHtml(w.pinyin)}</span>
                                     
                                     <div class="mt-auto pt-3 border-t border-stone-100 dark:border-stone-700/50">
-                                        <p class="text-sm font-medium ${isAnswered ? 'text-stone-600 dark:text-stone-300' : 'text-stone-400 font-semibold'}" title="${escHtml(w.translation)}">${isAnswered ? escHtml(w.translation) : 'Falta completar'}</p>
+                                        <p class="text-sm font-medium ${isAnswered ? 'text-stone-600 dark:text-stone-300' : 'text-stone-400 font-semibold'}" title="${escHtml(w.word_translation)}">${isAnswered ? escHtml(w.word_translation) : 'Falta completar'}</p>
                                     </div>
                                 </div>
                             `;
@@ -144,9 +149,11 @@
         const inner = getEl('modalWodInner');
         if (!modal || !inner) return;
 
-        const lvl = LEVEL_COLORS[data.level] || LEVEL_COLORS['A1'];
+        const lvlCode = data.level_badge ? data.level_badge.substring(0, 2) : 'A1';
+        const lvlBg = LEVEL_COLORS[lvlCode] ? LEVEL_COLORS[lvlCode].bg : LEVEL_COLORS['A1'].bg;
+
         const storageKey = 'wod_answered_' + data.date;
-        const localAnswered = localStorage.getItem(storageKey) === data.word;
+        const localAnswered = localStorage.getItem(storageKey) === data.character;
 
         inner.innerHTML = `
             <!-- Header row -->
@@ -154,19 +161,20 @@
                 <div class="flex items-center gap-2 text-white/80 text-xs sm:text-sm font-semibold uppercase tracking-wider">
                     <i class="fas fa-calendar text-yellow-300"></i> ${new Date(data.date).toLocaleDateString()}
                 </div>
-                <span class="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold text-white ${lvl.bg} shadow whitespace-nowrap">${lvl.text}</span>
+                <span class="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold text-white ${lvlBg} shadow whitespace-nowrap">${data.level_badge || 'A1'}</span>
             </div>
 
             <!-- Chinese word -->
             <div class="text-center mb-2 mt-4">
-                <div class="text-3xl sm:text-4xl font-black text-white tracking-tight mb-2 leading-tight">${escHtml(data.word)}</div>
-                <div class="text-white/70 text-sm font-medium"><i class="fas fa-volume-low mr-1"></i>${escHtml(data.pronunciation)}</div>
+                <div class="text-3xl sm:text-4xl font-black text-white tracking-tight mb-2 leading-tight">${escHtml(data.character)}</div>
+                <div class="text-white/70 text-sm font-medium"><i class="fas fa-volume-low mr-1"></i>${escHtml(data.pinyin)}</div>
             </div>
 
             <!-- Example sentence -->
             <div class="bg-white/10 rounded-xl p-4 my-5 text-center shadow-inner">
-                <p class="text-white/95 italic sm:text-base text-sm font-medium leading-relaxed">"${escHtml(data.example)}"</p>
-                <p id="glosExampleTranslation" class="text-white/60 text-xs mt-2 transition-all duration-300 ${localAnswered ? '' : 'hidden'}">${escHtml(data.exampleTranslation)}</p>
+                <p class="text-white/95 italic sm:text-base text-sm font-medium leading-relaxed">"${escHtml(data.sentence_character)}"</p>
+                <p class="text-white/70 text-xs mt-2 transition-all duration-300">${escHtml(data.sentence_pinyin)}</p>
+                <p id="glosExampleTranslation" class="text-white/60 text-xs mt-2 transition-all duration-300 ${localAnswered ? '' : 'hidden'}">${escHtml(data.sentence_translation)}</p>
             </div>
 
             <!-- Answer input zone -->
@@ -200,7 +208,7 @@
             <!-- Translation -->
             <div id="glosTranslation" class="${localAnswered ? '' : 'hidden'} mt-5 text-center p-5 bg-white/10 rounded-2xl border border-white/20 transition-all shadow-inner backdrop-blur-sm">
                 <div class="text-white/50 text-[10px] font-bold uppercase tracking-widest mb-2">Traducción</div>
-                <div class="text-3xl font-black text-white px-2 leading-tight">${escHtml(data.translation)}</div>
+                <div class="text-3xl font-black text-white px-2 leading-tight">${escHtml(data.word_translation)}</div>
             </div>
 
             <!-- Tip -->
@@ -220,7 +228,7 @@
     }
 
     function bindModalEvents(data, storageKey) {
-        let answered = localStorage.getItem(storageKey) === data.word;
+        let answered = localStorage.getItem(storageKey) === data.character;
 
         const checkBtn = getEl('glosCheckBtn');
         const input = getEl('glosAnswerInput');
@@ -235,7 +243,7 @@
                 .replaceAll(/[^a-z0-9\s]/gu, '').trim();
 
             const normUser = normalize(userAnswer);
-            const normCorrect = normalize(data.translation);
+            const normCorrect = normalize(data.word_translation);
 
             const isCorrect = normUser === normCorrect ||
                 normCorrect.includes(normUser) ||
@@ -249,7 +257,7 @@
                     feedback.innerHTML = '<i class="fas fa-circle-check mr-2 text-green-300 text-lg align-text-bottom"></i> ¡Correcto! 🎉 Bien hecho.';
                 } else {
                     feedback.className = 'mt-4 rounded-xl px-4 py-3 text-sm font-medium transition-all bg-red-500/20 border border-red-400/40 text-red-50 block shadow-sm';
-                    feedback.innerHTML = `<i class="fas fa-circle-xmark mr-2 text-red-300 text-lg align-text-bottom"></i> La traducción correcta era: <strong class="text-white">${escHtml(data.translation)}</strong>`;
+                    feedback.innerHTML = `<i class="fas fa-circle-xmark mr-2 text-red-300 text-lg align-text-bottom"></i> La traducción correcta era: <strong class="text-white">${escHtml(data.word_translation)}</strong>`;
                 }
             }
 
@@ -258,7 +266,7 @@
             getEl('glosRevealBtn')?.classList.add('hidden');
 
             answered = true;
-            localStorage.setItem(storageKey, data.word);
+            localStorage.setItem(storageKey, data.character);
 
             reRenderGlossary();
         };
@@ -276,7 +284,7 @@
             getEl('glosRevealBtn')?.classList.add('hidden');
 
             answered = true;
-            localStorage.setItem(storageKey, data.word);
+            localStorage.setItem(storageKey, data.character);
 
             reRenderGlossary();
         });
