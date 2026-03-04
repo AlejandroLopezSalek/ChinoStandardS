@@ -209,11 +209,11 @@ You must output ONLY strictly valid JSON. Do not include any markdown formatting
 The user's interface language is: ${languageName}.
 
 CRITICAL INSTRUCTIONS:
-1. Choose a legitimate Simplified Chinese vocabulary word (ranging from beginner HSK 1 to advanced HSK 6). You MUST output ONLY Simplified Chinese characters. You MUST NOT output any Japanese characters (Kanji, Hiragana, Katakana) or Traditional Chinese. Do NOT hallucinate fake characters.
+1. Choose a legitimate and common Simplified Chinese vocabulary word (ranging from HSK 1 to HSK 6). Ensure it is a REAL word, NOT a random or invalid character.
 2. Pinyin fields MUST use the Latin alphabet with tone marks (e.g. mǔ qīn). NO Chinese characters allowed in pinyin fields.
 3. Translation fields MUST be written entirely in ${languageName}. NO Chinese characters allowed, EXCEPT for rule 4 below.
 4. For 'sentence_character': You MUST write a grammatically correct sentence using ONLY Simplified Chinese characters. ABSOLUTELY NO Japanese characters allowed.
-5. For 'sentence_translation': You MUST NOT translate the target word itself. You MUST keep the target word as its original Chinese character. For example, if the word is 苹果, the translation should be "She ate an 苹果", NOT "She ate an apple". Translate the rest of the sentence around it into ${languageName}.
+5. For 'sentence_translation': You MUST NOT translate the target word itself. Instead, insert the original Chinese character within the ${languageName} translation appropriately. For example, if the word is 苹果, the output MUST be "She ate an 苹果", NOT "She ate an apple". Translate the rest of the sentence into natural ${languageName}.
 
 EXAMPLE OUTPUT FORMAT (for a ${languageName} user learning the word 母亲):
 {
@@ -229,21 +229,28 @@ EXAMPLE OUTPUT FORMAT (for a ${languageName} user learning the word 母亲):
 
 Create a JSON object for the daily word following the exact structure from the example above.${targetWordPrompt}${avoidPrompt}`;
 
-        const completion = await groq.chat.completions.create({
-            model: 'llama-3.1-8b-instant',
+        const groqCall = groq.chat.completions.create({
+            model: 'llama-3.3-70b-versatile',
             messages: [
                 {
                     role: 'system',
-                    content: `You are a strict native Simplified Chinese language teacher. You ONLY speak and output Simplified Chinese, English, and Spanish. You NEVER output Japanese characters (no Hiragana, no Katakana, no Japanese Kanji). Respond ONLY with valid JSON, no markdown, no extra text.`
+                    content: `You are a strict native Simplified Chinese language teacher. You ONLY speak and output Simplified Chinese, English, and Spanish. Respond ONLY with valid JSON, no markdown, no extra text.`
                 },
                 {
                     role: 'user',
                     content: userPrompt
                 }
             ],
-            temperature: 0.9,
+            temperature: 0.6,
             max_tokens: 300
         });
+
+        // Add a 7-second timeout so the API doesn't hang indefinitely. 
+        // If it hangs, it naturally throws and falls back to the hardcoded word.
+        const completion = await Promise.race([
+            groqCall,
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Groq AI Timeout')), 7000))
+        ]);
 
         const raw = completion.choices[0]?.message?.content?.trim() || '';
         const jsonStr = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
