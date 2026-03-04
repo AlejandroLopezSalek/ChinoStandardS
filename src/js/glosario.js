@@ -32,7 +32,13 @@
         try {
             const res = await fetch('/api/chat/past-words');
             if (!res.ok) throw new Error('Network response was not ok');
-            pastWords = await res.json();
+            const allWords = await res.json();
+
+            const lang = localStorage.getItem('language') || 'es';
+            pastWords = allWords.filter(w => {
+                // Return entries matching current language, or fallback old entries without language suffix
+                return w.date.endsWith(`_${lang}`) || !w.date.includes('_');
+            });
 
             renderGlossary(pastWords, container);
         } catch (err) {
@@ -113,7 +119,7 @@
                                     ${checkIcon}
                                     <div class="flex items-center gap-2 mb-3">
                                         <span class="px-2 py-0.5 rounded text-[10px] font-bold text-white shadow-sm ${lvl.bg}">${w.level_badge || 'A1'}</span>
-                                        <span class="text-xs text-stone-400 font-medium ml-auto flex items-center gap-1"><i class="fas fa-calendar-alt opacity-50"></i> ${new Date(w.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}</span>
+                                        <span class="text-xs text-stone-400 font-medium ml-auto flex items-center gap-1"><i class="fas fa-calendar-alt opacity-50"></i> ${new Date(w.date.split('_')[0]).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}</span>
                                     </div>
                                     <h4 class="text-xl font-bold text-stone-800 dark:text-stone-100 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors line-clamp-2 mb-2 break-words" title="${escHtml(w.character)}">${escHtml(w.character)}</h4>
                                     <span class="text-xs text-stone-500 mb-2">${escHtml(w.pinyin)}</span>
@@ -159,7 +165,7 @@
             <!-- Header row -->
             <div class="flex flex-wrap items-center justify-between gap-2 mb-4 pr-6">
                 <div class="flex items-center gap-2 text-white/80 text-xs sm:text-sm font-semibold uppercase tracking-wider">
-                    <i class="fas fa-calendar text-yellow-300"></i> ${new Date(data.date).toLocaleDateString()}
+                    <i class="fas fa-calendar text-yellow-300"></i> ${new Date(data.date.split('_')[0]).toLocaleDateString()}
                 </div>
                 <span class="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold text-white ${lvlBg} shadow whitespace-nowrap">${data.level_badge || 'A1'}</span>
             </div>
