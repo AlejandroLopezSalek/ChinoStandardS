@@ -82,16 +82,16 @@
     {% endfor %}
     {% endif %}
 </head>
-<body class="font-sans min-h-screen bg-gradient-to-br from-red-500 to-orange-500 dark:from-slate-900 dark:to-slate-800 text-stone-800 dark:text-stone-100 transition-colors duration-300 selection:bg-red-500 selection:text-white">
+<body class="font-sans min-h-screen bg-gradient-to-br from-red-500 to-orange-500 dark:from-[#2A0808] dark:to-[#1A0505] text-stone-800 dark:text-stone-100 transition-colors duration-300 selection:bg-red-500 selection:text-white">
     
 
     <!-- Main Container Global Wrapper -->
     <div class="max-w-7xl mx-auto md:px-4 md:py-8 min-h-screen flex flex-col">
         <!-- White Card Container for EVERYTHING -->
-        <div class="bg-white md:bg-white/95 dark:bg-slate-900 md:dark:bg-slate-800/95 md:backdrop-blur-md shadow-none md:shadow-2xl border-0 md:border md:border-white/20 dark:border-slate-700/50 overflow-hidden flex flex-col flex-grow">
+        <div class="bg-white md:bg-white/95 dark:bg-[#1C0909] md:dark:bg-[#1C0909]/95 md:backdrop-blur-md shadow-none md:shadow-2xl border-0 md:border md:border-white/20 dark:border-red-900/50 overflow-hidden flex flex-col flex-grow">
             
             <!-- HEADER -->
-            <header class="w-full bg-gradient-to-r from-red-600 to-orange-400 dark:from-slate-800 dark:to-slate-900 shadow-md dark:shadow-slate-900/40 relative z-20 transition-all duration-300 border-b border-transparent dark:border-slate-700/50">
+            <header class="w-full bg-gradient-to-r from-red-600 to-orange-400 dark:from-[#3D0C0C] dark:to-[#240606] shadow-md dark:shadow-red-900/40 relative z-20 transition-all duration-300 border-b border-transparent dark:border-red-800/50">
                 <!-- Optional Pattern Overlay for Dark Mode -->
                 <!-- Optional Pattern Overlay for Dark Mode -->
                 <div class="absolute inset-0 z-0 opacity-0 dark:opacity-20 bg-repeat pointer-events-none"></div>
@@ -110,7 +110,7 @@
                         
                         <!-- LOGO -->
                         <div class="hidden md:flex absolute left-10 top-1/2 -translate-y-1/2 items-center">
-                            <img src="/assets/PandaLatamIC.png" alt="PandaLatam Logo" class="h-16 w-auto drop-shadow-lg opacity-90 hover:opacity-100 transition-opacity" />
+                            <img src="/assets/PandaLatamIC.png" alt="PandaLatam Logo" class="h-24 md:h-28 w-auto drop-shadow-2xl opacity-90 hover:opacity-100 transition-opacity" />
                         </div>
     
                         <!-- NAVIGATION TABS -->
@@ -157,14 +157,14 @@
             </header>
             
             <!-- NOTICE BAR -->
-            <!-- Dark Mode: Slate 800 -->
-            <div class="relative mx-4 mt-6 p-3 md:p-4 bg-yellow-400 dark:bg-slate-800 dark:border dark:border-slate-600/50 rounded-xl shadow-lg flex items-center justify-center gap-2 text-center text-sm md:text-base font-bold text-black dark:text-slate-100 transition-colors duration-300" id="noticeBar">
-                <i class="fas fa-info-circle text-red-500 dark:text-blue-400 text-lg"></i>
+            <!-- Dark Mode: Dark Red -->
+            <div class="relative mx-4 mt-6 p-3 md:p-4 bg-yellow-400 dark:bg-[#2A0808] dark:border dark:border-red-800/50 rounded-xl shadow-lg flex items-center justify-center gap-2 text-center text-sm md:text-base font-bold text-black dark:text-red-100 transition-colors duration-300" id="noticeBar">
+                <i class="fas fa-info-circle text-red-500 dark:text-red-400 text-lg"></i>
                 <div class="flex items-center gap-2">
-                    <a href="/register/" class="hover:text-stone-800 dark:hover:text-white underline decoration-2 decoration-black/30 dark:decoration-blue-400/30 underline-offset-2 transition-colors">Register</a>
+                    <a href="/register/" class="hover:text-stone-800 dark:hover:text-white underline decoration-2 decoration-black/30 dark:decoration-red-400/30 underline-offset-2 transition-colors">Register</a>
                     <span class="opacity-50">/</span>
                     <span class="flex items-center gap-2">
-                        <a href="/login/" class="hover:text-stone-800 dark:hover:text-white underline decoration-2 decoration-black/30 dark:decoration-blue-400/30 underline-offset-2 transition-colors">Sign In</a>
+                        <a href="/login/" class="hover:text-stone-800 dark:hover:text-white underline decoration-2 decoration-black/30 dark:decoration-red-400/30 underline-offset-2 transition-colors">Sign In</a>
                     </span>
                 </div>
             </div>
@@ -175,7 +175,7 @@
             </main>
     
             <!-- FOOTER -->
-            <footer class="mt-auto py-8 bg-stone-50 dark:bg-slate-800/50 border-t border-stone-200 dark:border-slate-700 w-full">
+            <footer class="mt-auto py-8 bg-stone-50 dark:bg-[#1A0505] border-t border-stone-200 dark:border-red-900/50 w-full">
                 <div class="max-w-4xl mx-auto px-4 flex flex-col items-center justify-center text-center">
                     <div class="flex flex-wrap justify-center items-center gap-3 mb-4 text-sm font-medium text-stone-600 dark:text-stone-400">
                         <a href="/en/Dashboard/" class="hover:text-red-600 dark:hover:text-red-400 transition-colors">About</a>
