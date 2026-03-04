@@ -107,12 +107,21 @@
                         ${groups[letter].map(w => {
                 const lvlCode = w.level_badge ? w.level_badge.substring(0, 2) : 'A1';
                 const lvl = LEVEL_COLORS[lvlCode] || LEVEL_COLORS['A1'];
-                // Check if answered locally
-                const storageKey = 'wod_answered_' + w.date;
-                const isAnswered = localStorage.getItem(storageKey) === w.character;
+                const rawDate = w.date.split('_')[0];
+
+                // Track progress globally by date regardless of language
+                const storageKey = 'wod_answered_global_' + rawDate;
+
+                // For older stored formats or newly global formats
+                const isAnswered = localStorage.getItem(storageKey) === w.character ||
+                    localStorage.getItem('wod_answered_' + w.date) === w.character;
+
                 const checkIcon = isAnswered
                     ? '<div class="absolute -top-2 -right-2 bg-white dark:bg-stone-800 rounded-full shadow-sm p-1"><i class="fas fa-check-circle text-green-500 text-lg leading-none"></i></div>'
                     : '';
+
+                const isEn = localStorage.getItem('language') === 'en';
+                const pendingText = isEn ? 'Pending' : 'Falta completar';
 
                 return `
                                 <div class="word-card cursor-pointer group bg-white dark:bg-stone-800 rounded-xl p-5 shadow-sm border border-stone-200 dark:border-stone-700 hover:shadow-lg hover:-translate-y-1 hover:border-red-400 dark:hover:border-red-500 transition-all relative flex flex-col h-full" data-date="${escHtml(w.date)}">
@@ -125,7 +134,7 @@
                                     <span class="text-xs text-stone-500 mb-2">${escHtml(w.pinyin)}</span>
                                     
                                     <div class="mt-auto pt-3 border-t border-stone-100 dark:border-stone-700/50">
-                                        <p class="text-sm font-medium ${isAnswered ? 'text-stone-600 dark:text-stone-300' : 'text-stone-400 font-semibold'}" title="${escHtml(w.word_translation)}">${isAnswered ? escHtml(w.word_translation) : 'Falta completar'}</p>
+                                        <p class="text-sm font-medium ${isAnswered ? 'text-stone-600 dark:text-stone-300' : 'text-stone-400 font-semibold'}" title="${escHtml(w.word_translation)}">${isAnswered ? escHtml(w.word_translation) : pendingText}</p>
                                     </div>
                                 </div>
                             `;
@@ -158,8 +167,20 @@
         const lvlCode = data.level_badge ? data.level_badge.substring(0, 2) : 'A1';
         const lvlBg = LEVEL_COLORS[lvlCode] ? LEVEL_COLORS[lvlCode].bg : LEVEL_COLORS['A1'].bg;
 
-        const storageKey = 'wod_answered_' + data.date;
-        const localAnswered = localStorage.getItem(storageKey) === data.character;
+        const rawDate = data.date.split('_')[0];
+        const storageKey = 'wod_answered_global_' + rawDate;
+        const legacyStorageKey = 'wod_answered_' + data.date;
+        const localAnswered = localStorage.getItem(storageKey) === data.character ||
+            localStorage.getItem(legacyStorageKey) === data.character;
+
+        const isEn = localStorage.getItem('language') === 'en';
+
+        const answerLabel = isEn ? "How do you translate it?" : "¿Cómo se traduce?";
+        const answerPlaceholder = isEn ? "English translation..." : "Traducción al español...";
+        const verifyText = isEn ? "Verify" : "Verificar";
+        const completedText = isEn ? "You have already completed this word!" : "¡Ya has completado esta palabra!";
+        const revealText = isEn ? "View translation" : "Ver traducción";
+        const translationLabel = isEn ? "Translation" : "Traducción";
 
         inner.innerHTML = `
             <!-- Header row -->
@@ -186,25 +207,25 @@
             <!-- Answer input zone -->
             <div id="glosAnswerZone" class="mb-4 ${localAnswered ? 'hidden' : ''}">
                 <label class="block text-white/80 text-xs font-semibold uppercase tracking-wider mb-2 ml-1">
-                    <i class="fas fa-pencil mr-1"></i>¿Cómo se traduce?
+                    <i class="fas fa-pencil mr-1"></i>${answerLabel}
                 </label>
                 <div class="flex gap-2">
-                    <input id="glosAnswerInput" type="text" placeholder="Traducción al español..." class="flex-1 min-w-0 px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20 transition-all font-medium"/>
+                    <input id="glosAnswerInput" type="text" placeholder="${answerPlaceholder}" class="flex-1 min-w-0 px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20 transition-all font-medium"/>
                     <button id="glosCheckBtn" class="shrink-0 px-4 py-3 bg-white text-red-700 font-bold rounded-xl text-sm hover:bg-white/90 transition-all shadow-md hover:shadow-lg active:scale-95">
-                        <span class="hidden sm:inline">Verificar</span>
+                        <span class="hidden sm:inline">${verifyText}</span>
                         <i class="fas fa-check sm:hidden"></i>
                     </button>
                 </div>
             </div>
 
             <div id="glosFeedback" class="mt-4 ${localAnswered ? 'bg-green-500/20 border-green-400/30 text-green-50 block' : 'hidden'} rounded-xl px-4 py-3 text-sm font-medium transition-all border shadow-sm">
-                ${localAnswered ? '<i class="fas fa-check-circle mr-2 text-green-300"></i>¡Ya has completado esta palabra!' : ''}
+                ${localAnswered ? `<i class="fas fa-check-circle mr-2 text-green-300"></i>${completedText}` : ''}
             </div>
 
             <!-- Reveal buttons -->
             <div class="flex gap-3 mt-4">
                 <button id="glosRevealBtn" class="flex-1 py-3 px-4 rounded-xl border border-white/20 text-white text-sm font-semibold hover:bg-white/10 transition-all flex items-center justify-center gap-2 shadow-sm ${localAnswered ? 'hidden' : ''}">
-                    <i class="fas fa-eye"></i> Ver traducción
+                    <i class="fas fa-eye"></i> ${revealText}
                 </button>
                 <button id="glosTipBtn" class="py-3 px-4 rounded-xl border border-white/20 text-white text-sm font-semibold hover:bg-white/10 transition-all flex items-center justify-center gap-2 shadow-sm">
                     <i class="fas fa-lightbulb"></i> Tip
@@ -213,7 +234,7 @@
 
             <!-- Translation -->
             <div id="glosTranslation" class="${localAnswered ? '' : 'hidden'} mt-5 text-center p-5 bg-white/10 rounded-2xl border border-white/20 transition-all shadow-inner backdrop-blur-sm">
-                <div class="text-white/50 text-[10px] font-bold uppercase tracking-widest mb-2">Traducción</div>
+                <div class="text-white/50 text-[10px] font-bold uppercase tracking-widest mb-2">${translationLabel}</div>
                 <div class="text-3xl font-black text-white px-2 leading-tight">${escHtml(data.word_translation)}</div>
             </div>
 
@@ -252,18 +273,18 @@
             const normCorrect = normalize(data.word_translation);
 
             const isCorrect = normUser === normCorrect ||
-                normCorrect.includes(normUser) ||
-                normUser.includes(normCorrect);
+                (normCorrect.includes(normUser) && normUser.length >= Math.max(3, normCorrect.length / 2));
 
             getEl('glosAnswerZone')?.classList.add('hidden');
+            const isEn = localStorage.getItem('language') === 'en';
             const feedback = getEl('glosFeedback');
             if (feedback) {
                 if (isCorrect) {
                     feedback.className = 'mt-4 rounded-xl px-4 py-3 text-sm font-medium transition-all bg-green-500/20 border border-green-400/40 text-green-50 block shadow-sm';
-                    feedback.innerHTML = '<i class="fas fa-circle-check mr-2 text-green-300 text-lg align-text-bottom"></i> ¡Correcto! 🎉 Bien hecho.';
+                    feedback.innerHTML = `<i class="fas fa-circle-check mr-2 text-green-300 text-lg align-text-bottom"></i> ${isEn ? "Correct! 🎉 Well done." : "¡Correcto! 🎉 Bien hecho."}`;
                 } else {
                     feedback.className = 'mt-4 rounded-xl px-4 py-3 text-sm font-medium transition-all bg-red-500/20 border border-red-400/40 text-red-50 block shadow-sm';
-                    feedback.innerHTML = `<i class="fas fa-circle-xmark mr-2 text-red-300 text-lg align-text-bottom"></i> La traducción correcta era: <strong class="text-white">${escHtml(data.word_translation)}</strong>`;
+                    feedback.innerHTML = `<i class="fas fa-circle-xmark mr-2 text-red-300 text-lg align-text-bottom"></i> ${isEn ? "The correct translation was:" : "La traducción correcta era:"} <strong class="text-white">${escHtml(data.word_translation)}</strong>`;
                 }
             }
 

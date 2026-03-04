@@ -463,7 +463,7 @@ class SearchSystem {
         modal.innerHTML = `
             <div class="search-modal-content">
                 <div class="search-modal-input">
-                    <input type="text" placeholder="Buscar en ChinoAmerica..." autocomplete="off">
+                    <input type="text" placeholder="Buscar en PandaLatam..." autocomplete="off">
                 </div>
                 <div class="search-modal-results" id="modalSearchResults">
                     <div class="no-results">

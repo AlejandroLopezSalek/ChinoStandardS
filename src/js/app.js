@@ -1,5 +1,5 @@
 // ================================
-// APP INITIALIZATION - ChinoAmerica
+// APP INITIALIZATION - PandaLatam
 // Main entry point for all systems
 // ================================
 
@@ -9,7 +9,7 @@
     // ================================
     // APP CLASS
     // ================================
-    class ChinoAmericaApp {
+    class PandaLatamApp {
         version = '1.0.0';
         initialized = false;
 
@@ -339,8 +339,8 @@
     function initializeApp() {
         // Small delay to ensure all scripts are loaded
         setTimeout(() => {
-            globalThis.ChinoAmericaApp = new ChinoAmericaApp();
-            globalThis.ChinoAmericaApp.init();
+            globalThis.PandaLatamApp = new PandaLatamApp();
+            globalThis.PandaLatamApp.init();
         }, 100);
     }
 
@@ -372,9 +372,9 @@
             clearStorage: () => localStorage.clear(),
             getAnalytics: () => globalThis.analytics?.summary(),
             getCacheStats: () => globalThis.cache?.stats(),
-            systems: () => globalThis.ChinoAmericaApp?.systems,
+            systems: () => globalThis.PandaLatamApp?.systems,
             reload: () => globalThis.location.reload(),
-            version: () => globalThis.ChinoAmericaApp?.version
+            version: () => globalThis.PandaLatamApp?.version
         };
 
         console.log('%c💡 Development Mode', 'color: #f59e0b; font-weight: bold;');

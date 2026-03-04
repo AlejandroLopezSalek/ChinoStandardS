@@ -281,7 +281,7 @@ function showWelcomeModal() {
                  <img src="/assets/mascotaODLw.svg" class="w-full h-full object-contain filter drop-shadow-xl animate-bounce-slow" alt="Panda" fetchpriority="high">
             </div>
 
-            <h3 class="text-2xl font-bold text-stone-800 dark:text-white mb-3">¡Bienvenido a ChinoAmerica! 🌎</h3>
+            <h3 class="text-2xl font-bold text-stone-800 dark:text-white mb-3">¡Bienvenido a PandaLatam! 🌎</h3>
             <p class="text-stone-600 dark:text-stone-300 mb-8 leading-relaxed">
                 Soy <strong>Panda</strong>, tu asistente de inteligencia artificial. <br>
                 ¿Quieres que te haga una guía rápida por el sitio web?
