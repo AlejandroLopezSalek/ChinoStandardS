@@ -81,66 +81,7 @@ scripts:
     </h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {# Blogs de aventura #}
-        <div class="bg-stone-50 dark:bg-stone-800
-                    border-2 border-stone-200 dark:border-stone-700
-                    rounded-2xl p-6
-                    hover:border-red-500 hover:shadow-xl
-                    transition-all duration-300">
-            <h3 class="flex items-center gap-3 text-xl font-semibold 
-                       text-stone-800 dark:text-stone-100
-                       mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
-                <i class="fas fa-plane text-red-600"></i>
-                Adventure Blogs
-            </h3>
-            <ul class="channel-list flex flex-col gap-2">
-                {{ components.channelItem("https://www.youtube.com/@gunesinpesinde", "Güneşin Peşinde") }}
-                {{ components.channelItem("https://www.youtube.com/c/sumeyracenetvideolari", "Sümeyra Çenet Videoları")
-                }}
-                {{ components.channelItem("https://www.youtube.com/@MertAktasTravel", "Mert Aktas Travel") }}
-                {{ components.channelItem("https://www.youtube.com/channel/UCWpk9PSGHoJW1hZT4egxTNQ", "Ruhi Çenet") }}
-                {{ components.channelItem("https://www.youtube.com/@japonhamzaa", "Japon Hamza") }}
-            </ul>
-        </div>
-
-        {# Entretenimiento #}
-        <div class="bg-stone-50 dark:bg-stone-800
-                    border-2 border-stone-200 dark:border-stone-700
-                    rounded-2xl p-6
-                    hover:border-red-500 hover:shadow-xl
-                    transition-all duration-300">
-            <h3 class="flex items-center gap-3 text-xl font-semibold 
-                       text-stone-800 dark:text-stone-100
-                       mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
-                <i class="fas fa-tv text-red-600"></i>
-                Entertainment
-            </h3>
-            <ul class="channel-list flex flex-col gap-2">
-                {{ components.channelItem("https://www.youtube.com/@tepkikolik", "Tepkikolik") }}
-                {{ components.channelItem("https://www.youtube.com/@muratsoner", "Murat Soner") }}
-            </ul>
-        </div>
-
-        {# Noticieros #}
-        <div class="bg-stone-50 dark:bg-stone-800
-                    border-2 border-stone-200 dark:border-stone-700
-                    rounded-2xl p-6
-                    hover:border-red-500 hover:shadow-xl
-                    transition-all duration-300">
-            <h3 class="flex items-center gap-3 text-xl font-semibold 
-                       text-stone-800 dark:text-stone-100
-                       mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
-                <i class="fas fa-newspaper text-red-600"></i>
-                News
-            </h3>
-            <ul class="channel-list flex flex-col gap-2">
-                {{ components.channelItem("https://www.youtube.com/@ContextTürkçe", "Context Türkçe") }}
-                {{ components.channelItem("https://www.youtube.com/@49W", "49W") }}
-                {{ components.channelItem("https://www.youtube.com/cnnturk", "CNN TÜRK") }}
-            </ul>
-        </div>
-
-        {# Canales de Gramática Turca #}
+        {# Canales de Enseñanza en Español #}
         <div class="bg-stone-50 dark:bg-stone-800
                     border-2 border-stone-200 dark:border-stone-700
                     rounded-2xl p-6
@@ -150,28 +91,19 @@ scripts:
                        text-stone-800 dark:text-stone-100
                        mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
                 <i class="fas fa-language text-red-600"></i>
-                Chinese Grammar Channels
+                Learn Chinese in Spanish
             </h3>
-            <ul class="channel-list flex flex-col gap-2">
-                {{ components.channelItem("https://www.youtube.com/@learnchineselanguagesandmusic",
-                "learnchinesewithmusic") }}
-                {{ components.channelItem("https://www.youtube.com/@ChineseClass101", "Learn Chinese with
-                ChineseClass101") }}
-                {{ components.channelItem("https://www.youtube.com/@Chinesele", "Chinesele") }}
-                {{ components.channelItem("https://www.youtube.com/@teacheraliyilmaz", "Teacher Ali Yılmaz") }}
-                {{ components.channelItem("https://www.youtube.com/@LearnChineseTheEasyWay", "Learn Chinese The Easy
-                Way") }}
-                {{ components.channelItem("https://www.youtube.com/@LearnChinesewithJihan", "Learn Chinese with Jihan")
+            <ul class="channel-list flex flex-col gap-2 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+                {{ components.channelItem("https://www.youtube.com/@clasesdechinomandarin", "Clases de Chino Mandarín")
                 }}
-                {{ components.channelItem("https://www.youtube.com/@LearnChineseWithChineseCoffee", "Learn Chinese with
-                Chinese Coffee") }}
-                {{ components.channelItem("https://www.youtube.com/@yeeorgtr", "Yunus Emre Enstitüsü") }}
-                {{ components.channelItem("https://www.youtube.com/@budapesteyunusemre", "Budapeşte Yunus Emre
-                Enstitüsü") }}
+                {{ components.channelItem("https://www.youtube.com/@aprendechinoconmarco", "Aprende Chino con Marco") }}
+                {{ components.channelItem("https://www.youtube.com/@Nininterprete", "Nininterprete") }}
+                {{ components.channelItem("https://www.youtube.com/@Olechinese", "Olechinese") }}
+                {{ components.channelItem("https://www.youtube.com/@AprenderChino", "Aprender Chino") }}
             </ul>
         </div>
 
-        {# Canales en Español #}
+        {# Canales de Enseñanza en Inglés/Global #}
         <div class="bg-stone-50 dark:bg-stone-800
                     border-2 border-stone-200 dark:border-stone-700
                     rounded-2xl p-6
@@ -180,15 +112,73 @@ scripts:
             <h3 class="flex items-center gap-3 text-xl font-semibold 
                        text-stone-800 dark:text-stone-100
                        mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
-                <i class="fas fa-flag text-red-600"></i>
-                Channels in Spanish
+                <i class="fas fa-chalkboard-teacher text-red-600"></i>
+                Grammar &amp; Classes (English/Global)
             </h3>
-            <ul class="channel-list flex flex-col gap-2">
-                {{ components.channelItem("https://www.youtube.com/@estambulmagico", "ESTAMBUL MÁGICO vivir en TURQUÍA")
+            <ul class="channel-list flex flex-col gap-2 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+                {{ components.channelItem("https://www.youtube.com/@YoyoChinese", "Yoyo Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@EverydayChinese", "Everyday Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@MandarinBlueprint", "Mandarin Blueprint") }}
+                {{ components.channelItem("https://www.youtube.com/@MandarinCorner", "Mandarin Corner") }}
+                {{ components.channelItem("https://www.youtube.com/@JackEasyChinese", "Jack Easy Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@LearnMandarinChineseNow", "Learn Mandarin Chinese
+                Now") }}
+                {{ components.channelItem("https://www.youtube.com/@ZhangkaiChinese", "Zhangkai Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@easychinese376", "Easy Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@AskAndy", "Ask Andy") }}
+                {{ components.channelItem("https://www.youtube.com/@EasyMandarin", "Easy Mandarin") }}
+                {{ components.channelItem("https://www.youtube.com/@ChineseInMinutes", "Chinese In Minutes") }}
+                {{ components.channelItem("https://www.youtube.com/@BeijingChinese101", "Beijing Chinese 101") }}
+                {{ components.channelItem("https://www.youtube.com/@YaChinese", "Ya Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@learn-chinese-semplicinese", "Learn Chinese
+                Semplicinese") }}
+                {{ components.channelItem("https://www.youtube.com/@LearnChinesewithSawh", "Learn Chinese with Sawh") }}
+                {{ components.channelItem("https://www.youtube.com/@ThatsMandarin", "That's Mandarin") }}
+                {{ components.channelItem("https://www.youtube.com/@CCChineseTeacher", "CC Chinese Teacher") }}
+                {{ components.channelItem("https://www.youtube.com/@LittleStepsChinese", "Little Steps Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@SylviasChinese", "Sylvia's Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@FluentUChinese", "FluentU Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@ChineseForUsOfficial", "Chinese For Us Official") }}
+                {{ components.channelItem("https://www.youtube.com/@jiayouchinese2023", "Jiayou Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@MandarinAmerican", "Mandarin American") }}
+                {{ components.channelItem("https://www.youtube.com/@chinesewithlia", "Chinese with Lia") }}
+                {{ components.channelItem("https://www.youtube.com/@lichaochinese4961", "Li Chao Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@ChineseKK", "ChineseKK") }}
+                {{ components.channelItem("https://www.youtube.com/@lazychinese", "Lazy Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@ComprehensibleMandarin", "Comprehensible Mandarin")
                 }}
-                {{ components.channelItem("https://www.youtube.com/@colegiochino", "Colegio Chino") }}
-                {{ components.channelItem("https://www.youtube.com/@AprenderChino", "Aprender Chino") }}
-                {{ components.channelItem("https://www.youtube.com/@FabianEnTurquia", "Fabian en China") }}
+                {{ components.channelItem("https://www.youtube.com/@froglang", "FROGLANG – Learn Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@LittleFoxChinese", "Little Fox Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@bubblechinese", "Bubble Chinese") }}
+                {{ components.channelItem("https://www.youtube.com/@Chinese-learning", "Chinese Learning") }}
+                {{ components.channelItem("https://www.youtube.com/@HongCha-aaa", "Hong Cha") }}
+            </ul>
+        </div>
+
+        {# Práctica de Escucha y Cultura #}
+        <div class="bg-stone-50 dark:bg-stone-800
+                    border-2 border-stone-200 dark:border-stone-700
+                    rounded-2xl p-6
+                    hover:border-red-500 hover:shadow-xl
+                    transition-all duration-300">
+            <h3 class="flex items-center gap-3 text-xl font-semibold 
+                       text-stone-800 dark:text-stone-100
+                       mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
+                <i class="fas fa-headphones text-red-600"></i>
+                Culture &amp; Listening
+            </h3>
+            <ul class="channel-list flex flex-col gap-2 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+                {{ components.channelItem("https://www.youtube.com/@ShuoshuoChinese", "ShuoshuoChinese说说中文") }}
+                {{ components.channelItem("https://www.youtube.com/@talkinchinese_redred", "talkinchinese_redred") }}
+                {{ components.channelItem("https://www.youtube.com/@MandarinClick", "Mandarin Click") }}
+                {{ components.channelItem("https://www.youtube.com/@Chinative", "Chinative") }}
+                {{ components.channelItem("https://www.youtube.com/@chi-native", "Chi-native") }}
+                {{ components.channelItem("https://www.youtube.com/@user-mv9wu8ow9u", "喵喵放映室") }}
+                {{ components.channelItem("https://www.youtube.com/@user-zo8ps7it2o", "野生鱼白") }}
+                {{ components.channelItem("https://www.youtube.com/@ManuShi", "Manu Shi") }}
+                {{ components.channelItem("https://www.youtube.com/@Yuanyuanpoem", "Yuanyuan Poem") }}
+                {{ components.channelItem("https://www.youtube.com/@realtimemandarin", "Real Time Mandarin") }}
+                {{ components.channelItem("https://www.youtube.com/@Redro-", "Redro") }}
             </ul>
         </div>
     </div>
