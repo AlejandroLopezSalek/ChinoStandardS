@@ -230,7 +230,7 @@ EXAMPLE OUTPUT FORMAT (for a ${languageName} user learning the word 母亲):
 Create a JSON object for the daily word following the exact structure from the example above.${targetWordPrompt}${avoidPrompt}`;
 
         const groqCall = groq.chat.completions.create({
-            model: 'llama-3.3-70b-versatile',
+            model: 'moonshotai/kimi-k2-instruct',
             messages: [
                 {
                     role: 'system',
@@ -345,7 +345,7 @@ router.post('/', async (req, res) => {
 
         const chatCompletion = await groq.chat.completions.create({
             messages: messages,
-            model: "llama-3.3-70b-versatile",
+            model: "moonshotai/kimi-k2-instruct",
             temperature: 0.6,
             max_tokens: 1024,
         });
