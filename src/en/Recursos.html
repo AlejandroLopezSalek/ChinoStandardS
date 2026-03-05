@@ -22,7 +22,7 @@ description: "The best apps and resources to learn Chinese."
     </header>
 
     <!-- Top Recommendations Grid -->
-    <div class="flex justify-center mb-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
 
         <!-- italki -->
         {{ components.affiliateCard(
@@ -34,6 +34,18 @@ description: "The best apps and resources to learn Chinese."
         badge="Best for Conversation",
         icon="comments",
         footer="Get $10 in credits when signing up"
+        ) }}
+
+        <!-- Baúl Chino -->
+        {{ components.affiliateCard(
+        title="Baúl Chino",
+        description="Excellent Spanish-language resource featuring tools, vocabulary lists, and comprehensive guides for
+        learning Mandarin Chinese. <br><br><b>One of the best platforms in Spanish.</b>",
+        link="https://www.baulchino.com/",
+        btnText="Visit Website",
+        badge="Spanish Resource",
+        icon="toolbox",
+        footer="Completely free"
         ) }}
     </div>
 
