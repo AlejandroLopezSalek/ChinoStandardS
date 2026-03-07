@@ -3,7 +3,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Contribution = require('../models/Contribution');
 const Lesson = require('../models/Lesson');
+const LessonConfig = require('../models/LessonHistory'); // Assuming it existed or it is just require('../models/LessonHistory')
 const LessonHistory = require('../models/LessonHistory');
+const ragService = require('../services/ragService');
 
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
@@ -141,10 +143,19 @@ router.put('/:id/status', authenticateToken, requireAdmin, async (req, res) => {
                             version: (existingLesson.version || 1) + 1
                         }
                     );
+
+                    // UPDATE RAG INDEX (Async, don't block response)
+                    ragService.indexLesson(lessonId, contribution.data.newContent, {
+                        title: contribution.data.lessonTitle,
+                        author: contribution.submittedBy?.username || 'Unknown',
+                        level: existingLesson.level
+                    }).catch(err => console.error('[RAG] Indexing failed:', err));
+
                 } else {
                     // CREATE NEW LESSON
+                    const newId = lessonId || 'lesson-' + Date.now();
                     await new Lesson({
-                        id: lessonId || 'lesson-' + Date.now(),
+                        id: newId,
                         title: contribution.data.lessonTitle,
                         level: contribution.data.level,
                         author: contribution.submittedBy?.username || 'Community',
@@ -155,6 +166,13 @@ router.put('/:id/status', authenticateToken, requireAdmin, async (req, res) => {
                         source: contribution.data.source || 'community',
                         version: 1
                     }).save();
+
+                    // RAG INDEXING
+                    ragService.indexLesson(newId, contribution.data.newContent, {
+                        title: contribution.data.lessonTitle,
+                        author: contribution.submittedBy?.username || 'Community',
+                        level: contribution.data.level
+                    }).catch(err => console.error('[RAG] Indexing failed:', err));
                 }
             }
 

@@ -73,7 +73,7 @@ function createMascotUI() {
 
                 <!-- Replace Image with Emoji -->
                 <div class="relative z-10 w-full h-full flex items-center justify-center md:filter md:drop-shadow-xl md:hover:-translate-y-1 transition-transform p-[2px] md:p-0">
-                    <span class="text-4xl md:text-7xl">🐼</span>
+                    <span class="text-4xl md:text-7xl" style="font-size: 80px; line-height: 1;">🐼</span>
                 </div>
 
                 <!-- Desktop Ping -->
@@ -309,7 +309,7 @@ function showWelcomeModal() {
             <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-red-500 to-orange-600 opacity-10"></div>
             
             <!-- Mascot Icon Large -->
-            <div class="relative w-24 h-24 mx-auto mb-6 -mt-2 flex items-center justify-center text-7xl animate-bounce-slow">
+            <div class="relative w-24 h-24 mx-auto mb-6 -mt-2 flex items-center justify-center animate-bounce-slow" style="font-size: 110px; line-height: 1;">
                  🐼
             </div>
 
