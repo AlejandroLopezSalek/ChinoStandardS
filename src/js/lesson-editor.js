@@ -58,10 +58,7 @@ class LessonEditor {
 
             <!-- Components -->
             <div class="flex gap-1 shrink-0">
-                <button type="button" class="p-2 px-3 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 rounded transition-colors flex items-center gap-2 text-sm font-semibold" data-action="pronounce" title="Agregar Sonido (Pronunciación)">
-                    <i class="fas fa-volume-high"></i> <span class="hidden sm:inline">Sonido</span>
-                </button>
-                <div class="w-px h-6 bg-stone-200 dark:bg-stone-700 mx-1"></div>
+
                 <button type="button" class="p-2 px-3 text-stone-600 dark:text-stone-400 hover:text-red-600 hover:bg-stone-100 dark:hover:bg-stone-700 rounded transition-colors flex items-center gap-2 text-sm" data-action="table" title="Insertar Tabla">
                     <i class="fas fa-table"></i> <span class="hidden sm:inline">Tabla</span>
                 </button>

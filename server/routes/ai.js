@@ -81,7 +81,7 @@ Content: ${cleanContent.substring(0, 1500)}...
 };
 
 // Helper to construct system prompt
-const buildSystemPrompt = (user, context, lessonContentContext, memoryContext, lang = 'es') => {
+const buildSystemPrompt = (user, context, lessonContentContext, memoryContext, lang = 'es', ragContext = '') => {
     let userContext = "User: Guest";
 
     if (user) {
@@ -120,6 +120,7 @@ CONTEXT:
 ${userContext}
 ${lessonContentContext}
 Current Page: ${contextStr || 'General Dashboard'}${memoryContext || ''}
+${ragContext}
 
 CRITICAL RULES:
 ${languageRules}
@@ -361,7 +362,18 @@ router.post('/', async (req, res) => {
             memoryContext = `\nMEMORY: The user was last studying "${user.stats.lastViewedLesson.title}".`;
         }
 
-        const systemPrompt = buildSystemPrompt(user, context, lessonContentContext, memoryContext, lang);
+        // --- RAG RETRIEVAL ---
+        const ragService = require('../services/ragService');
+        const similarChunks = await ragService.findSimilarContext(message, 3);
+        let ragContext = "";
+        if (similarChunks && similarChunks.length > 0) {
+            ragContext = `\n*** COMMUNITY KNOWLEDGE BASE ***\nIf the user's question is related to the following community material, use it to formulate your answer:\n`;
+            similarChunks.forEach(chunk => {
+                ragContext += `[Source: "${chunk.metadata?.title || 'Community Lesson'}" by ${chunk.metadata?.author || 'Unknown'} - Level ${chunk.metadata?.level || 'N/A'}]:\n"${chunk.text}"\n\n`;
+            });
+        }
+
+        const systemPrompt = buildSystemPrompt(user, context, lessonContentContext, memoryContext, lang, ragContext);
 
         const messages = [{ role: "system", content: systemPrompt }];
 

@@ -7,7 +7,7 @@ class PronunciationSystem {
     constructor() {
         this.synth = globalThis.speechSynthesis;
         this.voice = null;
-        this.lang = 'tr-TR'; // Chinese
+        this.lang = 'zh-CN'; // Chinese
         this.init();
     }
 
@@ -37,9 +37,9 @@ class PronunciationSystem {
         // 1. Exact Name Match
         this.voice = voices.find(v => preferredVoices.some(p => v.name.includes(p)));
 
-        // 2. Strict Locale Match (tr-TR)
+        // 2. Strict Locale Match (zh-CN)
         if (!this.voice) {
-            this.voice = voices.find(v => v.lang === 'tr-TR');
+            this.voice = voices.find(v => v.lang === 'zh-CN');
         }
 
         // 3. Loose Locale Match (tr)
@@ -68,7 +68,7 @@ class PronunciationSystem {
             utterThis.voice = this.voice;
         }
 
-        utterThis.lang = 'tr-TR';
+        utterThis.lang = 'zh-CN';
         utterThis.rate = 1; // Normal speed is usually best for modern TTS engines
         utterThis.pitch = 1;
 
