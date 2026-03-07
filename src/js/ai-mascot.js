@@ -51,6 +51,14 @@ function createMascotUI() {
         mascotBtn = document.createElement('div');
         mascotBtn.id = 'turkbot-btn';
         mascotBtn.className = 'fixed bottom-6 right-6 z-[9990] cursor-pointer group transition-all duration-300 hover:scale-110 transform scale-0 opacity-0'; // Start hidden for animation
+        const lang = localStorage.getItem('language') || 'es';
+
+        const TEXTS = {
+            es: { bubbleText: "¡Hola! Soy Panda" },
+            en: { bubbleText: "Hello! I'm Panda" },
+            tr: { bubbleText: "Merhaba! Ben Panda" }
+        };
+
         mascotBtn.innerHTML = `
             <div class="relative flex items-center justify-center w-[75px] h-[75px] md:w-[130px] md:h-[130px]">
                  
@@ -60,18 +68,12 @@ function createMascotUI() {
 
                  <!-- Desktop Speech Bubble -->
                  <div class="absolute -top-12 right-0 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm py-1 px-3 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-stone-200 dark:border-stone-700 hidden md:block">
-                    ¡Merhaba! Soy Panda
+                    ${TEXTS[lang].bubbleText}
                 </div>
 
-                <!-- Image with Picture Tag -->
+                <!-- Replace Image with Emoji -->
                 <div class="relative z-10 w-full h-full flex items-center justify-center md:filter md:drop-shadow-xl md:hover:-translate-y-1 transition-transform p-[2px] md:p-0">
-                    <picture class="w-full h-full flex items-center justify-center">
-                        <!-- Mobile Image -->
-                        <source media="(max-width: 768px)" srcset="/assets/telefonoscapi.png">
-                        <!-- Desktop Image -->
-                        <source media="(min-width: 769px)" srcset="/assets/mascotaODLw.svg">
-                        <img src="/assets/mascotaODLw.svg" alt="Panda" class="w-full h-full object-contain" fetchpriority="high">
-                    </picture>
+                    <span class="text-4xl md:text-7xl">🐼</span>
                 </div>
 
                 <!-- Desktop Ping -->
@@ -271,28 +273,58 @@ function showWelcomeModal() {
     const modal = document.createElement('div');
     modal.id = modalId;
     modal.className = 'fixed inset-0 z-[10000] flex items-center justify-center bg-stone-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300 px-4';
+    const lang = localStorage.getItem('language') || 'es';
+
+    const MODAL_TEXTS = {
+        es: {
+            title: "¡Bienvenido a PandaLatam! 🌎",
+            body1: "Soy <strong>Panda</strong>, tu asistente de inteligencia artificial. <br>",
+            body2: "¿Quieres que te haga una guía rápida por el sitio web?",
+            yesBtn: "¡Sí, por favor! 🚀",
+            noBtn: "No, gracias, exploraré solo",
+            guide: "¡Genial! 😃\n\nAquí tienes un resumen rápido:\n\n1. **Niveles:** Explora desde A1 hasta C1 en la página principal.\n2. **Gramática:** Consulta reglas específicas en la sección dedicada.\n3. **Comunidad:** Lee libros y lecciones creadas por otros estudiantes.\n\n¡Pregúntame cualquier cosa que necesites saber!"
+        },
+        en: {
+            title: "Welcome to PandaLatam! 🌎",
+            body1: "I'm <strong>Panda</strong>, your AI assistant. <br>",
+            body2: "Would you like a quick tour of the website?",
+            yesBtn: "Yes, please! 🚀",
+            noBtn: "No thanks, I'll explore alone",
+            guide: "Awesome! 😃\n\nHere's a quick summary:\n\n1. **Levels:** Explore from A1 to C1 on the homepage.\n2. **Grammar:** Check out specific rules in the dedicated section.\n3. **Community:** Read books and lessons created by other students.\n\nAsk me anything you need to know!"
+        },
+        tr: {
+            title: "PandaLatam'a Hoş Geldiniz! 🌎",
+            body1: "Ben <strong>Panda</strong>, yapay zeka asistanınım. <br>",
+            body2: "Sana web sitesinde hızlıca bir tur attırmamı ister misin?",
+            yesBtn: "Evet, lütfen! 🚀",
+            noBtn: "Hayır teşekkürler, kendim keşfedeceğim",
+            guide: "Harika! 😃\n\nİşte hızlı bir özet:\n\n1. **Seviyeler:** Ana sayfada A1'den C1'e kadar keşfet.\n2. **Gramer:** Özel bölümde kurallara göz at.\n3. **Topluluk:** Diğer öğrencilerin yazdığı hikayeleri ve dersleri oku.\n\nBana istediğini sorabilirsin!"
+        }
+    };
+    const t = MODAL_TEXTS[lang];
+
     modal.innerHTML = `
         <div class="bg-white dark:bg-stone-800 rounded-3xl shadow-2xl p-8 w-full max-w-md transform scale-95 transition-transform duration-300 border border-stone-200 dark:border-stone-700 text-center relative overflow-hidden">
             <!-- Decorative Back -->
             <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-red-500 to-orange-600 opacity-10"></div>
             
             <!-- Mascot Icon Large -->
-            <div class="relative w-24 h-24 mx-auto mb-6 -mt-2">
-                 <img src="/assets/mascotaODLw.svg" class="w-full h-full object-contain filter drop-shadow-xl animate-bounce-slow" alt="Panda" fetchpriority="high">
+            <div class="relative w-24 h-24 mx-auto mb-6 -mt-2 flex items-center justify-center text-7xl animate-bounce-slow">
+                 🐼
             </div>
 
-            <h3 class="text-2xl font-bold text-stone-800 dark:text-white mb-3">¡Bienvenido a PandaLatam! 🌎</h3>
+            <h3 class="text-2xl font-bold text-stone-800 dark:text-white mb-3">${t.title}</h3>
             <p class="text-stone-600 dark:text-stone-300 mb-8 leading-relaxed">
-                Soy <strong>Panda</strong>, tu asistente de inteligencia artificial. <br>
-                ¿Quieres que te haga una guía rápida por el sitio web?
+                ${t.body1}
+                ${t.body2}
             </p>
 
             <div class="flex flex-col gap-3">
                 <button id="welcome-yes" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white shadow-lg shadow-red-500/30 transition-all transform hover:-translate-y-0.5 font-bold text-lg">
-                    ¡Sí, por favor! 🚀
+                    ${t.yesBtn}
                 </button>
                 <button id="welcome-no" class="w-full py-3 rounded-xl text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200 hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors font-medium">
-                    No, gracias, exploraré solo
+                    ${t.noBtn}
                 </button>
             </div>
         </div>
@@ -322,9 +354,8 @@ function showWelcomeModal() {
         setTimeout(() => {
             const btn = document.getElementById('turkbot-btn');
             if (btn) btn.click();
-            const guideText = '¡Genial! 😃\n\nAquí tienes un resumen rápido:\n\n1. **Niveles:** Explora desde A1 hasta C1 en la página principal.\n2. **Gramática:** Consulta reglas específicas en la sección dedicada.\n3. **Comunidad:** Lee libros y lecciones creadas por otros estudiantes.\n\n¡Pregúntame cualquier cosa que necesites saber!';
-            addMessage('assistant', guideText);
-            saveChatHistory('assistant', guideText);
+            addMessage('assistant', t.guide);
+            saveChatHistory('assistant', t.guide);
         }, 500);
     });
 

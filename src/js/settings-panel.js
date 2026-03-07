@@ -9,7 +9,7 @@ function enableTurkBot() {
         globalThis.initTurkBot();
     } else {
         // If script loaded but function not globally avail yet, reload might be needed
-        location.reload();
+        globalThis.location.reload();
     }
 
     // Show nice notification
@@ -78,30 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Save on change
-        languageSelect.addEventListener('change', () => {
-            const lang = languageSelect.value;
-            localStorage.setItem('language', lang);
-            console.log(`🌐 Language set to: ${lang}`);
-
-            // Redirect based on language selection
-            const currentPath = window.location.pathname;
-            if (lang === 'en') {
-                if (!currentPath.startsWith('/en/')) {
-                    // Append matching directory path
-                    window.location.href = '/en' + (currentPath === '/' ? '/' : currentPath);
-                } else {
-                    location.reload();
-                }
-            } else { // lang === 'es'
-                if (currentPath.startsWith('/en/')) {
-                    // Remove '/en'
-                    const newPath = currentPath.substring(3);
-                    window.location.href = newPath === '' ? '/' : newPath;
-                } else {
-                    location.reload();
-                }
-            }
-        });
+        languageSelect.addEventListener('change', () => handleLanguageChange(languageSelect));
     }
 
     // --- Reset Logic (Tailwind Modal) ---
@@ -186,3 +163,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('⚙️ Settings Panel loaded');
 });
+
+// Helper function for language select changes
+function handleLanguageChange(languageSelect) {
+    const lang = languageSelect.value;
+    localStorage.setItem('language', lang);
+    console.log(`🌐 Language set to: ${lang}`);
+
+    const currentPath = globalThis.window.location.pathname;
+
+    let basePath = currentPath;
+    if (currentPath.startsWith('/en/')) {
+        basePath = currentPath.substring(3);
+        if (basePath === '') basePath = '/';
+    } else if (currentPath.startsWith('/tr/')) {
+        basePath = currentPath.substring(3);
+        if (basePath === '') basePath = '/';
+    }
+
+    let newPath = basePath;
+    if (lang === 'en' || lang === 'tr') {
+        newPath = `/${lang}${basePath === '/' ? '/' : basePath}`;
+    }
+
+    if (currentPath !== newPath) {
+        globalThis.window.location.href = newPath;
+    } else {
+        globalThis.location.reload();
+    }
+}

@@ -18,7 +18,7 @@ scripts:
             <div class="relative w-32 h-32 rounded-full flex items-center justify-center overflow-hidden bg-white/20 hover:scale-105 transition-transform duration-300 cursor-pointer group"
                 title="Click to change photo">
                 <i class="fas fa-user-circle text-6xl text-white"></i>
-                <button
+                <button aria-label="Cambiar foto de perfil" type="button"
                     class="absolute bottom-1 right-1 w-10 h-10 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center text-white hover:bg-orange-600 hover:scale-110 transition-all duration-300 shadow-lg change-avatar-btn"
                     title="Change photo">
                     <i class="fas fa-camera text-sm"></i>
@@ -123,7 +123,7 @@ scripts:
             </div>
 
             <div class="mt-8">
-                <button
+                <button type="button"
                     class="w-full sm:w-auto px-8 py-3 bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-200 font-semibold rounded-xl hover:bg-stone-300 dark:hover:bg-stone-600 transition-colors flex items-center justify-center gap-2"
                     id="savePreferencesBtn">
                     <i class="fas fa-save"></i>
@@ -165,13 +165,13 @@ scripts:
                 Account
             </h3>
             <div class="flex flex-col sm:flex-row gap-4">
-                <button
+                <button type="button"
                     class="flex-1 sm:flex-none px-6 py-3 border-2 border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-200 font-semibold rounded-xl hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors flex items-center justify-center gap-2"
                     id="changePasswordBtn">
                     <i class="fas fa-key"></i>
                     Change Password
                 </button>
-                <button
+                <button type="button"
                     class="flex-1 sm:flex-none px-6 py-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50 font-semibold rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors flex items-center justify-center gap-2"
                     id="logoutBtn">
                     <i class="fas fa-sign-out-alt"></i>
@@ -180,3 +180,4 @@ scripts:
             </div>
         </div>
     </div>
+</div>

@@ -1,0 +1,60 @@
+---
+layout: niveles.njk
+---
+{% import "components.njk" as components %}
+
+<section class="mt-10 px-4 max-w-7xl mx-auto">
+    <div class="grammar-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {{ components.grammarCard("Kipler (能, 会, 可以)", "Orta", "Öğrenilmiş yetenek, kapasite ve izin arasındaki
+        farklar.", "verbos-modales") }}
+        {{ components.grammarCard("Tamamlanmış Eylemler (了)", "Orta", "Durum değişikliğini veya tamamlanmış eylemi
+        belirtmek için 了 (le) eki.", "particula-le") }}
+        {{ components.grammarCard("Deneyimler (过)", "Orta", "Geçmiş deneyimleri ifade etmek için 过 (guo) kullanımı: 'Hiç
+        ... yaptın mı'.", "experiencias-guo") }}
+        {{ components.grammarCard("Şimdiki Zaman (正在)", "Orta", "Şimdiki zamanı oluşturmak: 'Bir şey yapıyor olmak'.",
+        "presente-continuo") }}
+        {{ components.grammarCard("Karşılaştırmalar (比)", "Orta", "'A, B'den daha X' demek için A 比 B + Sıfat yapısı.",
+        "comparaciones-bi") }}
+        {{ components.grammarCard("Temel Yön (来 / 去)", "Orta", "'Gel' (来) ve 'Git' (去) kullanan basit yön
+        tamamlayıcıları.", "direccion-basica") }}
+        {{ components.grammarCard("Derece Eki (得)", "Orta", "Bir eylemin nasıl yapıldığını açıklamak: Fiil + 得 +
+        Sıfat.", "particula-de-adverbial") }}
+        {{ components.grammarCard("Biraz (一点 / 一下)", "Orta", "İsimler için Yīdiǎn ve fiiller için Yīxià kullanım
+        farkları.", "un-poco") }}
+        {{ components.grammarCard("Çünkü / Bu Yüzden", "Orta", "Sebep ve sonuç mantıksal bağlaçları: 因为 (Yīnwèi) ... 所以
+        (Suǒyǐ).", "porque-por-tanto") }}
+        {{ components.grammarCard("...Rağmen / ...Ama", "Orta", "Zıt fikirler: 虽然 (Suīrán) ... 但是 (Dànshì).",
+        "aunque-pero") }}
+        {{ components.grammarCard("Fiil İkilemesi", "Orta", "Tonu yumuşatmak veya 'bir bak' demek için fiillerin tekrarı
+        (ör. 看看).", "reduplicacion-verbos") }}
+        {{ components.grammarCard("Zaman İfadeleri (的 时候)", "Orta", "的时候 kullanarak '...dığında' veya '...zamanında'
+        ifadeleri.", "frases-tiempo") }}
+    </div>
+</section>
+
+<section class="mt-16 mb-12">
+    <div class="flex items-center gap-3 mb-8">
+        <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100">A2 seviyenizi yükseltin</h2>
+        <div class="h-px flex-grow bg-stone-200 dark:bg-stone-700"></div>
+    </div>
+
+    <div class="flex justify-center max-w-4xl mx-auto">
+        {{ components.affiliateCard(
+        title="italki",
+        description="Anadili Çince olanlarla konuşarak akıcılığınızı geliştirin. Konuşma korkusunu yenin.",
+        link="https://www.italki.com/affshare?ref=af30849267",
+        btnText="Konuşma Pratiği Yap",
+        icon="comments"
+        ) }}
+    </div>
+</section>
+
+
+<div class="sr-only">
+    {% for key, lesson in a2_lessons %}
+    <article data-id="seo-lesson-{{ key }}">
+        <h2>{{ lesson.title }}</h2>
+        <div>{{ lesson.content | safe }}</div>
+    </article>
+    {% endfor %}
+</div>

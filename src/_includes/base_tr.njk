@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="tr">
 <head>
     <script>
         (function() {
-            const savedTheme = localStorage.getItem('darkMode');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (savedTheme === 'enabled' || (!savedTheme && prefersDark)) {
+            const savedTema = localStorage.getItem('darkMode');
+            const prefersKaranlık = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTema === 'enabled' || (!savedTema && prefersKaranlık)) {
                 document.documentElement.classList.add('dark-mode');
             }
         })();
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recursos de Aprendizaje de Chino - PandaLatam</title>
+    <title>Chinese Learning Kaynaklar - PandaLatam</title>
     <link rel="icon" type="image/x-icon" href="/assets/PandaLatam.ico">
     <link rel="manifest" href="/manifest.json">
 
 
     
-    <meta name="description" content="{{ description or 'Aprende chino gratis con ODL. Lecciones interactivas, gramática, vocabulario y comunidad para latinos.' }}">
+    <meta name="description" content="{{ description or 'Learn Chinese for free with ODL. Interactive lessons, grammar, vocabulary, and community for English speakers.' }}">
     
     <!-- Preload LCP Image -->
 
@@ -30,7 +30,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome (Standard Loading to ensure icons appear) -->
+    <!-- FontAwesome (Standard Yükleniyor to ensure icons appear) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous">
     
     <!-- Preserved Critical Styles -->
@@ -102,7 +102,7 @@
 </head>
 <body class="font-sans min-h-screen bg-white dark:bg-[#111] text-stone-800 dark:text-stone-100 transition-colors duration-300 selection:bg-red-500 selection:text-white">
     
-    <!-- Fondo Personalizado (ChinoLatamBac) -->
+    <!-- Custom Background (ChinoLatamBac) -->
     <div class="custom-bg-layer"></div>
 
     <!-- Main Container Global Wrapper -->
@@ -112,8 +112,8 @@
             
             <!-- HEADER -->
             <header class="w-full bg-gradient-to-r from-red-600 to-orange-400 dark:from-stone-800 dark:to-stone-900 shadow-md dark:shadow-stone-900/40 relative z-20 transition-all duration-300 border-b border-transparent dark:border-stone-700/50">
-                <!-- Optional Pattern Overlay for Dark Mode -->
-                <!-- Optional Pattern Overlay for Dark Mode -->
+                <!-- Optional Pattern Overlay for Karanlık Mode -->
+                <!-- Optional Pattern Overlay for Karanlık Mode -->
                 <div class="absolute inset-0 z-0 opacity-0 dark:opacity-20 bg-repeat pointer-events-none"></div>
                 
                 <div class="flex flex-col items-center justify-center p-3 md:p-6 md:min-h-[160px] relative z-10">
@@ -121,7 +121,7 @@
                     <!-- ROW 1: TITLE -->
                     <div class="w-full flex justify-center items-center mb-1 md:mb-2 z-20">
                         <h1 class="text-white font-bold text-center text-lg md:text-5xl drop-shadow-md whitespace-nowrap">
-                            Chino para Latinos
+                            Türkler için Çince
                         </h1>
                     </div>
     
@@ -136,40 +136,40 @@
                         <!-- NAVIGATION TABS -->
                         <div class="flex flex-row md:flex-wrap overflow-x-auto md:overflow-visible w-full md:w-auto gap-2 md:gap-4 justify-start md:justify-center px-1 md:px-0 no-scrollbar">
                             
-                            <a href="/" class="group inline-flex flex-col md:flex-row items-center justify-center px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/20 text-white text-xs md:text-lg font-semibold transition-all duration-300 whitespace-nowrap hover:-translate-y-1 hover:shadow-lg {% if page.url == '/' %}bg-white/40 shadow-lg scale-105 border-white/40{% endif %}">
+                            <a href="/tr/" class="group inline-flex flex-col md:flex-row items-center justify-center px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/20 text-white text-xs md:text-lg font-semibold transition-all duration-300 whitespace-nowrap hover:-translate-y-1 hover:shadow-lg {% if page.url == '/tr/' %}bg-white/40 shadow-lg scale-105 border-white/40{% endif %}">
                                 <i class="fas fa-home mb-1 md:mb-0 md:mr-2 text-sm md:text-lg group-hover:scale-110 transition-transform"></i>
-                                <span>Inicio</span>
+                                <span>Ana Sayfa</span>
                             </a>
     
-                            <a href="/Consejos/" class="group inline-flex flex-col md:flex-row items-center justify-center px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/20 text-white text-xs md:text-lg font-semibold transition-all duration-300 whitespace-nowrap hover:-translate-y-1 hover:shadow-lg {% if '/Consejos/' in page.url %}bg-white/40 shadow-lg scale-105 border-white/40{% endif %}">
+                            <a href="/tr/Consejos/" class="group inline-flex flex-col md:flex-row items-center justify-center px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/20 text-white text-xs md:text-lg font-semibold transition-all duration-300 whitespace-nowrap hover:-translate-y-1 hover:shadow-lg {% if '/tr/Consejos/' in page.url %}bg-white/40 shadow-lg scale-105 border-white/40{% endif %}">
                                 <i class="fas fa-lightbulb mb-1 md:mb-0 md:mr-2 text-sm md:text-lg group-hover:scale-110 transition-transform"></i>
-                                <span>Consejos</span>
+                                <span>İpuçları</span>
                             </a>
     
-                            <a href="/Gramatica/" class="group inline-flex flex-col md:flex-row items-center justify-center px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-full bg-white/20 hover:bg-white/30 md:backdrop-blur-sm border border-white/20 text-white text-xs md:text-lg font-semibold transition-all duration-300 whitespace-nowrap hover:-translate-y-1 hover:shadow-lg {% if '/Gramatica/' in page.url %}bg-white/40 shadow-lg scale-105 border-white/40{% endif %}">
+                            <a href="/tr/Gramatica/" class="group inline-flex flex-col md:flex-row items-center justify-center px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-full bg-white/20 hover:bg-white/30 md:backdrop-blur-sm border border-white/20 text-white text-xs md:text-lg font-semibold transition-all duration-300 whitespace-nowrap hover:-translate-y-1 hover:shadow-lg {% if '/tr/Gramatica/' in page.url %}bg-white/40 shadow-lg scale-105 border-white/40{% endif %}">
                                 <i class="fas fa-book mb-1 md:mb-0 md:mr-2 text-sm md:text-lg group-hover:scale-110 transition-transform"></i>
-                                <span>Gramática</span>
+                                <span>Gramer</span>
                             </a>
 
-                            <a href="/Recursos/" class="group inline-flex flex-col md:flex-row items-center justify-center px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/20 text-white text-xs md:text-lg font-semibold transition-all duration-300 whitespace-nowrap hover:-translate-y-1 hover:shadow-lg {% if '/Recursos/' in page.url %}bg-white/40 shadow-lg scale-105 border-white/40{% endif %}">
+                            <a href="/tr/Recursos/" class="group inline-flex flex-col md:flex-row items-center justify-center px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/20 text-white text-xs md:text-lg font-semibold transition-all duration-300 whitespace-nowrap hover:-translate-y-1 hover:shadow-lg {% if '/tr/Recursos/' in page.url %}bg-white/40 shadow-lg scale-105 border-white/40{% endif %}">
                                 <i class="fas fa-star mb-1 md:mb-0 md:mr-2 text-sm md:text-lg group-hover:scale-110 transition-transform text-yellow-300"></i>
-                                <span>Recursos</span>
+                                <span>Kaynaklar</span>
                             </a>
     
-                            <!-- Mobile Only: Community -->
-                            <a href="/Community-Lessons/" class="md:hidden group inline-flex flex-col md:flex-row items-center justify-center px-3 py-2 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/20 text-white text-xs font-semibold transition-all duration-300 whitespace-nowrap {% if '/Community-Lessons/' in page.url %}bg-white/40 shadow-lg scale-105 border-white/40{% endif %}">
+                            <!-- Mobile Only: Topluluk -->
+                            <a href="/tr/Topluluk-Lessons/" class="md:hidden group inline-flex flex-col md:flex-row items-center justify-center px-3 py-2 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/20 text-white text-xs font-semibold transition-all duration-300 whitespace-nowrap {% if '/tr/Topluluk-Lessons/' in page.url %}bg-white/40 shadow-lg scale-105 border-white/40{% endif %}">
                                 <i class="fas fa-users mb-1 text-sm group-hover:scale-110 transition-transform"></i>
-                                <span>Comunidad</span>
+                                <span>Topluluk</span>
                             </a>
     
-                            <a href="/Admin-Contributions/" id="adminTab" class="hidden group inline-flex flex-col md:flex-row items-center justify-center px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/20 text-white text-xs md:text-lg font-semibold transition-all duration-300 whitespace-nowrap hover:-translate-y-1 hover:shadow-lg">
+                            <a href="/tr/Admin-Contributions/" id="adminTab" class="hidden group inline-flex flex-col md:flex-row items-center justify-center px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/20 text-white text-xs md:text-lg font-semibold transition-all duration-300 whitespace-nowrap hover:-translate-y-1 hover:shadow-lg">
                                 <i class="fas fa-shield-alt mb-1 md:mb-0 md:mr-2 text-sm md:text-lg group-hover:scale-110 transition-transform"></i>
                                 <span>Admin</span>
                             </a>
     
                             <button id="settingsTab" type="button" class="group inline-flex flex-col md:flex-row items-center justify-center px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/20 text-white text-xs md:text-lg font-semibold transition-all duration-300 whitespace-nowrap hover:-translate-y-1 hover:shadow-lg">
                                 <i class="fas fa-cog mb-1 md:mb-0 md:mr-2 text-sm md:text-lg group-hover:scale-110 transition-transform"></i>
-                                <span>Ajustes</span>
+                                <span>Ayarlar</span>
                             </button>
                         </div>
                     </div>
@@ -177,14 +177,14 @@
             </header>
             
             <!-- NOTICE BAR -->
-            <!-- Dark Mode: Dark Red -->
+            <!-- Karanlık Mode: Karanlık Red -->
             <div class="relative mx-4 mt-6 p-3 md:p-4 bg-yellow-400 dark:bg-stone-800 dark:border dark:border-stone-700/50 rounded-xl shadow-lg flex items-center justify-center gap-2 text-center text-sm md:text-base font-bold text-black dark:text-stone-200 transition-colors duration-300" id="noticeBar">
                 <i class="fas fa-info-circle text-red-500 dark:text-red-400 text-lg"></i>
                 <div class="flex items-center gap-2">
-                    <a href="/register/" class="hover:text-stone-800 dark:hover:text-white underline decoration-2 decoration-black/30 dark:decoration-red-400/30 underline-offset-2 transition-colors">Registrarme</a>
+                    <a href="/register/" class="hover:text-stone-800 dark:hover:text-white underline decoration-2 decoration-black/30 dark:decoration-red-400/30 underline-offset-2 transition-colors">Register</a>
                     <span class="opacity-50">/</span>
                     <span class="flex items-center gap-2">
-                        <a href="/login/" class="hover:text-stone-800 dark:hover:text-white underline decoration-2 decoration-black/30 dark:decoration-red-400/30 underline-offset-2 transition-colors">Iniciar Sesión</a>
+                        <a href="/login/" class="hover:text-stone-800 dark:hover:text-white underline decoration-2 decoration-black/30 dark:decoration-red-400/30 underline-offset-2 transition-colors">Sign In</a>
                     </span>
                 </div>
             </div>
@@ -198,16 +198,16 @@
             <footer class="mt-auto py-8 bg-stone-50 dark:bg-stone-950 border-t border-stone-200 dark:border-stone-800 w-full">
                 <div class="max-w-4xl mx-auto px-4 flex flex-col items-center justify-center text-center">
                     <div class="flex flex-wrap justify-center items-center gap-3 mb-4 text-sm font-medium text-stone-600 dark:text-stone-400">
-                        <a href="/Dashboard/" class="hover:text-red-600 dark:hover:text-red-400 transition-colors">Sobre el Proyecto</a>
+                        <a href="/tr/Dashboard/" class="hover:text-red-600 dark:hover:text-red-400 transition-colors">About</a>
                         <span class="text-stone-300 dark:text-stone-600">•</span>
-                        <a href="/Contribuidores/" class="hover:text-red-600 dark:hover:text-red-400 transition-colors">Contribuidores</a>
+                        <a href="/tr/Contribuidores/" class="hover:text-red-600 dark:hover:text-red-400 transition-colors">Contributors</a>
                         <span class="text-stone-300 dark:text-stone-600">•</span>
-                        <a href="https://whydonate.com/fundraising/-apoya-mas-desarollos-para-nuestra-comunidad" target="_blank" class="hover:text-red-600 dark:hover:text-red-400 transition-colors">Apoyar</a>
+                        <a href="https://whydonate.com/fundraising/-apoya-mas-desarollos-para-nuestra-comunidad" target="_blank" class="hover:text-red-600 dark:hover:text-red-400 transition-colors">Support</a>
                         <span class="text-stone-300 dark:text-stone-600">•</span>
-                        <a href="/Privacy/" class="hover:text-red-600 dark:hover:text-red-400 transition-colors">Privacidad</a>
+                        <a href="/tr/Privacy/" class="hover:text-red-600 dark:hover:text-red-400 transition-colors">Privacy</a>
                     </div>
                     <p class="text-xs md:text-sm text-stone-500 dark:text-stone-500">
-                        Hecho con <i class="fas fa-heart text-red-500 animate-pulse"></i> para la comunidad latina por ODL
+                        Made with <i class="fas fa-heart text-red-500 animate-pulse"></i> for the community by ODL
                     </p>
                 </div>
             </footer>
@@ -219,8 +219,8 @@
         <div class="settings-panel w-full max-w-sm bg-white dark:bg-stone-800 rounded-3xl shadow-2xl border border-stone-200 dark:border-stone-700 transform scale-95 transition-transform duration-300">
             
             <div class="flex items-center justify-between p-5 border-b border-stone-100 dark:border-stone-700">
-                <h2 class="text-xl font-bold text-stone-800 dark:text-white">Configuración</h2>
-                <button id="closeSettingsBtn" class="p-2 rounded-full hover:bg-stone-100 dark:hover:bg-stone-700 text-stone-500 dark:text-stone-400 transition-colors">
+                <h2 class="text-xl font-bold text-stone-800 dark:text-white">Ayarlar</h2>
+                <button id="closeAyarlarBtn" class="p-2 rounded-full hover:bg-stone-100 dark:hover:bg-stone-700 text-stone-500 dark:text-stone-400 transition-colors">
                     <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
@@ -232,23 +232,23 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="flex-grow">
-                        <h3 class="font-semibold text-stone-800 dark:text-white text-sm">Perfil</h3>
-                        <p class="text-xs text-stone-500 dark:text-stone-400">Ver tu racha y datos</p>
+                        <h3 class="font-semibold text-stone-800 dark:text-white text-sm">Profile</h3>
+                        <p class="text-xs text-stone-500 dark:text-stone-400">View your streak and data</p>
                     </div>
                     <a href="/Perfil/" class="p-2 text-stone-400 hover:text-red-600 dark:hover:text-red-400 transition-colors">
                         <i class="fas fa-chevron-right"></i>
                     </a>
                 </div>
 
-                <!-- Dark Mode -->
+                <!-- Karanlık Mode -->
                 <div class="flex items-center justify-between p-3 rounded-2xl bg-stone-50 dark:bg-stone-700/50">
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400">
                             <i class="fas fa-moon"></i>
                         </div>
                         <div>
-                            <h3 class="font-semibold text-stone-800 dark:text-white text-sm">Modo Oscuro</h3>
-                            <p class="text-xs text-stone-500 dark:text-stone-400">Cambiar apariencia</p>
+                            <h3 class="font-semibold text-stone-800 dark:text-white text-sm">Karanlık Mode</h3>
+                            <p class="text-xs text-stone-500 dark:text-stone-400">Change appearance</p>
                         </div>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
@@ -265,7 +265,7 @@
                         </div>
                         <div>
                             <h3 class="font-semibold text-stone-800 dark:text-white text-sm">Panda AI</h3>
-                            <p class="text-xs text-stone-500 dark:text-stone-400">Asistente virtual</p>
+                            <p class="text-xs text-stone-500 dark:text-stone-400">Virtual Assistant</p>
                         </div>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
@@ -282,8 +282,8 @@
                             <i class="fas fa-bell"></i>
                         </div>
                         <div>
-                            <h3 class="font-semibold text-stone-800 dark:text-white text-sm">Notificaciones</h3>
-                            <p class="text-xs text-stone-500 dark:text-stone-400">Activar alertas</p>
+                            <h3 class="font-semibold text-stone-800 dark:text-white text-sm">Notifications</h3>
+                            <p class="text-xs text-stone-500 dark:text-stone-400">Enable alerts</p>
                         </div>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
@@ -299,21 +299,21 @@
                             <i class="fas fa-language"></i>
                         </div>
                         <div>
-                            <h3 class="font-semibold text-stone-800 dark:text-white text-sm">Idioma / Language</h3>
-                            <p class="text-xs text-stone-500 dark:text-stone-400">ES / EN</p>
+                            <h3 class="font-semibold text-stone-800 dark:text-white text-sm">Language</h3>
+                            <p class="text-xs text-stone-500 dark:text-stone-400">EN / ES</p>
                         </div>
                     </div>
                     <select id="languageSelect" class="setting-select bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-600 rounded-lg px-2 py-1 text-sm font-medium text-stone-700 dark:text-stone-200 outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="tr">Türkçe</option>
-                        <option value="es">Español</option>
                         <option value="en">English</option>
+                        <option value="es">Español</option>
+                        <option value="tr">Türkçe</option>
                     </select>
                 </div>
             </div>
             
             <div class="p-5 border-t border-stone-100 dark:border-stone-700">
-                <button id="resetSettingsBtn" class="w-full py-3 rounded-xl border border-stone-200 dark:border-stone-600 text-stone-600 dark:text-stone-300 font-medium hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors text-sm">
-                    Restaurar valores
+                <button id="resetAyarlarBtn" class="w-full py-3 rounded-xl border border-stone-200 dark:border-stone-600 text-stone-600 dark:text-stone-300 font-medium hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors text-sm">
+                    Restore default values
                 </button>
             </div>
         </div>
@@ -329,7 +329,7 @@
 
              <!-- Desktop Speech Bubble -->
              <div class="absolute -top-12 right-0 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 text-sm py-1 px-3 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-stone-200 dark:border-stone-700 hidden md:block">
-                ¡Merhaba! Soy Panda
+                Hello! I'm Panda
             </div>
 
             <!-- Image with Picture Tag -->
@@ -358,13 +358,13 @@
                     <h3 class="font-bold text-lg">Panda AI</h3>
                     <p class="text-xs text-red-100 flex items-center gap-1">
                         <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                        En línea
+                        Online
                     </p>
                 </div>
             </div>
             <!-- Expanded Actions -->
             <div class="flex items-center gap-1">
-                    <button id="close-chat-btn" class="p-2 hover:bg-white/20 rounded-full transition-colors" title="Cerrar chat">
+                    <button id="close-chat-btn" class="p-2 hover:bg-white/20 rounded-full transition-colors" title="Kapat chat">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
@@ -379,8 +379,8 @@
                 </div>
                 <div class="bg-white dark:bg-stone-800 p-3 rounded-2xl rounded-tl-none shadow-sm border border-stone-100 dark:border-stone-700 max-w-[85%]">
                     <p class="text-sm text-stone-600 dark:text-stone-300">
-                        ¡Hola! 👋<br>
-                        Soy Panda, tu asistente de chino. ¿En qué puedo ayudarte hoy?
+                        Merhaba! 👋<br>
+                        Ben Panda, Çince asistanınız. Bugün size nasıl yardımcı olabilirim?
                     </p>
                 </div>
             </div>
@@ -393,7 +393,7 @@
                     id="chat-input" 
                     rows="1"
                     class="w-full bg-stone-50 dark:bg-stone-900 border-0 rounded-xl px-4 py-3 text-stone-700 dark:text-stone-200 focus:ring-2 focus:ring-red-500 resize-none max-h-32 text-sm shadow-inner"
-                    placeholder="Escribe tu pregunta a Panda..."
+                    placeholder="Panda'ya sorunuzu yazın..."
                 ></textarea>
                 <button 
                     type="button"
