@@ -52,7 +52,7 @@ layout: niveles.njk
 
 <div class="sr-only">
   {% for key, lesson in a1_lessons %}
-  <article id="seo-lesson-{{key}}">
+  <article data-id="seo-lesson-{{ key }}">
     <h2>{{ lesson.title }}</h2>
     <div>{{ lesson.content | safe }}</div>
   </article>

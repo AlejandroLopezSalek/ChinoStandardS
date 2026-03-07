@@ -1,23 +1,27 @@
 // Lightweight i18n router
+// Lightweight i18n router
 document.addEventListener('DOMContentLoaded', () => {
     const lang = localStorage.getItem('language') || 'es';
-    const currentPath = window.location.pathname;
+    const currentPath = globalThis.window.location.pathname;
 
-    // Auto-redirect to English ONLY for main routes if preferred language is English
-    if (lang === 'en' && !currentPath.startsWith('/en/')) {
-        const migradatedPages = [
-            '/', '/Consejos/', '/Gramatica/', '/Admin-Contributions/', '/Community-Lessons/',
-            '/Contribuidores/', '/Contribute/', '/Dashboard/', '/Glosario/', '/NivelA1/',
-            '/NivelA2/', '/NivelB1/', '/NivelB2/', '/NivelC1/', '/Perfil/', '/Privacy/',
-            '/Recursos/', '/login/', '/register/'
-        ];
-        if (migradatedPages.includes(currentPath)) {
-            window.location.replace('/en' + (currentPath === '/' ? '/' : currentPath));
-        }
+    // Extract base path to cleanly handle cross-language redirection
+    let basePath = currentPath;
+    if (currentPath.startsWith('/en/') || currentPath.startsWith('/tr/')) {
+        basePath = currentPath.substring(3) || '/';
     }
-    // Auto-redirect to Spanish if they are on /en/ but prefer Spanish
-    else if (lang === 'es' && currentPath.startsWith('/en/')) {
-        const newPath = currentPath.substring(3);
-        window.location.replace(newPath === '' ? '/' : newPath);
+
+    const migradatedPages = new Set([
+        '/', '/Consejos/', '/Gramatica/', '/Admin-Contributions/', '/Community-Lessons/',
+        '/Contribuidores/', '/Contribute/', '/Dashboard/', '/Glosario/', '/NivelA1/',
+        '/NivelA2/', '/NivelB1/', '/NivelB2/', '/NivelC1/', '/Perfil/', '/Privacy/',
+        '/Recursos/', '/login/', '/register/'
+    ]);
+
+    if ((lang === 'en' || lang === 'tr') && !currentPath.startsWith(`/${lang}/`)) {
+        if (migradatedPages.has(basePath)) {
+            globalThis.window.location.replace(`/${lang}${basePath === '/' ? '/' : basePath}`);
+        }
+    } else if (lang === 'es' && currentPath !== basePath) {
+        globalThis.window.location.replace(basePath);
     }
 });

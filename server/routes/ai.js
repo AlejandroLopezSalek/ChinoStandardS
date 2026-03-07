@@ -99,13 +99,19 @@ If the user is viewing a lesson, answer based on the ACTIVE LESSON CONTEXT provi
 `;
     }
 
-    const languageRules = lang === 'en'
-        ? `1. **Language**: EXPLAIN in English, but PROVIDE EXAMPLES in Chinese.`
-        : `1. **Language**: EXPLAIN in Spanish, but PROVIDE EXAMPLES in Chinese.`;
+    let languageRules = `1. **Language**: EXPLAIN in Spanish, but PROVIDE EXAMPLES in Chinese.`;
+    if (lang === 'en') {
+        languageRules = `1. **Language**: EXPLAIN in English, but PROVIDE EXAMPLES in Chinese.`;
+    } else if (lang === 'tr') {
+        languageRules = `1. **Language**: EXPLAIN in Turkish, but PROVIDE EXAMPLES in Chinese.`;
+    }
 
-    const instructionsLang = lang === 'en'
-        ? `Your goal: Help English speakers learn Chinese correctly.`
-        : `Your goal: Help Spanish speakers learn Chinese correctly.`;
+    let instructionsLang = `Your goal: Help Spanish speakers learn Chinese correctly.`;
+    if (lang === 'en') {
+        instructionsLang = `Your goal: Help English speakers learn Chinese correctly.`;
+    } else if (lang === 'tr') {
+        instructionsLang = `Your goal: Help Turkish speakers learn Chinese correctly.`;
+    }
 
     return `You are "Panda", the AI mascot for "PandaLatam".
 ${instructionsLang}
@@ -133,6 +139,29 @@ NAVIGATION:
 // Daily cache - in-memory fast layer
 let wodCache = {};
 
+// Helper to generate the target word sync prompt
+const getTargetWordPrompt = (existingOther, languageName) => {
+    if (!existingOther?.data?.character) return "";
+
+    const sourceLevelBadge = existingOther.data.level_badge || "";
+    const levelPrefixMatch = sourceLevelBadge.match(/^([a-zA-Z0-9]+)\s*-/);
+    const levelInstruction = levelPrefixMatch
+        ? `\n- "level_badge": MUST start with "${levelPrefixMatch[1]} - " followed by the ${languageName} translated level name.`
+        : "";
+
+    return `
+
+CRITICAL INSTRUCTION - SYNC REQUIRED:
+You MUST use these exact Chinese values for the following fields. DO NOT alter them:
+- "character": "${existingOther.data.character}"
+- "pinyin": "${existingOther.data.pinyin}"
+- "sentence_character": "${existingOther.data.sentence_character}"
+- "sentence_pinyin": "${existingOther.data.sentence_pinyin}"${levelInstruction}
+
+Your ONLY task is to provide the ${languageName} translations for 'word_translation', 'level_badge', 'tip', and 'sentence_translation'. 
+CRITICAL RULE: You MUST NOT translate the target word itself in the 'sentence_translation'. Keep the target word "${existingOther.data.character}" in its original Chinese character form inside the translated sentence!`;
+};
+
 // GET /word-of-day (Mounted at /api/chat/word-of-day)
 const DailyWord = require('../models/DailyWord');
 
@@ -142,8 +171,14 @@ router.get('/word-of-day', async (req, res) => {
             return res.status(503).json({ error: 'AI service not configured' });
         }
 
-        const lang = req.query.lang === 'en' ? 'en' : 'es';
-        const languageName = lang === 'en' ? 'English' : 'Spanish';
+        const lang = ['en', 'tr'].includes(req.query.lang) ? req.query.lang : 'es';
+
+        let languageName = 'Spanish';
+        if (lang === 'en') {
+            languageName = 'English';
+        } else if (lang === 'tr') {
+            languageName = 'Turkish';
+        }
         const todayStr = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
         // Cache per language (v2 string appended to bust corrupted production caches)
         const cacheKey = todayStr + '_v2_' + lang;
@@ -160,32 +195,16 @@ router.get('/word-of-day', async (req, res) => {
             return res.json(existing.data);
         }
 
-        // 2.5 Check if the OTHER language generated a word today
-        const otherLang = lang === 'en' ? 'es' : 'en';
-        const otherCacheKey = todayStr + '_v2_' + otherLang;
-        const existingOther = await DailyWord.findOne({ date: otherCacheKey });
+        // 2.5 Check if ANY OTHER language generated a word today
+        const otherCacheKeyPrefix = todayStr + '_v2_';
+        const existingOther = await DailyWord.findOne({
+            date: {
+                $regex: '^' + otherCacheKeyPrefix,
+                $ne: cacheKey
+            }
+        });
 
-        let targetWordPrompt = "";
-        if (existingOther && existingOther.data && existingOther.data.character) {
-            // Extract the CEFR/HSK level prefix (e.g., "HSK 2" from "HSK 2 - Elemental" or "B2" from "B2 - Intermediate")
-            const sourceLevelBadge = existingOther.data.level_badge || "";
-            const levelPrefixMatch = sourceLevelBadge.match(/^([a-zA-Z0-9]+)\s*-/);
-            const levelInstruction = levelPrefixMatch
-                ? `\n- "level_badge": MUST start with "${levelPrefixMatch[1]} - " followed by the ${languageName} translated level name.`
-                : "";
-
-            targetWordPrompt = `
-
-CRITICAL INSTRUCTION - SYNC REQUIRED:
-You MUST use these exact Chinese values for the following fields. DO NOT alter them:
-- "character": "${existingOther.data.character}"
-- "pinyin": "${existingOther.data.pinyin}"
-- "sentence_character": "${existingOther.data.sentence_character}"
-- "sentence_pinyin": "${existingOther.data.sentence_pinyin}"${levelInstruction}
-
-Your ONLY task is to provide the ${languageName} translations for 'word_translation', 'level_badge', 'tip', and 'sentence_translation'. 
-CRITICAL RULE: You MUST NOT translate the target word itself in the 'sentence_translation'. Keep the target word "${existingOther.data.character}" in its original Chinese character form inside the translated sentence!`;
-        }
+        let targetWordPrompt = getTargetWordPrompt(existingOther, languageName);
 
         // 3. Generate new word via AI
         const thirtyDaysAgo = new Date();
@@ -197,10 +216,16 @@ CRITICAL RULE: You MUST NOT translate the target word itself in the 'sentence_tr
         const avoidPrompt = recentWords.length > 0 && !targetWordPrompt ? `\n\nNOTE: Try to avoid these words that were provided recently: ${recentWords.join(', ')}.` : '';
 
         // Dynamic examples based on language to avoid confusing the AI
-        const exampleWordTrans = lang === 'en' ? 'Mother' : 'Madre';
-        const exampleLevel = lang === 'en' ? 'A1 - Beginner' : 'A1 - Principiante';
-        const exampleTip = lang === 'en' ? 'Remember the character naturally looks like a mother holding a baby.' : 'Recuerda que el carácter parece una madre sosteniendo a un bebé.';
-        const exampleSentenceTrans = lang === 'en' ? 'I want to see my 母亲' : 'Quiero ver a mi 母亲';
+        const DYNAMIC_EXAMPLES = {
+            en: { word: 'Mother', level: 'A1 - Beginner', tip: 'Remember the character naturally looks like a mother holding a baby.', sentence: 'I want to see my 母亲' },
+            tr: { word: 'Anne', level: 'A1 - Başlangıç', tip: 'Karakterin bebeğini tutan bir anneye benzediğini unutmayın.', sentence: '母亲ı görmek istiyorum' },
+            es: { word: 'Madre', level: 'A1 - Principiante', tip: 'Recuerda que el carácter parece una madre sosteniendo a un bebé.', sentence: 'Quiero ver a mi 母亲' }
+        };
+        const exMap = DYNAMIC_EXAMPLES[lang] || DYNAMIC_EXAMPLES.es;
+        const exampleWordTrans = exMap.word;
+        const exampleLevel = exMap.level;
+        const exampleTip = exMap.tip;
+        const exampleSentenceTrans = exMap.sentence;
 
         const userPrompt = `Act as a Chinese language learning API. Your task is to generate a 'Word of the Day' for a learning application.
 
@@ -234,7 +259,7 @@ Create a JSON object for the daily word following the exact structure from the e
             messages: [
                 {
                     role: 'system',
-                    content: `You are a strict native Simplified Chinese language teacher. You ONLY speak and output Simplified Chinese, English, and Spanish. Respond ONLY with valid JSON, no markdown, no extra text.`
+                    content: `You are a strict native Simplified Chinese language teacher. You ONLY speak and output Simplified Chinese, English, Turkish, and Spanish. Respond ONLY with valid JSON, no markdown, no extra text.`
                 },
                 {
                     role: 'user',
@@ -274,16 +299,23 @@ Create a JSON object for the daily word following the exact structure from the e
     } catch (err) {
         console.error('[word-of-day] Error:', err.message);
         // Fallback to a hardcoded word so the widget never breaks
-        const isEn = req.query.lang === 'en';
+        const validLang = ['en', 'tr'].includes(req.query.lang) ? req.query.lang : 'es';
+        const FALLBACK_WORDS = {
+            en: { trans: 'Hello', level: 'A1 - Beginner', tip: 'Nǐ hǎo is the most common greeting in Chinese.', sentTrans: 'Hello, how are you?' },
+            tr: { trans: 'Merhaba', level: 'A1 - Başlangıç', tip: 'Nǐ hǎo, Çince\'deki en yaygın selamlamadır.', sentTrans: 'Merhaba, nasılsın?' },
+            es: { trans: 'Hola', level: 'A1 - Principiante', tip: 'Nǐ hǎo es el saludo más común en chino.', sentTrans: '¿Hola, cómo estás?' }
+        };
+        const fbMap = FALLBACK_WORDS[validLang];
+
         const fallback = {
             character: '你好',
             pinyin: 'nǐ hǎo',
-            word_translation: isEn ? 'Hello' : 'Hola',
-            level_badge: isEn ? 'A1 - Beginner' : 'A1 - Principiante',
-            tip: isEn ? 'Nǐ hǎo is the most common greeting in Chinese.' : 'Nǐ hǎo es el saludo más común en chino.',
+            word_translation: fbMap.trans,
+            level_badge: fbMap.level,
+            tip: fbMap.tip,
             sentence_character: '你好，你怎么样？',
             sentence_pinyin: 'Nǐ hǎo, nǐ zěnme yàng?',
-            sentence_translation: isEn ? 'Hello, how are you?' : '¿Hola, cómo estás?'
+            sentence_translation: fbMap.sentTrans
         };
         res.json(fallback);
     }
@@ -409,3 +441,4 @@ async function logChatInteraction(user, message, reply, context, lessonContentCo
 
 
 module.exports = router;
+// Trigger restart
