@@ -153,7 +153,8 @@ class LessonEditor {
             document.execCommand('formatBlock', false, command);
         } else {
             // @ts-ignore - Built-in browser editor fallback
-            document.execCommand(command, false, null);
+            // @ts-ignore
+    document.execCommand(command, false, null);
         }
         this.editor.focus();
     }
