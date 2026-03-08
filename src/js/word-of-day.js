@@ -329,9 +329,13 @@
         const normUser = normalizeAnswer(userAnswer);
         const normCorrect = normalizeAnswer(correctAnswer);
 
-        // Check for exact match or near-match (contains the key word)
+        // Strict check: exact match, or (single-word only) user typed at least 90% of the answer
+        const correctWords = normCorrect.split(/\s+/);
+        const isMultiWord = correctWords.length > 1;
         const isCorrect = normUser === normCorrect ||
-            (normCorrect.includes(normUser) && normUser.length >= Math.max(3, normCorrect.length / 2));
+            (!isMultiWord &&
+                normUser.length >= Math.ceil(normCorrect.length * 0.9) &&
+                normCorrect.startsWith(normUser));
 
         // Save to analytics
         saveWodAnalytics(wodData.character, userAnswer, isCorrect, wodData.level_badge);
@@ -357,10 +361,10 @@
         feedback.classList.remove('hidden');
     }
 
-    // ---- Analytics helper ----
+    // ---- WoD Stats helper ----
     async function saveWodAnalytics(word, guess, isCorrect, level) {
         try {
-            // Get user info if available
+            // Get user info from localStorage if available
             let username = 'guest';
             let country = 'unknown';
 
@@ -373,26 +377,28 @@
                     country = userObj.country || 'unknown';
                 }
             } catch (error) {
-                console.warn('Could not parse user info for analytics', error);
+                console.warn('Could not parse user info for WoD stats', error);
             }
 
-            await fetch('/api/analytics', {
+            const date = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+            const token = localStorage.getItem('token') || localStorage.getItem('authToken');
+
+            await fetch('/api/wod/attempt', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                },
                 body: JSON.stringify({
-                    type: 'word_of_day_attempt',
-                    word: word,
-                    guess: guess,
-                    isCorrect: isCorrect,
-                    level: level,
-                    username: username,
-                    country: country,
-                    url: globalThis.location.pathname,
-                    timestamp: new Date().toISOString()
+                    date,
+                    character: word,
+                    isCorrect,
+                    username,
+                    country
                 })
             });
         } catch (err) {
-            console.warn('[wod-analytics] Failed to save attempt:', err.message);
+            console.warn('[wod-stats] Failed to save attempt:', err.message);
         }
     }
 

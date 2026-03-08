@@ -272,8 +272,16 @@
             const normUser = normalize(userAnswer);
             const normCorrect = normalize(data.word_translation);
 
+            // Only accept exact match OR if the answer consists of multiple words,
+            // check each word individually (e.g. "to eat" matches "eat" only in full)
+            const correctWords = normCorrect.split(/\s+/);
+            const isMultiWord = correctWords.length > 1;
             const isCorrect = normUser === normCorrect ||
-                (normCorrect.includes(normUser) && normUser.length >= Math.max(3, normCorrect.length / 2));
+                // For multi-word translations: user must match the full string (no partial)
+                // For single-word: require at least 90% character length AND starts-with match
+                (!isMultiWord &&
+                    normUser.length >= Math.ceil(normCorrect.length * 0.9) &&
+                    normCorrect.startsWith(normUser));
 
             getEl('glosAnswerZone')?.classList.add('hidden');
             const isEn = localStorage.getItem('language') === 'en';
