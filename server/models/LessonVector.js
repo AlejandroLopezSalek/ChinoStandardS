@@ -20,7 +20,7 @@ const lessonVectorSchema = new mongoose.Schema({
         validate: {
             validator: function (v) {
                 // Xenova/all-MiniLM-L6-v2 outputs 384 dimensions
-                return v && v.length === 384;
+                return v?.length === 384;
             },
             message: 'Vector must be a 384-dimensional array'
         }
