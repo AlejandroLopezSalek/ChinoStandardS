@@ -96,7 +96,7 @@
             // Try to extract first English letter from pinyin
             let firstLetter = data.pinyin.trim().charAt(0).toUpperCase();
             // Remove diacritics for sorting
-            firstLetter = firstLetter.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            firstLetter = firstLetter.normalize('NFD').replaceAll(/[\u0300-\u036f]/g, '');
             if (!/[A-Z]/.test(firstLetter)) firstLetter = '#';
 
             if (!groups[firstLetter]) groups[firstLetter] = [];

@@ -149,8 +149,10 @@ class LessonEditor {
 
     execCommand(command) {
         if (command === 'h2' || command === 'h3') {
+            // @ts-ignore - Built-in browser editor fallback
             document.execCommand('formatBlock', false, command);
         } else {
+            // @ts-ignore - Built-in browser editor fallback
             document.execCommand(command, false, null);
         }
         this.editor.focus();
