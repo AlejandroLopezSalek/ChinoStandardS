@@ -25,6 +25,21 @@
             .replaceAll('"', '&quot;');
     }
 
+    // Get current logged-in username so WoD state is per-user, not shared across accounts
+    function getCurrentUsername() {
+        try {
+            const userKey = globalThis.APP_CONFIG?.AUTH?.USER_KEY || 'currentUser';
+            const userStr = localStorage.getItem(userKey);
+            if (userStr) return JSON.parse(userStr)?.username || null;
+        } catch { /* ignore */ }
+        return null;
+    }
+
+    function getWodStorageKey(rawDate) {
+        const username = getCurrentUsername();
+        return username ? `wod_answered_${rawDate}_${username}` : `wod_answered_global_${rawDate}`;
+    }
+
     async function init() {
         const container = getEl('glossaryContainer');
         if (!container) return;
@@ -109,12 +124,10 @@
                 const lvl = LEVEL_COLORS[lvlCode] || LEVEL_COLORS['A1'];
                 const rawDate = w.date.split('_')[0];
 
-                // Track progress globally by date regardless of language
-                const storageKey = 'wod_answered_global_' + rawDate;
+                // Track progress per-user (not shared across different accounts on same browser)
+                const storageKey = getWodStorageKey(rawDate);
 
-                // For older stored formats or newly global formats
-                const isAnswered = localStorage.getItem(storageKey) === w.character ||
-                    localStorage.getItem('wod_answered_' + w.date) === w.character;
+                const isAnswered = localStorage.getItem(storageKey) === w.character;
 
                 const checkIcon = isAnswered
                     ? '<div class="absolute -top-2 -right-2 bg-white dark:bg-stone-800 rounded-full shadow-sm p-1"><i class="fas fa-check-circle text-green-500 text-lg leading-none"></i></div>'
@@ -168,10 +181,8 @@
         const lvlBg = LEVEL_COLORS[lvlCode] ? LEVEL_COLORS[lvlCode].bg : LEVEL_COLORS['A1'].bg;
 
         const rawDate = data.date.split('_')[0];
-        const storageKey = 'wod_answered_global_' + rawDate;
-        const legacyStorageKey = 'wod_answered_' + data.date;
-        const localAnswered = localStorage.getItem(storageKey) === data.character ||
-            localStorage.getItem(legacyStorageKey) === data.character;
+        const storageKey = getWodStorageKey(rawDate);
+        const localAnswered = localStorage.getItem(storageKey) === data.character;
 
         const isEn = localStorage.getItem('language') === 'en';
 

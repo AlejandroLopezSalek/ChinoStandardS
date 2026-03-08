@@ -164,8 +164,21 @@
 
     const getEl = (id) => document.getElementById(id);
 
-    // Local storage key helper
-    const getStorageKey = () => 'wod_answered_global_' + new Date().toISOString().slice(0, 10);
+    // Local storage key helper — includes username so different users on the same browser don't share WoD state
+    const getStorageKey = (username) => {
+        const today = new Date().toISOString().slice(0, 10);
+        return username ? `wod_answered_${today}_${username}` : `wod_answered_global_${today}`;
+    };
+
+    // Helper to get current logged-in username from localStorage
+    const getCurrentUsername = () => {
+        try {
+            const userKey = globalThis.APP_CONFIG?.AUTH?.USER_KEY || 'currentUser';
+            const userStr = localStorage.getItem(userKey);
+            if (userStr) return JSON.parse(userStr)?.username || null;
+        } catch { /* ignore */ }
+        return null;
+    };
 
     // ---- Fetch word of the day ----
     async function loadWordOfDay() {
@@ -267,7 +280,8 @@
             localStorage.getItem('currentUser') ||
             globalThis.AuthService?.isLoggedIn()
         );
-        const storageKey = getStorageKey();
+        const currentUsername = getCurrentUsername();
+        const storageKey = getStorageKey(currentUsername);
         const localAnswered = localStorage.getItem(storageKey) === data.character;
 
         if (!isUserLoggedIn) {
@@ -311,7 +325,7 @@
 
             saveWodAnalytics(wodData.character, null, false, wodData.level_badge);
             answered = true;
-            localStorage.setItem(getStorageKey(), wodData.character); // Persist locally
+            localStorage.setItem(getStorageKey(getCurrentUsername()), wodData.character); // Persist locally per user
         });
 
         // Show tip
@@ -351,7 +365,7 @@
             if (exTr) exTr.classList.remove('hidden');
 
             answered = true;
-            localStorage.setItem(getStorageKey(), wodData.character);
+            localStorage.setItem(getStorageKey(getCurrentUsername()), wodData.character);
         }
 
         const isEn = localStorage.getItem('language') === 'en';
