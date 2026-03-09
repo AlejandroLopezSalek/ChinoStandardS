@@ -80,3 +80,6 @@ check-users.js
 
 clear-cache.js
 test-wod.mjs
+
+# AI & Local Databases
+qdrant_data/

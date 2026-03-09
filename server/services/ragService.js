@@ -1,5 +1,10 @@
 const { pipeline } = require('@xenova/transformers');
+const { QdrantClient } = require('@qdrant/js-client-rest');
 const LessonVector = require('../models/LessonVector');
+
+// Initialize Qdrant Client (targeting the local Docker container)
+const qdrantClient = new QdrantClient({ url: 'http://127.0.0.1:6333' });
+const COLLECTION_NAME = 'lessons';
 
 class RagService {
     constructor() {
@@ -7,6 +12,26 @@ class RagService {
         this.modelName = 'Xenova/all-MiniLM-L6-v2';
         this.isInitializing = false;
         this.initPromise = null;
+        this.ensureCollection();
+    }
+
+    async ensureCollection() {
+        try {
+            const result = await qdrantClient.getCollections();
+            const exists = result.collections.some(c => c.name === COLLECTION_NAME);
+            if (!exists) {
+                // Xenova/all-MiniLM-L6-v2 outputs 384 dimensions
+                await qdrantClient.createCollection(COLLECTION_NAME, {
+                    vectors: {
+                        size: 384,
+                        distance: 'Cosine'
+                    }
+                });
+                console.log(`[Qdrant] Created collection '${COLLECTION_NAME}' (384-dim, Cosine)`);
+            }
+        } catch (e) {
+            console.error('[Qdrant] Connection warning: Ensure Qdrant Docker is running on port 6333.', e.message);
+        }
     }
 
     async init() {
@@ -64,90 +89,95 @@ class RagService {
 
     async indexLesson(lessonId, content, metadata = {}) {
         try {
-            // 1. Delete old vectors for this lesson if re-indexing
+            // 1. Delete old vectors for this lesson if re-indexing (from Mongo & Qdrant)
             await LessonVector.deleteMany({ lessonId });
+
+            try {
+                // Delete points by payload lessonId in Qdrant
+                await qdrantClient.delete(COLLECTION_NAME, {
+                    filter: {
+                        must: [{ key: "lessonId", match: { value: String(lessonId) } }]
+                    }
+                });
+            } catch (e) { /* Ignore if collection is empty or unreachable */ }
 
             // 2. Chunk text
             const chunks = this.chunkText(content);
             if (chunks.length === 0) return;
 
-            // 3. Generate embeddings and save
             console.log(`[RAG Service] Indexing ${chunks.length} chunks for lesson ${lessonId}`);
+
+            const pointsToUpsert = [];
 
             for (let i = 0; i < chunks.length; i++) {
                 const chunkText = chunks[i];
                 if (!chunkText.trim()) continue;
 
+                // Local CPU inference (Xenova)
                 const vector = await this.generateEmbedding(chunkText);
 
-                await new LessonVector({
+                // Save to MongoDB as a backup/reference
+                const newMongoDoc = await new LessonVector({
                     lessonId,
                     chunkIndex: i,
                     text: chunkText,
                     vector,
                     metadata
                 }).save();
+
+                // Build Qdrant Point
+                pointsToUpsert.push({
+                    id: String(newMongoDoc._id), // Use Mongo's specific UUID
+                    vector: vector,
+                    payload: {
+                        lessonId: String(lessonId),
+                        chunkIndex: i,
+                        text: chunkText,
+                        ...metadata
+                    }
+                });
             }
 
-            console.log(`[RAG Service] Successfully indexed lesson ${lessonId}`);
+            // Batch insert into Qdrant
+            if (pointsToUpsert.length > 0) {
+                await qdrantClient.upsert(COLLECTION_NAME, { wait: true, points: pointsToUpsert });
+            }
+
+            console.log(`[RAG Service] Successfully indexed lesson ${lessonId} into DB & Qdrant`);
         } catch (err) {
             console.error(`[RAG Service] Error indexing lesson ${lessonId}:`, err);
         }
     }
 
-    // Mathematical Dot Product & Cosine Similarity for array comparison
-    dotProduct(vecA, vecB) {
-        let sum = 0;
-        for (let i = 0; i < vecA.length; i++) {
-            sum += vecA[i] * vecB[i];
-        }
-        return sum;
-    }
-
-    magnitude(vec) {
-        let sum = 0;
-        for (let i = 0; i < vec.length; i++) {
-            sum += vec[i] * vec[i];
-        }
-        return Math.sqrt(sum);
-    }
-
-    cosineSimilarity(vecA, vecB) {
-        const magA = this.magnitude(vecA);
-        const magB = this.magnitude(vecB);
-        if (magA === 0 || magB === 0) return 0;
-        return this.dotProduct(vecA, vecB) / (magA * magB);
-    }
-
     async findSimilarContext(queryText, limit = 3) {
         try {
-            // 1. Convert user query to vector
+            // 1. Convert user query to vector locally via Xenova
             const queryVector = await this.generateEmbedding(queryText);
 
-            // 2. Load ALL vectors from DB (Since dataset is small, this is fast enough in RAM)
-            // If dataset grows >10,000, consider Mongo Atlas Vector Search or pre-filtering.
-            const allLessonDocs = await LessonVector.find({});
+            // 2. Search Qdrant via its ultra-fast C++ Engine
+            const searchParams = {
+                vector: queryVector,
+                limit: limit,
+                with_payload: true,
+                score_threshold: 0.3 // Only return decent matches
+            };
 
-            // 3. Calculate similarity scores
-            const scoredDocs = allLessonDocs.map(doc => {
-                const score = this.cosineSimilarity(queryVector, doc.vector);
+            const qdrantResults = await qdrantClient.search(COLLECTION_NAME, searchParams);
+
+            // 3. Format back to standard output
+            const formattedResults = qdrantResults.map(point => {
                 return {
-                    text: doc.text,
-                    metadata: doc.metadata,
-                    score: score
+                    score: point.score,
+                    text: point.payload.text,
+                    metadata: point.payload || {}
                 };
             });
 
-            // 4. Sort by highest score (closest to 1.0)
-            scoredDocs.sort((a, b) => b.score - a.score);
+            return formattedResults;
 
-            // 5. Filter threshold (e.g. only return if score > 0.3)
-            const filteredDocs = scoredDocs.filter(d => d.score > 0.3);
-
-            // 6. Return top N chunks
-            return filteredDocs.slice(0, limit);
         } catch (err) {
-            console.error('[RAG Service] Error searching context:', err);
+            console.error('[RAG Service/Qdrant] Error searching context:', err.message);
+            // Fallback: If Qdrant is down, return empty context rather than crashing the chat.
             return [];
         }
     }
