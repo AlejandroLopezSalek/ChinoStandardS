@@ -241,21 +241,6 @@ app.get('*', (req, res) => {
 // ERROR HANDLING
 // ================================
 
-// MongoDB connection error handling
-const mongoose = require('mongoose');
-
-mongoose.connection.on('error', (err) => {
-  console.error(' MongoDB connection error:', err);
-});
-
-mongoose.connection.on('disconnected', () => {
-  console.log(' MongoDB disconnected. Attempting to reconnect...');
-});
-
-mongoose.connection.on('reconnected', () => {
-  console.log('MongoDB reconnected');
-});
-
 // Global error handler
 app.use((error, req, res, next) => {
   console.error(' Error:', error.message);
@@ -344,8 +329,7 @@ process.on('uncaughtException', (error) => {
 // ================================
 
 const startServer = async () => {
-  // Start listening immediately so Railway health checks pass
-  // even if MongoDB is slow to connect on cold start
+  // Start listening immediately
   app.listen(PORT, () => {
     console.log('\n╔═══════════════════════════════════════╗');
     console.log('║   PandaLatam MVP Server Started   ║');
@@ -356,20 +340,6 @@ const startServer = async () => {
     console.log(` CORS: ${getAllowedOrigins().length} origins allowed`);
     console.log('\n Ready to accept connections!\n');
   });
-
-  // Connect to DB in background — server is already listening
-  try {
-    await new Promise((resolve, reject) => {
-      if (mongoose.connection.readyState === 1) return resolve();
-      const timeout = setTimeout(() => reject(new Error('MongoDB connect timeout')), 10000);
-      mongoose.connection.once('connected', () => { clearTimeout(timeout); resolve(); });
-      mongoose.connection.once('error', (err) => { clearTimeout(timeout); reject(err); });
-    });
-    console.log(` MongoDB: ${mongoose.connection.name}`);
-  } catch (error) {
-    // Log but don't crash — mongoose will keep retrying in background
-    console.error(' MongoDB initial connect failed (will retry):', error.message);
-  }
 };
 
 startServer();
