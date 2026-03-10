@@ -11,14 +11,11 @@ const connectDB = async () => {
 
     // MongoDB connection options
     const options = {
-      // Connection options
-      maxPoolSize: 10, // Maintain up to 10 socket connections
-      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
-      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-      family: 4, // Use IPv4, skip trying IPv6
-
-      // Mongoose-specific options
-      bufferCommands: false, // Disable mongoose buffering
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 15000, // 15s — gives enough time on nodemon restart
+      socketTimeoutMS: 45000,
+      family: 4,
+      bufferCommands: false,
     };
 
     // Connect to MongoDB
@@ -33,14 +30,15 @@ const connectDB = async () => {
 
   } catch (error) {
     console.error(' MongoDB connection error:', error.message);
-    console.log(' Troubleshooting tips:');
-    console.log('  1. Make sure MongoDB is running');
-    console.log('  2. Check your MONGODB_URI in .env file');
-    console.log('  3. Verify network connectivity');
-    console.log('  4. Check MongoDB logs for details');
 
-    // Exit process with failure
-    process.exit(1);
+    if (process.env.NODE_ENV === 'production') {
+      // In production, crash the process so the container/PM2 can restart it
+      process.exit(1);
+    } else {
+      // In development, retry after 5s — don't kill the server
+      console.warn(' [Dev] MongoDB not ready yet — retrying in 5s...');
+      setTimeout(connectDB, 5000);
+    }
   }
 };
 

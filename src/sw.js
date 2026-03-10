@@ -3,7 +3,7 @@
 // Smart caching with quick updates
 // ================================
 
-const CACHE_VERSION = 'v1.0.28'; // ⚡ INCREMENTA ESTO CADA VEZ QUE DESPLIEGUES
+const CACHE_VERSION = 'v1.0.32'; // ⚡ INCREMENTA ESTO CADA VEZ QUE DESPLIEGUES
 const CACHE_NAMES = {
     static: `turkamerica-${CACHE_VERSION}-static`,
     dynamic: `turkamerica-${CACHE_VERSION}-dynamic`,

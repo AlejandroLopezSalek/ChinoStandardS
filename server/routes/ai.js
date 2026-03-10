@@ -34,9 +34,11 @@ const aiLimiter = rateLimit({
 router.use(aiLimiter);
 
 // Initialize Vercel AI SDK Provider configuring OpenAI to use Groq's endpoints
+// compatibility: 'compatible' forces /v1/chat/completions (Groq doesn't support /v1/responses)
 const groq = createOpenAI({
     baseURL: 'https://api.groq.com/openai/v1',
     apiKey: process.env.GROQ_API_KEY,
+    compatibility: 'compatible',
 });
 
 
@@ -197,7 +199,7 @@ router.get('/word-of-day', async (req, res) => {
 
         // 1. Check Redis in-memory cache first (fastest & PM2 restart-proof)
         try {
-            if (redisClient.isOpen) {
+            if (redisClient.isOpen && redisClient.isReady) {
                 const cachedWord = await redisClient.get(cacheKey);
                 if (cachedWord) {
                     return res.json(JSON.parse(cachedWord));
@@ -210,7 +212,7 @@ router.get('/word-of-day', async (req, res) => {
         // 2. Check MongoDB for EXACT cache (in case Redis was flushed)
         const existing = await DailyWord.findOne({ date: cacheKey });
         if (existing) {
-            if (redisClient.isOpen) {
+            if (redisClient.isOpen && redisClient.isReady) {
                 // Restore it to Redis for next time (expires in 24 hours)
                 await redisClient.setEx(cacheKey, 86400, JSON.stringify(existing.data)).catch(() => { });
             }
@@ -218,10 +220,10 @@ router.get('/word-of-day', async (req, res) => {
         }
 
         // 2.5 Check if ANY OTHER language generated a word today
-        const otherCacheKeyPrefix = todayStr + '_v2_';
+        const cachePrefix = todayStr + '_v7_';
         const existingOther = await DailyWord.findOne({
             date: {
-                $regex: '^' + otherCacheKeyPrefix,
+                $regex: '^' + cachePrefix,
                 $ne: cacheKey
             }
         });
@@ -287,16 +289,23 @@ Create a JSON object for the daily word following the exact structure from the e
             sentence_translation: z.string().describe(`The ${languageName} translation of the sentence. CRITICAL: DO NOT translate the target character itself; keep it as the original Chinese character within the ${languageName} translation (e.g., 'She ate an 苹果').`)
         });
 
-        const { object: wordData } = await generateObject({
-            model: groq('moonshotai/kimi-k2-instruct'),
-            schema: wordSchema,
-            system: `You are a strict native Simplified Chinese language teacher. You ONLY speak and output Simplified Chinese, English, Turkish, and Spanish.`,
+        // Use generateText instead of generateObject — more model-compatible, 
+        // avoids JSON schema mode restrictions. The prompt already enforces JSON output.
+        const { text: rawText } = await generateText({
+            model: groq.chat('moonshotai/kimi-k2-instruct'),
+            system: `You are a strict native Simplified Chinese language teacher. You ONLY output raw valid JSON with no markdown, no code fences, no explanation.`,
             prompt: userPrompt,
             temperature: 0.6,
-            maxRetries: 1, // Will natively throw an error if the generation fails schema validation
+            maxRetries: 1,
+            maxTokens: 1000,
         });
 
-        // Validation via zod is already handled by generateObject above
+        // Extract JSON from response (handles model wrapping it in markdown sometimes)
+        const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) {
+            throw new Error('AI failed to provide valid JSON in response');
+        }
+        const wordData = JSON.parse(jsonMatch[0]);
 
         // 4. Save to MongoDB & Redis (upsert to handle rare races)
         await DailyWord.findOneAndUpdate(
@@ -305,7 +314,7 @@ Create a JSON object for the daily word following the exact structure from the e
             { upsert: true, new: true }
         );
 
-        if (redisClient.isOpen) {
+        if (redisClient.isOpen && redisClient.isReady) {
             await redisClient.setEx(cacheKey, 86400, JSON.stringify(wordData)).catch(() => { });
         }
         res.json(wordData);
@@ -379,13 +388,16 @@ Student's Chinese translation: "${user_translation}"
 
 Evaluate this translation strictly but fairly, and output the grading JSON object.`;
 
-        const { object: gradingData } = await generateObject({
-            model: groq('moonshotai/kimi-k2-instruct'),
-            schema: gradingSchema,
-            system: systemInstructions,
+        const { text: rawGrading } = await generateText({
+            model: groq.chat('moonshotai/kimi-k2-instruct'),
+            system: systemInstructions + "\nYou MUST output ONLY raw valid JSON.",
             prompt: gradingPrompt,
             temperature: 0.2, // Low temperature for more deterministic grading
         });
+
+        const jsonMatch = rawGrading.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) throw new Error('AI failed to provide valid grading JSON');
+        const gradingData = JSON.parse(jsonMatch[0]);
 
         res.json(gradingData);
 
@@ -501,7 +513,7 @@ router.post('/', async (req, res) => {
         if (req.body.stream) {
             // New Streaming Text Approach for Real-time UX
             const result = streamText({
-                model: groq('moonshotai/kimi-k2-instruct'),
+                model: groq.chat('moonshotai/kimi-k2-instruct'),
                 messages: messages,
                 temperature: 0.6,
                 maxTokens: 1024,
@@ -517,7 +529,7 @@ router.post('/', async (req, res) => {
 
         // Fallback for non-streaming requests (Original implementation style)
         const { text } = await generateText({
-            model: groq('moonshotai/kimi-k2-instruct'),
+            model: groq.chat('moonshotai/kimi-k2-instruct'),
             messages: messages,
             temperature: 0.6,
             maxTokens: 1024,

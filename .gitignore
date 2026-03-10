@@ -76,6 +76,7 @@ check-contributions.js
 check-users.js
 
 .agent
+.agents/
 .agent.lock
 
 clear-cache.js

@@ -5,7 +5,14 @@ const client = createClient({
     url: process.env.REDIS_URL || 'redis://127.0.0.1:6379'
 });
 
-client.on('error', (err) => console.log('Redis Client Error:', err));
+// In development, Redis may not be running locally — suppress repeated error spam
+let redisErrorLogged = false;
+client.on('error', (err) => {
+    if (!redisErrorLogged && process.env.NODE_ENV === 'production') {
+        console.warn('[Redis] Connection error:', err.code || err.message);
+        redisErrorLogged = true;
+    }
+});
 client.on('connect', () => console.log('✅ Connected to Redis successfully.'));
 
 // Self-invoking function to connect the client

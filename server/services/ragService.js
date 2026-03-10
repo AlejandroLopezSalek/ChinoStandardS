@@ -3,7 +3,10 @@ const { QdrantClient } = require('@qdrant/js-client-rest');
 const LessonVector = require('../models/LessonVector');
 
 // Initialize Qdrant Client (targeting the local Docker container)
-const qdrantClient = new QdrantClient({ url: 'http://127.0.0.1:6333' });
+const qdrantClient = new QdrantClient({
+    url: 'http://127.0.0.1:6333',
+    checkCompatibility: false
+});
 const COLLECTION_NAME = 'lessons';
 
 class RagService {
@@ -30,7 +33,10 @@ class RagService {
                 console.log(`[Qdrant] Created collection '${COLLECTION_NAME}' (384-dim, Cosine)`);
             }
         } catch (e) {
-            console.error('[Qdrant] Connection warning: Ensure Qdrant Docker is running on port 6333.', e.message);
+            // Silencing this in development as it is noisy when Docker is not running
+            if (process.env.NODE_ENV === 'production') {
+                console.error('[Qdrant] Connection warning:', e.message);
+            }
         }
     }
 
