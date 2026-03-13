@@ -153,28 +153,7 @@ const ttsService = require('../services/ttsService');
 // Redis Cache handles storage
 
 
-// Helper to generate the target word sync prompt
-const getTargetWordPrompt = (existingOther, languageName) => {
-    if (!existingOther?.data?.character) return "";
-
-    const sourceLevelBadge = existingOther.data.level_badge || "";
-    const levelPrefixMatch = sourceLevelBadge.match(/^([a-zA-Z0-9]+)\s*-/);
-    const levelInstruction = levelPrefixMatch
-        ? `\n- "level_badge": MUST start with "${levelPrefixMatch[1]} - " followed by the ${languageName} translated level name.`
-        : "";
-
-    return `
-
-CRITICAL INSTRUCTION - SYNC REQUIRED:
-You MUST use these exact Chinese values for the following fields. DO NOT alter them:
-- "character": "${existingOther.data.character}"
-- "pinyin": "${existingOther.data.pinyin}"
-- "sentence_character": "${existingOther.data.sentence_character}"
-- "sentence_pinyin": "${existingOther.data.sentence_pinyin}"${levelInstruction}
-
-Your ONLY task is to provide the ${languageName} translations for 'word_translation', 'level_badge', 'tip', and 'sentence_translation'. 
-CRITICAL RULE: You MUST NOT translate the target word itself in the 'sentence_translation'. Keep the target word "${existingOther.data.character}" in its original Chinese character form inside the translated sentence!`;
-};
+// Redis Cache handles storage
 
 // GET /word-of-day (Mounted at /api/chat/word-of-day)
 const DailyWord = require('../models/DailyWord');
@@ -186,171 +165,177 @@ router.get('/word-of-day', async (req, res) => {
         }
 
         const lang = ['en', 'tr'].includes(req.query.lang) ? req.query.lang : 'es';
-
         let languageName = 'Spanish';
-        if (lang === 'en') {
-            languageName = 'English';
-        } else if (lang === 'tr') {
-            languageName = 'Turkish';
-        }
-        const todayStr = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
-        // Cache per language (v2 string appended to bust corrupted production caches)
-        const cacheKey = todayStr + '_v2_' + lang;
+        if (lang === 'en') languageName = 'English';
+        else if (lang === 'tr') languageName = 'Turkish';
 
-        // 1. Check Redis in-memory cache first (fastest & PM2 restart-proof)
+        const todayStr = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+        const redisKey = `WOD:${todayStr}:${lang}`;
+
+        // 1. Check Redis for specific language
         try {
             if (redisClient.isOpen && redisClient.isReady) {
-                const cachedWord = await redisClient.get(cacheKey);
-                if (cachedWord) {
-                    return res.json(JSON.parse(cachedWord));
-                }
+                const cached = await redisClient.get(redisKey);
+                if (cached) return res.json(JSON.parse(cached));
             }
-        } catch (e) {
-            console.warn('[Redis] Cache get failed, falling back to MongoDB:', e.message);
-        }
+        } catch (e) { console.warn('[Redis] Cache failed:', e.message); }
 
-        // 2. Check MongoDB for EXACT cache (in case Redis was flushed)
-        const existing = await DailyWord.findOne({ date: cacheKey });
-        if (existing) {
+        // 2. Check MongoDB for today's unified document
+        let dailyDoc = await DailyWord.findOne({ date: todayStr });
+
+        if (dailyDoc && dailyDoc.translations.get(lang)) {
+            const data = dailyDoc.translations.get(lang);
+            // Sync back to Redis
             if (redisClient.isOpen && redisClient.isReady) {
-                // Restore it to Redis for next time (expires in 24 hours)
-                await redisClient.setEx(cacheKey, 86400, JSON.stringify(existing.data)).catch(() => { });
+                await redisClient.setEx(redisKey, 86400, JSON.stringify(data)).catch(() => { });
             }
-            return res.json(existing.data);
+            return res.json(data);
         }
 
-        // 2.5 Check if ANY OTHER language generated a word today
-        const cachePrefix = todayStr + '_v7_';
-        const existingOther = await DailyWord.findOne({
-            date: {
-                $regex: '^' + cachePrefix,
-                $ne: cacheKey
-            }
-        });
+        // 3. Generation / Translation Logic
+        let wordData;
+        if (dailyDoc) {
+            // Document exists for another language, translate the existing word
+            console.log(`🌍 Translating existing WOD (${dailyDoc.translations.values().next().value.character}) to ${languageName}`);
+            const existingData = dailyDoc.translations.values().next().value;
+            wordData = await generateWodTranslation(existingData, languageName, lang);
+            
+            // Update document
+            dailyDoc.translations.set(lang, wordData);
+            await dailyDoc.save();
+        } else {
+            // Generate brand new WOD
+            console.log(`✨ Generating brand new WOD for ${todayStr} (${languageName})`);
+            const recentWordsDocs = await DailyWord.find({}, { 'translations.es.character': 1 }).sort({ date: -1 }).limit(20);
+            const recentWords = recentWordsDocs.map(d => d.translations.get('es')?.character).filter(Boolean);
+            
+            wordData = await generateNewWod(languageName, lang, recentWords);
+            
+            // Create document
+            dailyDoc = await DailyWord.create({
+                date: todayStr,
+                translations: { [lang]: wordData }
+            });
+        }
 
-        let targetWordPrompt = getTargetWordPrompt(existingOther, languageName);
+        // 4. Save to Redis and Return
+        if (redisClient.isOpen && redisClient.isReady) {
+            await redisClient.setEx(redisKey, 86400, JSON.stringify(wordData)).catch(() => { });
+        }
+        res.json(wordData);
 
-        // 3. Generate new word via AI
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    } catch (err) {
+        console.error('[word-of-day] Error:', err.message);
+        res.json(getFallbackWod(req.query.lang));
+    }
+});
 
-        // Avoid recently generated words
-        const recentWordsDocs = await DailyWord.find({ date: { $regex: '^' + todayStr.substring(0, 7) }, createdAt: { $gte: thirtyDaysAgo } }, { 'data.character': 1 }).sort({ createdAt: -1 });
-        const recentWords = recentWordsDocs.map(d => d.data?.character).filter(Boolean);
-        const avoidPrompt = recentWords.length > 0 && !targetWordPrompt ? `\n\nNOTE: Try to avoid these words that were provided recently: ${recentWords.join(', ')}.` : '';
+// Helper: Generate brand new WOD
+async function generateNewWod(languageName, lang, recentWords = []) {
+    const avoidPrompt = recentWords.length > 0 ? `\n\nAvoid these recently used words: ${recentWords.join(', ')}.` : '';
+    const DYNAMIC_EXAMPLES = {
+        en: { word: 'Mother', level: 'A1 - Beginner', tip: 'Remember character looks like a mother.', sentence: 'I want to see my 母亲' },
+        tr: { word: 'Anne', level: 'A1 - Başlangıç', tip: 'Karakter bir anneye benzer.', sentence: '母亲ı görmek istiyorum' },
+        es: { word: 'Madre', level: 'A1 - Principiante', tip: 'El carácter parece una madre.', sentence: 'Quiero ver a mi 母亲' }
+    };
+    const ex = DYNAMIC_EXAMPLES[lang] || DYNAMIC_EXAMPLES.es;
 
-        // Dynamic examples based on language to avoid confusing the AI
-        const DYNAMIC_EXAMPLES = {
-            en: { word: 'Mother', level: 'A1 - Beginner', tip: 'Remember the character naturally looks like a mother holding a baby.', sentence: 'I want to see my 母亲' },
-            tr: { word: 'Anne', level: 'A1 - Başlangıç', tip: 'Karakterin bebeğini tutan bir anneye benzediğini unutmayın.', sentence: '母亲ı görmek istiyorum' },
-            es: { word: 'Madre', level: 'A1 - Principiante', tip: 'Recuerda que el carácter parece una madre sosteniendo a un bebé.', sentence: 'Quiero ver a mi 母亲' }
-        };
-        const exMap = DYNAMIC_EXAMPLES[lang] || DYNAMIC_EXAMPLES.es;
-        const exampleWordTrans = exMap.word;
-        const exampleLevel = exMap.level;
-        const exampleTip = exMap.tip;
-        const exampleSentenceTrans = exMap.sentence;
+    const prompt = `Act as a Chinese language learning API. Generate a 'Word of the Day'.
+Interface Language: ${languageName}.
+Strict JSON, no markdown.
 
-        const userPrompt = `Act as a Chinese language learning API. Your task is to generate a 'Word of the Day' for a learning application.
+CRITICAL: 
+1. Choose a legitimate Simplified Chinese vocabulary (HSK 1-6).
+2. "pinyin" field: Latin with tone marks only.
+3. "sentence_translation": DO NOT translate target word character itself (e.g. "She ate an 苹果").
 
-You must output ONLY strictly valid JSON. Do not include any markdown formatting, conversational text, or explanations.
-
-The user's interface language is: ${languageName}.
-
-CRITICAL INSTRUCTIONS:
-1. Choose a legitimate and common Simplified Chinese vocabulary word (ranging from HSK 1 to HSK 6). Ensure it is a REAL word, NOT a random or invalid character.
-2. Pinyin fields MUST use the Latin alphabet with tone marks (e.g. mǔ qīn). NO Chinese characters allowed in pinyin fields.
-3. Translation fields MUST be written entirely in ${languageName}. NO Chinese characters allowed, EXCEPT for rule 4 below.
-4. For 'sentence_character': You MUST write a grammatically correct sentence using ONLY Simplified Chinese characters. ABSOLUTELY NO Japanese characters allowed.
-5. For 'sentence_translation': You MUST NOT translate the target word itself. Instead, insert the original Chinese character within the ${languageName} translation appropriately. For example, if the word is 苹果, the output MUST be "She ate an 苹果", NOT "She ate an apple". Translate the rest of the sentence into natural ${languageName}.
-
-EXAMPLE OUTPUT FORMAT (for a ${languageName} user learning the word 母亲):
+FORMAT:
 {
   "character": "母亲",
   "pinyin": "mǔ qīn",
-  "word_translation": "${exampleWordTrans}",
-  "level_badge": "${exampleLevel}",
-  "tip": "${exampleTip}",
+  "word_translation": "${ex.word}",
+  "level_badge": "${ex.level}",
+  "tip": "${ex.tip}",
   "sentence_character": "我想见到我的母亲",
   "sentence_pinyin": "wǒ xiǎng jiàn dào wǒ de mǔ qīn",
-  "sentence_translation": "${exampleSentenceTrans}"
+  "sentence_translation": "${ex.sentence}"
+}${avoidPrompt}`;
+
+    const { text } = await generateText({
+        model: groq.chat('moonshotai/kimi-k2-instruct'),
+        prompt,
+        temperature: 0.7,
+    });
+
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('AI failed to provide valid JSON');
+    return JSON.parse(jsonMatch[0]);
 }
 
-Create a JSON object for the daily word following the exact structure from the example above.${targetWordPrompt}${avoidPrompt}`;
+// Helper: Translate existing WOD character to new language
+async function generateWodTranslation(existingData, languageName, lang) {
+    const prompt = `Act as a Chinese learning API. Translate this existing Word of the Day to ${languageName}.
+You MUST keep the exact same "character", "pinyin", and "sentence_character".
+Only translate the descriptive fields.
 
-        const wordSchema = z.object({
-            character: z.string().describe('The Simplified Chinese character for the word'),
-            pinyin: z.string().describe('The pinyin for the word using Latin alphabet with tone marks (e.g. mǔ qīn)'),
-            word_translation: z.string().describe(`The ${languageName} translation of the word`),
-            level_badge: z.string().describe(`The CEFR level badge (e.g. 'A1 - Beginner') translated into ${languageName}`),
-            tip: z.string().describe(`A helpful mnemonic or tip in ${languageName} for learning the word`),
-            sentence_character: z.string().describe('A grammatically correct example sentence using ONLY Simplified Chinese characters'),
-            sentence_pinyin: z.string().describe('The pinyin for the example sentence'),
-            sentence_translation: z.string().describe(`The ${languageName} translation of the sentence. CRITICAL: DO NOT translate the target character itself; keep it as the original Chinese character within the ${languageName} translation (e.g., 'She ate an 苹果').`)
-        });
+TARGET WORD CHARACTER: ${existingData.character}
+TARGET SENTENCE: ${existingData.sentence_character}
 
-        // Use generateText instead of generateObject — more model-compatible, 
-        // avoids JSON schema mode restrictions. The prompt already enforces JSON output.
-        const { text: rawText } = await generateText({
-            model: groq.chat('moonshotai/kimi-k2-instruct'),
-            system: `You are a strict native Simplified Chinese language teacher. You ONLY output raw valid JSON with no markdown, no code fences, no explanation.`,
-            prompt: userPrompt,
-            temperature: 0.6,
-            maxRetries: 1,
-            maxTokens: 1000,
-        });
+JSON to Translate:
+${JSON.stringify(existingData)}
 
-        // Extract JSON from response (handles model wrapping it in markdown sometimes)
-        const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) {
-            throw new Error('AI failed to provide valid JSON in response');
-        }
-        const wordData = JSON.parse(jsonMatch[0]);
+CRITICAL: "sentence_translation" MUST keep the character "${existingData.character}" untranslated inside the ${languageName} sentence.
+Output ONLY raw JSON.`;
 
-        // 4. Save to MongoDB & Redis (upsert to handle rare races)
-        await DailyWord.findOneAndUpdate(
-            { date: cacheKey },
-            { data: wordData },
-            { upsert: true, new: true }
-        );
+    const { text } = await generateText({
+        model: groq.chat('moonshotai/kimi-k2-instruct'),
+        prompt,
+        temperature: 0.3,
+    });
 
-        if (redisClient.isOpen && redisClient.isReady) {
-            await redisClient.setEx(cacheKey, 86400, JSON.stringify(wordData)).catch(() => { });
-        }
-        res.json(wordData);
-    } catch (err) {
-        console.error('[word-of-day] Error:', err.message);
-        // Fallback to a hardcoded word so the widget never breaks
-        const validLang = ['en', 'tr'].includes(req.query.lang) ? req.query.lang : 'es';
-        const FALLBACK_WORDS = {
-            en: { trans: 'Hello', level: 'A1 - Beginner', tip: 'Nǐ hǎo is the most common greeting in Chinese.', sentTrans: 'Hello, how are you?' },
-            tr: { trans: 'Merhaba', level: 'A1 - Başlangıç', tip: 'Nǐ hǎo, Çince\'deki en yaygın selamlamadır.', sentTrans: 'Merhaba, nasılsın?' },
-            es: { trans: 'Hola', level: 'A1 - Principiante', tip: 'Nǐ hǎo es el saludo más común en chino.', sentTrans: '¿Hola, cómo estás?' }
-        };
-        const fbMap = FALLBACK_WORDS[validLang];
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('AI failed to provide valid translation JSON');
+    const translated = JSON.parse(jsonMatch[0]);
+    
+    // Safety Force Sync
+    translated.character = existingData.character;
+    translated.pinyin = existingData.pinyin;
+    translated.sentence_character = existingData.sentence_character;
+    translated.sentence_pinyin = existingData.sentence_pinyin;
+    
+    return translated;
+}
 
-        const fallback = {
-            character: '你好',
-            pinyin: 'nǐ hǎo',
-            word_translation: fbMap.trans,
-            level_badge: fbMap.level,
-            tip: fbMap.tip,
-            sentence_character: '你好，你怎么样？',
-            sentence_pinyin: 'Nǐ hǎo, nǐ zěnme yàng?',
-            sentence_translation: fbMap.sentTrans
-        };
-        res.json(fallback);
-    }
-});
+// Helper: Fallback
+function getFallbackWod(langCode) {
+    const validLang = ['en', 'tr'].includes(langCode) ? langCode : 'es';
+    const FALLBACKS = {
+        en: { char: '你好', pinyin: 'nǐ hǎo', trans: 'Hello', level: 'A1 - Beginner', tip: 'Common greeting.', sent: '你好，你怎么样？', sp: 'Nǐ hǎo, nǐ zěnme yàng?', st: 'Hello, how are you?' },
+        tr: { char: '你好', pinyin: 'nǐ hǎo', trans: 'Merhaba', level: 'A1 - Başlangıç', tip: 'En yaygın selamlama.', sent: '你好，你怎么样？', sp: 'Nǐ hǎo, nǐ zěnme yàng?', st: 'Merhaba, nasılsın?' },
+        es: { char: '你好', pinyin: 'nǐ hǎo', trans: 'Hola', level: 'A1 - Principiante', tip: 'Saludo común.', sent: '你好，你怎么样？', sp: 'Nǐ hǎo, nǐ zěnme yàng?', st: '¿Hola, cómo estás?' }
+    };
+    const f = FALLBACKS[validLang];
+    return {
+        character: f.char, pinyin: f.pinyin, word_translation: f.trans, level_badge: f.level,
+        tip: f.tip, sentence_character: f.sent, sentence_pinyin: f.sp, sentence_translation: f.st
+    };
+}
+
 
 // GET /past-words (Mounted at /api/chat/past-words)
 router.get('/past-words', async (req, res) => {
     try {
+        const lang = ['en', 'tr'].includes(req.query.lang) ? req.query.lang : 'es';
         const pastWords = await DailyWord.find({}).sort({ date: -1 });
-        const results = pastWords.map(doc => ({
-            date: doc.date,
-            ...doc.data
-        }));
+        
+        const results = pastWords.map(doc => {
+            // Get translation for requested lang, fallback to first available or 'es'
+            const translation = doc.translations.get(lang) || doc.translations.get('es') || doc.translations.values().next().value;
+            return {
+                date: doc.date,
+                ...translation
+            };
+        });
         res.json(results);
     } catch (err) {
         console.error('Error fetching past words:', err.message);
