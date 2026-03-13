@@ -7,14 +7,15 @@ const DailyWordSchema = new mongoose.Schema({
         unique: true, // "YYYY-MM-DD"
         index: true
     },
-    data: {
-        type: Object,
+    translations: {
+        type: Map,
+        of: Object, // { character, pinyin, word_translation, ... }
         required: true
     },
     createdAt: {
         type: Date,
         default: Date.now,
-        expires: 60 * 60 * 24 * 7 // Cleanup after 7 days
+        expires: 60 * 60 * 24 * 30 // Cleanup after 30 days
     }
 }, { collection: 'daily_words' });
 
