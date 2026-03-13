@@ -1,5 +1,5 @@
 // =====================================================
-// TURKAMERICA STANDARD - NIVEL COMMON JS (CLEAN REWRITE)
+// CHINO STANDARD - NIVEL COMMON JS (CLEAN REWRITE)
 // Handles: Level Detection, Lesson Fetching, Universal Modal
 // =====================================================
 
@@ -13,6 +13,46 @@ function getCurrentLevel() {
 
 const CURRENT_LEVEL = getCurrentLevel();
 const LEVEL_LOWER = CURRENT_LEVEL.toLowerCase();
+
+// i18n support
+const lang = globalThis.location.pathname.startsWith('/en/') ? 'en' : (globalThis.location.pathname.startsWith('/tr/') ? 'tr' : 'es');
+const translations = {
+    es: {
+        notFound: "Tema no encontrado",
+        noContent: "No se encontró contenido para este tema.",
+        editLesson: "Editar Lección",
+        loginRequired: "Debes iniciar sesión para editar",
+        deleted: "Lección eliminada correctamente",
+        errorDelete: "Error al eliminar la lección",
+        viewExplanation: "Ver Explicación",
+        basic: "Básico",
+        new: "Nuevo"
+    },
+    en: {
+        notFound: "Topic not found",
+        noContent: "No content found for this topic.",
+        editLesson: "Edit Lesson",
+        loginRequired: "You must be logged in to edit",
+        deleted: "Lesson deleted successfully",
+        errorDelete: "Error deleting lesson",
+        viewExplanation: "See Explanation",
+        basic: "Basic",
+        new: "New"
+    },
+    tr: {
+        notFound: "Konu bulunamadı",
+        noContent: "Bu konu için içerik bulunamadı.",
+        editLesson: "Dersi Düzenle",
+        loginRequired: "Düzenlemek için giriş yapmalısınız",
+        deleted: "Ders başarıyla silindi",
+        errorDelete: "Ders silinirken hata oluştu",
+        viewExplanation: "Açıklamayı Gör",
+        basic: "Temel",
+        new: "Yeni"
+    }
+};
+const t = translations[lang];
+
 let explanationsCache = null;
 
 // 2. Data Fetching
@@ -45,7 +85,7 @@ async function getExplanations() {
                         const key = lesson.id || lesson.lessonId;
                         if (key) {
                             data[key] = {
-                                title: lesson.title || 'Nueva Lección',
+                                title: lesson.title || t.new,
                                 content: lesson.content || lesson.newContent || '',
                                 description: lesson.description || '',
                                 id: key,
@@ -116,8 +156,8 @@ async function openExplanation(topic) {
         setupDeleteButton(modal, item);
         injectPronunciation(contentEl);
     } else {
-        titleEl.textContent = 'Tema no encontrado';
-        contentEl.innerHTML = '<p class="text-center text-gray-500 my-4">No se encontró contenido para este tema.</p>';
+        titleEl.textContent = t.notFound;
+        contentEl.innerHTML = `<p class="text-center text-gray-500 my-4">${t.noContent}</p>`;
     }
 
     // SHOW MODAL - Force it
@@ -137,17 +177,13 @@ function setupModalActions(actionsEl, item, topic) {
         const btn = document.createElement('button');
         btn.className = 'bg-white/20 hover:bg-white/30 text-white w-8 h-8 rounded-full flex items-center justify-center transition-colors';
         btn.innerHTML = '<i class="fas fa-edit"></i>';
-        btn.title = "Editar Lección";
+        btn.title = t.editLesson;
 
         btn.onclick = () => {
             // UPDATE: Check if logged in
             if (!globalThis.AuthService?.isLoggedIn()) {
-                if (globalThis.ToastSystem) globalThis.ToastSystem.error('Debes iniciar sesión para editar', 'Acceso Restringido');
-                else alert('Debes iniciar sesión para editar');
-
-                // Open login modal if exists, or redirect
-                // Assuming standard auth-ui might allow triggering login, doing redirect for now to be safe
-                // globalThis.location.href = '/login/'; 
+                if (globalThis.ToastSystem) globalThis.ToastSystem.error(t.loginRequired, 'Acceso Restringido');
+                else alert(t.loginRequired);
                 return;
             }
 
@@ -163,7 +199,7 @@ function setupModalActions(actionsEl, item, topic) {
 
 function setupDeleteButton(modal, item) {
     const dbId = item.id || item._id; // Covers both formats
-    const modalContent = modal.querySelector('.explanation-content'); // This might be missing in universal modal structure?
+    const modalContent = modal.querySelector('.explanation-content'); 
     const universalContent = modal.querySelector('#universalModalContent'); // Fallback
 
     const targetContainer = modalContent || universalContent;
@@ -205,7 +241,7 @@ async function handleDelete(dbId, modal, deleteBtn) {
         // FIX: Method name was wrong (deleteContribution exists in service, deleteLesson does not)
         await globalThis.ContributionService.deleteContribution(dbId);
 
-        if (globalThis.toastSuccess) globalThis.toastSuccess('Lección eliminada correctamente');
+        if (globalThis.toastSuccess) globalThis.toastSuccess(t.deleted);
 
         modal.classList.add('hidden');
         setTimeout(() => globalThis.location.reload(), 800);
@@ -214,8 +250,8 @@ async function handleDelete(dbId, modal, deleteBtn) {
         deleteBtn.disabled = false;
         deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
 
-        if (globalThis.toastError) globalThis.toastError('Error al eliminar la lección');
-        else alert('Error al eliminar la lección');
+        if (globalThis.toastError) globalThis.toastError(t.errorDelete);
+        else alert(t.errorDelete);
     }
 }
 
@@ -248,11 +284,19 @@ function renderDynamicCards(lessons) {
         // Badge configuration with colors
         const badgeConfig = {
             'Básico': { bg: 'bg-green-50 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-400' },
+            'Basic': { bg: 'bg-green-50 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-400' },
+            'Temel': { bg: 'bg-green-50 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-400' },
             'Intermedio': { bg: 'bg-yellow-50 dark:bg-yellow-900/30', text: 'text-yellow-700 dark:text-yellow-400' },
+            'Intermediate': { bg: 'bg-yellow-50 dark:bg-yellow-900/30', text: 'text-yellow-700 dark:text-yellow-400' },
+            'Orta': { bg: 'bg-yellow-50 dark:bg-yellow-900/30', text: 'text-yellow-700 dark:text-yellow-400' },
             'Avanzado': { bg: 'bg-red-50 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400' },
-            'Nuevo': { bg: 'bg-red-50 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400' }
+            'Advanced': { bg: 'bg-red-50 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400' },
+            'İleri': { bg: 'bg-red-50 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400' },
+            'Nuevo': { bg: 'bg-red-50 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400' },
+            'New': { bg: 'bg-red-50 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400' },
+            'Yeni': { bg: 'bg-red-50 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400' }
         };
-        const badgeType = lesson.badge || 'Nuevo';
+        const badgeType = lesson.badge || t.new;
         const badgeStyle = badgeConfig[badgeType] || badgeConfig['Nuevo'];
 
         card.innerHTML = `
@@ -264,7 +308,7 @@ function renderDynamicCards(lessons) {
             </h3>
             <div class="flex items-center gap-2 mb-4">
                 <span class="px-2 py-0.5 rounded text-xs font-semibold bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400">
-                    Básico
+                    ${t.basic}
                 </span>
             </div>
             <p class="card-description text-stone-600 dark:text-stone-400 text-sm mb-6 line-clamp-3">
@@ -273,7 +317,7 @@ function renderDynamicCards(lessons) {
             <button class="explanation-btn w-full py-2.5 rounded-lg font-semibold bg-red-600 text-white shadow-md hover:bg-red-700 hover:shadow-lg hover:shadow-red-500/30 transition-all flex items-center justify-center gap-2"
                     data-topic="${id}">
                 <i class="fas fa-book-open"></i>
-                Ver Explicación
+                ${t.viewExplanation}
             </button>
         `;
 
@@ -319,8 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Bind Overlay Click (Close when clicking outside)
     const modal = document.getElementById('universalLessonModal');
     if (modal) {
-        // HOIST TO BODY: VALIDATE FIX for "Modal at bottom" issue
-        // detailed explanation: if a parent has backdrop-filter or transform, fixed children are relative to IT, not viewport.
+        // HOIST TO BODY
         if (modal.parentElement !== document.body) {
             document.body.appendChild(modal);
             console.log('🚀 Modal hoisted to body for correct full-screen positioning');
