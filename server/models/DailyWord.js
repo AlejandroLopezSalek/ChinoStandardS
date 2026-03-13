@@ -10,7 +10,6 @@ const DailyWordSchema = new mongoose.Schema({
     translations: {
         type: Map,
         of: Object, // { character, pinyin, word_translation, ... }
-        required: true
     },
     createdAt: {
         type: Date,
