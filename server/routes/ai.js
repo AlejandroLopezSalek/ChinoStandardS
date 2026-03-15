@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 const striptags = require('striptags');
 const User = require('../models/User');
 const ChatLog = require('../models/ChatLog');
+const LabStory = require('../models/LabStory');
 const redisClient = require('../redisClient');
 // path removed
 
@@ -451,10 +452,10 @@ router.post('/', async (req, res) => {
         if (similarChunks && similarChunks.length > 0) {
             ragContext = `\n*** COMMUNITY KNOWLEDGE BASE ***\nIf the user's question is related to the following community material, use it to formulate your answer:\n`;
             similarChunks.forEach(chunk => {
-                const title = chunk.metadata?.title ? String(chunk.metadata.title) : 'Community Lesson';
-                const author = chunk.metadata?.author ? String(chunk.metadata.author) : 'Unknown';
-                const level = (rawLevel && typeof rawLevel === 'object') ? JSON.stringify(rawLevel) : String(rawLevel || 'N/A');
-                const chunkText = chunk.text ? String(chunk.text) : '';
+                const title = typeof chunk.metadata?.title === 'object' ? JSON.stringify(chunk.metadata.title) : String(chunk.metadata?.title || 'Community Lesson');
+                const author = typeof chunk.metadata?.author === 'object' ? JSON.stringify(chunk.metadata.author) : String(chunk.metadata?.author || 'Unknown');
+                const level = typeof chunk.metadata?.level === 'object' ? JSON.stringify(chunk.metadata.level) : String(chunk.metadata?.level || 'N/A');
+                const chunkText = String(chunk.text || '');
                 ragContext += `[Source: "${title}" by ${author} - Level ${level}]:\n"${chunkText}"\n\n`;
             });
         }
@@ -731,6 +732,274 @@ router.post('/lab/grade-exam', async (req, res) => {
         const jsonMatch = /\{[\s\S]*\}/.exec(rawGrading);
         res.json(JSON.parse(jsonMatch ? jsonMatch[0] : "{}"));
     } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// GET /lab/current-active-story
+router.get('/lab/current-active-story', async (req, res) => {
+    try {
+        // Assuming getUserFromRequest is defined elsewhere and retrieves the user object
+        const user = await getUserFromRequest(req);
+        if (!user) return res.json({ active: false });
+
+        const storyId = user.stats?.activeStoryId;
+        if (!storyId) return res.json({ active: false });
+
+        if (redisClient.isOpen && redisClient.isReady) {
+            const cached = await redisClient.get(`STORY:${storyId}`).catch(() => null);
+            if (cached) {
+                const state = JSON.parse(cached);
+                return res.json({
+                    active: true,
+                    story: {
+                        id: storyId,
+                        title: state.title,
+                        current_chapter: state.history[state.history.length - 1].content_data
+                    }
+                });
+            }
+        }
+
+        // Fallback to MongoDB
+        const persisted = await LabStory.findOne({ storyId, userId: user._id });
+        if (persisted && persisted.history && persisted.history.length > 0) {
+            return res.json({
+                active: true,
+                story: {
+                    id: storyId,
+                    title: persisted.title,
+                    current_chapter: persisted.history[persisted.history.length - 1].content_data
+                }
+            });
+        }
+
+        res.json({ active: false });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// GET /lab/story/:id
+router.get('/lab/story/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await getUserFromRequest(req);
+        if (!user) return res.status(401).json({ error: "Unauthorized" });
+
+        if (redisClient.isOpen && redisClient.isReady) {
+            const cached = await redisClient.get(`STORY:${id}`).catch(() => null);
+            if (cached) {
+                const state = JSON.parse(cached);
+                
+                // Update active story in profile when loading a past one
+                user.stats.activeStoryId = id;
+                await user.save();
+
+                return res.json({
+                    active: true,
+                    story: {
+                        id: id,
+                        title: state.title,
+                        current_chapter: state.history[state.history.length - 1].content_data
+                    }
+                });
+            }
+        }
+
+        // Fallback to MongoDB
+        const persisted = await LabStory.findOne({ storyId: id, userId: user._id });
+        if (persisted && persisted.history && persisted.history.length > 0) {
+            user.stats.activeStoryId = id;
+            await user.save();
+
+            return res.json({
+                active: true,
+                story: {
+                    id: id,
+                    title: persisted.title,
+                    current_chapter: persisted.history[persisted.history.length - 1].content_data
+                }
+            });
+        }
+
+        res.status(404).json({ error: "Story not found" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// DELETE /lab/active-story
+router.delete('/lab/active-story', async (req, res) => {
+    try {
+        // Assuming getUserFromRequest is defined elsewhere and retrieves the user object
+        const user = await getUserFromRequest(req);
+        if (user) {
+            user.stats.activeStoryId = null;
+            await user.save();
+        }
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// POST /lab/start-story
+router.post('/lab/start-story', async (req, res) => {
+    try {
+        const { genre = 'Aventura', charName = 'Un principiante', userPrompt = '', level = 'HSK 1' } = req.body;
+        const storyId = `story_${Date.now()}`;
+
+        const prompt = `Actúa como Panda, el guía de PandaLatam. Genera el primer capítulo de una historia interactiva para aprender Chino.
+        Nivel del estudiante: ${level}.
+        Género: ${genre}.
+        Protagonista: ${charName}.
+        Directiva adicional: ${userPrompt || 'Ninguna'}.
+
+        CRITICAL:
+        1. Escribe en Español fluido.
+        2. La historia debe avanzar por segmentos. Cada segmento de texto en Chino DEBE tener su Hanzi, Pinyin y Traducción.
+        3. Para palabras difíciles o fuera del nivel ${level}, marca una anotación.
+        4. Output ONLY raw JSON:
+        {
+          "title": "...",
+          "first_chapter": {
+            "text": "Introducción en español...",
+            "segments": [
+               { "hz": "Hanzi characters", "py": "pinyin with tones", "tr": "Spanish translation", "note": "Grammar or vocabulary note (optional, use if word is difficult)" }
+            ],
+            "options": ["Opción A", "Opción B", "Opción C"]
+          }
+        }`;
+
+        console.log(`[StoryLab] Generating story with model kimi-k2-instruct...`);
+        const { text: rawStory } = await generateText({
+            model: groq('moonshotai/kimi-k2-instruct'),
+            prompt,
+            temperature: 0.8,
+        });
+        console.log(`[StoryLab] Story generated. Length: ${rawStory.length}`);
+
+        const jsonMatch = /\{[\s\S]*\}/.exec(rawStory);
+        const storyData = JSON.parse(jsonMatch ? jsonMatch[0] : "{}");
+
+        const responseData = {
+            id: storyId,
+            title: storyData.title || 'Historia en Chino',
+            genre: genre,
+            first_chapter: storyData.first_chapter || { text: "Error generando historia.", segments: [], options: [] }
+        };
+
+        // Store active story in user profile
+        const user = await getUserFromRequest(req);
+        if (user) {
+            user.stats.activeStoryId = storyId;
+            await user.save();
+
+            // Store in MongoDB (Permanent)
+            await LabStory.create({
+                userId: user._id,
+                storyId,
+                title: responseData.title,
+                genre,
+                charName,
+                level,
+                lang: 'zh',
+                history: [{ role: 'assistant', content_data: responseData.first_chapter }]
+            }).catch(err => console.error("MongoDB Store Error:", err));
+        }
+
+        // Store in Redis
+        if (redisClient.isOpen && redisClient.isReady) {
+            console.log(`[StoryLab] Storing story in Redis: ${storyId}`);
+            await redisClient.setEx(`STORY:${storyId}`, 7200, JSON.stringify({
+                title: responseData.title,
+                history: [{ role: 'assistant', content_data: responseData.first_chapter }],
+                genre,
+                charName,
+                level,
+                lang: 'zh'
+            })).catch(err => {
+                console.warn(`[StoryLab] Redis store error: ${err.message}`);
+            });
+        } else {
+            console.log(`[StoryLab] Redis not available, skipping cache.`);
+        }
+
+        console.log(`[StoryLab] Responding with story data.`);
+
+        res.json(responseData);
+    } catch (error) {
+        console.error("Start Story Error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// POST /lab/continue-story
+router.post('/lab/continue-story', async (req, res) => {
+    try {
+        const { story_id, option } = req.body;
+
+        let storyState = { history: [], genre: 'Aventura', charName: 'Aventurero', level: 'HSK 1' };
+        if (redisClient.isOpen && redisClient.isReady) {
+            const cached = await redisClient.get(`STORY:${story_id}`).catch(() => null);
+            if (cached) storyState = JSON.parse(cached);
+        }
+
+        const historyPrompt = storyState.history.map(h => `${h.role === 'assistant' ? 'Panda' : 'Usuario'}: ${h.content_data.text || h.content_data}`).join('\n');
+
+        const prompt = `Continúa la historia de PandaLatam basada en la opción elegida: "${option}".
+        Nivel: ${storyState.level}.
+        Contexto previo:
+        ${historyPrompt}
+        
+        CRITICAL: Output ONLY raw JSON:
+        {
+          "next_chapter": {
+            "text": "...",
+            "segments": [
+               { "hz": "Hanzi characters", "py": "pinyin with tones", "tr": "Spanish translation", "note": "Grammar or vocabulary note (optional, use if word is difficult)" }
+            ],
+            "options": ["Opción 1", "Opción 2", "Opción 3"]
+          }
+        }`;
+
+        const { text: rawNext } = await generateText({
+            model: groq.chat('moonshotai/kimi-k2-instruct'),
+            prompt,
+            temperature: 0.8,
+        });
+
+        const jsonMatch = /\{[\s\S]*\}/.exec(rawNext);
+        const nextData = JSON.parse(jsonMatch ? jsonMatch[0] : "{}");
+
+        // Update Redis
+        if (redisClient.isOpen && redisClient.isReady && story_id && nextData.next_chapter) {
+            storyState.history.push({ role: 'user', content_data: option });
+            storyState.history.push({ role: 'assistant', content_data: nextData.next_chapter });
+            await redisClient.setEx(`STORY:${story_id}`, 7200, JSON.stringify(storyState)).catch(() => {});
+        }
+
+        // Update MongoDB (Permanent)
+        const user = await getUserFromRequest(req);
+        if (user && story_id && nextData.next_chapter) {
+            await LabStory.findOneAndUpdate(
+                { storyId: story_id, userId: user._id },
+                { 
+                    $push: { 
+                        history: [
+                            { role: 'user', content_data: option },
+                            { role: 'assistant', content_data: nextData.next_chapter }
+                        ] 
+                    },
+                    $set: { lastUpdated: new Date() }
+                }
+            ).catch(err => console.error("MongoDB update error:", err));
+        }
+
+        res.json(nextData);
+    } catch (error) {
+        console.error("Continue Story Error:", error);
         res.status(500).json({ error: error.message });
     }
 });

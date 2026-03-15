@@ -52,6 +52,24 @@ scripts:
                             placeholder="Ex: Xiao Long">
                     </div>
 
+                    <div>
+                        <label for="story-prompt" class="block text-xs font-bold text-slate-500 mb-2 uppercase italic">Add detail (Prompt)</label>
+                        <textarea id="story-prompt" rows="2" 
+                            class="w-full bg-slate-100 dark:bg-white/5 border-none rounded-xl p-3 text-sm text-slate-800 dark:text-white resize-none"
+                            placeholder="Ex: In a snowy bamboo forest..."></textarea>
+                    </div>
+
+                    <div>
+                        <label for="story-level" class="block text-xs font-bold text-slate-500 mb-2 uppercase">HSK Level</label>
+                        <select id="story-level"
+                            class="w-full bg-slate-100 dark:bg-white/5 border-none rounded-xl p-3 text-sm text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-red-500">
+                            <option value="HSK 1">HSK 1 - Beginner</option>
+                            <option value="HSK 2">HSK 2 - Basic</option>
+                            <option value="HSK 3">HSK 3 - Intermediate</option>
+                            <option value="HSK 4">HSK 4 - Advanced</option>
+                        </select>
+                    </div>
+
                     <div class="p-4 bg-red-50 dark:bg-red-900/20 rounded-2xl">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs font-bold text-red-700 dark:text-red-400 uppercase">Publish</span>
@@ -84,7 +102,15 @@ scripts:
         <!-- Main Display -->
         <div class="lg:col-span-3">
             <div id="story-display"
-                class="bg-white dark:bg-slate-800/40 backdrop-blur-xl border border-slate-200 dark:border-slate-700/50 rounded-3xl min-h-[700px] shadow-2xl flex flex-col p-8 md:p-12">
+                class="bg-white dark:bg-slate-800/40 backdrop-blur-xl border border-slate-200 dark:border-slate-700/50 rounded-3xl min-h-[700px] shadow-2xl flex flex-col p-8 md:p-12 relative">
+
+                <!-- Display Toggles -->
+                <div id="mode-toggles" class="hidden absolute top-8 right-8 flex bg-slate-100 dark:bg-white/5 p-1 rounded-xl gap-1">
+                    <button data-mode="hz" type="button" class="mode-btn px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all bg-white dark:bg-slate-800 shadow-sm text-red-600">Hanzi</button>
+                    <button data-mode="py" type="button" class="mode-btn px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all text-slate-500 hover:text-slate-800 dark:hover:text-white">Ruby</button>
+                    <button data-mode="full" type="button" class="mode-btn px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all text-slate-500 hover:text-slate-800 dark:hover:text-white">Full</button>
+                    <button id="close-story-btn" type="button" class="ml-2 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase bg-red-100 text-red-600 hover:bg-red-200 transition-all">Close <i class="fas fa-times"></i></button>
+                </div>
                 <div id="story-placeholder" class="m-auto text-center">
                     <div
                         class="w-20 h-20 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-full flex items-center justify-center mx-auto text-3xl mb-6">

@@ -82,6 +82,7 @@ const userSchema = new mongoose.Schema({
       url: String,
       timestamp: Date
     },
+    activeStoryId: String,
     lastActivity: Date
   },
   isActive: {

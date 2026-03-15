@@ -46,6 +46,7 @@ module.exports = function eleventyConfigSetup(eleventyConfig) {
         return new Date(dateObj).toISOString();
     });
 
+    /*
     // ===== Opcional: limpieza de archivos antiguos en build temporal =====
     eleventyConfig.on("beforeBuild", () => {
         const tmpDir = "_site";
@@ -54,6 +55,7 @@ module.exports = function eleventyConfigSetup(eleventyConfig) {
             console.log(`🧹 ${tmpDir} eliminado antes del build.`);
         }
     });
+    */
 
     return {
         // --- Directorios ---
