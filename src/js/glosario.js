@@ -267,9 +267,67 @@
 
     function bindModalEvents(data, storageKey) {
         let answered = localStorage.getItem(storageKey) === data.character;
+        let attemptsLeft = 3;
+
+        const lang = localStorage.getItem('language') || 'es';
+        const isEn = lang === 'en';
+        const isTr = lang === 'tr';
 
         const checkBtn = getEl('glosCheckBtn');
         const input = getEl('glosAnswerInput');
+        const feedback = getEl('glosFeedback');
+        const answerZone = getEl('glosAnswerZone');
+
+        // Inject attempt counter badge
+        if (answerZone && !answered) {
+            let counterLabel = 'intentos restantes';
+            if (isEn) counterLabel = 'attempts remaining';
+            else if (isTr) counterLabel = 'deneme hakkı kaldı';
+
+            const badge = document.createElement('div');
+            badge.id = 'glosAttemptBadge';
+            badge.className = 'mt-2 text-right text-xs font-semibold text-white/50 transition-all';
+            badge.innerHTML = `<span id="glosAttemptCount">3</span> ${counterLabel}`;
+            answerZone.appendChild(badge);
+        }
+
+        const updateCounter = () => {
+            const countEl = getEl('glosAttemptCount');
+            const badge = getEl('glosAttemptBadge');
+            if (!countEl || !badge) return;
+            countEl.textContent = attemptsLeft;
+            if (attemptsLeft === 1) {
+                badge.className = 'mt-2 text-right text-xs font-bold text-red-300 animate-pulse transition-all';
+            } else if (attemptsLeft === 2) {
+                badge.className = 'mt-2 text-right text-xs font-semibold text-yellow-300 transition-all';
+            }
+        };
+
+        const revealAnswer = (isCorrect) => {
+            answerZone?.classList.add('hidden');
+            getEl('glosTranslation')?.classList.remove('hidden');
+            getEl('glosExampleTranslation')?.classList.remove('hidden');
+            getEl('glosRevealBtn')?.classList.add('hidden');
+            answered = true;
+            localStorage.setItem(storageKey, data.character);
+            reRenderGlossary();
+
+            if (!feedback) return;
+
+            if (isCorrect) {
+                feedback.className = 'mt-4 rounded-xl px-4 py-3 text-sm font-medium transition-all bg-green-500/20 border border-green-400/40 text-green-50 block shadow-sm';
+                let msg = '¡Correcto! 🎉 Bien hecho.';
+                if (isEn) msg = 'Correct! 🎉 Well done.';
+                else if (isTr) msg = 'Doğru! 🎉 Harika iş.';
+                feedback.innerHTML = `<i class="fas fa-circle-check mr-2 text-green-300 text-lg align-text-bottom"></i> ${msg}`;
+            } else {
+                feedback.className = 'mt-4 rounded-xl px-4 py-3 text-sm font-medium transition-all bg-red-500/20 border border-red-400/40 text-red-50 block shadow-sm';
+                let msg = 'Sin intentos. La traducción era:';
+                if (isEn) msg = 'No attempts left. The translation was:';
+                else if (isTr) msg = 'Deneme hakkı kalmadı. Çeviri:';
+                feedback.innerHTML = `<i class="fas fa-circle-xmark mr-2 text-red-300 text-lg align-text-bottom"></i> ${msg} <strong class="text-white">${escHtml(data.word_translation)}</strong>`;
+            }
+        };
 
         const doCheck = () => {
             if (answered) return;
@@ -282,39 +340,38 @@
 
             const normUser = normalize(userAnswer);
             const normCorrect = normalize(data.word_translation);
-
-            // Only accept exact match OR if the answer consists of multiple words,
-            // check each word individually (e.g. "to eat" matches "eat" only in full)
-            const correctWords = normCorrect.split(/\s+/);
-            const isMultiWord = correctWords.length > 1;
             const isCorrect = normUser === normCorrect ||
-                // For multi-word translations: user must match the full string (no partial)
-                // For single-word: require at least 90% character length AND starts-with match
-                (!isMultiWord &&
+                (normCorrect.split(/\s+/).length === 1 &&
                     normUser.length >= Math.ceil(normCorrect.length * 0.9) &&
                     normCorrect.startsWith(normUser));
 
-            getEl('glosAnswerZone')?.classList.add('hidden');
-            const isEn = localStorage.getItem('language') === 'en';
-            const feedback = getEl('glosFeedback');
-            if (feedback) {
-                if (isCorrect) {
-                    feedback.className = 'mt-4 rounded-xl px-4 py-3 text-sm font-medium transition-all bg-green-500/20 border border-green-400/40 text-green-50 block shadow-sm';
-                    feedback.innerHTML = `<i class="fas fa-circle-check mr-2 text-green-300 text-lg align-text-bottom"></i> ${isEn ? "Correct! 🎉 Well done." : "¡Correcto! 🎉 Bien hecho."}`;
-                } else {
-                    feedback.className = 'mt-4 rounded-xl px-4 py-3 text-sm font-medium transition-all bg-red-500/20 border border-red-400/40 text-red-50 block shadow-sm';
-                    feedback.innerHTML = `<i class="fas fa-circle-xmark mr-2 text-red-300 text-lg align-text-bottom"></i> ${isEn ? "The correct translation was:" : "La traducción correcta era:"} <strong class="text-white">${escHtml(data.word_translation)}</strong>`;
-                }
+            if (isCorrect) {
+                revealAnswer(true);
+                return;
             }
 
-            getEl('glosTranslation')?.classList.remove('hidden');
-            getEl('glosExampleTranslation')?.classList.remove('hidden');
-            getEl('glosRevealBtn')?.classList.add('hidden');
+            attemptsLeft--;
+            updateCounter();
 
-            answered = true;
-            localStorage.setItem(storageKey, data.character);
+            if (attemptsLeft <= 0) {
+                revealAnswer(false);
+                return;
+            }
 
-            reRenderGlossary();
+            if (feedback) {
+                feedback.className = 'mt-4 rounded-xl px-4 py-3 text-sm font-medium transition-all bg-red-500/20 border border-red-400/40 text-red-50 block shadow-sm';
+                let wrongMsg = 'Incorrecto, ¡intenta de nuevo!';
+                if (attemptsLeft === 1) {
+                    wrongMsg = '⚠️ ¡Último intento!';
+                    if (isEn) wrongMsg = '⚠️ Last attempt!';
+                    else if (isTr) wrongMsg = '⚠️ Son deneme!';
+                } else {
+                    if (isEn) wrongMsg = 'Incorrect, try again!';
+                    else if (isTr) wrongMsg = 'Yanlış, tekrar dene!';
+                }
+                feedback.innerHTML = `<i class="fas fa-circle-xmark mr-2 text-red-300"></i> ${wrongMsg}`;
+            }
+            if (input) { input.value = ''; input.focus(); }
         };
 
         if (checkBtn && input) {
@@ -324,15 +381,14 @@
 
         getEl('glosRevealBtn')?.addEventListener('click', () => {
             if (answered) return;
-            getEl('glosTranslation')?.classList.remove('hidden');
-            getEl('glosExampleTranslation')?.classList.remove('hidden');
-            getEl('glosAnswerZone')?.classList.add('hidden');
-            getEl('glosRevealBtn')?.classList.add('hidden');
-
-            answered = true;
-            localStorage.setItem(storageKey, data.character);
-
-            reRenderGlossary();
+            revealAnswer(false);
+            if (feedback) {
+                feedback.className = 'mt-4 rounded-xl px-4 py-3 text-sm font-medium transition-all bg-white/10 border border-white/20 text-white/70 block shadow-sm';
+                let msg = 'Traducción revelada.';
+                if (isEn) msg = 'Translation revealed.';
+                else if (isTr) msg = 'Çeviri görüntülandı.';
+                feedback.innerHTML = `<i class="fas fa-eye mr-2"></i> ${msg}`;
+            }
         });
 
         getEl('glosTipBtn')?.addEventListener('click', () => {

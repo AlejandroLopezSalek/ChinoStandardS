@@ -163,7 +163,9 @@ router.get('/word-of-day', async (req, res) => {
         if (!process.env.GROQ_API_KEY) return res.status(503).json({ error: 'AI service not configured' });
 
         const lang = ['en', 'tr'].includes(req.query.lang) ? req.query.lang : 'es';
-        let languageName = (lang === 'en') ? 'English' : (lang === 'tr' ? 'Turkish' : 'Spanish');
+        let languageName = 'Spanish';
+        if (lang === 'en') languageName = 'English';
+        else if (lang === 'tr') languageName = 'Turkish';
 
         // Timezone-safe today string (YYYY-MM-DD)
         const now = new Date();
@@ -178,12 +180,10 @@ router.get('/word-of-day', async (req, res) => {
             }
         } catch (e) { console.warn('[Redis] Cache failed:', e.message); }
 
-        // 2. MongoDB Search (Defensive: Search for either perfect match OR legacy prefix)
-        // This finds '2026-03-14' OR '2026-03-14_v2_es'
+        // 2. MongoDB Search
         let dailyDoc = await DailyWord.findOne({ date: { $regex: '^' + todayStr } });
 
-        // If we found a document, extract translation for the current language
-        if (dailyDoc && dailyDoc.translations && typeof dailyDoc.translations.get === 'function' && dailyDoc.translations.get(lang)) {
+        if (dailyDoc?.translations?.get?.(lang)) {
             const data = dailyDoc.translations.get(lang);
             if (redisClient.isOpen && redisClient.isReady) {
                 await redisClient.setEx(redisKey, 86400, JSON.stringify(data)).catch(() => { });
@@ -192,64 +192,11 @@ router.get('/word-of-day', async (req, res) => {
         }
 
         // 3. Logic to either Translate existing or Generate new
-        let wordData = null;
-        let existingData = null;
-        
-        if (dailyDoc) {
-            // Document found (might be legacy or unified for another lang)
-            if (dailyDoc.translations && typeof dailyDoc.translations.get === 'function') {
-                existingData = dailyDoc.translations.get('es') || dailyDoc.translations.get('en') || dailyDoc.translations.get('tr') || Array.from(dailyDoc.translations.values())[0];
-            } else {
-                existingData = dailyDoc.data || (dailyDoc._doc && dailyDoc._doc.data);
-            }
-        }
-
-        if (existingData && existingData.character) {
-            // Sync/Translate existing word to new language
-            console.log(`[WOD] Translating "${existingData.character}" to ${languageName}`);
-            wordData = await generateWodTranslation(existingData, languageName, lang);
-        } else {
-            // Generate brand new word
-            console.log(`[WOD] Generating brand new word for ${todayStr} (${languageName})`);
-            const recent = await DailyWord.find({}).sort({ date: -1 }).limit(30).lean();
-            const recentChars = recent.map(r => {
-                if (r.translations) return (r.translations instanceof Map ? r.translations.get('es') : r.translations['es'])?.character;
-                return r.data?.character;
-            }).filter(Boolean);
-            
-            wordData = await generateNewWod(languageName, lang, recentChars);
-        }
-
+        const wordData = await getOrGenerateWodData(dailyDoc, todayStr, lang, languageName);
         if (!wordData) throw new Error("Failed to generate or translate word data");
 
         // 4. Persistence & Migration
-        if (dailyDoc) {
-            // Migrate legacy doc if needed (remove version suffix and add translations map)
-            if (!dailyDoc.translations || typeof dailyDoc.translations.set !== 'function') {
-                const oldData = dailyDoc.data || (dailyDoc._doc && dailyDoc._doc.data);
-                dailyDoc.translations = new Map();
-                if (oldData) dailyDoc.translations.set('es', oldData); // Assume legacy was ES
-            }
-            dailyDoc.translations.set(lang, wordData);
-            dailyDoc.date = todayStr; // Standardize date
-            await dailyDoc.save();
-        } else {
-            // Create brand new unified doc
-            try {
-                dailyDoc = await DailyWord.create({
-                    date: todayStr,
-                    translations: new Map([[lang, wordData]])
-                });
-            } catch (err) {
-                if (err.code === 11000) { // Race condition
-                    dailyDoc = await DailyWord.findOne({ date: todayStr });
-                    if (dailyDoc && dailyDoc.translations) {
-                        dailyDoc.translations.set(lang, wordData);
-                        await dailyDoc.save();
-                    }
-                } else throw err;
-            }
-        }
+        await persistWodData(dailyDoc, todayStr, lang, wordData);
 
         // 5. Cache and Return
         if (redisClient.isOpen && redisClient.isReady) {
@@ -300,7 +247,7 @@ FORMAT:
         temperature: 0.7,
     });
 
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    const jsonMatch = /\{[\s\S]*\}/.exec(text);
     if (!jsonMatch) throw new Error('AI failed to provide valid JSON');
     return JSON.parse(jsonMatch[0]);
 }
@@ -326,7 +273,7 @@ Output ONLY raw JSON.`;
         temperature: 0.3,
     });
 
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    const jsonMatch = /\{[\s\S]*\}/.exec(text);
     if (!jsonMatch) throw new Error('AI failed to provide valid translation JSON');
     const translated = JSON.parse(jsonMatch[0]);
     
@@ -428,7 +375,7 @@ Evaluate this translation strictly but fairly, and output the grading JSON objec
             temperature: 0.2, // Low temperature for more deterministic grading
         });
 
-        const jsonMatch = rawGrading.match(/\{[\s\S]*\}/);
+        const jsonMatch = /\{[\s\S]*\}/.exec(rawGrading);
         if (!jsonMatch) throw new Error('AI failed to provide valid grading JSON');
         const gradingData = JSON.parse(jsonMatch[0]);
 
@@ -472,7 +419,7 @@ router.get('/tts', async (req, res) => {
 router.post('/', async (req, res) => {
 
     try {
-        const { message, context, history, lang } = req.body;
+        const { message, context, lang } = req.body;
         const user = await getUserFromRequest(req);
 
         if (!process.env.GROQ_API_KEY) {
@@ -500,7 +447,11 @@ router.post('/', async (req, res) => {
         if (similarChunks && similarChunks.length > 0) {
             ragContext = `\n*** COMMUNITY KNOWLEDGE BASE ***\nIf the user's question is related to the following community material, use it to formulate your answer:\n`;
             similarChunks.forEach(chunk => {
-                ragContext += `[Source: "${chunk.metadata?.title || 'Community Lesson'}" by ${chunk.metadata?.author || 'Unknown'} - Level ${chunk.metadata?.level || 'N/A'}]:\n"${chunk.text}"\n\n`;
+                const title = chunk.metadata?.title || 'Community Lesson';
+                const author = chunk.metadata?.author || 'Unknown';
+                const level = chunk.metadata?.level || 'N/A';
+                const chunkText = chunk.text || '';
+                ragContext += `[Source: "${title}" by ${author} - Level ${level}]:\n"${chunkText}"\n\n`;
             });
         }
 
@@ -523,8 +474,8 @@ router.post('/', async (req, res) => {
             .sort({ timestamp: -1 })
             .limit(5); // Load the last 5 interactions (10 messages total)
 
-        // The query returns descending (newest first), so we reverse it to chronological order
-        pastLogs.reverse().forEach(log => {
+        // The query returns descending (newest first), so we use toReversed to get chronological order without mutating in place
+        pastLogs.slice().reverse().forEach(log => {
             if (log.userMessage) messages.push({ role: 'user', content: log.userMessage });
             if (log.aiResponse) messages.push({ role: 'assistant', content: log.aiResponse });
         });
@@ -626,5 +577,57 @@ async function logChatInteraction(user, message, reply, context, lessonContentCo
 
 
 
+async function getOrGenerateWodData(dailyDoc, todayStr, lang, languageName) {
+    let existingData = null;
+    if (dailyDoc) {
+        if (dailyDoc.translations?.get) {
+            existingData = dailyDoc.translations.get('es') || dailyDoc.translations.get('en') || dailyDoc.translations.get('tr') || Array.from(dailyDoc.translations.values())[0];
+        } else {
+            existingData = dailyDoc.data || dailyDoc._doc?.data;
+        }
+    }
+
+    if (existingData?.character) {
+        console.log(`[WOD] Translating "${existingData.character}" to ${languageName}`);
+        return await generateWodTranslation(existingData, languageName, lang);
+    }
+
+    console.log(`[WOD] Generating brand new word for ${todayStr} (${languageName})`);
+    const recent = await DailyWord.find({}).sort({ date: -1 }).limit(30).lean();
+    const recentChars = recent.map(r => {
+        const trans = r.translations instanceof Map ? r.translations.get('es') : r.translations?.es;
+        return trans?.character || r.data?.character;
+    }).filter(Boolean);
+
+    return await generateNewWod(languageName, lang, recentChars);
+}
+
+async function persistWodData(dailyDoc, todayStr, lang, wordData) {
+    if (dailyDoc) {
+        if (!dailyDoc.translations?.set) {
+            const oldData = dailyDoc.data || dailyDoc._doc?.data;
+            dailyDoc.translations = new Map();
+            if (oldData) dailyDoc.translations.set('es', oldData);
+        }
+        dailyDoc.translations.set(lang, wordData);
+        dailyDoc.date = todayStr;
+        await dailyDoc.save();
+    } else {
+        try {
+            await DailyWord.create({
+                date: todayStr,
+                translations: new Map([[lang, wordData]])
+            });
+        } catch (err) {
+            if (err.code === 11000) {
+                const refreshedDoc = await DailyWord.findOne({ date: todayStr });
+                if (refreshedDoc?.translations) {
+                    refreshedDoc.translations.set(lang, wordData);
+                    await refreshedDoc.save();
+                }
+            } else throw err;
+        }
+    }
+}
+
 module.exports = router;
-// Trigger restart

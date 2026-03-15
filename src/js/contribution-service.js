@@ -26,7 +26,7 @@
                 }
                 // Fallback to localStorage if API fails (or while migrating)
                 console.warn('API failed, falling back to local storage for lessons');
-                const localLessons = JSON.parse(localStorage.getItem('turkamerica_lessons') || '[]');
+                const localLessons = JSON.parse(localStorage.getItem('chino_lessons') || '[]');
                 return localLessons.filter(l => l.status === 'published');
             } catch (error) {
                 console.error('Error fetching lessons:', error);
