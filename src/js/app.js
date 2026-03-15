@@ -174,8 +174,10 @@
         updateInstallButton() {
             const installBtn = document.getElementById('installAppBtn');
             if (installBtn && globalThis.deferredPrompt) {
-                installBtn.style.display = 'inline-flex';
-                installBtn.onclick = async () => {
+                installBtn.style.display = 'flex'; // Use flex to match layouts
+                const buttonElement = installBtn.querySelector('button') || installBtn;
+                
+                buttonElement.onclick = async () => {
                     const promptEvent = globalThis.deferredPrompt;
                     if (!promptEvent) return;
 

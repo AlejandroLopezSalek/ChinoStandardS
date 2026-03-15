@@ -1,0 +1,93 @@
+---
+title: Linguistik DNA - LabPanda
+description: Çince karakterlerin kökenini ve yapısını keşfedin.
+layout: base_tr.njk
+scripts:
+- lab-dna.js
+---
+
+<div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div
+                class="w-16 h-16 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-2xl flex items-center justify-center mx-auto text-2xl mb-6">
+                <i class="fas fa-dna"></i>
+            </div>
+            <h2 class="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">Linguistik DNA</h2>
+            <p class="text-slate-600 dark:text-slate-400">Herhangi bir Çince karakterin veya kelimenin köklerini ve
+                etimolojisini analiz edin.</p>
+        </div>
+
+        <!-- Input Section -->
+        <div
+            class="bg-white dark:bg-slate-800 rounded-3xl p-8 border border-slate-200 dark:border-white/5 shadow-2xl mb-8">
+            <div class="relative">
+                <input type="text" id="dna-input"
+                    class="w-full bg-slate-50 dark:bg-white/5 border-2 border-transparent focus:border-red-500 rounded-2xl p-6 text-2xl text-slate-900 dark:text-white outline-none transition-all text-center font-bold"
+                    placeholder="Karakter girin (örn: 妈)">
+            </div>
+
+            <button id="run-dna-btn" type="button"
+                class="w-full mt-6 bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-2xl shadow-lg shadow-red-500/30 transition-all flex items-center justify-center gap-3">
+                <i class="fas fa-microscope"></i> BİYO-ANALİZİ BAŞLAT
+            </button>
+            <p class="text-center text-[10px] text-slate-500 mt-4">Sınır: Günlük 1 detaylı karmaşık analiz.</p>
+        </div>
+
+        <!-- Loading State -->
+        <div id="dna-loading" class="hidden py-20 text-center">
+            <div class="flex items-center justify-center gap-2 mb-6">
+                <div class="w-3 h-3 bg-red-500 rounded-full animate-bounce"></div>
+                <div class="w-3 h-3 bg-red-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                <div class="w-3 h-3 bg-red-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Panda çizgileri analiz ediyor...</h3>
+        </div>
+
+        <!-- Results Area -->
+        <div id="dna-results" class="hidden space-y-8 animate-slideUp">
+            <div
+                class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-white/5 shadow-xl">
+                <h4 class="text-red-600 font-black uppercase text-xs tracking-widest mb-4">Genel Anlam</h4>
+                <p id="res-meaning" class="text-3xl font-bold text-slate-900 dark:text-white"></p>
+            </div>
+
+            <div id="res-analysis" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Character breakdown cards -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<template id="dna-card-template">
+    <div class="p-6 bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-white/5 shadow-sm">
+        <div class="flex items-center gap-4 mb-4">
+            <div class="char-display text-5xl font-black text-slate-900 dark:text-white"></div>
+            <div>
+                <div class="radical-label text-xs font-bold text-red-500 uppercase tracking-widest">Köken: <span
+                        class="radical-val"></span></div>
+                <div class="radical-meaning text-[10px] text-slate-500 uppercase font-black"></div>
+            </div>
+        </div>
+        <p class="explanation-text text-sm text-slate-600 dark:text-slate-400 leading-relaxed"></p>
+    </div>
+</template>
+
+<style>
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-slideUp {
+        animation: slideUp 0.5s ease-out forwards;
+    }
+</style>

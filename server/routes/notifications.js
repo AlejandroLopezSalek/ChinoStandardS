@@ -8,7 +8,7 @@ const { authenticateToken, requireAdmin } = require('../middleware/auth');
 // Configure web-push
 if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
     webpush.setVapidDetails(
-        'mailto:admin@turkamerica.com',
+        'mailto:contact@pandalatam.club',
         process.env.VAPID_PUBLIC_KEY,
         process.env.VAPID_PRIVATE_KEY
     );

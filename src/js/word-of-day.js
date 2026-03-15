@@ -18,7 +18,7 @@
         .normalize('NFD').replaceAll(/[\u0300-\u036f]/gu, '')
         .replaceAll(/[^a-z0-9\s]/gu, '').trim();
 
-    function displayFeedback(feedback, input, isCorrect, isEn, isTr) {
+    function displayFeedback(feedback, input, isCorrect, isEn, isTr, attemptsLeft) {
         if (isCorrect) {
             feedback.className = 'mt-3 rounded-lg px-4 py-3 text-sm font-medium transition-all bg-green-400/20 border border-green-400/40 text-green-100';
 
@@ -35,8 +35,14 @@
             feedback.className = 'mt-3 rounded-lg px-4 py-3 text-sm font-medium transition-all bg-red-400/20 border border-red-400/40 text-red-100';
 
             let msg = 'Incorrecto, ¡intenta de nuevo!';
-            if (isTr) msg = 'Yanlış, tekrar dene!';
-            else if (isEn) msg = "Incorrect, try again!";
+            if (attemptsLeft === 1) {
+                msg = '⚠️ ¡Último intento!';
+                if (isEn) msg = '⚠️ Last attempt!';
+                else if (isTr) msg = '⚠️ Son deneme!';
+            } else {
+                if (isTr) msg = 'Yanlış, tekrar dene!';
+                else if (isEn) msg = "Incorrect, try again!";
+            }
 
             feedback.innerHTML = `<i class="fas fa-circle-xmark mr-2 text-red-300"></i>${msg}`;
             if (input) {
@@ -404,7 +410,7 @@
             return;
         }
 
-        displayFeedback(feedback, isCorrect ? null : input, isCorrect, isEn, isTr);
+        displayFeedback(feedback, isCorrect ? null : input, isCorrect, isEn, isTr, attemptsLeft);
     }
 
     // ---- WoD Stats helper ----

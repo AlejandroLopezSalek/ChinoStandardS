@@ -3,11 +3,11 @@
 // Smart caching with quick updates
 // ================================
 
-const CACHE_VERSION = 'v1.0.32'; // ⚡ INCREMENTA ESTO CADA VEZ QUE DESPLIEGUES
+const CACHE_VERSION = 'v1.0.33'; // ⚡ INCREMENTA ESTO CADA VEZ QUE DESPLIEGUES
 const CACHE_NAMES = {
-    static: `turkamerica-${CACHE_VERSION}-static`,
-    dynamic: `turkamerica-${CACHE_VERSION}-dynamic`,
-    images: `turkamerica-${CACHE_VERSION}-images`
+    static: `pandalatam-${CACHE_VERSION}-static`,
+    dynamic: `pandalatam-${CACHE_VERSION}-dynamic`,
+    images: `pandalatam-${CACHE_VERSION}-images`
 };
 
 // Cache duration times (in milliseconds)
@@ -63,8 +63,8 @@ self.addEventListener('activate', (event) => {
                 return Promise.all(
                     cacheNames
                         .filter((cacheName) => {
-                            // Delete ALL old turkamerica caches
-                            return cacheName.startsWith('turkamerica-') &&
+                            // Delete ALL old pandalatam caches
+                            return cacheName.startsWith('pandalatam-') &&
                                 !Object.values(CACHE_NAMES).includes(cacheName);
                         })
                         .map((cacheName) => {
