@@ -1,0 +1,177 @@
+---
+title: LabPanda - İnovasyon Laboratuvarı
+description: Çin'i daha hızlı öğrenmek için yapay zeka ve gelişmiş dilbilim araçlarıyla deneyler yapın.
+layout: base_tr.njk
+scripts:
+- lab-hub.js
+---
+
+<div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="max-w-5xl mx-auto">
+        <!-- Header Hero Section -->
+        <div
+            class="relative overflow-hidden rounded-3xl bg-slate-100 dark:bg-gradient-to-br dark:from-indigo-900 dark:via-stone-900 dark:to-red-900 p-8 md:p-16 mb-12 shadow-2xl border border-slate-200 dark:border-white/10 transition-colors duration-300">
+            <div
+                class="absolute top-0 right-0 -m-16 w-64 h-64 bg-red-500/10 dark:bg-red-500/20 rounded-full blur-3xl animate-pulse">
+            </div>
+            <div
+                class="absolute bottom-0 left-0 -m-16 w-64 h-64 bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl animate-pulse">
+            </div>
+            <div class="relative z-10 text-center max-w-3xl mx-auto">
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/50 dark:bg-white/10 backdrop-blur-md border border-slate-200 dark:border-white/20 text-red-600 dark:text-red-400 text-sm font-bold uppercase tracking-widest mb-6">
+                    <i class="fas fa-flask"></i> Deneysel Projeler
+                </div>
+                <h2 class="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
+                    Hoş Geldiniz <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600 dark:from-red-400 dark:to-orange-400">LabPanda</span>
+                </h2>
+                <p class="text-lg md:text-xl text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Panda'nın Çin dilini görmek, duymak ve parçalamak için yeni yollar denediği teknolojimiz.
+                    Dilbilimciler tarafından tasarlanan ve yapay zeka tarafından güçlendirilen araçlar.
+                </p>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            <!-- Tool 1: ADN Lingüístico -->
+            <div data-lab-tool="adn"
+                class="group cursor-pointer relative bg-white dark:bg-stone-800/40 backdrop-blur-xl border border-stone-200 dark:border-stone-700/50 rounded-3xl p-8 hover:bg-red-50 dark:hover:bg-white/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl overflow-hidden shadow-sm">
+                <div
+                    class="absolute -right-4 -top-4 w-24 h-24 bg-red-500/10 rounded-full blur-2xl group-hover:bg-red-500/20 transition-all">
+                </div>
+                <div
+                    class="w-14 h-14 bg-red-500/10 dark:bg-red-500/20 rounded-2xl flex items-center justify-center text-red-600 dark:text-red-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-dna"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-stone-900 dark:text-white mb-3">Linguistik DNA</h3>
+                <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed mb-6">
+                    Karakterlerin kaputu altına bakın. Herhangi bir sözcüğü köklerine parçalayın ve yazısının
+                    arkasındaki binlerce yıllık mantığı anlayın.
+                </p>
+                <div class="flex items-center text-red-600 dark:text-red-400 font-bold text-sm">
+                    Modülü Keşfet <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                </div>
+            </div>
+
+            <!-- Tool 2: Exámenes Panda -->
+            <div data-lab-tool="examen"
+                class="group cursor-pointer relative bg-white dark:bg-stone-800/40 backdrop-blur-xl border border-stone-200 dark:border-stone-700/50 rounded-3xl p-8 hover:bg-blue-50 dark:hover:bg-white/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl overflow-hidden shadow-sm">
+                <div
+                    class="absolute -right-4 -top-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all">
+                </div>
+                <div
+                    class="w-14 h-14 bg-blue-500/10 dark:bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-file-invoice"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-stone-900 dark:text-white mb-3">Yapay Zeka Sınavları</h3>
+                <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed mb-6">
+                    Panda'nın seviyenize göre kişiselleştirilmiş bir sınav oluşturmasına izin verin. Bitirdiğinizde
+                    derin pedagojik düzeltmeler ve öğrenme ipuçları alacaksınız.
+                </p>
+                <div class="flex items-center text-blue-600 dark:text-blue-400 font-bold text-sm">
+                    Meydan Oku <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                </div>
+            </div>
+
+            <!-- Tool 3: Espejo Fonético -->
+            <div
+                class="group relative bg-white dark:bg-stone-800/40 backdrop-blur-xl border border-stone-200 dark:border-stone-700/50 rounded-3xl p-8 hover:bg-purple-50 dark:hover:bg-white/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl overflow-hidden cursor-pointer shadow-sm">
+                <div
+                    class="absolute -right-4 -top-4 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all">
+                </div>
+                <div
+                    class="w-14 h-14 bg-purple-500/10 dark:bg-purple-500/20 rounded-2xl flex items-center justify-center text-purple-600 dark:text-purple-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-volume-up"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-stone-900 dark:text-white mb-3">Fonetik Ayna</h3>
+                <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed mb-6">
+                    Doğru tonu mu başaramıyorsunuz? Dili ve dudakları tam bir Pekinli yerli gibi yerleştirmek için
+                    anatomik diyagramları görüntüleyin.
+                </p>
+                <div class="flex items-center text-purple-600 dark:text-purple-400 font-bold text-sm">
+                    Görsel Rehberi Gör <i
+                        class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                </div>
+            </div>
+
+            <!-- Tool 4: Story Lab -->
+            <div data-lab-tool="story"
+                class="group cursor-pointer relative bg-white dark:bg-stone-800/40 backdrop-blur-xl border border-stone-200 dark:border-stone-700/50 rounded-3xl p-8 hover:bg-green-50 dark:hover:bg-white/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl overflow-hidden shadow-sm">
+                <div
+                    class="absolute -right-4 -top-4 w-24 h-24 bg-green-500/10 rounded-full blur-2xl group-hover:bg-green-500/20 transition-all">
+                </div>
+                <div
+                    class="w-14 h-14 bg-green-500/10 dark:bg-green-500/20 rounded-2xl flex items-center justify-center text-green-600 dark:text-green-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-feather-alt"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-stone-900 dark:text-white mb-3">Hikaye Laboratuvarı</h3>
+                <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed mb-6">
+                    Panda ile işbirlikçi bir hikaye yazın. Yapay zeka, zayıf kelimelerinizi gerçek bir anlatı bağlamında
+                    pratik yapmaya zorlamak için kullanacaktır.
+                </p>
+                <div class="flex items-center text-green-600 dark:text-green-400 font-bold text-sm">
+                    Hikaye Oluştur <i
+                        class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                </div>
+            </div>
+
+            <!-- Tool 5: Universo Semántico -->
+            <div
+                class="group relative bg-white dark:bg-stone-800/40 backdrop-blur-xl border border-stone-200 dark:border-stone-700/50 rounded-3xl p-8 hover:bg-amber-50 dark:hover:bg-white/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl overflow-hidden cursor-pointer shadow-sm">
+                <div
+                    class="absolute -right-4 -top-4 w-24 h-24 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all">
+                </div>
+                <div
+                    class="w-14 h-14 bg-amber-500/10 dark:bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-600 dark:text-amber-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-stone-900 dark:text-white mb-3">Semantik Evren</h3>
+                <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed mb-6">
+                    Bildiğiniz tüm kelimelerin etkileşimli bir takımyıldızında gezinin. Hangi konuları hâkim olduğunuzu
+                    ve hangilerinin karardığını görün.
+                </p>
+                <div class="flex items-center text-amber-600 dark:text-amber-400 font-bold text-sm">
+                    Haritamı Gör <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                </div>
+            </div>
+
+            <!-- Tool 6: Contexto Cultural -->
+            <div data-lab-tool="analisis"
+                class="group cursor-pointer relative bg-white dark:bg-stone-800/40 backdrop-blur-xl border border-stone-200 dark:border-stone-700/50 rounded-3xl p-8 hover:bg-pink-50 dark:hover:bg-white/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl overflow-hidden shadow-sm">
+                <div
+                    class="absolute -right-4 -top-4 w-24 h-24 bg-pink-500/10 rounded-full blur-2xl group-hover:bg-pink-500/20 transition-all">
+                </div>
+                <div
+                    class="w-14 h-14 bg-pink-500/10 dark:bg-pink-500/20 rounded-2xl flex items-center justify-center text-pink-600 dark:text-pink-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-globe-asia"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-stone-900 dark:text-white mb-3">Kültürel Bağlam</h3>
+                <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed mb-6">
+                    Neden böyle diyorlar? Panda, otomatik çevirmenlerin göz ardı ettiği "alt metin" ve kültürel
+                    anlamları açıklar.
+                </p>
+                <div class="flex items-center text-pink-600 dark:text-pink-400 font-bold text-sm">
+                    Cümle Analiz Et <i
+                        class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Footer -->
+        <div class="bg-indigo-900/40 rounded-3xl p-8 border border-white/10 text-center">
+            <p class="text-indigo-200 font-medium">
+                <i class="fas fa-flask mr-2"></i> LabPanda canlı bir bölgedir. Sürekli deneyler ekliyoruz. Sizinkini
+                önerin!
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .backdrop-blur-xl {
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+    }
+</style>

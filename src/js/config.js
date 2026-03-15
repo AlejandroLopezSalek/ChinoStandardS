@@ -52,7 +52,7 @@ globalThis.APP_CONFIG = {
 
   // Configuración de almacenamiento
   STORAGE: {
-    PREFIX: 'turkamerica_',
+    PREFIX: 'pandalatam_',
     KEYS: {
       THEME: 'darkMode',
       LANGUAGE: 'language',
@@ -126,7 +126,7 @@ globalThis.APP_CONFIG = {
   // URLs de recursos externos
   EXTERNAL: {
     DONATION_URL: 'https://whydonate.com/fundraising/-apoya-mas-desarollos-para-nuestra-comunidad',
-    SUPPORT_EMAIL: 'contact@turkamerica.com'
+    SUPPORT_EMAIL: 'contact@pandalatam.club'
   },
 
   // Métodos helper
@@ -160,7 +160,7 @@ if (isDevelopment) {
   console.log = noop;
   console.info = noop;
   console.warn = noop;
-  console.error = noop;
+  // Keep console.error active even in production for critical debugging
 }
 
 // Hacer disponible globalmente
