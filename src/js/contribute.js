@@ -115,13 +115,16 @@ async function fetchExistingLesson(topic, level) {
         const lesson = data[topic];
 
         if (lesson) {
+            // Lesson exists in JSON — edit mode
             updateUIForLessonEdit(lesson, level, topic);
         } else {
-            showToast('Lección no encontrada', 'error');
+            // Lesson does NOT exist yet — pre-fill for a new contribution on this topic
+            prefillNewLessonForm(topic, level);
         }
     } catch (error) {
         console.error('Error fetching lesson:', error);
-        showToast('Error al cargar la lección original', 'error');
+        // On network error, still let user create content
+        prefillNewLessonForm(topic, level);
     }
 }
 
@@ -202,6 +205,58 @@ function updateUIForLessonEdit(lesson, level, topic) {
     if (form) form.dataset.editingLessonId = topic;
 
     showToast(`Editando lección: ${lesson.title}`, 'info');
+}
+
+/**
+ * Pre-fills the contribution form to CREATE new content for a topic that has no content yet.
+ * Called when user clicks "Add Content" from a level page for a lesson with no content.
+ */
+function prefillNewLessonForm(topic, level) {
+    selectContributionType('lesson');
+
+    const levelSelect = document.getElementById('lessonLevel');
+    if (levelSelect) {
+        levelSelect.value = level || 'A1';
+    }
+
+    // Convert topic slug to a readable title (e.g. "verbo-shi" => "Verbo Shi")
+    const titleInput = document.getElementById('lessonTitle');
+    if (titleInput && !titleInput.value) {
+        const readableTitle = topic
+            .split('-')
+            .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+            .join(' ');
+        titleInput.value = readableTitle;
+    }
+
+    // Store topic as the ID so it links back to the static card
+    const form = document.getElementById('lessonEditForm');
+    if (form) form.dataset.editingLessonId = topic;
+
+    // Show banner inviting contribution
+    const editorContainer = document.querySelector('.lesson-editor');
+    if (editorContainer) {
+        const existingBanner = document.getElementById('editInfoBanner');
+        if (existingBanner) existingBanner.remove();
+
+        const banner = document.createElement('div');
+        banner.id = 'editInfoBanner';
+        banner.className = 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 p-4 rounded-xl mb-4 flex items-center gap-3';
+        banner.innerHTML = `
+            <i class="fas fa-plus-circle text-xl"></i>
+            <div>
+                <strong class="block font-bold text-lg">Nueva lección: ${topic}</strong>
+                <span class="text-sm opacity-80">Sé el primero en escribir el contenido para este tema en Nivel ${level}.</span>
+            </div>
+        `;
+        editorContainer.parentElement.insertBefore(banner, editorContainer);
+    }
+
+    if (lessonEditor) {
+        lessonEditor.setContent('<h2>Título de la Sección</h2><p>Escribe aquí el contenido de tu lección...</p>');
+    }
+
+    showToast(`Nueva lección para: ${topic} (${level})`, 'info');
 }
 
 function initContributionPage() {

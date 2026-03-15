@@ -18,8 +18,9 @@ const LEVEL_LOWER = CURRENT_LEVEL.toLowerCase();
 const lang = globalThis.location.pathname.startsWith('/en/') ? 'en' : (globalThis.location.pathname.startsWith('/tr/') ? 'tr' : 'es');
 const translations = {
     es: {
-        notFound: "Tema no encontrado",
-        noContent: "No se encontró contenido para este tema.",
+        notFound: "Sé el primero en contribuir",
+        noContent: "Esta lección aún no tiene contenido. ¿Conoces este tema? ¡Contribuye!",
+        contribute: "Agregar Contenido",
         editLesson: "Editar Lección",
         loginRequired: "Debes iniciar sesión para editar",
         deleted: "Lección eliminada correctamente",
@@ -29,8 +30,9 @@ const translations = {
         new: "Nuevo"
     },
     en: {
-        notFound: "Topic not found",
-        noContent: "No content found for this topic.",
+        notFound: "Be the first to contribute",
+        noContent: "This lesson has no content yet. Do you know this topic? Contribute!",
+        contribute: "Add Content",
         editLesson: "Edit Lesson",
         loginRequired: "You must be logged in to edit",
         deleted: "Lesson deleted successfully",
@@ -40,8 +42,9 @@ const translations = {
         new: "New"
     },
     tr: {
-        notFound: "Konu bulunamadı",
-        noContent: "Bu konu için içerik bulunamadı.",
+        notFound: "İlk katkıda bulunan sen ol",
+        noContent: "Bu dersin henüz içeriği yok. Bu konuyu biliyor musun? Katkıda bulun!",
+        contribute: "İçerik Ekle",
         editLesson: "Dersi Düzenle",
         loginRequired: "Düzenlemek için giriş yapmalısınız",
         deleted: "Ders başarıyla silindi",
@@ -156,8 +159,23 @@ async function openExplanation(topic) {
         setupDeleteButton(modal, item);
         injectPronunciation(contentEl);
     } else {
+        // No content yet — show contribute CTA
         titleEl.textContent = t.notFound;
-        contentEl.innerHTML = `<p class="text-center text-gray-500 my-4">${t.noContent}</p>`;
+        contentEl.innerHTML = `
+            <div class="flex flex-col items-center justify-center py-10 gap-4 text-center">
+                <div class="w-16 h-16 rounded-full bg-red-50 dark:bg-red-900/30 flex items-center justify-center">
+                    <i class="fas fa-pencil-alt text-2xl text-red-400"></i>
+                </div>
+                <p class="text-stone-500 dark:text-stone-400 max-w-xs">${t.noContent}</p>
+                <a href="/Contribute/?topic=${encodeURIComponent(topic)}&level=${CURRENT_LEVEL}"
+                   class="inline-flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow transition-all">
+                    <i class="fas fa-plus"></i>
+                    ${t.contribute || 'Contribuir'}
+                </a>
+            </div>
+        `;
+        // Still show the edit button for logged-in users
+        setupModalActions(actionsEl, { id: topic }, topic);
     }
 
     // SHOW MODAL - Force it
