@@ -83,7 +83,12 @@ const userSchema = new mongoose.Schema({
       timestamp: Date
     },
     activeStoryId: String,
-    lastActivity: Date
+    lastActivity: Date,
+    labUsage: {
+      dnaDate: String,
+      examDate: String,
+      storyDate: String
+    }
   },
   isActive: {
     type: Boolean,

@@ -2,11 +2,11 @@
 // SETTINGS PANEL - Overlay and Controls
 // ========================================
 
-// Helper function to handle TurkBot enable
-function enableTurkBot() {
-    localStorage.setItem('turkbot_disabled', 'false');
-    if (globalThis.initTurkBot) {
-        globalThis.initTurkBot();
+// Helper function to handle Panda AI enable
+function enablePandaAI() {
+    localStorage.setItem('panda_disabled', 'false');
+    if (globalThis.initMascot) {
+        globalThis.initMascot();
     } else {
         // If script loaded but function not globally avail yet, reload might be needed
         globalThis.location.reload();
@@ -14,30 +14,30 @@ function enableTurkBot() {
 
     // Show nice notification
     if (globalThis.ToastSystem) {
-        globalThis.ToastSystem.success('¡TurkBot activado! Estoy aquí para ayudarte.', 'Asistente Integrado');
+        globalThis.ToastSystem.success('¡Panda AI activado! Estoy aquí para ayudarte.', 'Asistente Integrado');
     }
 }
 
-// Helper function to handle TurkBot disable
-function disableTurkBot() {
-    localStorage.setItem('turkbot_disabled', 'true');
+// Helper function to handle Panda AI disable
+function disablePandaAI() {
+    localStorage.setItem('panda_disabled', 'true');
 
     // Clear chat history to prevent old messages from reappearing when re-enabled
-    sessionStorage.removeItem('capi_chat_history');
-    sessionStorage.removeItem('capi_chat_open');
+    sessionStorage.removeItem('panda_chat_history');
+    sessionStorage.removeItem('panda_chat_open');
 
     if (globalThis.removeMascotUI) {
         globalThis.removeMascotUI();
     } else {
         // Fallback to manual removal if function missing
-        const btn = document.getElementById('turkbot-btn');
-        const chat = document.getElementById('turkbot-chat');
+        const btn = document.getElementById('panda-btn');
+        const chat = document.getElementById('panda-chat');
         if (btn) btn.remove();
         if (chat) chat.remove();
     }
 
     if (globalThis.ToastSystem) {
-        globalThis.ToastSystem.info('TurkBot desactivado. Puedes reactivarlo aquí cuando quieras.', 'Asistente Pausado');
+        globalThis.ToastSystem.info('Panda AI desactivado. Puedes reactivarlo aquí cuando quieras.', 'Asistente Pausado');
     }
 }
 
@@ -53,18 +53,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Notifications Logic ---
     // Handled by general.js (AppUtils.Notifications)
 
-    // --- TurkBot Logic ---
-    const turkbotToggle = document.getElementById('turkbotToggle');
-    if (turkbotToggle) {
+    // --- Panda AI Logic ---
+    const pandaToggle = document.getElementById('pandaToggle');
+    if (pandaToggle) {
         // Load saved state (default enabled)
-        const isDisabled = localStorage.getItem('turkbot_disabled') === 'true';
-        turkbotToggle.checked = !isDisabled;
+        const isDisabled = localStorage.getItem('panda_disabled') === 'true';
+        pandaToggle.checked = !isDisabled;
 
-        turkbotToggle.addEventListener('change', () => {
-            if (turkbotToggle.checked) {
-                enableTurkBot();
+        pandaToggle.addEventListener('change', () => {
+            if (pandaToggle.checked) {
+                enablePandaAI();
             } else {
-                disableTurkBot();
+                disablePandaAI();
             }
         });
     }

@@ -118,10 +118,24 @@ const authLimiter = rateLimit({
   message: {
     error: 'Too many authentication attempts, please try again later.'
   },
-  skipSuccessfulRequests: true // Don't count successful requests
+  skipSuccessfulRequests: true
 });
 
-app.use('/api/login', authLimiter);
+// Protect all auth entry points: login, register, google
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/register', authLimiter);
+app.use('/api/auth/google', authLimiter);
+
+// Rate limiting for Analytics to prevent DB spam
+const analyticsLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 50, // More generous but still limited
+  message: {
+    error: 'Too many analytics events from this IP.'
+  }
+});
+
+app.use('/api/analytics', analyticsLimiter);
 
 // Data Sanitization against NoSQL query injection
 app.use((req, res, next) => {

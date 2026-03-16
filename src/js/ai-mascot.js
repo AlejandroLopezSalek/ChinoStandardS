@@ -1,32 +1,30 @@
 // Make functions global for Settings Panel control
-globalThis.initTurkBot = initTurkBot;
+globalThis.initMascot = initMascot;
 globalThis.removeMascotUI = removeMascotUI;
 
 document.addEventListener('DOMContentLoaded', () => {
-    initTurkBot();
+    initMascot();
 });
 
-function initTurkBot() {
+function initMascot() {
     // Check if disabled by user
-    if (localStorage.getItem('turkbot_disabled') === 'true') {
-        const btn = document.getElementById('turkbot-btn');
+    if (localStorage.getItem('panda_disabled') === 'true') {
+        const btn = document.getElementById('panda-btn');
         if (btn) btn.classList.add('hidden');
         return;
     }
 
-
-
     createMascotUI();
 
     // Welcome flow: Check if seen. If NOT seen, show welcome modal.
-    if (!localStorage.getItem('turkbot_welcome_seen')) {
+    if (!localStorage.getItem('panda_welcome_seen')) {
         showWelcomeModal();
     }
 }
 
 function removeMascotUI() {
-    const btn = document.getElementById('turkbot-btn');
-    const chat = document.getElementById('turkbot-chat');
+    const btn = document.getElementById('panda-btn');
+    const chat = document.getElementById('panda-chat');
     if (btn) {
         btn.classList.add('scale-0', 'opacity-0');
         // Do NOT remove, just hide. It might be needed again if re-enabled.
@@ -41,7 +39,7 @@ function removeMascotUI() {
 
 function createMascotUI() {
     // 1. Get or Create Floating Button
-    let mascotBtn = document.getElementById('turkbot-btn');
+    let mascotBtn = document.getElementById('panda-btn');
 
     if (mascotBtn) {
         // If exists (hidden or not), ensure it's visible
@@ -49,14 +47,13 @@ function createMascotUI() {
         // Animation handled below
     } else {
         mascotBtn = document.createElement('div');
-        mascotBtn.id = 'turkbot-btn';
+        mascotBtn.id = 'panda-btn';
         mascotBtn.className = 'fixed bottom-6 right-6 z-[9990] cursor-pointer group transition-all duration-300 hover:scale-110 transform scale-0 opacity-0'; // Start hidden for animation
         const lang = localStorage.getItem('language') || 'es';
 
         const TEXTS = {
             es: { bubbleText: "¡Hola! Soy Panda" },
-            en: { bubbleText: "Hello! I'm Panda" },
-            tr: { bubbleText: "Merhaba! Ben Panda" }
+            en: { bubbleText: "Hello! I'm Panda" }
         };
 
         mascotBtn.innerHTML = `
@@ -87,7 +84,7 @@ function createMascotUI() {
     }
 
     // 2. Get or Create Chat Window (Hidden by default)
-    let chatWindow = document.getElementById('turkbot-chat');
+    let chatWindow = document.getElementById('panda-chat');
 
     // 2. Get existing Chat Window (Now in base.njk)
 
@@ -201,7 +198,7 @@ function createMascotUI() {
         });
     }
 
-    const form = document.getElementById('turkbot-form'); // Check if this ID is still used in HTML above? No, used button directly.
+    const form = document.getElementById('panda-form'); // Check if this ID is still used in HTML above? No, used button directly.
     // Handling send via button and textarea enter
     const sendBtn = document.getElementById('send-msg-btn');
     const input = document.getElementById('chat-input');
@@ -231,15 +228,15 @@ function createMascotUI() {
 
 // --- PERSISTENCE HELPERS ---
 function saveChatHistory(role, text) {
-    let history = JSON.parse(sessionStorage.getItem('capi_chat_history') || '[]');
+    let history = JSON.parse(sessionStorage.getItem('panda_chat_history') || '[]');
     history.push({ role, text });
     // Limit history to last 50 messages to prevent storage issues
     if (history.length > 50) history = history.slice(-50);
-    sessionStorage.setItem('capi_chat_history', JSON.stringify(history));
+    sessionStorage.setItem('panda_chat_history', JSON.stringify(history));
 }
 
 function loadChatHistory() {
-    const history = JSON.parse(sessionStorage.getItem('capi_chat_history') || '[]');
+    const history = JSON.parse(sessionStorage.getItem('panda_chat_history') || '[]');
     // If empty, show welcome message is handled by default HTML structure or we can double check
     // Actually, HTML has specific welcome message hardcoded.
     // If history exists, we should probably clear the default "Hello" and show history, OR append history.
@@ -250,11 +247,11 @@ function loadChatHistory() {
     history.forEach(msg => addMessage(msg.role, msg.text, false));
 
     // Auto-open if it was open?
-    const wasOpen = sessionStorage.getItem('capi_chat_open') === 'true';
+    const wasOpen = sessionStorage.getItem('panda_chat_open') === 'true';
     if (wasOpen) {
         // We need to wait for DOM to be ready
         setTimeout(() => {
-            const chat = document.getElementById('turkbot-chat');
+            const chat = document.getElementById('panda-chat');
             if (chat?.classList.contains('hidden')) {
                 // Call toggle but ensure we don't mess up animation
                 chat.classList.remove('hidden', 'translate-y-10', 'opacity-0', 'pointer-events-none');
@@ -265,7 +262,7 @@ function loadChatHistory() {
 
 function showWelcomeModal() {
     // Only show if not disabled globally
-    if (localStorage.getItem('turkbot_disabled') === 'true') return;
+    if (localStorage.getItem('panda_disabled') === 'true') return;
 
     const modalId = 'capi-welcome-modal';
     if (document.getElementById(modalId)) return;
@@ -291,17 +288,9 @@ function showWelcomeModal() {
             yesBtn: "Yes, please! 🚀",
             noBtn: "No thanks, I'll explore alone",
             guide: "Awesome! 😃\n\nHere's a quick summary:\n\n1. **Levels:** Explore from A1 to C1 on the homepage.\n2. **Grammar:** Check out specific rules in the dedicated section.\n3. **Community:** Read books and lessons created by other students.\n\nAsk me anything you need to know!"
-        },
-        tr: {
-            title: "PandaLatam'a Hoş Geldiniz! 🌎",
-            body1: "Ben <strong>Panda</strong>, yapay zeka asistanınım. <br>",
-            body2: "Sana web sitesinde hızlıca bir tur attırmamı ister misin?",
-            yesBtn: "Evet, lütfen! 🚀",
-            noBtn: "Hayır teşekkürler, kendim keşfedeceğim",
-            guide: "Harika! 😃\n\nİşte hızlı bir özet:\n\n1. **Seviyeler:** Ana sayfada A1'den C1'e kadar keşfet.\n2. **Gramer:** Özel bölümde kurallara göz at.\n3. **Topluluk:** Diğer öğrencilerin yazdığı hikayeleri ve dersleri oku.\n\nBana istediğini sorabilirsin!"
         }
     };
-    const t = MODAL_TEXTS[lang];
+    const t = MODAL_TEXTS[lang] || MODAL_TEXTS['es'];
 
     modal.innerHTML = `
         <div class="bg-white dark:bg-stone-800 rounded-3xl shadow-2xl p-8 w-full max-w-md transform scale-95 transition-transform duration-300 border border-stone-200 dark:border-stone-700 text-center relative overflow-hidden">
@@ -344,15 +333,14 @@ function showWelcomeModal() {
         modal.classList.add('opacity-0');
         modal.querySelector('div').classList.remove('scale-100');
         modal.querySelector('div').classList.add('scale-95');
-        setTimeout(() => modal.remove(), 300);
-        localStorage.setItem('turkbot_welcome_seen', 'true'); // Mark as seen
+        localStorage.setItem('panda_welcome_seen', 'true'); // Mark as seen
     };
 
     document.getElementById('welcome-yes').addEventListener('click', () => {
         closeModal();
         // Trigger Chat Open with Guide Message
         setTimeout(() => {
-            const btn = document.getElementById('turkbot-btn');
+            const btn = document.getElementById('panda-btn');
             if (btn) btn.click();
             addMessage('assistant', t.guide);
             saveChatHistory('assistant', t.guide);
@@ -370,7 +358,7 @@ function showDeactivationModal() {
 }
 
 function toggleChat() {
-    const chat = document.getElementById('turkbot-chat');
+    const chat = document.getElementById('panda-chat');
     const input = document.getElementById('chat-input');
     const isHidden = chat.classList.contains('hidden');
 
@@ -382,13 +370,13 @@ function toggleChat() {
         }, 10);
 
         if (input) setTimeout(() => input.focus(), 300); // Focus input on open
-        sessionStorage.setItem('capi_chat_open', 'true');
+        sessionStorage.setItem('panda_chat_open', 'true');
     } else {
         chat.classList.add('translate-y-10', 'opacity-0', 'pointer-events-none');
         setTimeout(() => {
             chat.classList.add('hidden');
         }, 300);
-        sessionStorage.setItem('capi_chat_open', 'false');
+        sessionStorage.setItem('panda_chat_open', 'false');
     }
 }
 
@@ -437,7 +425,7 @@ async function handleSend(e) {
 
     try {
         // Load history for context
-        const savedHistory = JSON.parse(sessionStorage.getItem('capi_chat_history') || '[]');
+        const savedHistory = JSON.parse(sessionStorage.getItem('panda_chat_history') || '[]');
         const history = savedHistory.map(h => ({ role: h.role, content: h.text }));
 
         const token = localStorage.getItem('authToken');

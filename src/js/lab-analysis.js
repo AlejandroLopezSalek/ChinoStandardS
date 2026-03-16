@@ -22,7 +22,8 @@ class LabAnalysis {
         this.setState('loading');
 
         try {
-            const response = await fetch(`/api/chat/lab/analyze-dna?text=${encodeURIComponent(text)}`);
+            const headers = globalThis.AuthService?.getAuthHeaders() || { 'Content-Type': 'application/json' };
+            const response = await fetch(`/api/chat/lab/analyze-dna?text=${encodeURIComponent(text)}`, { headers });
             const data = await response.json();
             if (data.error) throw new Error(data.error);
 

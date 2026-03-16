@@ -223,80 +223,47 @@ router.get('/word-of-day', async (req, res) => {
     }
 });
 
-// Helper: Generate brand new WOD
+// Helper: Generate Word of the Day from scratch
 async function generateNewWod(languageName, lang, recentWords = []) {
     const avoidPrompt = recentWords.length > 0 ? `\n\nAvoid these recently used words: ${recentWords.join(', ')}.` : '';
-    const DYNAMIC_EXAMPLES = {
-        en: { word: 'Mother', level: 'A1 - Beginner', tip: 'Remember character looks like a mother.', sentence: 'I want to see my 母亲' },
-        tr: { word: 'Anne', level: 'A1 - Başlangıç', tip: 'Karakter bir anneye benzer.', sentence: '母亲ı görmek istiyorum' },
-        es: { word: 'Madre', level: 'A1 - Principiante', tip: 'El carácter parece una madre.', sentence: 'Quiero ver a mi 母亲' }
-    };
-    const ex = DYNAMIC_EXAMPLES[lang] || DYNAMIC_EXAMPLES.es;
-
-    const prompt = `Act as a Chinese language learning API. Generate a 'Word of the Day'.
-Interface Language: ${languageName}.
-Strict JSON, no markdown.
-
-CRITICAL: 
-1. Choose a legitimate Simplified Chinese vocabulary (HSK 1-6).
-2. "pinyin" field: Latin with tone marks only.
-3. "sentence_translation": DO NOT translate target word character itself (e.g. "She ate an 苹果").
-
-FORMAT:
-{
-  "character": "母亲",
-  "pinyin": "mǔ qīn",
-  "word_translation": "${ex.word}",
-  "level_badge": "${ex.level}",
-  "tip": "${ex.tip}",
-  "sentence_character": "我想见到我的母亲",
-  "sentence_pinyin": "wǒ xiǎng jiàn dào wǒ de mǔ qīn",
-  "sentence_translation": "${ex.sentence}"
-}${avoidPrompt}`;
-
-    const { text } = await generateText({
+    
+    const { object } = await generateObject({
         model: groq.chat('moonshotai/kimi-k2-instruct'),
-        prompt,
-        temperature: 0.7,
+        schema: z.object({
+            character: z.string(),
+            pinyin: z.string(),
+            word_translation: z.string(),
+            level_badge: z.string(),
+            tip: z.string(),
+            sentence_character: z.string(),
+            sentence_pinyin: z.string(),
+            sentence_translation: z.string()
+        }),
+        system: `Act as a Chinese learning API. Generate a "Word of the Day" in Simplified Chinese.`,
+        prompt: `Generate a vocabulary (HSK 1-6) for a ${languageName} speaker. ${avoidPrompt}`,
     });
 
-    const jsonMatch = /\{[\s\S]*\}/.exec(text);
-    if (!jsonMatch) throw new Error('AI failed to provide valid JSON');
-    return JSON.parse(jsonMatch[0]);
+    return object;
 }
 
 // Helper: Translate existing WOD character to new language
 async function generateWodTranslation(existingData, languageName, lang) {
-    const prompt = `Act as a Chinese learning API. Translate this existing Word of the Day to ${languageName}.
-You MUST keep the exact same "character", "pinyin", and "sentence_character".
-Only translate the descriptive fields.
-
-TARGET WORD CHARACTER: ${existingData.character}
-TARGET SENTENCE: ${existingData.sentence_character}
-
-JSON to Translate:
-${JSON.stringify(existingData)}
-
-CRITICAL: "sentence_translation" MUST keep the character "${existingData.character}" untranslated inside the ${languageName} sentence.
-Output ONLY raw JSON.`;
-
-    const { text } = await generateText({
+    const { object } = await generateObject({
         model: groq.chat('moonshotai/kimi-k2-instruct'),
-        prompt,
-        temperature: 0.3,
+        schema: z.object({
+            word_translation: z.string(),
+            level_badge: z.string(),
+            tip: z.string(),
+            sentence_translation: z.string()
+        }),
+        system: `Act as a Chinese learning API. Translate the descriptive fields of this Word of the Day to ${languageName}.`,
+        prompt: `Translate this metadata to ${languageName}: ${JSON.stringify(existingData)}`,
     });
 
-    const jsonMatch = /\{[\s\S]*\}/.exec(text);
-    if (!jsonMatch) throw new Error('AI failed to provide valid translation JSON');
-    const translated = JSON.parse(jsonMatch[0]);
-    
-    // Safety Force Sync
-    translated.character = existingData.character;
-    translated.pinyin = existingData.pinyin;
-    translated.sentence_character = existingData.sentence_character;
-    translated.sentence_pinyin = existingData.sentence_pinyin;
-    
-    return translated;
+    return {
+        ...existingData,
+        ...object
+    };
 }
 
 // Helper: Fallback
@@ -354,44 +321,34 @@ router.get('/past-words', async (req, res) => {
 // POST /grade-sentence (Mounted at /api/chat/grade-sentence)
 router.post('/grade-sentence', async (req, res) => {
     try {
-        const { target_sentence, user_translation, lang } = req.body;
+        const { target_sentence, user_translation, lang = 'es' } = req.body;
 
         if (!target_sentence || !user_translation) {
             return res.status(400).json({ error: 'target_sentence and user_translation are required' });
         }
 
-        let languageName = 'Spanish';
-        if (lang === 'en') languageName = 'English';
-        else if (lang === 'tr') languageName = 'Turkish';
-
-        const systemInstructions = `You are a strict but encouraging native Chinese teacher grading a student's translation. 
-The student is trying to translate a sentence from ${languageName} into Chinese. Evaluate their Chinese input.`;
-
-        const gradingPrompt = `
-Target ${languageName} sentence: "${target_sentence}"
-Student's Chinese translation: "${user_translation}"
-
-Evaluate this translation strictly but fairly, and output the grading JSON object.`;
-
-        const { text: rawGrading } = await generateText({
+        const { object } = await generateObject({
             model: groq.chat('moonshotai/kimi-k2-instruct'),
-            system: systemInstructions + "\nYou MUST output ONLY raw valid JSON.",
-            prompt: gradingPrompt,
-            temperature: 0.2, // Low temperature for more deterministic grading
+            schema: z.object({
+                score: z.number().min(0).max(100),
+                is_correct: z.boolean(),
+                grammar_analysis: z.string(),
+                vocabulary_notes: z.array(z.object({
+                    word: z.string(),
+                    meaning: z.string(),
+                    usage_note: z.string()
+                })),
+                corrected_sentence: z.string(),
+                pedagogical_advice: z.string()
+            }),
+            system: `You are a native Chinese teacher. Grade a student's translation into Chinese from ${lang}. Be encouraging but pedantically precise about grammar and tone.`,
+            prompt: `Target (in ${lang}): "${target_sentence}"\nStudent Translation: "${user_translation}"\nEvaluate the student's Chinese input.`,
         });
 
-        const jsonMatch = /\{[\s\S]*\}/.exec(rawGrading);
-        if (!jsonMatch) throw new Error('AI failed to provide valid grading JSON');
-        const gradingData = JSON.parse(jsonMatch[0]);
-
-        res.json(gradingData);
-
+        res.json(object);
     } catch (error) {
         console.error('[grade-sentence] Error:', error);
-        res.status(500).json({
-            error: 'Grading Error',
-            message: error.message || 'Hubo un error al calificar la oración.'
-        });
+        res.status(500).json({ error: 'Grading failed' });
     }
 });
 
@@ -641,66 +598,102 @@ router.get('/lab/analyze-dna', async (req, res) => {
         const { text, lang = 'es' } = req.query;
         if (!text) return res.status(400).json({ error: 'Text is required' });
 
-        const prompt = `Act as a linguistic expert in Chinese and ${lang}. 
-        Perform a "Linguistic DNA" analysis of the word: "${text}".
-        
-        If it is Chinese:
-        1. Break it into characters.
-        2. For each character, identify its radical and the meaning of that radical.
-        3. Explain the etymology or logical connection.
-        
-        Output ONLY raw JSON in this format:
-        {
-          "word": "${text}",
-          "analysis": [
-            { "char": "字", "radical": "宀", "radical_meaning": "Techo", "explanation": "..." }
-          ],
-          "overall_meaning": "..."
-        }`;
+        const user = await getUserFromRequest(req);
+        if (!user) return res.status(401).json({ error: 'Access restricted to registered users' });
 
-        const { text: rawAnalysis } = await generateText({
+        // 1. Check Daily Limit (Backend Enforcement)
+        const today = new Date().toDateString();
+        if (user.stats?.labUsage?.dnaDate === today && user.role !== 'admin') {
+            return res.status(429).json({ error: 'Límite diario alcanzado: 1 análisis de ADN por día.' });
+        }
+
+        // 2. Redis Cache Check
+        const cacheKey = `DNA:V1:${text.toLowerCase()}:${lang}`;
+        const cached = await getCachedWod(cacheKey); // Reusing getCachedWod as general helper
+        if (cached) return res.json(cached);
+
+        const { object } = await generateObject({
             model: groq.chat('moonshotai/kimi-k2-instruct'),
-            prompt,
-            temperature: 0.3,
+            schema: z.object({
+                word: z.string(),
+                overall_meaning: z.string(),
+                analysis: z.array(z.object({
+                    char: z.string(),
+                    radical: z.string(),
+                    radical_meaning: z.string(),
+                    explanation: z.string()
+                }))
+            }),
+            prompt: `Act as a linguistic expert in Chinese and ${lang}. Perform a "Linguistic DNA" analysis of the word: "${text}".`,
         });
 
-        const jsonMatch = /\{[\s\S]*\}/.exec(rawAnalysis);
-        res.json(JSON.parse(jsonMatch ? jsonMatch[0] : "{}"));
+        // 3. Update User Activity
+        if (user.role !== 'admin') {
+            await User.findByIdAndUpdate(user._id, {
+                'stats.labUsage.dnaDate': today
+            });
+        }
+
+        // 4. Cache and Return
+        await cacheWodData(cacheKey, object);
+        res.json(object);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('[analyze-dna] Error:', error);
+        res.status(500).json({ error: 'Analysis failed', message: error.message });
     }
 });
 
 // POST /lab/generate-exam
 router.post('/lab/generate-exam', async (req, res) => {
     try {
-        const { level = 'A1' } = req.body;
-        const prompt = `Generate a personalized Chinese exam for level ${level}.
-        Include 5 questions:
-        - 2 Multiple choice (Vocabulary)
-        - 2 Translate to Chinese
-        - 1 Explain a grammar point
+        const { level = 'A1', mode = 'classic', prompt: userPrompt, is_public } = req.body;
         
-        Output ONLY raw JSON:
-        {
-          "exam_id": "exam_${Date.now()}",
-          "title": "Examen de Nivel ${level}",
-          "questions": [
-            { "id": 1, "type": "multiple_choice", "question": "...", "options": ["A", "B", "C"], "correct_answer": "A" },
-            { "id": 3, "type": "translation", "question": "Translate: 'Hello'", "hint": "..." }
-          ]
-        }`;
+        const user = await getUserFromRequest(req);
+        if (!user) return res.status(401).json({ error: 'Unauthorized' });
 
-        const { text: rawExam } = await generateText({
+        const today = new Date().toDateString();
+        if (user.stats?.labUsage?.examDate === today && user.role !== 'admin') {
+            return res.status(429).json({ error: 'Ya realizaste tu examen diario.' });
+        }
+
+        const systemPrompt = mode === 'custom' 
+            ? `Genera un examen personalizado de CHINO. Tema enfocado en: ${userPrompt}. Nivel aproximado: ${level}.`
+            : `Genera un examen de Chino nivel ${level} siguiendo el estándar HSK.`;
+
+        const { object } = await generateObject({
             model: groq.chat('moonshotai/kimi-k2-instruct'),
-            prompt,
-            temperature: 0.7,
+            schema: z.object({
+                exam_id: z.string(),
+                title: z.string(),
+                questions: z.array(z.object({
+                    id: z.number(),
+                    type: z.enum(['multiple_choice', 'translation']),
+                    question: z.string(),
+                    options: z.array(z.string()).optional(),
+                    correct_answer: z.string(),
+                    hint: z.string().optional()
+                }))
+            }),
+            prompt: systemPrompt + " Incluye 5 preguntas: 3 de opción múltiple y 2 de traducción.",
         });
 
-        const jsonMatch = /\{[\s\S]*\}/.exec(rawExam);
-        res.json(JSON.parse(jsonMatch ? jsonMatch[0] : "{}"));
+        // Track usage
+        if (user.role !== 'admin') {
+            await User.findByIdAndUpdate(user._id, {
+                'stats.labUsage.examDate': today
+            });
+        }
+
+        // Logic for public community lessons (to be implemented: save to dedicated CommunityExam collection)
+        if (is_public) {
+            console.log(`[ExamLab] Saving public exam: ${object.exam_id}`);
+            // TODO: Create CommunityExam entry if needed
+        }
+
+        res.json(object);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('[generate-exam] Error:', error);
+        res.status(500).json({ error: 'Generation failed' });
     }
 });
 
@@ -708,31 +701,25 @@ router.post('/lab/generate-exam', async (req, res) => {
 router.post('/lab/grade-exam', async (req, res) => {
     try {
         const { answers, original_exam, lang = 'es' } = req.body;
-        const prompt = `Grade this Chinese exam.
-        Exam: ${JSON.stringify(original_exam)}
-        User Answers: ${JSON.stringify(answers)}
         
-        Explain the "WHY" behind every mistake with pedagogical depth in ${lang}.
-        
-        Output ONLY raw JSON:
-        {
-          "score": 80,
-          "feedback": [
-            { "question_id": 1, "status": "correct/incorrect", "explanation": "..." }
-          ],
-          "panda_advice": "..."
-        }`;
-
-        const { text: rawGrading } = await generateText({
+        const { object } = await generateObject({
             model: groq.chat('moonshotai/kimi-k2-instruct'),
-            prompt,
-            temperature: 0.3,
+            schema: z.object({
+                score: z.number().min(0).max(100),
+                feedback: z.array(z.object({
+                    question_id: z.number(),
+                    status: z.enum(['correct', 'incorrect']),
+                    explanation: z.string()
+                })),
+                panda_advice: z.string()
+            }),
+            prompt: `Grade this Chinese exam for a ${lang} speaker. Exam: ${JSON.stringify(original_exam)}. Answers: ${JSON.stringify(answers)}.`,
         });
 
-        const jsonMatch = /\{[\s\S]*\}/.exec(rawGrading);
-        res.json(JSON.parse(jsonMatch ? jsonMatch[0] : "{}"));
+        res.json(object);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('[grade-exam] Error:', error);
+        res.status(500).json({ error: 'Grading failed' });
     }
 });
 
@@ -848,90 +835,68 @@ router.delete('/lab/active-story', async (req, res) => {
 router.post('/lab/start-story', async (req, res) => {
     try {
         const { genre = 'Aventura', charName = 'Un principiante', userPrompt = '', level = 'HSK 1' } = req.body;
-        const storyId = `story_${Date.now()}`;
-
-        const prompt = `Actúa como Panda, el guía de PandaLatam. Genera el primer capítulo de una historia interactiva para aprender Chino.
-        Nivel del estudiante: ${level}.
-        Género: ${genre}.
-        Protagonista: ${charName}.
-        Directiva adicional: ${userPrompt || 'Ninguna'}.
-
-        CRITICAL:
-        1. Escribe en Español fluido.
-        2. La historia debe avanzar por segmentos. Cada segmento de texto en Chino DEBE tener su Hanzi, Pinyin y Traducción.
-        3. Para palabras difíciles o fuera del nivel ${level}, marca una anotación.
-        4. Output ONLY raw JSON:
-        {
-          "title": "...",
-          "first_chapter": {
-            "text": "Introducción en español...",
-            "segments": [
-               { "hz": "Hanzi characters", "py": "pinyin with tones", "tr": "Spanish translation", "note": "Grammar or vocabulary note (optional, use if word is difficult)" }
-            ],
-            "options": ["Opción A", "Opción B", "Opción C"]
-          }
-        }`;
-
-        console.log(`[StoryLab] Generating story with model kimi-k2-instruct...`);
-        const { text: rawStory } = await generateText({
-            model: groq('moonshotai/kimi-k2-instruct'),
-            prompt,
-            temperature: 0.8,
-        });
-        console.log(`[StoryLab] Story generated. Length: ${rawStory.length}`);
-
-        const jsonMatch = /\{[\s\S]*\}/.exec(rawStory);
-        const storyData = JSON.parse(jsonMatch ? jsonMatch[0] : "{}");
-
-        const responseData = {
-            id: storyId,
-            title: storyData.title || 'Historia en Chino',
-            genre: genre,
-            first_chapter: storyData.first_chapter || { text: "Error generando historia.", segments: [], options: [] }
-        };
-
-        // Store active story in user profile
+        
         const user = await getUserFromRequest(req);
-        if (user) {
+        if (!user) return res.status(401).json({ error: 'Login required' });
+
+        const today = new Date().toDateString();
+        if (user.stats?.labUsage?.storyDate === today && user.role !== 'admin') {
+            return res.status(429).json({ error: 'Límite de 1 historia diaria.' });
+        }
+
+        const { object } = await generateObject({
+            model: groq.chat('moonshotai/kimi-k2-instruct'),
+            schema: z.object({
+                title: z.string(),
+                first_chapter: z.object({
+                    text: z.string(),
+                    segments: z.array(z.object({
+                        hz: z.string(),
+                        py: z.string(),
+                        tr: z.string(),
+                        note: z.string()
+                    })),
+                    options: z.array(z.string())
+                })
+            }),
+            system: `You are Panda, the interactive story guide for PandaLatam. Create engaging Chinese learning stories for level ${level}.`,
+            prompt: `Start a new story. Genre: ${genre}. Protagonist: ${charName}. Extra: ${userPrompt}`,
+        });
+
+        const storyId = `story_${Date.now()}`;
+        
+        // Persist to DB
+        await LabStory.create({
+            userId: user._id,
+            storyId,
+            title: object.title,
+            genre,
+            charName,
+            level,
+            history: [{ role: 'assistant', content_data: object.first_chapter }]
+        });
+
+        // Track usage
+        if (user.role !== 'admin') {
+            user.stats.labUsage = user.stats.labUsage || {};
+            user.stats.labUsage.storyDate = today;
             user.stats.activeStoryId = storyId;
             await user.save();
-
-            // Store in MongoDB (Permanent)
-            await LabStory.create({
-                userId: user._id,
-                storyId,
-                title: responseData.title,
-                genre,
-                charName,
-                level,
-                lang: 'zh',
-                history: [{ role: 'assistant', content_data: responseData.first_chapter }]
-            }).catch(err => console.error("MongoDB Store Error:", err));
         }
 
-        // Store in Redis
+        // Cache in Redis
         if (redisClient.isOpen && redisClient.isReady) {
-            console.log(`[StoryLab] Storing story in Redis: ${storyId}`);
             await redisClient.setEx(`STORY:${storyId}`, 7200, JSON.stringify({
-                title: responseData.title,
-                history: [{ role: 'assistant', content_data: responseData.first_chapter }],
-                genre,
-                charName,
-                level,
-                lang: 'zh'
-            })).catch(err => {
-                console.warn(`[StoryLab] Redis store error: ${err.message}`);
-            });
-        } else {
-            console.log(`[StoryLab] Redis not available, skipping cache.`);
+                title: object.title,
+                history: [{ role: 'assistant', content_data: object.first_chapter }],
+                genre, charName, level
+            }));
         }
 
-        console.log(`[StoryLab] Responding with story data.`);
-
-        res.json(responseData);
+        res.json({ id: storyId, ...object });
     } catch (error) {
-        console.error("Start Story Error:", error);
-        res.status(500).json({ error: error.message });
+        console.error('[start-story] Error:', error);
+        res.status(500).json({ error: 'Failed to start story' });
     }
 });
 
@@ -939,68 +904,72 @@ router.post('/lab/start-story', async (req, res) => {
 router.post('/lab/continue-story', async (req, res) => {
     try {
         const { story_id, option } = req.body;
+        const user = await getUserFromRequest(req);
 
-        let storyState = { history: [], genre: 'Aventura', charName: 'Aventurero', level: 'HSK 1' };
+        let storyState = null;
         if (redisClient.isOpen && redisClient.isReady) {
             const cached = await redisClient.get(`STORY:${story_id}`).catch(() => null);
             if (cached) storyState = JSON.parse(cached);
         }
 
-        const historyPrompt = storyState.history.map(h => `${h.role === 'assistant' ? 'Panda' : 'Usuario'}: ${h.content_data.text || h.content_data}`).join('\n');
-
-        const prompt = `Continúa la historia de PandaLatam basada en la opción elegida: "${option}".
-        Nivel: ${storyState.level}.
-        Contexto previo:
-        ${historyPrompt}
-        
-        CRITICAL: Output ONLY raw JSON:
-        {
-          "next_chapter": {
-            "text": "...",
-            "segments": [
-               { "hz": "Hanzi characters", "py": "pinyin with tones", "tr": "Spanish translation", "note": "Grammar or vocabulary note (optional, use if word is difficult)" }
-            ],
-            "options": ["Opción 1", "Opción 2", "Opción 3"]
-          }
-        }`;
-
-        const { text: rawNext } = await generateText({
-            model: groq.chat('moonshotai/kimi-k2-instruct'),
-            prompt,
-            temperature: 0.8,
-        });
-
-        const jsonMatch = /\{[\s\S]*\}/.exec(rawNext);
-        const nextData = JSON.parse(jsonMatch ? jsonMatch[0] : "{}");
-
-        // Update Redis
-        if (redisClient.isOpen && redisClient.isReady && story_id && nextData.next_chapter) {
-            storyState.history.push({ role: 'user', content_data: option });
-            storyState.history.push({ role: 'assistant', content_data: nextData.next_chapter });
-            await redisClient.setEx(`STORY:${story_id}`, 7200, JSON.stringify(storyState)).catch(() => {});
+        // Fallback to Mongo if Redis miss
+        if (!storyState && user) {
+            const persisted = await LabStory.findOne({ storyId: story_id, userId: user._id });
+            if (persisted) {
+                storyState = {
+                    title: persisted.title,
+                    history: persisted.history,
+                    genre: persisted.genre,
+                    charName: persisted.charName,
+                    level: persisted.level
+                };
+            }
         }
 
-        // Update MongoDB (Permanent)
-        const user = await getUserFromRequest(req);
-        if (user && story_id && nextData.next_chapter) {
+        if (!storyState) return res.status(404).json({ error: 'Story session lost' });
+
+        const historyPrompt = storyState.history.slice(-3).map(h => `${h.role === 'assistant' ? 'Panda' : 'Usuario'}: ${h.content_data.text || h.content_data}`).join('\n');
+
+        const { object } = await generateObject({
+            model: groq.chat('moonshotai/kimi-k2-instruct'),
+            schema: z.object({
+                next_chapter: z.object({
+                    text: z.string(),
+                    segments: z.array(z.object({
+                        hz: z.string(),
+                        py: z.string(),
+                        tr: z.string(),
+                        note: z.string()
+                    })),
+                    options: z.array(z.string())
+                })
+            }),
+            system: `You are Panda, continuing a story for a ${storyState.level} student. Context: ${historyPrompt}`,
+            prompt: `The user chose: "${option}". Continue the story.`,
+        });
+
+        // Update Persistence
+        storyState.history.push({ role: 'user', content_data: option });
+        storyState.history.push({ role: 'assistant', content_data: object.next_chapter });
+        
+        if (redisClient.isOpen && redisClient.isReady) {
+            await redisClient.setEx(`STORY:${story_id}`, 7200, JSON.stringify(storyState));
+        }
+
+        if (user) {
             await LabStory.findOneAndUpdate(
                 { storyId: story_id, userId: user._id },
                 { 
-                    $push: { 
-                        history: [
-                            { role: 'user', content_data: option },
-                            { role: 'assistant', content_data: nextData.next_chapter }
-                        ] 
-                    },
+                    $push: { history: [ { role: 'user', content_data: option }, { role: 'assistant', content_data: object.next_chapter } ] },
                     $set: { lastUpdated: new Date() }
                 }
-            ).catch(err => console.error("MongoDB update error:", err));
+            );
         }
 
-        res.json(nextData);
+        res.json(object);
     } catch (error) {
-        console.error("Continue Story Error:", error);
-        res.status(500).json({ error: error.message });
+        console.error('[continue-story] Error:', error);
+        res.status(500).json({ error: 'Failed to continue story' });
     }
 });
 

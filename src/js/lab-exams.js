@@ -57,9 +57,10 @@ class LabExams {
             const prompt = document.getElementById('exam-prompt').value;
             const isPublic = document.getElementById('public-toggle').checked;
 
+            const headers = globalThis.AuthService?.getAuthHeaders() || { 'Content-Type': 'application/json' };
             const response = await fetch('/api/chat/lab/generate-exam', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: headers,
                 body: JSON.stringify({ level, mode, prompt, is_public: isPublic })
             });
 
@@ -119,9 +120,10 @@ class LabExams {
     async gradeExam() {
         this.setState('loading');
         try {
+            const headers = globalThis.AuthService?.getAuthHeaders() || { 'Content-Type': 'application/json' };
             const response = await fetch('/api/chat/lab/grade-exam', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: headers,
                 body: JSON.stringify({ answers: this.userAnswers, original_exam: this.currentExam })
             });
             const data = await response.json();
