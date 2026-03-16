@@ -27,11 +27,11 @@ class PronunciationSystem {
 
         // Priority list for natural Chinese voices
         const preferredVoices = [
-            'Google Türkçe',
-            'Microsoft Tolga',
-            'Microsoft Emel',
-            'Yelda',
-            'Cem'
+            'Google 普通话',
+            'Microsoft Huihui',
+            'Microsoft Yaoyao',
+            'Microsoft Kangkang',
+            'Li-Mu'
         ];
 
         // 1. Exact Name Match
@@ -39,12 +39,12 @@ class PronunciationSystem {
 
         // 2. Strict Locale Match (zh-CN)
         if (!this.voice) {
-            this.voice = voices.find(v => v.lang === 'zh-CN');
+            this.voice = voices.find(v => v.lang.startsWith('zh'));
         }
 
-        // 3. Loose Locale Match (tr)
+        // 3. Fallback to any Chinese
         if (!this.voice) {
-            this.voice = voices.find(v => v.lang.toLowerCase().includes('tr'));
+            this.voice = voices.find(v => v.lang.toLowerCase().includes('zh'));
         }
 
         if (this.voice) {

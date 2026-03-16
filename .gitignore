@@ -78,6 +78,7 @@ check-users.js
 .agent
 .agents/
 .agent.lock
+AGENTS.md
 
 clear-cache.js
 test-wod.mjs
