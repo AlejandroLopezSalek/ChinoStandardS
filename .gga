@@ -5,7 +5,7 @@
 # Options: claude, gemini, codex, opencode, ollama:<model>, lmstudio[:model], github:<model>
 # Examples:
 #   PROVIDER="claude"
-  PROVIDER="gemini"
+PROVIDER="opencode:google/gemini-2.0-flash"
 #   PROVIDER="codex"
 #   PROVIDER="opencode"
 #   PROVIDER="opencode:anthropic/claude-opus-4-5"
@@ -30,7 +30,7 @@ FILE_PATTERNS="server/**/*.js,src/js/*.js,*.ts,*.tsx,*.js,*.jsx"
 # Examples:
 #   EXCLUDE_PATTERNS="*.test.ts,*.spec.ts"
 #   EXCLUDE_PATTERNS="*_test.go,*.mock.ts"
-EXCLUDE_PATTERNS=node_modules/**,dist/**,server/scripts/*.js,src/js/lib/*.js
+EXCLUDE_PATTERNS="node_modules/**,dist/**,server/scripts/*.js,src/js/lib/*.js,package-lock.json,*.min.js,*.map"
 
 # File containing code review rules
 # Default: AGENTS.md
@@ -43,7 +43,7 @@ STRICT_MODE="true"
 # Timeout in seconds for AI provider response
 # Default: 300 (5 minutes)
 # Increase for large changesets or slow connections
-TIMEOUT="300"
+TIMEOUT="600"
 
 # Base branch for --pr-mode (auto-detects main/master/develop if empty)
 # Default: auto-detect
