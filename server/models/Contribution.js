@@ -4,7 +4,7 @@ const contributionSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ['lesson_edit', 'book_upload']
+        enum: ['lesson_edit', 'book_upload', 'community_story', 'community_exam']
     },
     title: {
         type: String,
