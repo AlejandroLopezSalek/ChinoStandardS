@@ -11,6 +11,7 @@
     class ContributionService {
         API_URL = '/api/contributions';
         LESSONS_API_URL = '/api/lessons';
+        AUTH_API_URL = '/api/auth';
 
 
         // ========================================
@@ -356,6 +357,33 @@
                 `${this.LESSONS_API_URL}/${lessonId}/restore/${version}`,
                 { method: 'POST' },
                 'restore lesson version'
+            );
+        }
+
+        async getAdminUsers() {
+            return await this.authenticatedFetch(
+                `${this.AUTH_API_URL}/admin/users`,
+                { method: 'GET' },
+                'fetch admin users'
+            );
+        }
+
+        async updateUserRole(userId, role) {
+            return await this.authenticatedFetch(
+                `${this.AUTH_API_URL}/admin/users/${userId}/role`,
+                {
+                    method: 'PUT',
+                    body: JSON.stringify({ role })
+                },
+                'update user role'
+            );
+        }
+
+        async deleteUser(userId) {
+            return await this.authenticatedFetch(
+                `${this.AUTH_API_URL}/admin/users/${userId}`,
+                { method: 'DELETE' },
+                'delete user'
             );
         }
 
