@@ -10,7 +10,7 @@ const User = require('../models/User');
 const ChatLog = require('../models/ChatLog');
 const LabStory = require('../models/LabStory');
 const redisClient = require('../redisClient');
-// path removed
+const { authenticateToken } = require('../middleware/auth');
 
 // Load Lesson Data for Context
 let allLessons = {};
@@ -42,22 +42,6 @@ const groq = createOpenAI({
     compatibility: 'compatible',
 });
 
-
-// Helper to get user from token
-const getUserFromRequest = async (req) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader?.split(' ')[1];
-    if (!token) return null;
-
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        return await User.findById(String(decoded.userId));
-    } catch (err) {
-        // Token invalid or expired
-        if (process.env.NODE_ENV === 'development') console.debug('Auth check failed:', err.message);
-        return null;
-    }
-};
 
 // POST / (Mounted at /api/chat)
 // Helper to extract lesson context
@@ -202,8 +186,16 @@ router.get('/word-of-day', async (req, res) => {
         // 2. Database Check
         let dailyDoc = await DailyWord.findOne({ date: { $regex: '^' + todayStr } });
 
-        if (dailyDoc?.translations?.get?.(lang)) {
-            const data = dailyDoc.translations.get(lang);
+        let data = null;
+        if (dailyDoc?.translations) {
+            if (typeof dailyDoc.translations.get === 'function') {
+                data = dailyDoc.translations.get(lang);
+            } else {
+                data = dailyDoc.translations[lang];
+            }
+        }
+
+        if (data) {
             await cacheWodData(redisKey, data);
             return res.json(data);
         }
@@ -239,7 +231,8 @@ async function generateNewWod(languageName, lang, recentWords = []) {
             sentence_pinyin: z.string(),
             sentence_translation: z.string()
         }),
-        system: `Act as a Chinese learning API. Generate a "Word of the Day" in Simplified Chinese.`,
+        system: `Act as a Chinese learning API. Generate a "Word of the Day" in Simplified Chinese. 
+REGLA CRÍTICA: En "sentence_translation", mantén la palabra objetivo en caracteres chinos dentro del texto (ej. "Mi 父亲 es...").`,
         prompt: `Generate a vocabulary (HSK 1-6) for a ${languageName} speaker. ${avoidPrompt}`,
     });
 
@@ -256,7 +249,8 @@ async function generateWodTranslation(existingData, languageName, lang) {
             tip: z.string(),
             sentence_translation: z.string()
         }),
-        system: `Act as a Chinese learning API. Translate the descriptive fields of this Word of the Day to ${languageName}.`,
+        system: `Act as a Chinese learning API. Translate the descriptive fields of this Word of the Day to ${languageName}.
+REGLA CRÍTICA: En "sentence_translation", mantén la palabra objetivo ("${existingData.character}") en caracteres chinos dentro del texto traducido al ${languageName}.`,
         prompt: `Translate this metadata to ${languageName}: ${JSON.stringify(existingData)}`,
     });
 
@@ -542,9 +536,15 @@ async function logChatInteraction(user, message, reply, context, lessonContentCo
 async function getOrGenerateWodData(dailyDoc, todayStr, lang, languageName) {
     let existingData = null;
     if (dailyDoc) {
-        if (dailyDoc.translations?.get) {
-            existingData = dailyDoc.translations.get('es') || dailyDoc.translations.get('en') || dailyDoc.translations.get('tr') || Array.from(dailyDoc.translations.values())[0];
-        } else {
+        if (dailyDoc.translations) {
+            if (typeof dailyDoc.translations.get === 'function') {
+                existingData = dailyDoc.translations.get('es') || dailyDoc.translations.get('en') || dailyDoc.translations.get('tr') || Array.from(dailyDoc.translations.values())[0];
+            } else {
+                existingData = dailyDoc.translations['es'] || dailyDoc.translations['en'] || dailyDoc.translations['tr'] || Object.values(dailyDoc.translations)[0];
+            }
+        }
+        
+        if (!existingData) {
             existingData = dailyDoc.data || dailyDoc._doc?.data;
         }
     }
@@ -578,11 +578,26 @@ async function persistWodData(dailyDoc, todayStr, lang, wordData) {
     }
 
     if (dailyDoc) {
-        if (!dailyDoc.translations?.set) {
+        // Handle legacy "data" field or migration from Object to Map
+        if (!dailyDoc.translations || typeof dailyDoc.translations.set !== 'function') {
+            const oldTranslations = dailyDoc.translations || {};
             const oldData = dailyDoc.data || dailyDoc._doc?.data;
+            
             dailyDoc.translations = new Map();
-            if (oldData) dailyDoc.translations.set('es', oldData);
+            
+            // Re-populate from old translations object
+            if (oldTranslations && typeof oldTranslations === 'object') {
+                for (const [k, v] of Object.entries(oldTranslations)) {
+                    dailyDoc.translations.set(k, v);
+                }
+            }
+            
+            // Re-populate from legacy .data property
+            if (oldData && !dailyDoc.translations.has('es')) {
+                dailyDoc.translations.set('es', oldData);
+            }
         }
+        
         dailyDoc.translations.set(lang, wordData);
         dailyDoc.date = todayStr;
         await dailyDoc.save();
@@ -593,12 +608,12 @@ async function persistWodData(dailyDoc, todayStr, lang, wordData) {
 
 // GET /lab/analyze-dna
 // Usage: GET /api/chat/lab/analyze-dna?text=苹果&lang=es
-router.get('/lab/analyze-dna', async (req, res) => {
+router.get('/lab/analyze-dna', authenticateToken, async (req, res) => {
     try {
         const { text, lang = 'es' } = req.query;
         if (!text) return res.status(400).json({ error: 'Text is required' });
 
-        const user = await getUserFromRequest(req);
+        const user = req.user;
         if (!user) return res.status(401).json({ error: 'Access restricted to registered users' });
 
         // 1. Check Daily Limit (Backend Enforcement)
@@ -644,11 +659,11 @@ router.get('/lab/analyze-dna', async (req, res) => {
 });
 
 // POST /lab/generate-exam
-router.post('/lab/generate-exam', async (req, res) => {
+router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
     try {
         const { level = 'A1', mode = 'classic', prompt: userPrompt, is_public } = req.body;
         
-        const user = await getUserFromRequest(req);
+        const user = req.user;
         if (!user) return res.status(401).json({ error: 'Unauthorized' });
 
         const today = new Date().toDateString();
@@ -685,9 +700,19 @@ router.post('/lab/generate-exam', async (req, res) => {
         }
 
         // Logic for public community lessons (to be implemented: save to dedicated CommunityExam collection)
+        // Logic for public community lessons
         if (is_public) {
             console.log(`[ExamLab] Saving public exam: ${object.exam_id}`);
-            // TODO: Create CommunityExam entry if needed
+            // Save to Community Lessons as a special type
+            const Contribution = require('../models/Contribution');
+            await Contribution.create({
+                type: 'community_exam',
+                title: object.title,
+                description: `Examen generado por IA - Nivel ${level}`,
+                data: object,
+                submittedBy: { id: user._id, username: user.username, email: user.email },
+                status: 'pending' // Must be approved by admin
+            });
         }
 
         res.json(object);
@@ -698,7 +723,7 @@ router.post('/lab/generate-exam', async (req, res) => {
 });
 
 // POST /lab/grade-exam
-router.post('/lab/grade-exam', async (req, res) => {
+router.post('/lab/grade-exam', authenticateToken, async (req, res) => {
     try {
         const { answers, original_exam, lang = 'es' } = req.body;
         
@@ -724,10 +749,9 @@ router.post('/lab/grade-exam', async (req, res) => {
 });
 
 // GET /lab/current-active-story
-router.get('/lab/current-active-story', async (req, res) => {
+router.get('/lab/current-active-story', authenticateToken, async (req, res) => {
     try {
-        // Assuming getUserFromRequest is defined elsewhere and retrieves the user object
-        const user = await getUserFromRequest(req);
+        const user = req.user;
         if (!user) return res.json({ active: false });
 
         const storyId = user.stats?.activeStoryId;
@@ -737,14 +761,20 @@ router.get('/lab/current-active-story', async (req, res) => {
             const cached = await redisClient.get(`STORY:${storyId}`).catch(() => null);
             if (cached) {
                 const state = JSON.parse(cached);
-                return res.json({
-                    active: true,
-                    story: {
-                        id: storyId,
-                        title: state.title,
-                        current_chapter: state.history[state.history.length - 1].content_data
-                    }
-                });
+                
+                // Ownership check for Redis cache
+                if (state.userId && String(state.userId) !== String(user._id)) {
+                    console.log(`[active-story] Ownership mismatch for story ${storyId}`);
+                } else {
+                    return res.json({
+                        active: true,
+                        story: {
+                            id: storyId,
+                            title: state.title,
+                            current_chapter: state.history[state.history.length - 1].content_data
+                        }
+                    });
+                }
             }
         }
 
@@ -768,10 +798,10 @@ router.get('/lab/current-active-story', async (req, res) => {
 });
 
 // GET /lab/story/:id
-router.get('/lab/story/:id', async (req, res) => {
+router.get('/lab/story/:id', authenticateToken, async (req, res) => {
     try {
         const { id } = req.params;
-        const user = await getUserFromRequest(req);
+        const user = req.user;
         if (!user) return res.status(401).json({ error: "Unauthorized" });
 
         if (redisClient.isOpen && redisClient.isReady) {
@@ -779,6 +809,11 @@ router.get('/lab/story/:id', async (req, res) => {
             if (cached) {
                 const state = JSON.parse(cached);
                 
+                // Ownership check for Redis cache
+                if (state.userId && String(state.userId) !== String(user._id)) {
+                    return res.status(403).json({ error: "Access denied to this story" });
+                }
+
                 // Update active story in profile when loading a past one
                 user.stats.activeStoryId = id;
                 await user.save();
@@ -816,11 +851,58 @@ router.get('/lab/story/:id', async (req, res) => {
     }
 });
 
-// DELETE /lab/active-story
-router.delete('/lab/active-story', async (req, res) => {
+// GET /lab/stories - Fetch all user stories
+router.get('/lab/stories', authenticateToken, async (req, res) => {
     try {
-        // Assuming getUserFromRequest is defined elsewhere and retrieves the user object
-        const user = await getUserFromRequest(req);
+        const user = req.user;
+        const stories = await LabStory.find({ userId: user._id })
+            .select('storyId title genre level createdAt')
+            .sort({ createdAt: -1 })
+            .limit(10);
+        
+        res.json(stories.map(s => ({
+            id: s.storyId,
+            title: s.title,
+            genre: s.genre,
+            level: s.level,
+            date: s.createdAt
+        })));
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// DELETE /lab/story/:id
+router.delete('/lab/story/:id', authenticateToken, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = req.user;
+        if (!user) return res.status(401).json({ error: "Unauthorized" });
+
+        const result = await LabStory.findOneAndDelete({ storyId: id, userId: user._id });
+        if (!result) return res.status(404).json({ error: "Story not found" });
+
+        // Clean redis
+        if (redisClient.isOpen && redisClient.isReady) {
+            await redisClient.del(`STORY:${id}`).catch(() => null);
+        }
+
+        // If it was the active story, clear it from user profile
+        if (user.stats?.activeStoryId === id) {
+            user.stats.activeStoryId = null;
+            await user.save();
+        }
+
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// DELETE /lab/active-story
+router.delete('/lab/active-story', authenticateToken, async (req, res) => {
+    try {
+        const user = req.user;
         if (user) {
             user.stats.activeStoryId = null;
             await user.save();
@@ -832,11 +914,11 @@ router.delete('/lab/active-story', async (req, res) => {
 });
 
 // POST /lab/start-story
-router.post('/lab/start-story', async (req, res) => {
+router.post('/lab/start-story', authenticateToken, async (req, res) => {
     try {
         const { genre = 'Aventura', charName = 'Un principiante', userPrompt = '', level = 'HSK 1' } = req.body;
         
-        const user = await getUserFromRequest(req);
+        const user = req.user;
         if (!user) return res.status(401).json({ error: 'Login required' });
 
         const today = new Date().toDateString();
@@ -884,9 +966,23 @@ router.post('/lab/start-story', async (req, res) => {
             await user.save();
         }
 
+        const { is_public } = req.body;
+        if (is_public) {
+            const Contribution = require('../models/Contribution');
+            await Contribution.create({
+                type: 'community_story',
+                title: object.title,
+                description: `Historia interactiva IA - ${genre} (${level})`,
+                data: { storyId, ...object },
+                submittedBy: { id: user._id, username: user.username, email: user.email },
+                status: 'pending' // Admin review required
+            });
+        }
+
         // Cache in Redis
         if (redisClient.isOpen && redisClient.isReady) {
             await redisClient.setEx(`STORY:${storyId}`, 7200, JSON.stringify({
+                userId: user._id, // Critical: Include ownership
                 title: object.title,
                 history: [{ role: 'assistant', content_data: object.first_chapter }],
                 genre, charName, level
@@ -901,15 +997,21 @@ router.post('/lab/start-story', async (req, res) => {
 });
 
 // POST /lab/continue-story
-router.post('/lab/continue-story', async (req, res) => {
+router.post('/lab/continue-story', authenticateToken, async (req, res) => {
     try {
         const { story_id, option } = req.body;
-        const user = await getUserFromRequest(req);
+        const user = req.user;
 
         let storyState = null;
         if (redisClient.isOpen && redisClient.isReady) {
             const cached = await redisClient.get(`STORY:${story_id}`).catch(() => null);
-            if (cached) storyState = JSON.parse(cached);
+            if (cached) {
+                storyState = JSON.parse(cached);
+                // Ownership check for Redis cache
+                if (storyState.userId && String(storyState.userId) !== String(user._id)) {
+                    return res.status(403).json({ error: "Unauthorized access to this story cache" });
+                }
+            }
         }
 
         // Fallback to Mongo if Redis miss
