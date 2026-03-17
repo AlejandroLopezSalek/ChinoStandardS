@@ -211,6 +211,12 @@ class AuthService {
             this.currentUser = null;
             localStorage.removeItem(globalThis.APP_CONFIG?.AUTH.TOKEN_KEY || 'authToken');
             localStorage.removeItem(globalThis.APP_CONFIG?.AUTH.USER_KEY || 'currentUser');
+            
+            // Clear LabPanda state
+            localStorage.removeItem('lab_story_history_panda');
+            localStorage.removeItem('last_story_panda_date');
+            localStorage.removeItem('last_dna_date');
+            localStorage.removeItem('last_exam_panda_date');
 
             this.dispatchAuthEvent(false);
         }
@@ -253,8 +259,12 @@ class AuthService {
     }
 
     getAuthHeaders() {
+        if (!this.token) return { 'Content-Type': 'application/json' };
+        // If token already has 'Bearer ', don't duplicate it. 
+        // Our server expects 'Bearer <token>'
+        const cleanToken = this.token.startsWith('Bearer ') ? this.token.substring(7) : this.token;
         return {
-            'Authorization': `Bearer ${this.token}`,
+            'Authorization': `Bearer ${cleanToken}`,
             'Content-Type': 'application/json',
         };
     }
