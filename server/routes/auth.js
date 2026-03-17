@@ -2,7 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
-const { authenticateToken } = require('../middleware/auth');
+const { authenticateToken, requireAdmin } = require('../middleware/auth');
 const { OAuth2Client } = require('google-auth-library');
 const crypto = require('node:crypto');
 
@@ -462,6 +462,56 @@ router.get('/streak', authenticateToken, async (req, res) => {
         res.status(500).json({
             message: 'Error interno del servidor'
         });
+    }
+});
+
+
+// ================================
+// ADMIN ROUTES
+// ================================
+
+// GET /api/auth/admin/users - List all users (Admin only)
+router.get('/admin/users', authenticateToken, requireAdmin, async (req, res) => {
+    try {
+        const users = await User.find({}, '-password').sort({ createdAt: -1 });
+        res.json(users);
+    } catch (error) {
+        console.error('Error listing users:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+});
+
+// PUT /api/auth/admin/users/:id/role - Change user role (Admin only)
+router.put('/admin/users/:id/role', authenticateToken, requireAdmin, async (req, res) => {
+    try {
+        const { role } = req.body;
+        if (!['user', 'admin'].includes(role)) {
+            return res.status(400).json({ message: 'Rol inválido' });
+        }
+
+        const user = await User.findByIdAndUpdate(req.params.id, { role }, { new: true }).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.json({ message: 'Rol actualizado', user });
+    } catch (error) {
+        console.error('Error updating user role:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+});
+
+// DELETE /api/auth/admin/users/:id - Delete/Deactivate user (Admin only)
+router.delete('/admin/users/:id', authenticateToken, requireAdmin, async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+        res.json({ message: 'Usuario eliminado permanentemente' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
     }
 });
 

@@ -131,16 +131,23 @@
                 console.log('✅ Service Worker registered:', registration.scope);
 
                 // Check for updates
-                registration.addEventListener('updatefound', () => {
+                registration.onupdatefound = () => {
                     const newWorker = registration.installing;
-
-                    newWorker.addEventListener('statechange', () => {
+                    newWorker.onstatechange = () => {
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            // New service worker available - Auto refresh
-                            globalThis.location.reload();
+                            // New service worker available - Notify user instead of auto-refresh
+                            if (globalThis.ToastSystem) {
+                                globalThis.ToastSystem.info(
+                                    'Una nueva versión está disponible. Haz clic aquí para actualizar.',
+                                    'Actualización PandaLatam',
+                                    () => globalThis.location.reload()
+                                );
+                            } else if (confirm('Nueva versión disponible. ¿Recargar ahora?')) {
+                                globalThis.location.reload();
+                            }
                         }
-                    });
-                });
+                    };
+                };
 
             } catch (error) {
                 console.log('Service Worker registration failed:', error);
