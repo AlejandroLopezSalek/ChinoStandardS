@@ -42,6 +42,19 @@ const groq = createOpenAI({
     compatibility: 'compatible',
 });
 
+const getMaxChapters = (level, role) => {
+    if (role === 'admin') return 99;
+    let limit = 3; // Límite base para usuario normal
+    if (level.includes('1') || level.includes('2')) limit = Math.min(limit, 2);
+    else if (level.includes('3') || level.includes('4')) limit = Math.min(limit, 3);
+    else if (level.includes('5') || level.includes('6')) limit = 4;
+    
+    if (role !== 'premium' && role !== 'admin') {
+        limit = Math.min(limit, 3);
+    }
+    return limit;
+};
+
 
 // POST / (Mounted at /api/chat)
 // Helper to extract lesson context
@@ -232,7 +245,8 @@ async function generateNewWod(languageName, lang, recentWords = []) {
             sentence_translation: z.string()
         }),
         system: `Act as a Chinese learning API. Generate a "Word of the Day" in Simplified Chinese. 
-REGLA CRÍTICA: En "sentence_translation", mantén la palabra objetivo en caracteres chinos dentro del texto (ej. "Mi 父亲 es...").`,
+REGLA CRÍTICA 1: En "sentence_translation", mantén la palabra objetivo en caracteres chinos dentro del texto (ej. "Mi 父亲 es...").
+REGLA CRÍTICA 2: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à) y NUNCA caracteres de tono separados o números.`,
         prompt: `Generate a vocabulary (HSK 1-6) for a ${languageName} speaker. ${avoidPrompt}`,
     });
 
@@ -250,7 +264,8 @@ async function generateWodTranslation(existingData, languageName, lang) {
             sentence_translation: z.string()
         }),
         system: `Act as a Chinese learning API. Translate the descriptive fields of this Word of the Day to ${languageName}.
-REGLA CRÍTICA: En "sentence_translation", mantén la palabra objetivo ("${existingData.character}") en caracteres chinos dentro del texto traducido al ${languageName}.`,
+REGLA CRÍTICA 1: En "sentence_translation", mantén la palabra objetivo ("${existingData.character}") en caracteres chinos dentro del texto al ${languageName}.
+REGLA CRÍTICA 2: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à). NUNCA uses marcas de tono separadas o números. Ejemplo: "ǎ" en vez de "a" + "ˇ".`,
         prompt: `Translate this metadata to ${languageName}: ${JSON.stringify(existingData)}`,
     });
 
@@ -840,6 +855,7 @@ router.get('/lab/story/:id', authenticateToken, async (req, res) => {
                 story: {
                     id: id,
                     title: persisted.title,
+                    history: persisted.history, // Return full history for pagination
                     current_chapter: persisted.history[persisted.history.length - 1].content_data
                 }
             });
@@ -916,18 +932,25 @@ router.delete('/lab/active-story', authenticateToken, async (req, res) => {
 // POST /lab/start-story
 router.post('/lab/start-story', authenticateToken, async (req, res) => {
     try {
-        const { genre = 'Aventura', charName = 'Un principiante', userPrompt = '', level = 'HSK 1' } = req.body;
+        const { genre = 'Aventura', charName = 'Un principiante', userPrompt = '', level = 'HSK 1', lang = 'es' } = req.body;
         
         const user = req.user;
         if (!user) return res.status(401).json({ error: 'Login required' });
 
-        const today = new Date().toDateString();
+        const today = new Date().toISOString().split('T')[0];
+        const languageMap = { 'es': 'Spanish', 'en': 'English', 'tr': 'Turkish' };
+        const languageName = languageMap[lang] || 'Spanish';
+
         if (user.stats?.labUsage?.storyDate === today && user.role !== 'admin') {
             return res.status(429).json({ error: 'Límite de 1 historia diaria.' });
         }
 
+        const limitMap = { 'HSK 1': '3 líneas', 'HSK 2': '3 líneas', 'HSK 3': '4 líneas', 'HSK 4': '5 líneas', 'HSK 5': '6 líneas', 'HSK 6': '6 líneas' };
+        const maxLines = limitMap[level] || '4 líneas';
+
         const { object } = await generateObject({
             model: groq.chat('moonshotai/kimi-k2-instruct'),
+            maxTokens: 1000,
             schema: z.object({
                 title: z.string(),
                 first_chapter: z.object({
@@ -941,8 +964,12 @@ router.post('/lab/start-story', authenticateToken, async (req, res) => {
                     options: z.array(z.string())
                 })
             }),
-            system: `You are Panda, the interactive story guide for PandaLatam. Create engaging Chinese learning stories for level ${level}.`,
-            prompt: `Start a new story. Genre: ${genre}. Protagonist: ${charName}. Extra: ${userPrompt}`,
+            system: `Narrador Panda Latino. HSK: ${level}.
+- "text": Historia en ${languageName}. MÁXIMO ${maxLines} (IMPORTANTE). Sin Hanzi/Pinyin.
+- "segments": Historia íntegra en chino frase por frase.
+- Pinyin: Unicode precompuesto (ā, á, ǎ, à). Unir sílabas (lǎoshī).
+- Seguridad: No +18/Violencia.`,
+            prompt: `Nueva historia. Género: ${genre}. Protagonista: ${charName}. Extra: ${userPrompt}. Nivel ${level}. Respeta el límite de ${maxLines}.`,
         });
 
         const storyId = `story_${Date.now()}`;
@@ -999,8 +1026,11 @@ router.post('/lab/start-story', authenticateToken, async (req, res) => {
 // POST /lab/continue-story
 router.post('/lab/continue-story', authenticateToken, async (req, res) => {
     try {
-        const { story_id, option } = req.body;
+        const { story_id, option, lang = 'es' } = req.body;
         const user = req.user;
+
+        const languageMap = { 'es': 'Spanish', 'en': 'English', 'tr': 'Turkish' };
+        const languageName = languageMap[lang] || 'Spanish';
 
         let storyState = null;
         if (redisClient.isOpen && redisClient.isReady) {
@@ -1019,6 +1049,7 @@ router.post('/lab/continue-story', authenticateToken, async (req, res) => {
             const persisted = await LabStory.findOne({ storyId: story_id, userId: user._id });
             if (persisted) {
                 storyState = {
+                    userId: persisted.userId,
                     title: persisted.title,
                     history: persisted.history,
                     genre: persisted.genre,
@@ -1030,10 +1061,25 @@ router.post('/lab/continue-story', authenticateToken, async (req, res) => {
 
         if (!storyState) return res.status(404).json({ error: 'Story session lost' });
 
+        const maxChapters = getMaxChapters(storyState.level, user?.role);
+        const userChoices = storyState.history.filter(h => h.role === 'user').length;
+
+        // Si maxChapters es 2, el usuario solo puede hacer 1 elección (para llegar al cap 2).
+        if (userChoices >= (maxChapters - 1)) {
+            return res.status(403).json({ 
+                error: 'Story limit reached', 
+                message: `Has alcanzado el límite de ${maxChapters} capítulos para este nivel (${storyState.level}).` 
+            });
+        }
+
         const historyPrompt = storyState.history.slice(-3).map(h => `${h.role === 'assistant' ? 'Panda' : 'Usuario'}: ${h.content_data.text || h.content_data}`).join('\n');
+
+        const limitMap = { 'HSK 1': '3 líneas', 'HSK 2': '3 líneas', 'HSK 3': '4 líneas', 'HSK 4': '5 líneas', 'HSK 5': '6 líneas', 'HSK 6': '6 líneas' };
+        const maxLines = limitMap[storyState.level] || '4 líneas';
 
         const { object } = await generateObject({
             model: groq.chat('moonshotai/kimi-k2-instruct'),
+            maxTokens: 800,
             schema: z.object({
                 next_chapter: z.object({
                     text: z.string(),
@@ -1046,8 +1092,11 @@ router.post('/lab/continue-story', authenticateToken, async (req, res) => {
                     options: z.array(z.string())
                 })
             }),
-            system: `You are Panda, continuing a story for a ${storyState.level} student. Context: ${historyPrompt}`,
-            prompt: `The user chose: "${option}". Continue the story.`,
+            system: `Continuación. Nivel ${storyState.level}. Contexto: ${historyPrompt}
+- "text": En ${languageName}. MÁXIMO ${maxLines}. Sin Pinyin/Chino.
+- "segments": Capítulo completo en bloques chinos.
+- Pinyin: Unicode precompuesto. Une sílabas.`,
+            prompt: `Elección: "${option}". Continúa. Máximo ${maxLines}.`,
         });
 
         // Update Persistence

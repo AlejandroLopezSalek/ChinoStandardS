@@ -1,7 +1,7 @@
 ---
 title: Story Lab - LabPanda
-description: Panda AI ile Çince interaktif hikayeler oluşturun.
-layout: base_tr.njk
+description: Crea historias interactivas en chino con Panda AI.
+layout: base.njk
 scripts:
 - lab-story.js
 ---
@@ -13,12 +13,12 @@ scripts:
         <div class="relative z-10 text-center max-w-3xl mx-auto">
             <div
                 class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold uppercase tracking-widest mb-6">
-                <i class="fas fa-feather-alt"></i> Yaratıcı Yazarlık
+                <i class="fas fa-feather-alt"></i> Escritura Creativa
             </div>
             <h2 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">Story Lab</h2>
             <p class="text-lg md:text-xl text-red-50 leading-relaxed font-medium">
-                Panda ile Çince interaktif hikayeler oluşturun. Yolunuzu seçin ve gerçek ve heyecan verici metinlerde
-                kelime öğrenin.
+                Crea historias interactivas en chino junto a Panda. Elige tu camino y aprende vocabulario en contextos
+                reales y emocionantes.
             </p>
         </div>
     </div>
@@ -28,57 +28,56 @@ scripts:
         <div class="lg:col-span-1 space-y-6">
             <div
                 class="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-lg">
-                <h4 class="font-black text-slate-900 dark:text-white uppercase text-xs tracking-widest mb-6">Yeni
-                    Hikaye</h4>
+                <h4 class="font-black text-slate-900 dark:text-white uppercase text-xs tracking-widest mb-6">Nueva
+                    Historia</h4>
                 <div class="space-y-4">
                     <div>
                         <label for="story-genre"
-                            class="block text-xs font-bold text-slate-500 mb-2 uppercase">Tür</label>
+                            class="block text-xs font-bold text-slate-500 mb-2 uppercase">Género</label>
                         <select id="story-genre"
                             class="w-full bg-slate-100 dark:bg-white/5 border-none rounded-xl p-3 text-sm text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-red-500">
-                            <option value="kung-fu">Dövüş Sanatları (Wuxia)</option>
-                            <option value="modern_shanghai">Modern Şanghay</option>
-                            <option value="history_dynasty">Eski Hanedanlık</option>
-                            <option value="daily_school">Okul Hayatı</option>
-                            <option value="fantasy">Fantazi / Mitoloji</option>
+                            <option value="kung-fu">Artes Marciales (Wuxia)</option>
+                            <option value="modern_shanghai">Shanghái Moderno</option>
+                            <option value="history_dynasty">Dinastías Antiguas</option>
+                            <option value="daily_school">Vida Escolar</option>
+                            <option value="fantasy">Fantasía / Mitología</option>
                         </select>
                     </div>
 
                     <div>
-                        <label for="character-name"
-                            class="block text-xs font-bold text-slate-500 mb-2 uppercase">Kahramanın
-                            Adı</label>
+                        <label for="character-name" class="block text-xs font-bold text-slate-500 mb-2 uppercase">Nombre
+                            del Héroe</label>
                         <input type="text" id="character-name"
                             class="w-full bg-slate-100 dark:bg-white/5 border-none rounded-xl p-3 text-sm text-slate-800 dark:text-white"
-                            placeholder="Örn: Xiao Long">
+                            placeholder="Ej: Xiao Long">
                     </div>
 
                     <div>
-                        <label for="story-prompt" class="block text-xs font-bold text-slate-500 mb-2 uppercase italic">Detay Ekle (Prompt)</label>
+                        <label for="story-prompt" class="block text-xs font-bold text-slate-500 mb-2 uppercase italic">Añadir detalle (Prompt)</label>
                         <textarea id="story-prompt" rows="2" 
                             class="w-full bg-slate-100 dark:bg-white/5 border-none rounded-xl p-3 text-sm text-slate-800 dark:text-white resize-none"
-                            placeholder="Örn: Karlı bir bambu ormanında..."></textarea>
+                            placeholder="Ej: En un bosque de bambú nevado..."></textarea>
                     </div>
 
                     <div>
-                        <label for="story-level" class="block text-xs font-bold text-slate-500 mb-2 uppercase">HSK Seviyesi</label>
+                        <label for="story-level" class="block text-xs font-bold text-slate-500 mb-2 uppercase">Nivel HSK</label>
                         <select id="story-level"
                             class="w-full bg-slate-100 dark:bg-white/5 border-none rounded-xl p-3 text-sm text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-red-500">
-                            <option value="HSK 1">HSK 1 - Yeni Başlayan</option>
-                            <option value="HSK 2">HSK 2 - Temel</option>
-                            <option value="HSK 3">HSK 3 - Orta</option>
-                            <option value="HSK 4">HSK 4 - İleri</option>
+                            <option value="HSK 1">HSK 1 - Principiante</option>
+                            <option value="HSK 2">HSK 2 - Básico</option>
+                            <option value="HSK 3">HSK 3 - Intermedio</option>
+                            <option value="HSK 4">HSK 4 - Avanzado</option>
                         </select>
                     </div>
 
                     <div class="p-4 bg-red-50 dark:bg-red-900/20 rounded-2xl">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold text-red-700 dark:text-red-400 uppercase">Yayınla</span>
+                            <span class="text-xs font-bold text-red-700 dark:text-red-400 uppercase">Publicar</span>
                             <div class="relative inline-flex items-center">
                                 <input type="checkbox" id="story-public-toggle" class="sr-only peer">
                                 <label for="story-public-toggle"
                                     class="w-9 h-5 bg-slate-500 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-red-600 cursor-pointer">
-                                    <span class="sr-only">Yayınla</span>
+                                    <span class="sr-only">Publicar</span>
                                 </label>
                             </div>
                         </div>
@@ -86,16 +85,16 @@ scripts:
 
                     <button id="start-story-btn" type="button"
                         class="w-full bg-red-600 text-white font-black py-4 rounded-2xl hover:bg-red-700 transition-all">
-                        BAŞLA </button>
-                    <p class="text-center text-[9px] text-slate-500">Sınır: Günlük 1 hikaye.</p>
+                        EMPEZAR </button>
+                    <p class="text-center text-[9px] text-slate-500">Límite: 1 historia diaria.</p>
                 </div>
             </div>
             <div id="story-history"
                 class="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-200 dark:border-white/5 shadow-lg">
-                <h4 class="font-black text-slate-900 dark:text-white uppercase text-xs tracking-widest mb-4">Hikayelerim
+                <h4 class="font-black text-slate-900 dark:text-white uppercase text-xs tracking-widest mb-4">Mis Relatos
                 </h4>
                 <div id="history-list" class="space-y-3">
-                    <p class="text-[10px] text-slate-500 italic">Önceki hikaye yok.</p>
+                    <p class="text-[10px] text-slate-500 italic">No hay historias previas.</p>
                 </div>
             </div>
         </div>
@@ -105,20 +104,42 @@ scripts:
             <div id="story-display"
                 class="bg-white dark:bg-slate-800/40 backdrop-blur-xl border border-slate-200 dark:border-slate-700/50 rounded-3xl min-h-[700px] shadow-2xl flex flex-col p-8 md:p-12 relative">
 
-                <!-- Display Toggles -->
-                <div id="mode-toggles" class="hidden absolute top-8 right-8 flex bg-slate-100 dark:bg-white/5 p-1 rounded-xl gap-1">
-                    <button data-mode="hz" type="button" class="mode-btn px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all bg-white dark:bg-slate-800 shadow-sm text-red-600">Hanzi</button>
-                    <button data-mode="py" type="button" class="mode-btn px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all text-slate-500 hover:text-slate-800 dark:hover:text-white">Ruby</button>
-                    <button data-mode="full" type="button" class="mode-btn px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all text-slate-500 hover:text-slate-800 dark:hover:text-white">Full</button>
-                    <button id="close-story-btn" type="button" class="ml-2 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase bg-red-100 text-red-600 hover:bg-red-200 transition-all">Kapat <i class="fas fa-times"></i></button>
+                <!-- Display & Navigation Controls (Top) -->
+                <div id="story-controls" class="hidden absolute top-8 right-8 flex items-center gap-2 z-50">
+                    <!-- Hamburger Menu -->
+                    <div class="relative group">
+                        <button id="story-menu-btn" type="button" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 transition-all">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="story-dropdown" class="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl opacity-0 scale-95 pointer-events-none transition-all group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto">
+                            <div class="p-2 space-y-1">
+                                <div class="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Visualización</div>
+                                <button data-mode="hz" class="mode-btn w-full text-left px-4 py-2 rounded-xl text-xs font-bold transition-all hover:bg-slate-50 dark:hover:bg-white/5">Hanzi</button>
+                                <button data-mode="py" class="mode-btn w-full text-left px-4 py-2 rounded-xl text-xs font-bold transition-all hover:bg-slate-50 dark:hover:bg-white/5">Ruby (Pinyin)</button>
+                                <button data-mode="full" class="mode-btn w-full text-left px-4 py-2 rounded-xl text-xs font-bold transition-all hover:bg-slate-50 dark:hover:bg-white/5">Full (Traducción)</button>
+                                <div class="h-px bg-slate-100 dark:bg-slate-700 my-1 mx-2"></div>
+                                <button id="toggle-text-btn" class="w-full text-left px-4 py-2 rounded-xl text-xs font-bold transition-all hover:bg-slate-50 dark:hover:bg-white/5">
+                                    <i class="fas fa-eye-slash mr-2"></i> Ocultar Texto
+                                </button>
+                                <div class="h-px bg-slate-100 dark:bg-slate-700 my-1 mx-2"></div>
+                                <button id="close-story-btn-alt" type="button" class="w-full text-left px-4 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all">
+                                    <i class="fas fa-times-circle mr-2"></i> Cerrar Historia
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+
                 <div id="story-placeholder" class="m-auto text-center">
                     <div
                         class="w-20 h-20 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-full flex items-center justify-center mx-auto text-3xl mb-6">
                         <i class="fas fa-scroll"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Yolculuk başlasın</h3>
-                    <p class="text-slate-500 mt-2">Maceranızı solda yapılandırın.</p>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Que comience el viaje</h3>
+                    <p class="text-slate-500 mt-2">Configura tu aventura a la izquierda.</p>
                 </div>
 
                 <div id="story-loading" class="hidden m-auto text-center">
@@ -127,17 +148,33 @@ scripts:
                         <div class="w-3 h-3 bg-red-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
                         <div class="w-3 h-3 bg-red-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
                     </div>
-                    <p class="text-red-600 font-bold uppercase tracking-widest text-xs">Panda bölümü yazıyor...</p>
+                    <p class="text-red-600 font-bold uppercase tracking-widest text-xs">Panda está escribiendo el
+                        capítulo...</p>
                 </div>
 
                 <div id="story-content" class="hidden space-y-12">
-                    <div id="story-text"
+                    <div id="story-narrative"
                         class="prose prose-lg dark:prose-invert max-w-none text-slate-800 dark:text-slate-200 leading-relaxed font-serif text-xl md:text-2xl">
+                    </div>
+                    <div id="story-chinese"
+                        class="flex flex-wrap gap-x-4 gap-y-6 items-end">
                     </div>
                     <div id="story-options"
                         class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-12 border-t border-slate-100 dark:border-white/5">
                     </div>
+
+                    <!-- Bottom Pagination (Book Mode) -->
+                    <div id="story-pagination" class="hidden mt-12 pt-8 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
+                        <button id="prev-chapter-btn" type="button" class="flex items-center gap-2 px-6 py-3 rounded-2xl bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:bg-red-600 hover:text-white transition-all font-bold disabled:opacity-30 disabled:hover:bg-slate-100 disabled:hover:text-slate-600">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <span id="chapter-number" class="text-sm font-bold text-slate-400">Página 1 de 5</span>
+                        <button id="next-chapter-btn" type="button" class="flex items-center gap-2 px-6 py-3 rounded-2xl bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:bg-red-600 hover:text-white transition-all font-bold disabled:opacity-30 disabled:hover:bg-slate-100 disabled:hover:text-slate-600">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
