@@ -2,7 +2,7 @@ class LabStory {
     currentStory = null;
     currentChapterData = null;
     currentDisplayMode = localStorage.getItem('story_display_mode') || 'hz';
-    history = JSON.parse(localStorage.getItem('lab_story_history_panda') || '[]');
+    history = [];
 
     constructor() {
         this.init();
@@ -17,8 +17,22 @@ class LabStory {
             btn.onclick = () => this.setDisplayMode(btn.dataset.mode);
         });
 
-        this.renderHistory();
+        this.fetchHistory();
         this.checkActiveStory();
+    }
+
+    async fetchHistory() {
+        try {
+            const headers = globalThis.AuthService?.getAuthHeaders() || {};
+            const res = await fetch('/api/chat/lab/stories', { headers });
+            const data = await res.json();
+            if (Array.isArray(data)) {
+                this.history = data;
+                this.renderHistory();
+            }
+        } catch (e) {
+            console.error("Error fetching history:", e);
+        }
     }
 
     async checkActiveStory() {
@@ -54,13 +68,13 @@ class LabStory {
             const response = await fetch('/api/chat/lab/start-story', {
                 method: 'POST',
                 headers: headers,
-                body: JSON.stringify({ genre, charName, userPrompt, level, isPublic })
+                body: JSON.stringify({ genre, charName, userPrompt, level, is_public: isPublic })
             });
 
             const data = await response.json();
             this.currentStory = data;
             this.renderChapter(data.first_chapter);
-            this.saveToHistory(data);
+            this.fetchHistory(); // Refresh from server
         } catch (e) {
             console.error(e);
             this.notify("Error al iniciar historia. Verifica tu conexión.", "error");
@@ -191,8 +205,31 @@ class LabStory {
                 method: 'DELETE',
                 headers: headers
             });
+            // Also notify the list to refresh if we want to "delete" visually
+            this.notify("Sesión finalizada.", "info");
         } catch (e) {
             console.error("Error clearing session:", e);
+        }
+    }
+
+    async deleteStoryFromHistory(storyId) {
+        if (!confirm("¿Seguro que quieres eliminar esta historia de tu historial?")) return;
+        
+        try {
+            const headers = globalThis.AuthService?.getAuthHeaders() || {};
+            const res = await fetch(`/api/chat/lab/story/${storyId}`, { 
+                method: 'DELETE',
+                headers: headers
+            });
+            const data = await res.json();
+            if (data.success) {
+                await this.fetchHistory();
+                if (this.currentStory?.id === storyId) this.clearSession();
+                this.notify("Historia eliminada.", "success");
+            }
+        } catch (e) {
+            console.error("Error deleting story:", e);
+            this.notify("No se pudo eliminar la historia.", "error");
         }
     }
 
@@ -202,11 +239,8 @@ class LabStory {
     }
 
     saveToHistory(story) {
-        const entry = { id: story.id, date: new Date().toISOString(), title: story.title || 'Historia en Chino', genre: story.genre };
-        this.history.unshift(entry);
-        localStorage.setItem('lab_story_history_panda', JSON.stringify(this.history.slice(0, 5)));
+        // Redundant with fetchHistory() but kept for limit tracking if needed
         localStorage.setItem('last_story_panda_date', new Date().toDateString());
-        this.renderHistory();
     }
 
     checkLimit() {
@@ -216,13 +250,31 @@ class LabStory {
 
     renderHistory() {
         const list = document.getElementById('history-list');
-        if (this.history.length === 0) return;
         list.innerHTML = '';
+        if (this.history.length === 0) {
+            list.innerHTML = '<div class="text-[10px] text-slate-400 italic">No hay historias guardadas.</div>';
+            return;
+        }
         this.history.forEach(h => {
              const div = document.createElement('div');
-             div.className = 'p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 cursor-pointer hover:bg-red-500/10 transition-all';
-             div.innerHTML = `<div class="font-bold text-xs truncate">${h.title}</div><div class="text-[9px] text-slate-500">${new Date(h.date).toLocaleDateString()}</div>`;
-             div.onclick = () => this.loadStory(h.id);
+             div.innerHTML = `
+                <div class="flex justify-between items-center group/item">
+                    <div>
+                        <div class="font-bold text-xs truncate">${h.title}</div>
+                        <div class="text-[9px] text-slate-500">${new Date(h.date).toLocaleDateString()}</div>
+                    </div>
+                    <button class="opacity-0 group-hover/item:opacity-100 text-slate-400 hover:text-red-500 transition-all p-1" data-delete-id="${h.id}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+             div.onclick = (e) => {
+                 if (e.target.closest('[data-delete-id]')) {
+                     this.deleteStoryFromHistory(h.id);
+                 } else {
+                     this.loadStory(h.id);
+                 }
+             };
              list.appendChild(div);
         });
     }

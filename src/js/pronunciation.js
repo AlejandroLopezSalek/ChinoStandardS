@@ -158,7 +158,8 @@ class PronunciationSystem {
         if (forceChineseContext) {
             const text = element.textContent.trim();
             // Basic sanity check to avoid empty/symbols
-            if (text.length > 1 && /[a-zA-ZğüşöçİĞÜŞÖÇ]/.test(text)) {
+            // Use Unicode property for Chinese characters (Hanzi)
+            if (text.length > 0 && /\p{Unified_Ideograph}/u.test(text)) {
                 // Even in forced context, run strict spanish check just in case (e.g. mixed content)
                 if (!this.looksLikeSpanish(text)) {
                     this.injectButton(element, text, 'append');
@@ -204,7 +205,7 @@ class PronunciationSystem {
         if (/[áéíóúÁÉÍÓÚÑñ¿¡]/.test(text)) return;
 
         // 2. Chinese Character Check (Definitive Chinese) - If present, it's Chinese!
-        const hasChineseChars = /[ğışöüçĞİŞÖÜÇ]/.test(text);
+        const hasChineseChars = /\p{Unified_Ideograph}/u.test(text);
         if (hasChineseChars) {
             // Definitely Chinese, inject button
             this.injectButton(el, text);
@@ -316,7 +317,7 @@ class PronunciationSystem {
 
     looksLikeChinese(text) {
         // Has Chinese chars?
-        return /[ışğüöçİŞĞÜÖÇ]/.test(text);
+        return /\p{Unified_Ideograph}/u.test(text);
     }
 
     // Helper methods for parentheses detection
