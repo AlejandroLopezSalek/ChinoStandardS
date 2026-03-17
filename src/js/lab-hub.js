@@ -28,6 +28,12 @@ class LabHub {
     }
 
     handleToolClick(title, dataTool) {
+        // Detect current language from URL
+        const path = window.location.pathname;
+        let langPrefix = "";
+        if (path.startsWith("/en/")) langPrefix = "/en";
+        else if (path.startsWith("/tr/")) langPrefix = "/tr";
+
         // Access Control: Check if user is logged in
         if (globalThis.AuthService && !globalThis.AuthService.isLoggedIn()) {
             const currentUrl = encodeURIComponent(globalThis.location.pathname);
@@ -40,7 +46,7 @@ class LabHub {
             }
             
             setTimeout(() => {
-                globalThis.location.href = `/login/?returnUrl=${currentUrl}`;
+                globalThis.location.href = `${langPrefix}/login/?returnUrl=${currentUrl}`;
             }, 1000);
             return;
         }
@@ -48,13 +54,13 @@ class LabHub {
         const tool = dataTool || title.toLowerCase();
 
         if (tool.includes("dna") || tool.includes("adn") || tool === "adn") {
-            window.location.href = "/ADN/";
+            window.location.href = `${langPrefix}/ADN/`;
         } else if (tool.includes("examen") || tool.includes("ia") || tool === "examen") {
-            window.location.href = "/Examenes/";
+            window.location.href = `${langPrefix}/Examenes/`;
         } else if (tool.includes("story") || tool.includes("historia")) {
-            window.location.href = "/StoryLab/";
+            window.location.href = `${langPrefix}/StoryLab/`;
         } else if (tool.includes("análisis") || tool.includes("contexto") || tool.includes("frase") || tool === "analisis") {
-            window.location.href = "/Analisis/";
+            window.location.href = `${langPrefix}/Analisis/`;
         } else if (tool.includes("espejo") || tool.includes("fonético")) {
             this.notifyComingSoon(title);
         } else if (tool.includes("universo") || tool.includes("semántico")) {

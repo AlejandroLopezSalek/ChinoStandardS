@@ -53,7 +53,8 @@ function createMascotUI() {
 
         const TEXTS = {
             es: { bubbleText: "¡Hola! Soy Panda" },
-            en: { bubbleText: "Hello! I'm Panda" }
+            en: { bubbleText: "Hello! I'm Panda" },
+            tr: { bubbleText: "Merhaba! Ben Panda" }
         };
 
         mascotBtn.innerHTML = `
@@ -288,6 +289,14 @@ function showWelcomeModal() {
             yesBtn: "Yes, please! 🚀",
             noBtn: "No thanks, I'll explore alone",
             guide: "Awesome! 😃\n\nHere's a quick summary:\n\n1. **Levels:** Explore from A1 to C1 on the homepage.\n2. **Grammar:** Check out specific rules in the dedicated section.\n3. **Community:** Read books and lessons created by other students.\n\nAsk me anything you need to know!"
+        },
+        tr: {
+            title: "PandaLatam'a Hoş Geldiniz! 🌎",
+            body1: "Ben <strong>Panda</strong>, yapay zeka asistanınız. <br>",
+            body2: "Web sitesinde hızlı bir tur ister misiniz?",
+            yesBtn: "Evet, lütfen! 🚀",
+            noBtn: "Hayır teşekkürler, kendim keşfedeceğim",
+            guide: "Harika! 😃\n\nİşte hızlı bir özet:\n\n1. **Seviyeler:** Ana sayfada A1'den C1'e kadar keşfedin.\n2. **Dilbilgisi:** Özel bölümde belirli kuralları kontrol edin.\n3. **Topluluk:** Diğer öğrenciler tarafından oluşturulan kitapları ve dersleri okuyun.\n\nBilmeniz gereken her şeyi bana sorun!"
         }
     };
     const t = MODAL_TEXTS[lang] || MODAL_TEXTS['es'];

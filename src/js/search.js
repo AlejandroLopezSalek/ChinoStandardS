@@ -459,17 +459,23 @@ class SearchSystem {
     createSearchModal() {
         const modal = document.createElement('div');
         modal.id = 'searchModal';
-        modal.className = 'search-modal';
+        const lang = localStorage.getItem('language') || 'es';
+        const searchPlaceholder = {
+            es: 'Buscar en PandaLatam...',
+            en: 'Search in PandaLatam...',
+            tr: 'PandaLatam\'da ara...'
+        };
+
         modal.innerHTML = `
             <div class="search-modal-content">
                 <div class="search-modal-input">
-                    <input type="text" placeholder="Buscar en PandaLatam..." autocomplete="off">
+                    <input type="text" placeholder="${searchPlaceholder[lang] || searchPlaceholder.es}" autocomplete="off">
                 </div>
                 <div class="search-modal-results" id="modalSearchResults">
                     <div class="no-results">
                         <i class="fas fa-search"></i>
-                        <h3>Busca algo</h3>
-                        <p>Empieza a escribir para buscar</p>
+                        <h3>${lang === 'tr' ? 'Bir şey ara' : (lang === 'en' ? 'Search something' : 'Busca algo')}</h3>
+                        <p>${lang === 'tr' ? 'Aramak için yazmaya başlayın' : (lang === 'en' ? 'Start typing to search' : 'Empieza a escribir para buscar')}</p>
                     </div>
                 </div>
             </div>
@@ -495,28 +501,32 @@ class SearchSystem {
     // Perform modal search
     performModalSearch(query) {
         const resultsContainer = document.getElementById('modalSearchResults');
+        const lang = localStorage.getItem('language') || 'es';
+        const langPrefix = lang === 'es' ? '' : `/${lang}`;
         
         if (!query) {
             resultsContainer.innerHTML = `
                 <div class="no-results">
                     <i class="fas fa-search"></i>
-                    <h3>Busca algo</h3>
-                    <p>Empieza a escribir para buscar</p>
+                    <h3>${lang === 'tr' ? 'Bir şey ara' : (lang === 'en' ? 'Search something' : 'Busca algo')}</h3>
+                    <p>${lang === 'tr' ? 'Aramak için yazmaya başlayın' : (lang === 'en' ? 'Start typing to search' : 'Empieza a escribir para buscar')}</p>
                 </div>
             `;
             return;
         }
 
-        // Sample search data - replace with actual data
+        // Dynamic search data with localized labels
         const searchData = [
-            { title: 'Nivel A1', description: 'Fundamentos básicos del idioma chino', icon: 'book', url: '/NivelA1.html' },
-            { title: 'Gramática', description: 'Recursos de gramática turca', icon: 'language', url: '/Gramatica.html' },
-            { title: 'Consejos', description: 'Tips y recursos de estudio', icon: 'lightbulb', url: '/Consejos.html' },
-            { title: 'Mi Perfil', description: 'Ver tu racha y configuración', icon: 'user', url: '/Perfil.html' }
+            { es: 'Nivel A1', en: 'Level A1', tr: 'Seviye A1', desc_es: 'Fundamentos básicos del idioma chino', desc_en: 'Basic foundations of Chinese language', desc_tr: 'Çince dilinin temel temelleri', icon: 'book', url: `${langPrefix}/NivelA1/` },
+            { es: 'Gramática', en: 'Grammar', tr: 'Gramatik', desc_es: 'Recursos de gramática china', desc_en: 'Chinese grammar resources', desc_tr: 'Çince dilbilgisi kaynakları', icon: 'language', url: `${langPrefix}/Gramatica/` },
+            { es: 'Consejos', en: 'Tips', tr: 'İpuçları', desc_es: 'Tips y recursos de estudio', desc_en: 'Study tips and resources', desc_tr: 'Çalışma ipuçları ve kaynakları', icon: 'lightbulb', url: `${langPrefix}/Consejos/` },
+            { es: 'Mi Perfil', en: 'My Profile', tr: 'Profilim', desc_es: 'Ver tu racha y configuración', desc_en: 'See your streak and settings', desc_tr: 'Serinizi ve ayarlarınızı görün', icon: 'user', url: `${langPrefix}/Perfil/` }
         ];
 
         const results = searchData.filter(item => {
-            const searchText = `${item.title} ${item.description}`.toLowerCase();
+            const title = item[lang] || item.es;
+            const desc = item[`desc_${lang}`] || item.desc_es;
+            const searchText = `${title} ${desc}`.toLowerCase();
             return searchText.includes(query.toLowerCase());
         });
 
@@ -524,24 +534,27 @@ class SearchSystem {
             resultsContainer.innerHTML = `
                 <div class="no-results">
                     <i class="fas fa-search"></i>
-                    <h3>Sin resultados</h3>
-                    <p>No se encontraron resultados para "${query}"</p>
+                    <h3>${lang === 'tr' ? 'Sonuç yok' : (lang === 'en' ? 'No results' : 'Sin resultados')}</h3>
+                    <p>${lang === 'tr' ? `"${query}" için sonuç bulunamadı` : (lang === 'en' ? `No results found for "${query}"` : `No se encontraron resultados para "${query}"`)}</p>
                 </div>
             `;
             return;
         }
 
-        resultsContainer.innerHTML = results.map(item => `
+        resultsContainer.innerHTML = results.map(item => {
+            const title = item[lang] || item.es;
+            const desc = item[`desc_${lang}`] || item.desc_es;
+            return `
             <div class="search-result-item" onclick="globalThis.location.href='${item.url}'">
                 <div class="search-result-icon">
                     <i class="fas fa-${item.icon}"></i>
                 </div>
                 <div class="search-result-text">
-                    <div class="search-result-title">${this.highlightMatches(item.title, query)}</div>
-                    <div class="search-result-description">${this.highlightMatches(item.description, query)}</div>
+                    <div class="search-result-title">${this.highlightMatches(title, query)}</div>
+                    <div class="search-result-description">${this.highlightMatches(desc, query)}</div>
                 </div>
             </div>
-        `).join('');
+        `;}).join('');
     }
 }
 
