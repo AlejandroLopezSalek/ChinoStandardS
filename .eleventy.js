@@ -32,6 +32,11 @@ module.exports = function eleventyConfigSetup(eleventyConfig) {
         throwOnUndefined: true
     });
 
+    eleventyConfig.addFilter("trim_slashes", function (value) {
+        if (!value) return "";
+        return value.replace(/^\/+|\/+$/g, "");
+    });
+
     eleventyConfig.addFilter("safe", function (value) {
         return value;
     });

@@ -1,6 +1,7 @@
 [
   {
     "code": "es",
+    "dir": "",
     "title": "Dashboard - PandaLatam",
     "description": "Conoce la misión, objetivos y funcionamiento de la plataforma PandaLatam.",
     "hero": {
@@ -86,6 +87,7 @@
   },
   {
     "code": "en",
+    "dir": "en/",
     "title": "Dashboard - PandaLatam",
     "description": "Learn about the mission, goals and operation of the PandaLatam platform.",
     "hero": {
@@ -171,6 +173,7 @@
   },
   {
     "code": "tr",
+    "dir": "tr/",
     "title": "Panel - PandaLatam",
     "description": "PandaLatam platformunun misyonu, hedefleri ve işleyişi hakkında bilgi edinin.",
     "hero": {

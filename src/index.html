@@ -14,6 +14,13 @@ scripts:
 
 <div class="levels-grid flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-8 md:pb-0 scrollbar-none snap-x snap-mandatory">
     {% for key, level in t.levels %}
+    {% set gradientColors = {
+        'a1': 'orange',
+        'a2': 'red',
+        'b1': 'orange',
+        'b2': 'amber',
+        'c1': 'rose'
+    } %}
     <div class="level-card bg-white/95 dark:bg-stone-800/95 md:backdrop-blur-sm border border-stone-200 dark:border-stone-700 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 snap-center min-w-full md:min-w-0 shrink-0 flex flex-col items-center justify-between text-center relative overflow-hidden group">
         <div class="level-header mb-6 relative z-10 w-full">
             <div class="w-16 h-16 mx-auto mb-4 bg-{{ 'orange' if key in ['b1', 'b2'] else 'red' }}-100 dark:bg-{{ 'orange' if key in ['b1', 'b2'] else 'red' }}-900/30 rounded-full flex items-center justify-center text-{{ 'orange' if key in ['b1', 'b2'] else 'red' }}-600 dark:text-{{ 'orange' if key in ['b1', 'b2'] else 'red' }}-400 text-2xl font-bold">
@@ -22,7 +29,7 @@ scripts:
             <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-1">{{ level.title }}</h2>
             <p class="text-stone-500 dark:text-stone-400 font-medium">{{ level.desc }}</p>
         </div>
-        <a href="/{{ 'Nivel' + key | upper }}/" class="w-full py-3 px-6 bg-gradient-to-r from-red-600 to-{{ 'orange' if key == 'a1' else 'red' if key == 'a2' else 'orange' if key == 'b1' else 'amber' if key == 'b2' else 'rose' }}-600 text-white rounded-xl font-bold shadow-lg hover:shadow-red-500/30 transform transition hover:-translate-y-0.5 flex items-center justify-center gap-2">
+        <a href="/{{ 'Nivel' ~ (key | upper) }}/" class="w-full py-3 px-6 bg-gradient-to-r from-red-600 to-{{ gradientColors[key] or 'red' }}-600 text-white rounded-xl font-bold shadow-lg hover:shadow-red-500/30 transform transition hover:-translate-y-0.5 flex items-center justify-center gap-2">
             {{ t.access_btn }} <i class="fas fa-arrow-right"></i>
         </a>
     </div>

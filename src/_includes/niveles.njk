@@ -7,7 +7,7 @@ layout: base.njk
         <div class="panel-header bg-gradient-to-r from-red-600 to-orange-600 p-4 text-white flex items-center justify-between cursor-pointer select-none">
             <h3 class="flex items-center gap-2 text-lg font-semibold m-0">
                 <i class="fas fa-search"></i>
-                {{ ui.search_title }}
+                {{ t.ui.search_title }}
             </h3>
             <button class="panel-toggle bg-white/20 hover:bg-white/30 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 group-[.collapsed]:-rotate-90" id="panelToggle" aria-label="Toggle panel">
                 <i class="fas fa-chevron-down transition-transform duration-300"></i>
@@ -16,7 +16,7 @@ layout: base.njk
         <div class="panel-content bg-white dark:bg-stone-800 p-5 transition-all duration-300 group-[.collapsed]:max-h-0 group-[.collapsed]:p-0 group-[.collapsed]:opacity-0 overflow-hidden" id="panelContent">
             <div class="relative w-full search-box">
                 <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"></i>
-                <input type="text" id="topicSearch" placeholder="{{ ui.search_placeholder }}" autocomplete="off" 
+                <input type="text" id="topicSearch" placeholder="{{ t.ui.search_placeholder }}" autocomplete="off" 
                        class="w-full pl-11 pr-4 py-3 rounded-lg border-2 border-stone-200 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-stone-100 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all duration-300 placeholder-stone-400"
                        onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">
             </div>
@@ -30,7 +30,7 @@ layout: base.njk
         <div class="flex justify-between items-center mb-6 border-b border-red-100 dark:border-red-900/30 pb-4">
             <h2 class="text-red-600 dark:text-red-400 m-0 flex items-center gap-3 text-2xl font-bold">
                 <i class="fas fa-edit"></i>
-                {{ ui.edit_lesson }}
+                {{ t.ui.edit_lesson }}
             </h2>
             <button id="cancelEditBtn" class="bg-gray-200 hover:bg-gray-300 dark:bg-stone-700 dark:hover:bg-stone-600 text-stone-600 dark:text-stone-300 rounded-full w-10 h-10 flex items-center justify-center transition-colors">
                 <i class="fas fa-times text-lg"></i>
@@ -40,7 +40,7 @@ layout: base.njk
         <form id="inlineLessonForm" class="space-y-6">
             <div>
                 <label for="inlineLessonTitle" class="block mb-2 font-semibold text-stone-600 dark:text-stone-300">
-                    {{ ui.lesson_title }}
+                    {{ t.ui.lesson_title }}
                 </label>
                 <input type="text" id="inlineLessonTitle" required 
                        class="w-full p-3 rounded-xl border-2 border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-100 focus:border-red-500 focus:outline-none transition-colors">
@@ -50,7 +50,7 @@ layout: base.njk
 
             <div>
                 <label for="inlineLessonDescription" class="block mb-2 font-semibold text-stone-600 dark:text-stone-300">
-                    {{ ui.description_label }}
+                    {{ t.ui.description_label }}
                 </label>
                 <textarea id="inlineLessonDescription" rows="2" 
                           class="w-full p-3 rounded-xl border-2 border-stone-200 dark:border-stone-600 bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-100 focus:border-red-500 focus:outline-none transition-colors resize-y"></textarea>
@@ -58,7 +58,7 @@ layout: base.njk
 
             <div>
                 <label class="block mb-2 font-semibold text-stone-600 dark:text-stone-300">
-                    {{ ui.content_label }}
+                    {{ t.ui.content_label }}
                 </label>
                 <div id="inlineLessonContentEditor" class="min-h-[300px] bg-white dark:bg-stone-900 rounded-xl border-2 border-stone-200 dark:border-stone-600 overflow-hidden"></div>
             </div>
@@ -66,7 +66,7 @@ layout: base.njk
             <div class="flex gap-4 justify-center pt-4">
                 <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-red-500/30 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2">
                     <i class="fas fa-paper-plane"></i>
-                    <span>{{ ui.save_changes }}</span>
+                    <span>{{ t.ui.save_changes }}</span>
                 </button>
             </div>
         </form>
@@ -74,9 +74,9 @@ layout: base.njk
 
     <!-- LEVEL ACTIONS -->
     <div class="level-actions mt-16 mb-16 text-center p-6 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border border-stone-100 dark:border-stone-700">
-        <a href="/{{ ui.dir }}Contribute/?level={{ levelKey }}" id="createLessonBtn" class="inline-flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-red-500/30 hover:-translate-y-1 transition-all duration-300">
+        <a href="/{{ t.ui.dir }}Contribute/?level={{ t.levelKey }}" id="createLessonBtn" class="inline-flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-red-500/30 hover:-translate-y-1 transition-all duration-300">
             <i class="fas fa-plus"></i>
-            {{ ui.create_lesson }}
+            {{ t.ui.create_lesson }}
         </a>
     </div>
 </div>

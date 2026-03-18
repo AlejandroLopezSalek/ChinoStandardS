@@ -1,6 +1,7 @@
 [
   {
     "code": "es",
+    "dir": "",
     "title": "Consejos de Estudio - PandaLatam",
     "description": "Horarios de estudio, recursos y canales recomendados para aprender chino.",
     "schedule": {
@@ -101,6 +102,7 @@
   },
   {
     "code": "en",
+    "dir": "en/",
     "title": "Study Tips - PandaLatam",
     "description": "Study schedules, resources and recommended channels to learn Chinese.",
     "schedule": {
@@ -201,6 +203,7 @@
   },
   {
     "code": "tr",
+    "dir": "tr/",
     "title": "Çalışma İpuçları - PandaLatam",
     "description": "Çince öğrenmek için çalışma programları, kaynaklar ve önerilen kanallar.",
     "schedule": {

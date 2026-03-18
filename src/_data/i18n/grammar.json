@@ -1,6 +1,7 @@
 [
   {
     "code": "es",
+    "dir": "",
     "title": "Gramática y Recursos - PandaLatam",
     "description": "Recursos de gramática, diccionarios y plataformas para aprender chino.",
     "web_pages": "Páginas de Internet",
@@ -44,6 +45,7 @@
   },
   {
     "code": "en",
+    "dir": "en/",
     "title": "Grammar and Resources - PandaLatam",
     "description": "Grammar resources, dictionaries and platforms to learn Chinese.",
     "web_pages": "Web Pages",
@@ -87,6 +89,7 @@
   },
   {
     "code": "tr",
+    "dir": "tr/",
     "title": "Gramer ve Kaynaklar - PandaLatam",
     "description": "Çince öğrenmek için dilbilgisi kaynakları, sözlükler ve platformlar.",
     "web_pages": "Web Sayfaları",

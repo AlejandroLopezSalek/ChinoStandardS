@@ -1,6 +1,7 @@
 [
   {
     "code": "es",
+    "dir": "",
     "nav": {
       "home": "Inicio",
       "login": "Inicia Sesión",
@@ -69,6 +70,7 @@
   },
   {
     "code": "en",
+    "dir": "en/",
     "nav": {
       "home": "Home",
       "login": "Login",
@@ -137,6 +139,7 @@
   },
   {
     "code": "tr",
+    "dir": "tr/",
     "nav": {
       "home": "Anasayfa",
       "login": "Giriş Yap",

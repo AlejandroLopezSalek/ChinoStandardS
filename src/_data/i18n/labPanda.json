@@ -39,7 +39,8 @@
         "link_text": "Analizar Frase"
       }
     },
-    "footer_note": "LabPanda es una zona viva. Estamos añadiendo experimentos constantemente. ¡Propón los tuyos!"
+    "footer_note": "LabPanda es una zona viva. Estamos añadiendo experimentos constantemente. ¡Propón los tuyos!",
+    "messages": {}
   },
   {
     "code": "en",
@@ -81,7 +82,8 @@
         "link_text": "Analyze Phrase"
       }
     },
-    "footer_note": "LabPanda is a living zone. We're constantly adding experiments. Propose yours!"
+    "footer_note": "LabPanda is a living zone. We're constantly adding experiments. Propose yours!",
+    "messages": {}
   },
   {
     "code": "tr",
@@ -123,6 +125,7 @@
         "link_text": "İfadeyi Analiz Et"
       }
     },
-    "footer_note": "LabPanda yaşayan bir bölgedir. Sürekli deneyler ekliyoruz. Kendi önerilerinizi sunun!"
+    "footer_note": "LabPanda yaşayan bir bölgedir. Sürekli deneyler ekliyoruz. Kendi önerilerinizi sunun!",
+    "messages": {}
   }
 ]
