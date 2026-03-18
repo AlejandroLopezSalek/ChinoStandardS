@@ -1,5 +1,7 @@
+{% set current_lang = t.code or "es" %}
+{% set common_t = i18n.commonByCode[current_lang] %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ current_lang }}">
 <head>
 <script>
         (function() {
@@ -46,7 +48,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script id="i18n-common" type="application/json">{{ i18n.commonByCode[lang] | dump | safe }}</script>
+    <script id="i18n-common" type="application/json">{{ common_t | dump | safe }}</script>
     <script>
         try {
             window.I18N_COMMON = JSON.parse(document.getElementById('i18n-common').textContent);

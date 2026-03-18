@@ -5,7 +5,7 @@ module.exports = function () {
   levelsData.forEach((lang) => {
     Object.keys(lang.levels).forEach((levelKey) => {
       result.push({
-        lang: lang.code,
+        code: lang.code,
         dir: lang.dir,
         levelKey: levelKey,
         t: lang.levels[levelKey],

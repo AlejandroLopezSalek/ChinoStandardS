@@ -1,6 +1,7 @@
 [
   {
     "code": "es",
+    "dir": "",
     "title": "Recursos Recomendados | Aprende Chino",
     "description": "Las mejores apps y recursos para aprender chino.",
     "header": {
@@ -41,6 +42,7 @@
   },
   {
     "code": "en",
+    "dir": "en/",
     "title": "Recommended Resources | Learn Chinese",
     "description": "The best apps and resources to learn Chinese.",
     "header": {
@@ -81,6 +83,7 @@
   },
   {
     "code": "tr",
+    "dir": "tr/",
     "title": "Önerilen Kaynaklar | Çince Öğrenin",
     "description": "Çince öğrenmek için en iyi uygulamalar ve kaynaklar.",
     "header": {
