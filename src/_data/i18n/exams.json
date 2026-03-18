@@ -1,0 +1,128 @@
+[
+  {
+    "code": "es",
+    "dir": "",
+    "title": "Exámenes de IA - LabPanda",
+    "description": "Pon a prueba tu chino con exámenes adaptativos de Panda AI.",
+    "hero_title": "Centro de Exámenes",
+    "hero_desc": "Pon a prueba tus conocimientos de HSK o crea retos temáticos.",
+    "history_btn": "Mis Retos",
+    "settings_title": "Ajustes de IA",
+    "format_label": "Formato",
+    "formats": {
+      "classic": {
+        "title": "HSK Estándar",
+        "desc": "Vocabulario y gramática por nivel."
+      },
+      "custom": {
+        "title": "Tema Personalizado",
+        "desc": "Practica temas específicos."
+      }
+    },
+    "level_label": "Nivel HSK",
+    "prompt_label": "¿En qué quieres enfocarte?",
+    "prompt_placeholder": "Ej: Vocabulario de viajes y el uso de 'le'...",
+    "public_label": "Publicar en Comunidad",
+    "generate_btn": "GENERAR EXAMEN",
+    "limit_note": "Límite: 1 examen diario.",
+    "workspace_title": "Área de Evaluación",
+    "workspace_desc": "Configura los parámetros para que Panda prepare tus preguntas.",
+    "loading_text": "Panda está redactando tu examen...",
+    "messages": {
+      "prompt_required": "Por favor, describe en qué quieres enfocarte.",
+      "network_error": "Error al generar examen. Verifica tu conexión.",
+      "load_error": "No se pudo cargar el examen.",
+      "limit_reached": "Vuelve mañana para tu siguiente examen diario.",
+      "generic_error": "Fallo en generación.",
+      "grade_btn": "CALIFICAR",
+      "retry_btn": "REINTENTAR",
+      "score_label": "Resultado Final",
+      "correct_status": "CORRECTO",
+      "incorrect_status": "INCORRECTO"
+    }
+  },
+  {
+    "code": "en",
+    "dir": "en/",
+    "title": "AI Exams - LabPanda",
+    "description": "Test your Chinese with Panda AI adaptive exams.",
+    "hero_title": "Exam Center",
+    "hero_desc": "Test your HSK knowledge or create themed challenges.",
+    "history_btn": "My Tales",
+    "settings_title": "AI Settings",
+    "format_label": "Format",
+    "formats": {
+      "classic": {
+        "title": "Standard HSK",
+        "desc": "Vocabulary and grammar by level."
+      },
+      "custom": {
+        "title": "Custom Topic",
+        "desc": "Practice specific topics."
+      }
+    },
+    "level_label": "HSK Level",
+    "prompt_label": "What do you want to focus on?",
+    "prompt_placeholder": "Ex: Travel vocabulary and 'le' usage...",
+    "public_label": "Publish to Community",
+    "generate_btn": "GENERATE EXAM",
+    "limit_note": "Limit: 1 exam per day.",
+    "workspace_title": "Evaluation Area",
+    "workspace_desc": "Configure parameters so Panda can prepare your questions.",
+    "loading_text": "Panda is writing your exam...",
+    "messages": {
+      "prompt_required": "Please describe what you want to focus on.",
+      "network_error": "Error generating exam. Check your connection.",
+      "load_error": "Could not load the exam.",
+      "limit_reached": "Come back tomorrow for your next daily exam.",
+      "generic_error": "Generation failed.",
+      "grade_btn": "GRADE",
+      "retry_btn": "RETRY",
+      "score_label": "Final Score",
+      "correct_status": "CORRECTO",
+      "incorrect_status": "INCORRECTO"
+    }
+  },
+  {
+    "code": "tr",
+    "dir": "tr/",
+    "title": "Yapay Zeka Sınavları - LabPanda",
+    "description": "Panda AI uyarlanabilir sınavları ile Çince bilginizi test edin.",
+    "hero_title": "Sınav Merkezi",
+    "hero_desc": "HSK bilginizi test edin veya temalı zorluklar oluşturun.",
+    "history_btn": "Sınavlarım",
+    "settings_title": "Yapay Zeka Ayarları",
+    "format_label": "Format",
+    "formats": {
+      "classic": {
+        "title": "Standart HSK",
+        "desc": "Seviyeye göre kelime ve dilbilgisi."
+      },
+      "custom": {
+        "title": "Özel Konu",
+        "desc": "Belirli konuları pratik edin."
+      }
+    },
+    "level_label": "HSK Seviyesi",
+    "prompt_label": "Neye odaklanmak istiyorsunuz?",
+    "prompt_placeholder": "Örn: Seyahat kelimeleri ve 'le' kullanımı...",
+    "public_label": "Toplulukta Yayınla",
+    "generate_btn": "SINAV OLUŞTUR",
+    "limit_note": "Sınır: Günlük 1 sınav.",
+    "workspace_title": "Değerlendirme Alanı",
+    "workspace_desc": "Panda'nın sorularınızı hazırlayabilmesi için parametreleri yapılandırın.",
+    "loading_text": "Panda sınavınızı yazıyor...",
+    "messages": {
+      "prompt_required": "Lütfen neye odaklanmak istediğinizi belirtin.",
+      "network_error": "Sınav oluşturulurken hata oluştu. Bağlantınızı kontrol edin.",
+      "load_error": "Sınav yüklenemedi.",
+      "limit_reached": "Bir sonraki günlük sınavınız için yarın tekrar gelin.",
+      "generic_error": "Oluşturma başarısız oldu.",
+      "grade_btn": "PUANLA",
+      "retry_btn": "YENİDEN DENE",
+      "score_label": "Final Puanı",
+      "correct_status": "DOĞRU",
+      "incorrect_status": "YANLIŞ"
+    }
+  }
+]

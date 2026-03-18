@@ -1,0 +1,62 @@
+[
+  {
+    "code": "es",
+    "dir": "",
+    "title": "ADN Lingüístico - LabPanda",
+    "description": "Descubre el origen y la estructura de los caracteres chinos.",
+    "subtitle": "ADN Lingüístico",
+    "desc": "Analiza los radicales y la etimología de cualquier palabra o carácter chino.",
+    "placeholder": "Ingresa un carácter (ej: 妈)",
+    "btn_text": "INICIAR BIO-ANÁLISIS",
+    "limit_note": "Límite: 1 análisis complejo detallado al día.",
+    "loading": "Panda está analizando los trazos...",
+    "res_general": "Significado General",
+    "radical_label": "Radical: ",
+    "messages": {
+      "char_required": "Por favor, ingresa un carácter chino.",
+      "network_error": "Error en el bio-análisis. Verifica tu conexión.",
+      "limit_reached": "Ya has realizado tu bio-análisis del día.",
+      "generic_error": "Error en el análisis."
+    }
+  },
+  {
+    "code": "en",
+    "dir": "en/",
+    "title": "Linguistic DNA - LabPanda",
+    "description": "Discover the origin and structure of Chinese characters.",
+    "subtitle": "Linguistic DNA",
+    "desc": "Analyze the radicals and etymology of any Chinese character or word.",
+    "placeholder": "Enter a character (ex: 妈)",
+    "btn_text": "START BIO-ANALYSIS",
+    "limit_note": "Limit: 1 detailed complex analysis per day.",
+    "loading": "Panda is analyzing the strokes...",
+    "res_general": "General Meaning",
+    "radical_label": "Radical: ",
+    "messages": {
+      "char_required": "Please enter a Chinese character.",
+      "network_error": "Error in bio-analysis. Check your connection.",
+      "limit_reached": "You have already performed your bio-analysis for today.",
+      "generic_error": "Error in analysis."
+    }
+  },
+  {
+    "code": "tr",
+    "dir": "tr/",
+    "title": "Dilbilimsel DNA - LabPanda",
+    "description": "Çince karakterlerin kökenini ve yapısını keşfedin.",
+    "subtitle": "Dilbilimsel DNA",
+    "desc": "Herhangi bir Çince karakter veya kelimenin köklerini ve etimolojisini analiz edin.",
+    "placeholder": "Bir karakter girin (örn: 妈)",
+    "btn_text": "BİYO-ANALİZİ BAŞLAT",
+    "limit_note": "Limit: Günde 1 detaylı karmaşık analiz.",
+    "loading": "Panda vuruşları analiz ediyor...",
+    "res_general": "Genel Anlam",
+    "radical_label": "Radikal: ",
+    "messages": {
+      "char_required": "Lütfen bir Çince karakter girin.",
+      "network_error": "Biyo-analiz hatası. Bağlantınızı kontrol edin.",
+      "limit_reached": "Bugün zaten biyo-analizinizi gerçekleştirdiniz.",
+      "generic_error": "Analiz hatası."
+    }
+  }
+]

@@ -1,0 +1,197 @@
+// ========================================
+// SETTINGS PANEL - Overlay and Controls
+// ========================================
+
+// Helper function to handle Panda AI enable
+function enablePandaAI() {
+    localStorage.setItem('panda_disabled', 'false');
+    if (globalThis.initMascot) {
+        globalThis.initMascot();
+    } else {
+        // If script loaded but function not globally avail yet, reload might be needed
+        globalThis.location.reload();
+    }
+
+    // Show nice notification
+    if (globalThis.ToastSystem) {
+        const msg = window.I18N_COMMON?.settings_panel?.panda_enabled || '¡Panda AI activado! Estoy aquí para ayudarte.';
+        globalThis.ToastSystem.success(msg, 'Panda AI');
+    }
+}
+
+// Helper function to handle Panda AI disable
+function disablePandaAI() {
+    localStorage.setItem('panda_disabled', 'true');
+
+    // Clear chat history to prevent old messages from reappearing when re-enabled
+    sessionStorage.removeItem('panda_chat_history');
+    sessionStorage.removeItem('panda_chat_open');
+
+    if (globalThis.removeMascotUI) {
+        globalThis.removeMascotUI();
+    } else {
+        // Fallback to manual removal if function missing
+        const btn = document.getElementById('panda-btn');
+        const chat = document.getElementById('panda-chat');
+        if (btn) btn.remove();
+        if (chat) chat.remove();
+    }
+
+    if (globalThis.ToastSystem) {
+        const msg = window.I18N_COMMON?.settings_panel?.panda_disabled || 'Panda AI desactivado. Puedes reactivarlo aquí cuando quieras.';
+        globalThis.ToastSystem.info(msg, 'Panda AI');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const settingsOverlay = document.getElementById('settingsOverlay');
+    const resetSettingsBtn = document.getElementById('resetSettingsBtn');
+    const notificationsToggle = document.getElementById('notificationsToggle');
+    const languageSelect = document.querySelector('.setting-select');
+
+    // --- Open/Close Logic ---
+    // Handled by general.js (AppUtils.Settings)
+
+    // --- Notifications Logic ---
+    // Handled by general.js (AppUtils.Notifications)
+
+    // --- Panda AI Logic ---
+    const pandaToggle = document.getElementById('pandaToggle');
+    if (pandaToggle) {
+        // Load saved state (default enabled)
+        const isDisabled = localStorage.getItem('panda_disabled') === 'true';
+        pandaToggle.checked = !isDisabled;
+
+        pandaToggle.addEventListener('change', () => {
+            if (pandaToggle.checked) {
+                enablePandaAI();
+            } else {
+                disablePandaAI();
+            }
+        });
+    }
+
+    // --- Language Logic ---
+    if (languageSelect) {
+        // Load saved language
+        const savedLang = localStorage.getItem('language');
+        if (savedLang) {
+            languageSelect.value = savedLang;
+        }
+
+        // Save on change
+        languageSelect.addEventListener('change', () => handleLanguageChange(languageSelect));
+    }
+
+    // --- Reset Logic (Tailwind Modal) ---
+    if (resetSettingsBtn) {
+        // Create custom confirm modal with Tailwind classes
+        const confirmOverlay = document.createElement('div');
+        confirmOverlay.className = 'fixed inset-0 z-[150] flex items-center justify-center bg-stone-900/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300';
+        confirmOverlay.id = 'confirmResetOverlay';
+
+        confirmOverlay.innerHTML = `
+            <div class="bg-white dark:bg-stone-800 rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4 transform scale-95 transition-transform duration-300 border border-stone-200 dark:border-stone-700">
+                <h3 class="text-xl font-bold text-stone-800 dark:text-white mb-2">${window.I18N_COMMON?.settings_panel?.reset_confirm_title || 'Restaurar Valores'}</h3>
+                <p class="text-stone-600 dark:text-stone-300 mb-6 text-sm">${window.I18N_COMMON?.settings_panel?.reset_confirm_desc || '¿Estás seguro de que quieres restaurar todos los ajustes a sus valores predeterminados?'}</p>
+                <div class="flex gap-3 justify-end">
+                    <button class="btn-confirm-cancel px-4 py-2 rounded-xl text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-700 transition-colors font-medium">${window.I18N_COMMON?.settings_panel?.cancel || 'Cancelar'}</button>
+                    <button class="btn-confirm-ok px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-500/30 transition-all transform hover:-translate-y-0.5 font-bold">${window.I18N_COMMON?.settings_panel?.restore || 'Restaurar'}</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(confirmOverlay);
+
+        const cancelBtn = confirmOverlay.querySelector('.btn-confirm-cancel');
+        const okBtn = confirmOverlay.querySelector('.btn-confirm-ok');
+        const modalContent = confirmOverlay.querySelector('div');
+
+        function openModal() {
+            confirmOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            confirmOverlay.classList.add('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+        }
+
+        resetSettingsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal();
+        });
+
+        // Cancel button
+        cancelBtn.addEventListener('click', closeModal);
+
+        // Click outside to close
+        confirmOverlay.addEventListener('click', (e) => {
+            if (e.target === confirmOverlay) {
+                closeModal();
+            }
+        });
+
+        // OK button - perform reset
+        okBtn.addEventListener('click', () => {
+            // Clear settings from localStorage
+            localStorage.removeItem('darkMode');
+            localStorage.removeItem('notifications');
+            localStorage.removeItem('language');
+
+            // Reset UI
+            document.documentElement.classList.remove('dark-mode');
+            if (document.getElementById('darkModeToggle')) {
+                document.getElementById('darkModeToggle').checked = false;
+            }
+            if (notificationsToggle) notificationsToggle.checked = true;
+            if (languageSelect) languageSelect.value = 'es';
+
+            // Close both modals
+            if (settingsOverlay) settingsOverlay.classList.remove('active');
+            closeModal();
+
+            console.log('🔄 Settings reset to default');
+
+            // Optional: Show a success toast if available
+            const successMsg = window.I18N_COMMON?.settings_panel?.reset_success || 'Ajustes restaurados correctamente';
+            if (globalThis.showToast) {
+                globalThis.showToast(successMsg, 'success');
+            } else if (globalThis.ToastSystem) {
+                globalThis.ToastSystem.success(successMsg);
+            }
+        });
+    }
+
+    console.log('⚙️ Settings Panel loaded');
+});
+
+// Helper function for language select changes
+function handleLanguageChange(languageSelect) {
+    const lang = languageSelect.value;
+    localStorage.setItem('language', lang);
+    console.log(`🌐 Language set to: ${lang}`);
+
+    const currentPath = globalThis.window.location.pathname;
+
+    let basePath = currentPath;
+    if (currentPath.startsWith('/en/')) {
+        basePath = currentPath.substring(3);
+        if (basePath === '') basePath = '/';
+    } else if (currentPath.startsWith('/tr/')) {
+        basePath = currentPath.substring(3);
+        if (basePath === '') basePath = '/';
+    }
+
+    let newPath = basePath;
+    if (lang === 'en' || lang === 'tr') {
+        newPath = `/${lang}${basePath === '/' ? '/' : basePath}`;
+    }
+
+    if (currentPath !== newPath) {
+        globalThis.window.location.href = newPath;
+    } else {
+        globalThis.location.reload();
+    }
+}

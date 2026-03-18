@@ -1,14 +1,28 @@
 ---
 layout: base.njk
+pagination:
+  data: i18n.admin
+  size: 1
+  alias: t
+permalink: "{{ t.dir }}Admin-Contributions/index.html"
+eleventyComputed:
+  title: "{{ t.title }}"
+  description: "{{ t.description }}"
 scripts:
-- lesson-editor.js
-- admin-contributions.js
+- admin/lesson-editor.js
+- admin/admin-contributions.js
 ---
+
+<script id="i18n-messages" type="application/json">{{ t.messages | dump | safe }}</script>
+<script id="i18n-admin" type="application/json">{{ t | dump | safe }}</script>
+<script>
+    window.I18N_ADMIN = JSON.parse(document.getElementById('i18n-admin').textContent);
+</script>
 
 <div class="max-w-7xl mx-auto px-4 py-8" id="admin-dashboard-page">
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-stone-800 dark:text-white">Panel de Administración</h1>
-        <p class="text-stone-600 dark:text-stone-400 mt-2">Gestiona las contribuciones de la comunidad</p>
+        <h1 class="text-3xl font-bold text-stone-800 dark:text-white">{{ t.header_title }}</h1>
+        <p class="text-stone-600 dark:text-stone-400 mt-2">{{ t.header_subtitle }}</p>
     </div>
 
     <!-- Stats Overview (Carousel on Mobile, Grid on Desktop) -->
@@ -24,7 +38,7 @@ scripts:
             </div>
             <div>
                 <h3 id="statPending" class="text-xl font-bold text-stone-800 dark:text-white leading-tight">0</h3>
-                <p class="text-xs font-medium text-stone-500 dark:text-stone-400">Pendientes</p>
+                <p class="text-xs font-medium text-stone-500 dark:text-stone-400">{{ t.stats.pending }}</p>
             </div>
         </div>
 
@@ -37,7 +51,7 @@ scripts:
             </div>
             <div>
                 <h3 id="statApproved" class="text-xl font-bold text-stone-800 dark:text-white leading-tight">0</h3>
-                <p class="text-xs font-medium text-stone-500 dark:text-stone-400">Aprobadas</p>
+                <p class="text-xs font-medium text-stone-500 dark:text-stone-400">{{ t.stats.approved }}</p>
             </div>
         </div>
 
@@ -50,7 +64,7 @@ scripts:
             </div>
             <div>
                 <h3 id="statRejected" class="text-xl font-bold text-stone-800 dark:text-white leading-tight">0</h3>
-                <p class="text-xs font-medium text-stone-500 dark:text-stone-400">Rechazadas</p>
+                <p class="text-xs font-medium text-stone-500 dark:text-stone-400">{{ t.stats.rejected }}</p>
             </div>
         </div>
 
@@ -63,7 +77,7 @@ scripts:
             </div>
             <div>
                 <h3 id="statTotal" class="text-xl font-bold text-stone-800 dark:text-white leading-tight">0</h3>
-                <p class="text-xs font-medium text-stone-500 dark:text-stone-400">Total</p>
+                <p class="text-xs font-medium text-stone-500 dark:text-stone-400">{{ t.stats.total }}</p>
             </div>
         </div>
     </div>
@@ -74,17 +88,17 @@ scripts:
             <button type="button" id="tabRequests"
                 class="px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm bg-white dark:bg-stone-700 text-red-600 dark:text-red-400"
                 onclick="switchMainTab('requests')">
-                <i class="fas fa-inbox mr-2"></i> Solicitudes
+                <i class="fas fa-inbox mr-2"></i> {{ t.tabs.requests }}
             </button>
             <button type="button" id="tabLessons"
                 class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-700/50"
                 onclick="switchMainTab('lessons')">
-                <i class="fas fa-book mr-2"></i> Lecciones Publicadas
+                <i class="fas fa-book mr-2"></i> {{ t.tabs.lessons }}
             </button>
             <button type="button" id="tabUsers"
                 class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-700/50"
                 onclick="switchMainTab('users')">
-                <i class="fas fa-users mr-2"></i> Usuarios
+                <i class="fas fa-users mr-2"></i> {{ t.tabs.users }}
             </button>
         </div>
     </div>
@@ -97,20 +111,20 @@ scripts:
             <button type="button"
                 class="filter-tab active px-4 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap flex items-center gap-2 outline-none focus:ring-2 focus:ring-red-500/50 bg-red-600 text-white shadow-md shadow-red-500/20 shrink-0"
                 data-filter="all">
-                Todas <span class="bg-white/20 text-white px-2 py-0.5 rounded-full text-xs font-bold"
+                {{ t.filters.all }} <span class="bg-white/20 text-white px-2 py-0.5 rounded-full text-xs font-bold"
                     id="badgeAll">0</span>
             </button>
             <button type="button"
                 class="filter-tab px-4 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap flex items-center gap-2 outline-none focus:ring-2 focus:ring-red-500/50 text-stone-600 hover:bg-stone-100 dark:text-stone-400 dark:hover:bg-stone-800 shrink-0"
                 data-filter="lesson_edit">
-                Lecciones <span
+                {{ t.filters.lessons }} <span
                     class="bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 px-2 py-0.5 rounded-full text-xs font-bold"
                     id="badgeLessons">0</span>
             </button>
             <button type="button"
                 class="filter-tab px-4 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap flex items-center gap-2 outline-none focus:ring-2 focus:ring-red-500/50 text-stone-600 hover:bg-stone-100 dark:text-stone-400 dark:hover:bg-stone-800 shrink-0"
                 data-filter="book_upload">
-                Libros <span
+                {{ t.filters.books }} <span
                     class="bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 px-2 py-0.5 rounded-full text-xs font-bold"
                     id="badgeBooks">0</span>
             </button>
@@ -120,12 +134,12 @@ scripts:
         <div class="mb-12">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-xl font-bold text-stone-800 dark:text-white flex items-center gap-3">
-                    <i class="fas fa-inbox text-red-500"></i> Solicitudes Pendientes
+                    <i class="fas fa-inbox text-red-500"></i> {{ t.requests.title }}
                 </h2>
                 <button type="button"
                     class="px-4 py-2 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-300 rounded-lg text-sm font-medium hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors flex items-center gap-2"
                     onclick="loadRequests()">
-                    <i class="fas fa-sync-alt"></i> Actualizar
+                    <i class="fas fa-sync-alt"></i> {{ t.requests.update_btn }}
                 </button>
             </div>
 
@@ -140,12 +154,12 @@ scripts:
         <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
             <div class="relative w-full sm:w-96">
                 <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"></i>
-                <input type="text" id="lessonSearch" placeholder="Buscar por título, nivel o autor..."
+                <input type="text" id="lessonSearch" placeholder="{{ t.lessons.search_placeholder }}"
                     class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 outline-none transition-all">
             </div>
             <button type="button" onclick="loadPublishedLessons()"
                 class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors shadow-md flex items-center gap-2">
-                <i class="fas fa-sync-alt"></i> Recargar
+                <i class="fas fa-sync-alt"></i> {{ t.lessons.reload_btn }}
             </button>
         </div>
 
@@ -155,11 +169,11 @@ scripts:
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-stone-50 dark:bg-stone-700/50 border-b border-stone-200 dark:border-stone-700">
-                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">Título</th>
-                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">Nivel</th>
-                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">Autor</th>
-                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">Actualizado</th>
-                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300 text-right">Acciones</th>
+                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">{{ t.lessons.table.title }}</th>
+                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">{{ t.lessons.table.level }}</th>
+                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">{{ t.lessons.table.author }}</th>
+                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">{{ t.lessons.table.updated }}</th>
+                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300 text-right">{{ t.lessons.table.actions }}</th>
                         </tr>
                     </thead>
                     <tbody id="lessonsTableBody">
@@ -173,6 +187,44 @@ scripts:
             </div>
         </div>
     </div>
+
+    <!-- USERS SECTION -->
+    <div id="usersSection" class="hidden">
+        <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
+            <div class="relative w-full sm:w-96">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                <input type="text" id="userSearch" placeholder="{{ t.users.search_placeholder }}"
+                    class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 outline-none transition-all">
+            </div>
+            <button type="button" onclick="loadAdminUsers()"
+                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors shadow-md flex items-center gap-2">
+                <i class="fas fa-sync-alt"></i> {{ t.users.reload_btn }}
+            </button>
+        </div>
+
+        <div
+            class="bg-white dark:bg-stone-800 rounded-2xl border border-stone-200 dark:border-stone-700 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-stone-50 dark:bg-stone-700/50 border-b border-stone-200 dark:border-stone-700">
+                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">{{ t.users.table.user }}</th>
+                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">{{ t.users.table.email }}</th>
+                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">{{ t.users.table.role }}</th>
+                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">{{ t.users.table.streak }}</th>
+                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300 text-right">{{ t.users.table.actions }}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="usersLoading" class="hidden p-8 text-center text-stone-500">
+                <i class="fas fa-spinner fa-spin text-2xl"></i>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Request Detail Modal -->
@@ -182,7 +234,7 @@ scripts:
         class="modal-content bg-white dark:bg-stone-900 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl transform scale-95 transition-all duration-300 border border-stone-200 dark:border-stone-700">
         <div
             class="modal-header flex items-center justify-between p-6 border-b border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800/50 sticky top-0 z-10 backdrop-blur-md">
-            <h2 id="modalTitle" class="text-xl font-bold text-stone-800 dark:text-white">Detalles de la Solicitud</h2>
+            <h2 id="modalTitle" class="text-xl font-bold text-stone-800 dark:text-white">{{ t.modals.detail.title }}</h2>
             <button aria-label="Cerrar modal" type="button"
                 class="close-modal w-10 h-10 rounded-full flex items-center justify-center text-stone-500 hover:bg-red-50 hover:text-red-500 dark:text-stone-400 dark:hover:bg-red-900/20 dark:hover:text-red-400 transition-colors"
                 onclick="closeModal()">
@@ -199,17 +251,17 @@ scripts:
             <button type="button"
                 class="w-full sm:w-auto px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
                 id="approveBtn">
-                <i class="fas fa-check"></i> Aprobar
+                <i class="fas fa-check"></i> {{ t.modals.detail.approve_btn }}
             </button>
             <button type="button"
                 class="w-full sm:w-auto px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold shadow-lg shadow-red-500/20 flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
                 id="rejectBtn">
-                <i class="fas fa-times"></i> Rechazar
+                <i class="fas fa-times"></i> {{ t.modals.detail.reject_btn }}
             </button>
             <button type="button"
                 class="w-full sm:w-auto px-6 py-2.5 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-300 rounded-xl font-medium hover:bg-stone-50 dark:hover:bg-stone-700 transition-all"
                 onclick="closeModal()">
-                Cancelar
+                {{ t.modals.detail.cancel_btn }}
             </button>
         </div>
     </div>
@@ -222,18 +274,17 @@ scripts:
         class="modal-content bg-white dark:bg-stone-900 rounded-2xl w-full max-w-md shadow-2xl transform scale-95 transition-all duration-300 border border-stone-200 dark:border-stone-700 p-0 overflow-hidden">
         <div
             class="modal-header flex items-center justify-between p-6 border-b border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800/50">
-            <h2 id="confirmTitle" class="text-xl font-bold text-stone-800 dark:text-white">Confirmar Acción</h2>
+            <h2 id="confirmTitle" class="text-xl font-bold text-stone-800 dark:text-white">{{ t.modals.confirm.title }}</h2>
         </div>
 
         <div class="modal-body p-6">
             <p id="confirmMessage" class="text-stone-600 dark:text-stone-300 mb-4 text-lg"></p>
             <div class="form-group" id="reasonGroup" style="display:none;">
                 <label for="rejectionReason"
-                    class="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Razón del rechazo
-                    (opcional):</label>
+                    class="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">{{ t.modals.confirm.reason_label }}</label>
                 <textarea id="rejectionReason" rows="3"
                     class="w-full px-4 py-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-800 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 outline-none transition-all"
-                    placeholder="Explica por qué se rechaza esta solicitud..."></textarea>
+                    placeholder="{{ t.modals.confirm.reason_placeholder }}"></textarea>
             </div>
         </div>
 
@@ -241,49 +292,10 @@ scripts:
             class="modal-actions flex flex-col sm:flex-row items-center justify-end gap-3 p-6 bg-stone-50 dark:bg-stone-800/50 border-t border-stone-200 dark:border-stone-700">
             <button type="button"
                 class="w-full sm:w-auto px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold shadow-lg shadow-red-500/20 flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
-                id="confirmBtn">Confirmar</button>
+                id="confirmBtn">{{ t.modals.confirm.confirm_btn }}</button>
             <button type="button"
                 class="w-full sm:w-auto px-6 py-2.5 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-300 rounded-xl font-medium hover:bg-stone-50 dark:hover:bg-stone-700 transition-all"
-                onclick="closeConfirmModal()">Cancelar</button>
-        </div>
-    </div>
-</div>    </div>
-
-    <!-- USERS SECTION -->
-    <div id="usersSection" class="hidden">
-        <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
-            <div class="relative w-full sm:w-96">
-                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"></i>
-                <input type="text" id="userSearch" placeholder="Buscar por nombre, email o rol..."
-                    class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 outline-none transition-all">
-            </div>
-            <button type="button" onclick="loadAdminUsers()"
-                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors shadow-md flex items-center gap-2">
-                <i class="fas fa-sync-alt"></i> Recargar
-            </button>
-        </div>
-
-        <div
-            class="bg-white dark:bg-stone-800 rounded-2xl border border-stone-200 dark:border-stone-700 shadow-sm overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-stone-50 dark:bg-stone-700/50 border-b border-stone-200 dark:border-stone-700">
-                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">Usuario</th>
-                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">Email</th>
-                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">Rol</th>
-                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300">Racha / Registro</th>
-                            <th class="p-4 font-semibold text-stone-600 dark:text-stone-300 text-right">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="usersTableBody">
-                        <!-- Populated by JS -->
-                    </tbody>
-                </table>
-            </div>
-            <div id="usersLoading" class="hidden p-8 text-center text-stone-500">
-                <i class="fas fa-spinner fa-spin text-2xl"></i>
-            </div>
+                onclick="closeConfirmModal()">{{ t.modals.confirm.cancel_btn }}</button>
         </div>
     </div>
 </div>

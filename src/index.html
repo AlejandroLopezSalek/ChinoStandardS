@@ -1,167 +1,69 @@
-﻿---
+---
+pagination:
+  data: i18n.home
+  size: 1
+  alias: t
+permalink: "{{ t.dir }}index.html"
 layout: base.njk
+eleventyComputed:
+  title: "{{ t.title }}"
+  description: "{{ t.description }}"
 scripts:
-- carousel-universal.js
+- ui/carousel-universal.js
 ---
 
-
-
-<!-- Main White Container Wrapper -->
-
-
-<div
-    class="levels-grid flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-8 md:pb-0 scrollbar-none snap-x snap-mandatory">
-    <!-- Nivel A1 -->
-    <div
-        class="level-card bg-white/95 dark:bg-stone-800/95 md:backdrop-blur-sm border border-stone-200 dark:border-stone-700 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 snap-center min-w-full md:min-w-0 shrink-0 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+<div class="levels-grid flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-8 md:pb-0 scrollbar-none snap-x snap-mandatory">
+    {% for key, level in t.levels %}
+    <div class="level-card bg-white/95 dark:bg-stone-800/95 md:backdrop-blur-sm border border-stone-200 dark:border-stone-700 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 snap-center min-w-full md:min-w-0 shrink-0 flex flex-col items-center justify-between text-center relative overflow-hidden group">
         <div class="level-header mb-6 relative z-10 w-full">
-            <div
-                class="w-16 h-16 mx-auto mb-4 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center text-red-600 dark:text-red-400 text-2xl font-bold">
-                A1
+            <div class="w-16 h-16 mx-auto mb-4 bg-{{ 'orange' if key in ['b1', 'b2'] else 'red' }}-100 dark:bg-{{ 'orange' if key in ['b1', 'b2'] else 'red' }}-900/30 rounded-full flex items-center justify-center text-{{ 'orange' if key in ['b1', 'b2'] else 'red' }}-600 dark:text-{{ 'orange' if key in ['b1', 'b2'] else 'red' }}-400 text-2xl font-bold">
+                {{ key | upper }}
             </div>
-            <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-1">Nivel A1</h2>
-            <p class="text-stone-500 dark:text-stone-400 font-medium">Principiante</p>
+            <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-1">{{ level.title }}</h2>
+            <p class="text-stone-500 dark:text-stone-400 font-medium">{{ level.desc }}</p>
         </div>
-
-        <a href="/NivelA1/"
-            class="w-full py-3 px-6 bg-gradient-to-r from-red-600 to-orange-600 text-white rounded-xl font-bold shadow-lg hover:shadow-red-500/30 transform transition hover:-translate-y-0.5 flex items-center justify-center gap-2">
-            Acceder al Nivel <i class="fas fa-arrow-right"></i>
+        <a href="/{{ 'Nivel' + key | upper }}/" class="w-full py-3 px-6 bg-gradient-to-r from-red-600 to-{{ 'orange' if key == 'a1' else 'red' if key == 'a2' else 'orange' if key == 'b1' else 'amber' if key == 'b2' else 'rose' }}-600 text-white rounded-xl font-bold shadow-lg hover:shadow-red-500/30 transform transition hover:-translate-y-0.5 flex items-center justify-center gap-2">
+            {{ t.access_btn }} <i class="fas fa-arrow-right"></i>
         </a>
     </div>
+    {% endfor %}
 
-    <!-- Nivel A2 -->
-    <div
-        class="level-card bg-white/95 dark:bg-stone-800/95 md:backdrop-blur-sm border border-stone-200 dark:border-stone-700 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 snap-center min-w-full md:min-w-0 shrink-0 flex flex-col items-center justify-between text-center relative overflow-hidden group">
+    <!-- Community Lessons -->
+    <a href="/Community-Lessons/" class="block level-card special hidden md:flex bg-gradient-to-br from-red-50/50 to-orange-50/50 dark:from-red-900/20 dark:to-orange-900/20 backdrop-blur-sm border-2 border-red-200 dark:border-red-800 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 snap-center min-w-full md:min-w-0 shrink-0 flex-col items-center justify-between text-center relative overflow-hidden group cursor-pointer">
         <div class="level-header mb-6 relative z-10 w-full">
-            <div
-                class="w-16 h-16 mx-auto mb-4 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center text-red-600 dark:text-red-400 text-2xl font-bold">
-                A2
-            </div>
-            <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-1">Nivel A2</h2>
-            <p class="text-stone-500 dark:text-stone-400 font-medium">Elemental</p>
-        </div>
-
-        <a href="/NivelA2/"
-            class="w-full py-3 px-6 bg-gradient-to-r from-red-600 to-red-600 text-white rounded-xl font-bold shadow-lg hover:shadow-red-500/30 transform transition hover:-translate-y-0.5 flex items-center justify-center gap-2">
-            Acceder al Nivel <i class="fas fa-arrow-right"></i>
-        </a>
-    </div>
-
-    <!-- Nivel B1 -->
-    <div
-        class="level-card bg-white/95 dark:bg-stone-800/95 md:backdrop-blur-sm border border-stone-200 dark:border-stone-700 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 snap-center min-w-full md:min-w-0 shrink-0 flex flex-col items-center justify-between text-center relative overflow-hidden group">
-        <div class="level-header mb-6 relative z-10 w-full">
-            <div
-                class="w-16 h-16 mx-auto mb-4 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center text-orange-600 dark:text-orange-400 text-2xl font-bold">
-                B1
-            </div>
-            <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-1">Nivel B1</h2>
-            <p class="text-stone-500 dark:text-stone-400 font-medium">Intermedio</p>
-        </div>
-
-        <a href="/NivelB1/"
-            class="w-full py-3 px-6 bg-gradient-to-r from-orange-600 to-orange-600 text-white rounded-xl font-bold shadow-lg hover:shadow-orange-500/30 transform transition hover:-translate-y-0.5 flex items-center justify-center gap-2">
-            Acceder al Nivel <i class="fas fa-arrow-right"></i>
-        </a>
-    </div>
-
-    <!-- Nivel B2 -->
-    <div
-        class="level-card bg-white/95 dark:bg-stone-800/95 md:backdrop-blur-sm border border-stone-200 dark:border-stone-700 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 snap-center min-w-full md:min-w-0 shrink-0 flex flex-col items-center justify-between text-center relative overflow-hidden group">
-        <div class="level-header mb-6 relative z-10 w-full">
-            <div
-                class="w-16 h-16 mx-auto mb-4 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center text-orange-600 dark:text-orange-400 text-2xl font-bold">
-                B2
-            </div>
-            <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-1">Nivel B2</h2>
-            <p class="text-stone-500 dark:text-stone-400 font-medium">Intermedio Alto</p>
-        </div>
-
-        <a href="/NivelB2/"
-            class="w-full py-3 px-6 bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-xl font-bold shadow-lg hover:shadow-orange-500/30 transform transition hover:-translate-y-0.5 flex items-center justify-center gap-2">
-            Acceder al Nivel <i class="fas fa-arrow-right"></i>
-        </a>
-    </div>
-
-    <!-- Nivel C1 -->
-    <div
-        class="level-card bg-white/95 dark:bg-stone-800/95 md:backdrop-blur-sm border border-stone-200 dark:border-stone-700 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 snap-center min-w-full md:min-w-0 shrink-0 flex flex-col items-center justify-between text-center relative overflow-hidden group">
-        <div class="level-header mb-6 relative z-10 w-full">
-            <div
-                class="w-16 h-16 mx-auto mb-4 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center text-red-600 dark:text-red-400 text-2xl font-bold">
-                C1
-            </div>
-            <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-1">Nivel C1</h2>
-            <p class="text-stone-500 dark:text-stone-400 font-medium">Avanzado</p>
-        </div>
-
-        <a href="/NivelC1/"
-            class="w-full py-3 px-6 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-xl font-bold shadow-lg hover:shadow-red-500/30 transform transition hover:-translate-y-0.5 flex items-center justify-center gap-2">
-            Acceder al Nivel <i class="fas fa-arrow-right"></i>
-        </a>
-    </div>
-
-    <!-- Community Lessons (Hidden on Mobile) -->
-    <a href="/Community-Lessons/"
-        class="block level-card special hidden md:flex bg-gradient-to-br from-red-50/50 to-orange-50/50 dark:from-red-900/20 dark:to-orange-900/20 backdrop-blur-sm border-2 border-red-200 dark:border-red-800 rounded-2xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 snap-center min-w-full md:min-w-0 shrink-0 flex-col items-center justify-between text-center relative overflow-hidden group cursor-pointer">
-        <div class="level-header mb-6 relative z-10 w-full">
-            <div
-                class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-red-500 to-orange-600 rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
+            <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-red-500 to-orange-600 rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
                 <i class="fas fa-users"></i>
             </div>
-            <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2">Comunidad</h2>
-            <p class="text-stone-500 dark:text-stone-400 text-sm leading-relaxed">
-                Explora y aprende con lecciones creadas por otros estudiantes
-            </p>
+            <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-2">{{ t.community_title }}</h2>
+            <p class="text-stone-500 dark:text-stone-400 text-sm leading-relaxed">{{ t.community_desc }}</p>
         </div>
-
-        <div
-            class="mt-auto text-red-600 dark:text-red-400 font-semibold text-sm flex items-center justify-center gap-2 group-hover:gap-3 transition-all">
-            Ver Lecciones <i class="fas fa-arrow-right"></i>
+        <div class="mt-auto text-red-600 dark:text-red-400 font-semibold text-sm flex items-center justify-center gap-2 group-hover:gap-3 transition-all">
+            {{ t.view_lessons }} <i class="fas fa-arrow-right"></i>
         </div>
     </a>
 
-
-
     <div class="carousel-indicators">
-        <button type="button" class="carousel-indicator active" data-index="0" aria-label="Ir a Nivel A1"></button>
-        <button type="button" class="carousel-indicator" data-index="1" aria-label="Ir a Nivel A2"></button>
-        <button type="button" class="carousel-indicator" data-index="2" aria-label="Ir a Nivel B1"></button>
-        <button type="button" class="carousel-indicator" data-index="3" aria-label="Ir a Nivel B2"></button>
-        <button type="button" class="carousel-indicator" data-index="4" aria-label="Ir a Nivel C1"></button>
+        {% for key, level in t.levels %}
+        <button type="button" class="carousel-indicator {{ 'active' if loop.first else '' }}" data-index="{{ loop.index0 }}" aria-label="Ir a {{ level.title }}"></button>
+        {% endfor %}
     </div>
 </div>
 
-
-
-
 <!-- Info Banner -->
-<div
-    class="info-banner mt-12 bg-gradient-to-r from-red-600 to-orange-700 dark:from-stone-800 dark:to-stone-900 dark:border dark:border-stone-700 rounded-2xl p-6 md:p-8 shadow-xl text-white relative overflow-hidden">
-    <!-- Decoration -->
-    <div
-        class="absolute top-0 right-0 w-64 h-64 bg-white/10 dark:bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl">
-    </div>
-
+<div class="info-banner mt-12 bg-gradient-to-r from-red-600 to-orange-700 dark:from-stone-800 dark:to-stone-900 dark:border dark:border-stone-700 rounded-2xl p-6 md:p-8 shadow-xl text-white relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 dark:bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
     <div class="banner-content relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
         <div class="flex items-center gap-6 text-center md:text-left flex-1">
-            <div
-                class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-3xl shrink-0">
+            <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-3xl shrink-0">
                 <i class="fas fa-info-circle text-white"></i>
             </div>
             <div>
-                <h2 class="text-xl md:text-2xl font-bold mb-2 text-white">¿Quieres saber más sobre PandaLatam?
-                </h2>
-                <p class="text-red-100 text-sm md:text-base">Conoce el proyecto, roadmap y cómo puedes apoyar
-                    el
-                    desarrollo</p>
+                <h2 class="text-xl md:text-2xl font-bold mb-2 text-white">{{ t.banner_title }}</h2>
+                <p class="text-red-100 text-sm md:text-base">{{ t.banner_desc }}</p>
             </div>
         </div>
-
-        <a href="/Dashboard/"
-            class="w-full md:w-auto py-3 px-8 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-xl font-semibold transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 whitespace-nowrap">
-            <i class="fas fa-compass"></i>
-            Ver Dashboard
+        <a href="/Dashboard/" class="w-full md:w-auto py-3 px-8 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-xl font-semibold transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 whitespace-nowrap">
+            <i class="fas fa-compass"></i> {{ t.view_dashboard }}
         </a>
     </div>
 </div>

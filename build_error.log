@@ -1,0 +1,33 @@
+
+> chinostandard-proyecto-completo@3 build
+> npm run build:css && npx @11ty/eleventy
+
+
+> chinostandard-proyecto-completo@3 build:css
+> npx tailwindcss -i ./src/css/tailwind.css -o ./src/css/tailwind-output.css --minify
+
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+Rebuilding...
+
+Done in 6622ms.
+[11ty] Problem writing Eleventy templates: (more in DEBUG output)
+[11ty] 1. Having trouble rendering njk template ./src/Consejos.html (via TemplateContentRenderError)
+[11ty] 2. (./src/Consejos.html) [Line 1, Column 1]
+[11ty]   attempted to output null or undefined value (via Template render error)
+[11ty] 
+[11ty] Original error stack trace: Template render error: (./src/Consejos.html) [Line 1, Column 1]
+[11ty]   attempted to output null or undefined value
+[11ty]     at Object._prettifyError (/home/aledls/Projects/ODL/ChinoStandardS/node_modules/nunjucks/src/lib.js:32:11)
+[11ty]     at /home/aledls/Projects/ODL/ChinoStandardS/node_modules/nunjucks/src/environment.js:464:19
+[11ty]     at Template.root [as rootRenderFunc] (eval at _compile (/home/aledls/Projects/ODL/ChinoStandardS/node_modules/nunjucks/src/environment.js:527:18), <anonymous>:18:3)
+[11ty]     at Template.render (/home/aledls/Projects/ODL/ChinoStandardS/node_modules/nunjucks/src/environment.js:454:10)
+[11ty]     at /home/aledls/Projects/ODL/ChinoStandardS/node_modules/@11ty/eleventy/src/Engines/Nunjucks.js:411:14
+[11ty]     at new Promise (<anonymous>)
+[11ty]     at /home/aledls/Projects/ODL/ChinoStandardS/node_modules/@11ty/eleventy/src/Engines/Nunjucks.js:410:14
+[11ty]     at /home/aledls/Projects/ODL/ChinoStandardS/node_modules/@11ty/eleventy/src/Engines/Html.js:21:16
+[11ty]     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[11ty]     at async Template._render (/home/aledls/Projects/ODL/ChinoStandardS/node_modules/@11ty/eleventy/src/TemplateContent.js:514:22)
+[11ty] Copied 53 files / Wrote 0 files in 0.45 seconds (v2.0.1)

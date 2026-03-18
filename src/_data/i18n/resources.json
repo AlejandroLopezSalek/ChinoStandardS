@@ -1,0 +1,122 @@
+[
+  {
+    "code": "es",
+    "title": "Recursos Recomendados | Aprende Chino",
+    "description": "Las mejores apps y recursos para aprender chino.",
+    "header": {
+      "title": "Herramientas Recomendadas",
+      "text": "Hemos seleccionado las mejores plataformas para ayudarte a dominar el chino. Ya sea que busques <span class=\"text-red-600 dark:text-red-400 font-semibold\">profesores nativos</span> o <span class=\"text-red-600 dark:text-red-400 font-semibold\">clases estructuradas</span>, estas son nuestras recomendaciones top."
+    },
+    "pwa": {
+      "badge": "Recomendado",
+      "title": "Descargar App",
+      "text": "Instala nuestra aplicación directamente en tu dispositivo para estudiar en cualquier momento, <b>incluso sin conexión</b>.",
+      "btn": "Tener en mi Celular / PC"
+    },
+    "cards": [
+      {
+        "title": "italki",
+        "description": "La mejor plataforma para encontrar <b>profesores nativos</b> y practicar conversación 1-a-1. Ideal para todos los niveles. <br><br><b>Recomendado por ODL (Organización de Desarrollo Latino).</b>",
+        "link": "https://www.italki.com/affshare?ref=af30849267",
+        "btnText": "Encontrar Profesor",
+        "badge": "Mejor para Conversación",
+        "icon": "comments",
+        "footer": "Obtén $10 en créditos al registrarte"
+      },
+      {
+        "title": "Baúl Chino",
+        "description": "Excelente recurso en español con herramientas, vocabulario y guías completas para tu aprendizaje del idioma mandarín. <br><br><b>Una de las mejores plataformas en nuestro idioma.</b>",
+        "link": "https://www.baulchino.com/",
+        "btnText": "Visitar Sitio",
+        "badge": "Recurso en Español",
+        "icon": "toolbox",
+        "footer": "Completamente gratuito"
+      }
+    ],
+    "support": {
+      "title": "¿Por qué recomendamos Italki?",
+      "text": "Al usar Italki para aprender chino, apoyas directamente a <b>proyectos como PandaLatam de ODL</b>. Esto nos permite seguir creando contenido gratuito y mejorando la plataforma para toda la comunidad.",
+      "thanks": "Gracias por tu apoyo"
+    }
+  },
+  {
+    "code": "en",
+    "title": "Recommended Resources | Learn Chinese",
+    "description": "The best apps and resources to learn Chinese.",
+    "header": {
+      "title": "Recommended Tools",
+      "text": "We have selected the best platforms to help you master Chinese. Whether you are looking for <span class=\"text-red-600 dark:text-red-400 font-semibold\">native teachers</span> or <span class=\"text-red-600 dark:text-red-400 font-semibold\">structured classes</span>, these are our top recommendations."
+    },
+    "pwa": {
+      "badge": "Recommended",
+      "title": "Download App",
+      "text": "Install our application directly on your device to study at any time, <b>even offline</b>.",
+      "btn": "Download on Mobile / PC"
+    },
+    "cards": [
+      {
+        "title": "italki",
+        "description": "The best platform to find <b>native teachers</b> and practice 1-on-1 conversation. Ideal for all levels. <br><br><b>Recommended by ODL (Latin Development Organization).</b>",
+        "link": "https://www.italki.com/affshare?ref=af30849267",
+        "btnText": "Find a Teacher",
+        "badge": "Best for Conversation",
+        "icon": "comments",
+        "footer": "Get $10 in credits when signing up"
+      },
+      {
+        "title": "Baúl Chino",
+        "description": "Excellent Spanish-language resource featuring tools, vocabulary lists, and comprehensive guides for learning Mandarin Chinese. <br><br><b>One of the best platforms in Spanish.</b>",
+        "link": "https://www.baulchino.com/",
+        "btnText": "Visit Website",
+        "badge": "Spanish Resource",
+        "icon": "toolbox",
+        "footer": "Completely free"
+      }
+    ],
+    "support": {
+      "title": "Why do we recommend Italki?",
+      "text": "By using Italki to learn Chinese, you directly support <b>projects like PandaLatam by ODL</b>. This allows us to continue creating free content and improving the platform for the whole community.",
+      "thanks": "Thank you for your support"
+    }
+  },
+  {
+    "code": "tr",
+    "title": "Önerilen Kaynaklar | Çince Öğrenin",
+    "description": "Çince öğrenmek için en iyi uygulamalar ve kaynaklar.",
+    "header": {
+      "title": "Önerilen Araçlar",
+      "text": "Çinceyi ustalıkla öğrenmenize yardımcı olacak en iyi platformları listeledik. İster <span class=\"text-red-600 dark:text-red-400 font-semibold\">anadili Çince olan öğretmenler</span> veya <span class=\"text-red-600 dark:text-red-400 font-semibold\">sistemli dersler</span> arıyor olun, işte en iyi tavsiyelerimiz."
+    },
+    "pwa": {
+      "badge": "Önerilen",
+      "title": "Uygulamayı İndir",
+      "text": "Her an, <b>çevrimdışı bile</b> çalışabilmek için uygulamayı doğrudan cihazınıza kurun.",
+      "btn": "Telefona / PC'ye İndir"
+    },
+    "cards": [
+      {
+        "title": "italki",
+        "description": "<b>Anadili Çince olan öğretmenler</b> bulmak ve birebir karşılıklı konuşma pratiği yapmak için en iyi platform. Tüm seviyeler için idealdir. <br><br><b>ODL (Latin Development Organization) tarafından onaylanmıştır.</b>",
+        "link": "https://www.italki.com/affshare?ref=af30849267",
+        "btnText": "Öğretmen Bul",
+        "badge": "Konuşma Pratiği İçin En İyisi",
+        "icon": "comments",
+        "footer": "Kayıt olduğunuzda 10$ kredi kazanın"
+      },
+      {
+        "title": "Baúl Chino",
+        "description": "Mandarin Çincesi öğrenmek için araçlar, kelime listeleri ve kapsamlı kılavuzlar sunan mükemmel bir İspanyolca dil kaynağı.<br><br><b>İspanyolca dünyasındaki en iyi platformlardan biri.</b>",
+        "link": "https://www.baulchino.com/",
+        "btnText": "Siteyi Ziyaret Et",
+        "badge": "İspanyolca Kaynak",
+        "icon": "toolbox",
+        "footer": "Tamamen Ücretsiz"
+      }
+    ],
+    "support": {
+      "title": "Italki'yi neden mi öneriyoruz?",
+      "text": "Çince öğrenmek için Italki'yi kullanarak <b>ODL'nin PandaLatam projelerini</b> doğrudan desteklemiş olursunuz. Bu da, tüm topluluk için ücretsiz içerikler üretmeye ve platformu geliştirmeye devam etmemizi sağlar.",
+      "thanks": "Desteğiniz için teşekkür ederiz"
+    }
+  }
+]

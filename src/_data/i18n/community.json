@@ -1,0 +1,149 @@
+[
+  {
+    "code": "es",
+    "dir": "",
+    "title": "Lecciones de la Comunidad - PandaLatam",
+    "description": "Explora libros y lecciones creados por la comunidad de PandaLatam.",
+    "search_placeholder": "Buscar lecciones o libros...",
+    "filter_type": "Tipo",
+    "filter_level": "Nivel",
+    "types": {
+      "books": "Libros",
+      "lessons": "Lecciones"
+    },
+    "contribute": {
+      "title": "¿Quieres contribuir?",
+      "btn": "Crear Nueva Lección"
+    },
+    "books_badge": "Comunidad",
+    "actions": {
+      "view": "Ver",
+      "download": "Descargar",
+      "suggest_edit": "Sugerir Edición",
+      "delete": "Eliminar",
+      "history": "Historial",
+      "restore": "Restaurar",
+      "back_to_lesson": "Volver a la lección"
+    },
+    "modals": {
+      "delete_confirm": {
+        "title": "¿Eliminar Lección?",
+        "desc": "Esta acción no se puede deshacer. La lección se eliminará permanentemente.",
+        "confirm": "Sí, Eliminar",
+        "cancel": "Cancelar"
+      },
+      "lesson": {
+        "info": "Información",
+        "level": "Nivel",
+        "author": "Autor",
+        "date": "Fecha",
+        "content_title": "Contenido",
+        "history_title": "Historial de Versiones",
+        "no_history": "No hay historial de versiones."
+      }
+    },
+    "messages": {
+        "empty_state": "No hay lecciones encontradas",
+        "loading_lessons": "Cargando lecciones...",
+        "error_loading": "Error al cargar lecciones"
+    }
+  },
+  {
+    "code": "en",
+    "dir": "en/",
+    "title": "Community Lessons - PandaLatam",
+    "description": "Explore books and lessons created by the PandaLatam community.",
+    "search_placeholder": "Search lessons or books...",
+    "filter_type": "Type",
+    "filter_level": "Level",
+    "types": {
+      "books": "Books",
+      "lessons": "Lessons"
+    },
+    "contribute": {
+      "title": "Want to contribute?",
+      "btn": "Create New Lesson"
+    },
+    "books_badge": "Community",
+    "actions": {
+      "view": "View",
+      "download": "Download",
+      "suggest_edit": "Suggest Edit",
+      "delete": "Delete",
+      "history": "History",
+      "restore": "Restore",
+      "back_to_lesson": "Back to lesson"
+    },
+    "modals": {
+      "delete_confirm": {
+        "title": "Delete Lesson?",
+        "desc": "This action cannot be undone. The lesson will be permanently deleted.",
+        "confirm": "Yes, Delete",
+        "cancel": "Cancel"
+      },
+      "lesson": {
+        "info": "Information",
+        "level": "Level",
+        "author": "Author",
+        "date": "Date",
+        "content_title": "Content",
+        "history_title": "Version History",
+        "no_history": "No version history available."
+      }
+    },
+    "messages": {
+        "empty_state": "No lessons found",
+        "loading_lessons": "Loading lessons...",
+        "error_loading": "Error loading lessons"
+    }
+  },
+  {
+    "code": "tr",
+    "dir": "tr/",
+    "title": "Topluluk Dersleri - PandaLatam",
+    "description": "PandaLatam topluluğu tarafından oluşturulan kitapları ve dersleri keşfedin.",
+    "search_placeholder": "Ders veya kitap ara...",
+    "filter_type": "Tür",
+    "filter_level": "Seviye",
+    "types": {
+      "books": "Kitaplar",
+      "lessons": "Dersler"
+    },
+    "contribute": {
+      "title": "Katkıda bulunmak ister misiniz?",
+      "btn": "Yeni Ders Oluştur"
+    },
+    "books_badge": "Topluluk",
+    "actions": {
+      "view": "Görüntüle",
+      "download": "İndir",
+      "suggest_edit": "Düzenleme Öner",
+      "delete": "Sil",
+      "history": "Geçmiş",
+      "restore": "Geri Yükle",
+      "back_to_lesson": "Derse geri dön"
+    },
+    "modals": {
+      "delete_confirm": {
+        "title": "Dersi Sil?",
+        "desc": "Bu işlem geri alınamaz. Ders kalıcı olarak silinecektir.",
+        "confirm": "Evet, Sil",
+        "cancel": "İptal"
+      },
+      "lesson": {
+        "info": "Bilgi",
+        "level": "Seviye",
+        "author": "Yazar",
+        "date": "Tarih",
+        "content_title": "İçerik",
+        "history_title": "Sürüm Geçmişi",
+        "no_history": "Sürüm geçmişi bulunmuyor."
+      }
+    },
+    "messages": {
+        "empty_state": "Ders bulunamadı",
+        "loading_lessons": "Dersler yükleniyor...",
+        "error_loading": "Dersler yüklenirken hata oluştu"
+    }
+  }
+]

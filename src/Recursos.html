@@ -1,7 +1,13 @@
 ---
+pagination:
+  data: i18n.resources
+  size: 1
+  alias: t
+permalink: "{{ t.dir }}Recursos.html"
 layout: base.njk
-title: Recursos Recomendados | Aprende Chino
-description: "Las mejores apps y recursos para aprender chino."
+eleventyComputed:
+  title: "{{ t.title }}"
+  description: "{{ t.description }}"
 ---
 {% import "components.njk" as components %}
 
@@ -10,13 +16,10 @@ description: "Las mejores apps y recursos para aprender chino."
     <header class="text-center mb-16 max-w-3xl mx-auto">
         <h1
             class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-600 mb-6">
-            Herramientas Recomendadas
+            {{ t.header.title }}
         </h1>
         <p class="text-lg text-stone-600 dark:text-stone-400 leading-relaxed">
-            Hemos seleccionado las mejores plataformas para ayudarte a dominar el chino.
-            Ya sea que busques <span class="text-red-600 dark:text-red-400 font-semibold">profesores nativos</span> o
-            <span class="text-red-600 dark:text-red-400 font-semibold">clases estructuradas</span>,
-            estas son nuestras recomendaciones top.
+            {{ t.header.text | safe }}
         </p>
     </header>
 
@@ -28,17 +31,16 @@ description: "Las mejores apps y recursos para aprender chino."
             class="group relative bg-white dark:bg-stone-800 rounded-3xl p-8 border border-stone-200 dark:border-stone-700 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden flex flex-col justify-between">
             <div class="absolute top-0 right-0 p-4">
                 <span
-                    class="bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Recomendado</span>
+                    class="bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">{{ t.pwa.badge }}</span>
             </div>
             <div class="relative z-10">
                 <div
                     class="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-2xl flex items-center justify-center mb-6 text-red-600 dark:text-red-400">
                     <i class="fas fa-mobile-alt text-3xl"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-stone-900 dark:text-white mb-3">Descargar App</h3>
+                <h3 class="text-2xl font-bold text-stone-900 dark:text-white mb-3">{{ t.pwa.title }}</h3>
                 <p class="text-stone-600 dark:text-stone-400 mb-6 leading-relaxed">
-                    Instala nuestra aplicación directamente en tu dispositivo para estudiar en cualquier momento,
-                    <b>incluso sin conexión</b>.
+                    {{ t.pwa.text | safe }}
                 </p>
             </div>
 
@@ -46,7 +48,7 @@ description: "Las mejores apps y recursos para aprender chino."
                 <button type="button"
                     class="w-full py-4 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-bold rounded-2xl shadow-lg shadow-red-500/30 transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-3">
                     <i class="fas fa-download"></i>
-                    <span>Tener en mi Celular / PC</span>
+                    <span>{{ t.pwa.btn }}</span>
                 </button>
             </div>
 
@@ -56,43 +58,30 @@ description: "Las mejores apps y recursos para aprender chino."
             </div>
         </div>
 
-        <!-- italki -->
+        {% for card in t.cards %}
+        <!-- {{ card.title }} -->
         {{ components.affiliateCard(
-        title="italki",
-        description="La mejor plataforma para encontrar <b>profesores nativos</b> y practicar conversación 1-a-1. Ideal
-        para todos los niveles. <br><br><b>Recomendado por ODL (Organización de Desarrollo Latino).</b>",
-        link="https://www.italki.com/affshare?ref=af30849267",
-        btnText="Encontrar Profesor",
-        badge="Mejor para Conversación",
-        icon="comments",
-        footer="Obtén $10 en créditos al registrarte"
+        title=card.title,
+        description=card.description | safe,
+        link=card.link,
+        btnText=card.btnText,
+        badge=card.badge,
+        icon=card.icon,
+        footer=card.footer
         ) }}
-
-        <!-- Baúl Chino -->
-        {{ components.affiliateCard(
-        title="Baúl Chino",
-        description="Excelente recurso en español con herramientas, vocabulario y guías completas para tu aprendizaje
-        del idioma mandarín. <br><br><b>Una de las mejores plataformas en nuestro idioma.</b>",
-        link="https://www.baulchino.com/",
-        btnText="Visitar Sitio",
-        badge="Recurso en Español",
-        icon="toolbox",
-        footer="Completamente gratuito"
-        ) }}
+        {% endfor %}
     </div>
 
     <!-- Additional Resources Section (Can be expanded later) -->
     <div class="bg-red-50 dark:bg-stone-800 rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden">
         <div class="relative z-10 max-w-2xl mx-auto">
-            <h2 class="text-2xl sm:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">¿Por qué recomendamos
-                Italki?</h2>
+            <h2 class="text-2xl sm:text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4">{{ t.support.title }}</h2>
             <p class="text-stone-600 dark:text-stone-400 mb-8">
-                Al usar Italki para aprender chino, apoyas directamente a <b>proyectos como Turkamerica de ODL</b>.
-                Esto nos permite seguir creando contenido gratuito y mejorando la plataforma para toda la comunidad.
+                {{ t.support.text | safe }}
             </p>
             <div
                 class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-stone-700 rounded-lg text-sm text-stone-500 shadow-sm">
-                <span>Gracias por tu apoyo</span>
+                <span>{{ t.support.thanks }}</span>
             </div>
         </div>
 

@@ -1,0 +1,128 @@
+[
+  {
+    "code": "es",
+    "dir": "",
+    "title": "LabPanda - Laboratorio de Innovación",
+    "description": "Experimenta con herramientas de IA y lingüística avanzada para aprender chino de forma acelerada.",
+    "badge": "Proyectos Experimentales",
+    "hero_title": "Bienvenido a",
+    "hero_desc": "Nuestra forja tecnológica donde Panda experimenta con nuevas formas de ver, escuchar y desglosar el idioma chino. Herramientas diseñadas por lingüistas y potenciadas por IA.",
+    "tools": {
+      "adn": {
+        "title": "ADN Lingüístico",
+        "desc": "Mira debajo del capó de los caracteres. Desglosa cualquier palabra en sus radicales y entiende la lógica milenaria detrás de su escritura.",
+        "link_text": "Explorar Módulo"
+      },
+      "examen": {
+        "title": "Exámenes de IA",
+        "desc": "Deja que Panda genere un examen personalizado a tu nivel. Al terminar, recibirás una corrección pedagógica profunda y consejos de estudio.",
+        "link_text": "Generar Reto"
+      },
+      "mirror": {
+        "title": "Espejo Fonético",
+        "desc": "¿No logras el tono correcto? Visualiza diagramas anatómicos para colocar la lengua y los labios exactamente como un nativo de Beijing.",
+        "link_text": "Ver Guía Visual"
+      },
+      "story": {
+        "title": "Story Lab",
+        "desc": "Escribe una historia colaborativa con Panda. La IA usará tus palabras débiles para forzarte a practicarlas en un contexto narrativo real.",
+        "link_text": "Crear Historia"
+      },
+      "universe": {
+        "title": "Universo Semántico",
+        "desc": "Navega por una constelación interactiva de todas las palabras que conoces. Mira qué temas dominas y cuáles se están quedando a oscuras.",
+        "link_text": "Ver Mi Mapa"
+      },
+      "culture": {
+        "title": "Contexto Cultural",
+        "desc": "¿Por qué dicen eso? Panda te explica el \"subtexto\" y los significados culturales que los traductores automáticos ignoran.",
+        "link_text": "Analizar Frase"
+      }
+    },
+    "footer_note": "LabPanda es una zona viva. Estamos añadiendo experimentos constantemente. ¡Propón los tuyos!"
+  },
+  {
+    "code": "en",
+    "dir": "en/",
+    "title": "LabPanda - Innovation Lab",
+    "description": "Experiment with AI and advanced linguistic tools to learn Chinese faster.",
+    "badge": "Experimental Projects",
+    "hero_title": "Welcome to",
+    "hero_desc": "Our technological forge where Panda experiments with new ways to see, hear and break down the Chinese language. Tools designed by linguists and powered by AI.",
+    "tools": {
+      "adn": {
+        "title": "Linguistic DNA",
+        "desc": "Look under the hood of characters. Break down any word into its radicals and understand the millennia-old logic behind its writing.",
+        "link_text": "Explore Module"
+      },
+      "examen": {
+        "title": "AI Exams",
+        "desc": "Let Panda generate a personalized exam at your level. Upon completion, you'll receive deep pedagogical corrections and study tips.",
+        "link_text": "Generate Challenge"
+      },
+      "mirror": {
+        "title": "Phonetic Mirror",
+        "desc": "Can't get the right tone? View anatomical diagrams to place your tongue and lips exactly like a Beijing native.",
+        "link_text": "View Visual Guide"
+      },
+      "story": {
+        "title": "Story Lab",
+        "desc": "Write a collaborative story with Panda. The AI will use your weak words to force you to practice them in a real narrative context.",
+        "link_text": "Create Story"
+      },
+      "universe": {
+        "title": "Semantic Universe",
+        "desc": "Navigate an interactive constellation of all the words you know. See which topics you master and which are going dark.",
+        "link_text": "View My Map"
+      },
+      "culture": {
+        "title": "Cultural Context",
+        "desc": "Why do they say that? Panda explains the \"subtext\" and cultural meanings that automatic translators ignore.",
+        "link_text": "Analyze Phrase"
+      }
+    },
+    "footer_note": "LabPanda is a living zone. We're constantly adding experiments. Propose yours!"
+  },
+  {
+    "code": "tr",
+    "dir": "tr/",
+    "title": "LabPanda - İnovasyon Laboratuvarı",
+    "description": "Çinceyi daha hızlı öğrenmek için AI ve gelişmiş dil araçlarıyla denemeler yapın.",
+    "badge": "Deneysel Projeler",
+    "hero_title": "Hoş Geldiniz",
+    "hero_desc": "Panda'nın Çinceyi görmenin, duymanın ve parçalara ayırmanın yeni yollarını denediği teknolojik ocağımız. Dilbilimciler tarafından tasarlanan ve yapay zeka tarafından desteklenen araçlar.",
+    "tools": {
+      "adn": {
+        "title": "Dilbilimsel DNA",
+        "desc": "Karakterlerin kaputunun altına bakın. Herhangi bir kelimeyi köklerine ayırın ve yazımının arkasındaki binlerce yıllık mantığı anlayın.",
+        "link_text": "Modülü Keşfet"
+      },
+      "examen": {
+        "title": "AI Sınavları",
+        "desc": "Panda'nın seviyenize göre kişiselleştirilmiş bir sınav oluşturmasına izin verin. Tamamlandığında, derin pedagojik düzeltmeler ve çalışma ipuçları alacaksınız.",
+        "link_text": "Meydan Okuma Oluştur"
+      },
+      "mirror": {
+        "title": "Fonetik Ayna",
+        "desc": "Doğru tonu yakalayamıyor musunuz? Dilinizi ve dudaklarınızı tıpkı bir Pekin yerlisi gibi yerleştirmek için anatomik diyagramları görüntüleyin.",
+        "link_text": "Görsel Kılavuzu Görüntüle"
+      },
+      "story": {
+        "title": "Story Lab",
+        "desc": "Panda ile ortak bir hikaye yazın. Yapay zeka, zayıf kelimelerinizi gerçek bir anlatı bağlamında pratik yapmaya zorlamak için kullanacaktır.",
+        "link_text": "Hikaye Oluştur"
+      },
+      "universe": {
+        "title": "Semantik Evren",
+        "desc": "Bildiğiniz tüm kelimelerin etkileşimli bir takımyıldızında gezinin. Hangi konularda uzman olduğunuzu ve hangilerinin karanlıkta kaldığını görün.",
+        "link_text": "Haritamı Görüntüle"
+      },
+      "culture": {
+        "title": "Kültürel Bağlam",
+        "desc": "Neden öyle dediler? Panda, otomatik çevirmenlerin görmezden geldiği \"alt metni\" ve kültürel anlamları açıklar.",
+        "link_text": "İfadeyi Analiz Et"
+      }
+    },
+    "footer_note": "LabPanda yaşayan bir bölgedir. Sürekli deneyler ekliyoruz. Kendi önerilerinizi sunun!"
+  }
+]

@@ -11,6 +11,22 @@ PandaLatam uses a hybrid, high-performance architecture:
 - **Authentication**: JWT & OAuth2 (Google).
 - **AI Core**: Vercel AI SDK (`@ai-sdk/openai`) configured with Groq API. Models: `moonshotai/kimi-k2-instruct` (Kimi) and `llama-3.3-70b`. Features: Chat, Word of the Day, DNA analysis, Exams.
 
+## Coding Standards & Architecture (New)
+
+### 1. Directory Structure
+- `src/js/`: Modularized by function.
+  - `auth/`: Session and user management.
+  - `lab/`: AI-driven experimental features.
+  - `admin/`: Internal management tools.
+  - `ui/`: Reusable interface components.
+  - `core/`: Global application logic.
+- `scripts/`: Development and maintenance utilities (outside `src/`).
+
+### 2. Multi-language (i18n) Strategy
+- **Data-Driven Templates**: Avoid cloning `.html` files for different languages.
+- Use `src/_data/i18n.json` for UI strings.
+- Leverage Eleventy **Pagination** to generate localized pages (e.g., `/StoryLab.html`, `/en/StoryLab.html`, `/tr/StoryLab.html`) from a single Nunjucks source.
+
 ## Coding Guidelines
 1. **Frontend**: Keep the frontend purely static and vanilla. Use `localStorage` for state management where needed.
 2. **Backend**: Follow strict security practices (input sanitization with `mongo-sanitize`, rate limiting, helmet, and CORS protection).

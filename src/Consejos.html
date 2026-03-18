@@ -1,9 +1,17 @@
 ---
+pagination:
+  data: i18n.tips
+  size: 1
+  alias: t
+permalink: "{{ t.dir }}Consejos.html"
 layout: base.njk
+eleventyComputed:
+  title: "{{ t.title }}"
+  description: "{{ t.description }}"
 styles:
 - tailwind-output.css
 scripts:
-- consejos.js
+- ui/consejos.js
 ---
 
 {% import "components.njk" as components %}
@@ -13,11 +21,11 @@ scripts:
     <h2 class="flex items-center justify-center gap-3 text-3xl font-bold text-stone-800 dark:text-stone-100 
                mb-8 pb-4 border-b-2 border-stone-200 dark:border-stone-700">
         <i class="fas fa-clock text-red-600 dark:text-red-400"></i>
-        Horario de Estudio Intensivo
+        {{ t.schedule.title }}
     </h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        {# Bloque Mañana #}
+        {# Morning Block #}
         <div class="bg-stone-50 dark:bg-stone-800 
                     border-2 border-stone-200 dark:border-stone-700
                     border-t-4 border-t-yellow-400
@@ -28,24 +36,17 @@ scripts:
                         bg-stone-100 dark:bg-stone-700
                         text-lg font-semibold text-stone-700 dark:text-stone-200">
                 <i class="fas fa-sun text-yellow-400"></i>
-                <span>Mañana</span>
+                <span>{{ t.schedule.morning.title }}</span>
             </div>
 
             <div class="activities p-3">
-                {{ components.activityItem("7:30 - 8:15", "Leer un texto en chino", "Buscar en BaulChino/sacar un texto
-                de
-                noticias", "book-open") }}
-                {{ components.activityItem("8:15 - 8:45", "Practicar vocabulario", "Diccionarios online o pdfs de verbos
-                o
-                vocabularios", "language") }}
-                {{ components.activityItem("9:00 - 9:45", "Podcast Chinos o noticias", "Luego tomar resumen", "podcast")
-                }}
-                {{ components.activityItem("9:45 - 10:30", "Gramática", "Usar una web de gramática o texto o clases",
-                "book") }}
+                {% for item in t.schedule.morning.items %}
+                {{ components.activityItem(item[0], item[1], item[2], item[3]) }}
+                {% endfor %}
             </div>
         </div>
 
-        {# Bloque Tarde #}
+        {# Afternoon Block #}
         <div class="bg-stone-50 dark:bg-stone-800 
                     border-2 border-stone-200 dark:border-stone-700
                     border-t-4 border-t-orange-500
@@ -56,22 +57,13 @@ scripts:
                         bg-stone-100 dark:bg-stone-700
                         text-lg font-semibold text-stone-700 dark:text-stone-200">
                 <i class="fas fa-cloud text-orange-500"></i>
-                <span>Tarde</span>
+                <span>{{ t.schedule.afternoon.title }}</span>
             </div>
 
             <div class="activities p-3">
-                {{ components.activityItem("11:15 - 12:00", "Práctica de escritura", "Tema diario, pedir a AI o buscar
-                en internet", "pen") }}
-                {{ components.activityItem("13:00 - 13:45", "Leer un texto avanzado", "Tratar de reconocer patrones",
-                "book") }}
-                {{ components.activityItem("13:45 - 14:15", "Mirar video sin subtítulos", "Práctica de comprensión
-                auditiva", "video") }}
-                {{ components.activityItem("14:15 - 14:45", "Práctica de refranes", "Buscar en libros de HSK o internet
-                o AI", "quote-right") }}
-                {{ components.activityItem("15:00 - 15:45", "Gramática avanzada", "Profesores de YouTube o Italki",
-                "graduation-cap") }}
-                {{ components.activityItem("17:15 - 18:00", "Revisión general", "Escritura + recitarlo (Tema diario)",
-                "check-circle") }}
+                {% for item in t.schedule.afternoon.items %}
+                {{ components.activityItem(item[0], item[1], item[2], item[3]) }}
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -79,11 +71,11 @@ scripts:
     <h2 class="flex items-center justify-center gap-3 text-3xl font-bold text-stone-800 dark:text-stone-100 
                mb-8 pb-4 border-b-2 border-stone-200 dark:border-stone-700">
         <i class="fab fa-youtube text-red-600"></i>
-        Canales de YouTube
+        {{ t.youtube.title }}
     </h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {# Canales de Enseñanza en Español #}
+        {% for cat in t.youtube.categories %}
         <div class="bg-stone-50 dark:bg-stone-800
                     border-2 border-stone-200 dark:border-stone-700
                     rounded-2xl p-6
@@ -92,97 +84,16 @@ scripts:
             <h3 class="flex items-center gap-3 text-xl font-semibold 
                        text-stone-800 dark:text-stone-100
                        mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
-                <i class="fas fa-language text-red-600"></i>
-                Aprender Chino en Español
+                <i class="fas fa-{{ cat.icon }} text-red-600"></i>
+                {{ cat.title }}
             </h3>
             <ul class="channel-list flex flex-col gap-2 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
-                {{ components.channelItem("https://www.youtube.com/@clasesdechinomandarin", "Clases de Chino Mandarín")
-                }}
-                {{ components.channelItem("https://www.youtube.com/@aprendechinoconmarco", "Aprende Chino con Marco") }}
-                {{ components.channelItem("https://www.youtube.com/@Nininterprete", "Nininterprete") }}
-                {{ components.channelItem("https://www.youtube.com/@Olechinese", "Olechinese") }}
-                {{ components.channelItem("https://www.youtube.com/@AprenderChino", "Aprender Chino") }}
+                {% for channel in cat.channels %}
+                {{ components.channelItem(channel[0], channel[1]) }}
+                {% endfor %}
             </ul>
         </div>
-
-        {# Canales de Enseñanza en Inglés/Global #}
-        <div class="bg-stone-50 dark:bg-stone-800
-                    border-2 border-stone-200 dark:border-stone-700
-                    rounded-2xl p-6
-                    hover:border-red-500 hover:shadow-xl
-                    transition-all duration-300">
-            <h3 class="flex items-center gap-3 text-xl font-semibold 
-                       text-stone-800 dark:text-stone-100
-                       mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
-                <i class="fas fa-chalkboard-teacher text-red-600"></i>
-                Gramática y Clases (Inglés/Global)
-            </h3>
-            <ul class="channel-list flex flex-col gap-2 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
-                {{ components.channelItem("https://www.youtube.com/@YoyoChinese", "Yoyo Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@EverydayChinese", "Everyday Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@MandarinBlueprint", "Mandarin Blueprint") }}
-                {{ components.channelItem("https://www.youtube.com/@MandarinCorner", "Mandarin Corner") }}
-                {{ components.channelItem("https://www.youtube.com/@JackEasyChinese", "Jack Easy Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@LearnMandarinChineseNow", "Learn Mandarin Chinese
-                Now") }}
-                {{ components.channelItem("https://www.youtube.com/@ZhangkaiChinese", "Zhangkai Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@easychinese376", "Easy Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@AskAndy", "Ask Andy") }}
-                {{ components.channelItem("https://www.youtube.com/@EasyMandarin", "Easy Mandarin") }}
-                {{ components.channelItem("https://www.youtube.com/@ChineseInMinutes", "Chinese In Minutes") }}
-                {{ components.channelItem("https://www.youtube.com/@BeijingChinese101", "Beijing Chinese 101") }}
-                {{ components.channelItem("https://www.youtube.com/@YaChinese", "Ya Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@learn-chinese-semplicinese", "Learn Chinese
-                Semplicinese") }}
-                {{ components.channelItem("https://www.youtube.com/@LearnChinesewithSawh", "Learn Chinese with Sawh") }}
-                {{ components.channelItem("https://www.youtube.com/@ThatsMandarin", "That's Mandarin") }}
-                {{ components.channelItem("https://www.youtube.com/@CCChineseTeacher", "CC Chinese Teacher") }}
-                {{ components.channelItem("https://www.youtube.com/@LittleStepsChinese", "Little Steps Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@SylviasChinese", "Sylvia's Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@FluentUChinese", "FluentU Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@ChineseForUsOfficial", "Chinese For Us Official") }}
-                {{ components.channelItem("https://www.youtube.com/@jiayouchinese2023", "Jiayou Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@MandarinAmerican", "Mandarin American") }}
-                {{ components.channelItem("https://www.youtube.com/@chinesewithlia", "Chinese with Lia") }}
-                {{ components.channelItem("https://www.youtube.com/@lichaochinese4961", "Li Chao Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@ChineseKK", "ChineseKK") }}
-                {{ components.channelItem("https://www.youtube.com/@lazychinese", "Lazy Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@ComprehensibleMandarin", "Comprehensible Mandarin")
-                }}
-                {{ components.channelItem("https://www.youtube.com/@froglang", "FROGLANG – Learn Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@LittleFoxChinese", "Little Fox Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@bubblechinese", "Bubble Chinese") }}
-                {{ components.channelItem("https://www.youtube.com/@Chinese-learning", "Chinese Learning") }}
-                {{ components.channelItem("https://www.youtube.com/@HongCha-aaa", "Hong Cha") }}
-            </ul>
-        </div>
-
-        {# Práctica de Escucha y Cultura #}
-        <div class="bg-stone-50 dark:bg-stone-800
-                    border-2 border-stone-200 dark:border-stone-700
-                    rounded-2xl p-6
-                    hover:border-red-500 hover:shadow-xl
-                    transition-all duration-300">
-            <h3 class="flex items-center gap-3 text-xl font-semibold 
-                       text-stone-800 dark:text-stone-100
-                       mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
-                <i class="fas fa-headphones text-red-600"></i>
-                Cultura y Práctica de Escucha
-            </h3>
-            <ul class="channel-list flex flex-col gap-2 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
-                {{ components.channelItem("https://www.youtube.com/@ShuoshuoChinese", "ShuoshuoChinese说说中文") }}
-                {{ components.channelItem("https://www.youtube.com/@talkinchinese_redred", "talkinchinese_redred") }}
-                {{ components.channelItem("https://www.youtube.com/@MandarinClick", "Mandarin Click") }}
-                {{ components.channelItem("https://www.youtube.com/@Chinative", "Chinative") }}
-                {{ components.channelItem("https://www.youtube.com/@chi-native", "Chi-native") }}
-                {{ components.channelItem("https://www.youtube.com/@user-mv9wu8ow9u", "喵喵放映室") }}
-                {{ components.channelItem("https://www.youtube.com/@user-zo8ps7it2o", "野生鱼白") }}
-                {{ components.channelItem("https://www.youtube.com/@ManuShi", "Manu Shi") }}
-                {{ components.channelItem("https://www.youtube.com/@Yuanyuanpoem", "Yuanyuan Poem") }}
-                {{ components.channelItem("https://www.youtube.com/@realtimemandarin", "Real Time Mandarin") }}
-                {{ components.channelItem("https://www.youtube.com/@Redro-", "Redro") }}
-            </ul>
-        </div>
+        {% endfor %}
     </div>
 
 </div>

@@ -1,0 +1,107 @@
+[
+  {
+    "code": "es",
+    "dir": "",
+    "title": "PandaLatam - Aprende Chino con IA",
+    "description": "Plataforma educativa para hispanohablantes aprendiendo chino con inteligencia artificial.",
+    "levels": {
+      "a1": {
+        "title": "Nivel A1",
+        "desc": "Principiante"
+      },
+      "a2": {
+        "title": "Nivel A2",
+        "desc": "Elemental"
+      },
+      "b1": {
+        "title": "Nivel B1",
+        "desc": "Intermedio"
+      },
+      "b2": {
+        "title": "Nivel B2",
+        "desc": "Intermedio Alto"
+      },
+      "c1": {
+        "title": "Nivel C1",
+        "desc": "Avanzado"
+      }
+    },
+    "access_btn": "Acceder al Nivel",
+    "community_title": "Comunidad",
+    "community_desc": "Explora y aprende con lecciones creadas por otros estudiantes",
+    "view_lessons": "Ver Lecciones",
+    "banner_title": "¿Quieres saber más sobre PandaLatam?",
+    "banner_desc": "Conoce el proyecto, roadmap y cómo puedes apoyar el desarrollo",
+    "view_dashboard": "Ver Dashboard"
+  },
+  {
+    "code": "en",
+    "dir": "en/",
+    "title": "PandaLatam - Learn Chinese with AI",
+    "description": "Educational platform for English speakers learning Chinese with artificial intelligence.",
+    "levels": {
+      "a1": {
+        "title": "Level A1",
+        "desc": "Beginner"
+      },
+      "a2": {
+        "title": "Level A2",
+        "desc": "Elementary"
+      },
+      "b1": {
+        "title": "Level B1",
+        "desc": "Intermediate"
+      },
+      "b2": {
+        "title": "Level B2",
+        "desc": "Upper Intermediate"
+      },
+      "c1": {
+        "title": "Level C1",
+        "desc": "Advanced"
+      }
+    },
+    "access_btn": "Access Level",
+    "community_title": "Community",
+    "community_desc": "Explore and learn with lessons created by other students",
+    "view_lessons": "View Lessons",
+    "banner_title": "Want to know more about PandaLatam?",
+    "banner_desc": "Discover the project, roadmap and how you can support development",
+    "view_dashboard": "View Dashboard"
+  },
+  {
+    "code": "tr",
+    "dir": "tr/",
+    "title": "PandaLatam - Yapay Zeka ile Çince Öğrenin",
+    "description": "Yapay zeka ile Çince öğrenen Türkçe konuşanlar için eğitim platformu.",
+    "levels": {
+      "a1": {
+        "title": "Seviye A1",
+        "desc": "Başlangıç"
+      },
+      "a2": {
+        "title": "Seviye A2",
+        "desc": "Temel"
+      },
+      "b1": {
+        "title": "Seviye B1",
+        "desc": "Orta"
+      },
+      "b2": {
+        "title": "Seviye B2",
+        "desc": "İleri Orta"
+      },
+      "c1": {
+        "title": "Seviye C1",
+        "desc": "İleri"
+      }
+    },
+    "access_btn": "Seviyeye Eriş",
+    "community_title": "Topluluk",
+    "community_desc": "Diğer öğrenciler tarafından oluşturulan derslerle keşfedin ve öğrenin",
+    "view_lessons": "Dersleri Görüntüle",
+    "banner_title": "PandaLatam hakkında daha fazla bilgi mi istiyorsunuz?",
+    "banner_desc": "Projeyi, yol haritasını ve geliştirmeyi nasıl destekleyebileceğinizi öğrenin",
+    "view_dashboard": "Kontrol Panelini Gör"
+  }
+]

@@ -1,9 +1,17 @@
 ---
+pagination:
+  data: i18n.grammar
+  size: 1
+  alias: t
+permalink: "{{ t.dir }}Gramatica.html"
 layout: base.njk
+eleventyComputed:
+  title: "{{ t.title }}"
+  description: "{{ t.description }}"
 styles:
 - tailwind-output.css
 scripts:
-- word-of-day.js
+- core/word-of-day.js
 ---
 
 {% import "components.njk" as components %}
@@ -22,11 +30,12 @@ scripts:
     <h2 class="flex items-center justify-center gap-3 text-3xl font-bold text-stone-800 dark:text-stone-100 
                mb-8 pb-4 border-b-2 border-stone-200 dark:border-stone-700">
         <i class="fas fa-globe text-red-600 dark:text-red-400"></i>
-        Páginas de Internet
+        {{ t.web_pages }}
     </h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {# Sección Gramática #}
+        {# Grammar Section #}
+        {% set grammar = t.sections.grammar %}
         <div class="bg-stone-50 dark:bg-stone-800 
                     border-2 border-stone-200 dark:border-stone-700
                     rounded-2xl p-6
@@ -36,22 +45,18 @@ scripts:
             <h3 class="flex items-center gap-3 text-xl font-semibold 
                        text-stone-800 dark:text-stone-100
                        mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
-                <i class="fas fa-grammar text-orange-600 dark:text-orange-400"></i>
-                Gramática
+                <i class="fas fa-{{ grammar.icon }} text-orange-600 dark:text-orange-400"></i>
+                {{ grammar.title }}
             </h3>
             <ul class="flex flex-col gap-3">
-                {{ components.resourceLink("https://quizlet.com", "Quizlet") }}
-                {{ components.resourceLink("https://elon.io/", "Elon") }}
-                {{ components.resourceLink("https://www.chinesetextbook.com/", "ChineseTextBook") }}
-                {{ components.resourceLink("https://chinese.littlefox.com/en", "Little Fox Chinese") }}
-                {{ components.resourceLink("https://mandarinbean.com/", "Mandarin Bean") }}
-                {{ components.resourceLink("https://freechineselessons.com/", "Free Chinese Lessons") }}
-                {{ components.resourceLink("https://gratisglobal.com/learn-chinese-free/", "Gratis Global (Learn Chinese
-                Free)") }}
+                {% for link in grammar.links %}
+                {{ components.resourceLink(link[0], link[1]) }}
+                {% endfor %}
             </ul>
         </div>
 
-        {# Sección Diccionarios #}
+        {# Dictionaries Section #}
+        {% set dicts = t.sections.dictionaries %}
         <div class="bg-stone-50 dark:bg-stone-800 
                     border-2 border-stone-200 dark:border-stone-700
                     rounded-2xl p-6
@@ -61,17 +66,18 @@ scripts:
             <h3 class="flex items-center gap-3 text-xl font-semibold 
                        text-stone-800 dark:text-stone-100
                        mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
-
-                Diccionarios
+                <i class="fas fa-{{ dicts.icon }} text-orange-600 dark:text-orange-400"></i>
+                {{ dicts.title }}
             </h3>
             <ul class="flex flex-col gap-3">
-                {{ components.resourceLink("https://www.pleco.com/", "Pleco Dictionary") }}
-                {{ components.resourceLink("https://www.mdbg.net/chinese/dictionary", "MDBG") }}
-                {{ components.resourceLink("https://wordreference.com", "WordReference") }}
+                {% for link in dicts.links %}
+                {{ components.resourceLink(link[0], link[1]) }}
+                {% endfor %}
             </ul>
         </div>
 
-        {# Sección Cursos y Plataformas #}
+        {# Courses Section #}
+        {% set courses = t.sections.courses %}
         <div class="bg-stone-50 dark:bg-stone-800 
                     border-2 border-stone-200 dark:border-stone-700
                     rounded-2xl p-6 md:col-span-2
@@ -81,23 +87,13 @@ scripts:
             <h3 class="flex items-center gap-3 text-xl font-semibold 
                        text-stone-800 dark:text-stone-100
                        mb-5 pb-3 border-b-2 border-stone-200 dark:border-stone-700">
-                <i class="fas fa-laptop-house text-blue-600 dark:text-blue-400"></i>
-                Cursos y Plataformas
+                <i class="fas fa-{{ courses.icon }} text-blue-600 dark:text-blue-400"></i>
+                {{ courses.title }}
             </h3>
             <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {{ components.resourceLink("https://ci.cn/en/zwkt", "Confucius Institute Online Classes") }}
-                {{ components.resourceLink("https://ci.um.edu.mo/mandarin-certificate-courses/", "Confucius Institute
-                Mandarin Courses (UM)") }}
-                {{ components.resourceLink("https://www.eduincn.com/confucius-institute-scholarship/", "Confucius
-                Institute Scholarships") }}
-                {{ components.resourceLink("https://kavrakoglu.com/cin-71-konfucyus-enstituleri/", "Konfüçyüs
-                Enstitüleri (Kavrakoglu)") }}
-                {{ components.resourceLink("https://boenstitu.com/online-egitimler/cince-kursu-temel-seviye", "Boğaziçi
-                Enstitüsü (Çince Kursu)") }}
-                {{
-                components.resourceLink("https://www.open.edu/openlearn/education-development/university-ready/free-online-chinese-courses",
-                "OpenLearn Free Chinese Courses") }}
-                {{ components.resourceLink("https://www.livelingua.com/courses/Chinese", "Live Lingua Chinese") }}
+                {% for link in courses.links %}
+                {{ components.resourceLink(link[0], link[1]) }}
+                {% endfor %}
             </ul>
         </div>
     </div>

@@ -1,10 +1,18 @@
 ---
+pagination:
+  data: i18n.contributors
+  size: 1
+  alias: t
+permalink: "{{ t.dir }}Contribuidores.html"
 layout: base.njk
+eleventyComputed:
+  title: "{{ t.title }}"
+  description: "{{ t.description }}"
 styles:
 - tailwind-output.css
 scripts:
 - contribution-service.js
-- contribuidores.js
+- core/contribuidores.js
 ---
 
 <div class="max-w-7xl mx-auto px-6 py-8">
@@ -16,10 +24,10 @@ scripts:
             <i class="fas fa-users"></i>
         </div>
         <h2 class="text-4xl md:text-5xl font-bold text-stone-800 dark:text-stone-100 mb-4 tracking-tight">
-            Nuestros Contribuidores
+            {{ t.hero.title }}
         </h2>
         <p class="text-xl text-stone-600 dark:text-stone-400 max-w-2xl mx-auto leading-relaxed">
-            Conoce a las personas que hacen posible este proyecto y a la comunidad que comparte su conocimiento.
+            {{ t.hero.text }}
         </p>
     </div>
 
@@ -27,61 +35,23 @@ scripts:
     <div class="mb-16">
         <h3 class="flex items-center justify-center gap-3 text-3xl font-bold text-stone-800 dark:text-stone-100 mb-10">
             <i class="fas fa-star text-amber-500"></i>
-            Equipo Principal
+            {{ t.core_team.title }}
         </h3>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Alejandro - Desarrollador -->
+            {% for member in t.core_team.members %}
             <div
                 class="bg-white dark:bg-stone-800 rounded-2xl p-6 shadow-lg border border-stone-200 dark:border-stone-700 flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group">
-                <h4 class="text-xl font-bold text-stone-800 dark:text-white mb-1 mt-4">Alejandro</h4>
+                <h4 class="text-xl font-bold text-stone-800 dark:text-white mb-1 mt-4">{{ member.name }}</h4>
                 <div
                     class="px-3 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 text-xs font-bold uppercase tracking-wider mb-3">
-                    Desarrollador Principal
+                    {{ member.role }}
                 </div>
                 <p class="text-stone-600 dark:text-stone-400 text-sm">
-                    Creador de la plataforma, arquitectura y desarrollo full-stack.
+                    {{ member.desc }}
                 </p>
             </div>
-
-            <!-- Kubra Algan - Gramatica -->
-            <div
-                class="bg-white dark:bg-stone-800 rounded-2xl p-6 shadow-lg border border-stone-200 dark:border-stone-700 flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group">
-                <h4 class="text-xl font-bold text-stone-800 dark:text-white mb-1 mt-4">Kübra Algan</h4>
-                <div
-                    class="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-bold uppercase tracking-wider mb-3">
-                    Gramática & QA
-                </div>
-                <p class="text-stone-600 dark:text-stone-400 text-sm">
-                    Supervisión gramatical, críticas constructivas y debugging.
-                </p>
-            </div>
-
-            <!-- Miguel - Beta Tester -->
-            <div
-                class="bg-white dark:bg-stone-800 rounded-2xl p-6 shadow-lg border border-stone-200 dark:border-stone-700 flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group">
-                <h4 class="text-xl font-bold text-stone-800 dark:text-white mb-1 mt-4">Miguel</h4>
-                <div
-                    class="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-bold uppercase tracking-wider mb-3">
-                    Beta Tester
-                </div>
-                <p class="text-stone-600 dark:text-stone-400 text-sm">
-                    Pruebas exhaustivas de funcionalidad y reporte de errores.
-                </p>
-            </div>
-
-            <!-- Stefanny - Publicidad -->
-            <div
-                class="bg-white dark:bg-stone-800 rounded-2xl p-6 shadow-lg border border-stone-200 dark:border-stone-700 flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group">
-                <h4 class="text-xl font-bold text-stone-800 dark:text-white mb-1 mt-4">Stefany</h4>
-                <div
-                    class="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-bold uppercase tracking-wider mb-3">
-                    Publicidad & Testing
-                </div>
-                <p class="text-stone-600 dark:text-stone-400 text-sm">
-                    Difusión del proyecto, marketing y pruebas de usuario.
-                </p>
-            </div>
+            {% endfor %}
         </div>
     </div>
 
@@ -90,10 +60,10 @@ scripts:
         <div class="flex flex-col items-center mb-10">
             <h3 class="flex items-center gap-3 text-3xl font-bold text-stone-800 dark:text-stone-100 mb-2">
                 <i class="fas fa-globe-americas text-red-500"></i>
-                Comunidad
+                {{ t.community.title }}
             </h3>
             <p class="text-stone-600 dark:text-stone-400 text-center max-w-xl">
-                Usuarios increíbles que han contribuido creando lecciones para la plataforma.
+                {{ t.community.text }}
             </p>
         </div>
 
@@ -108,24 +78,23 @@ scripts:
         <div id="loadMoreContainer" class="text-center hidden">
             <button id="loadMoreBtn"
                 class="px-8 py-3 bg-white dark:bg-stone-800 border-2 border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 font-bold rounded-xl hover:bg-stone-50 dark:hover:bg-stone-700 transition-all duration-300 shadow-sm hover:shadow-md">
-                Ver más contribuidores
+                {{ t.community.load_more }}
             </button>
         </div>
 
         <div id="noContributorsMsg"
             class="hidden text-center py-12 bg-stone-50 dark:bg-stone-800/50 rounded-2xl border-2 border-dashed border-stone-200 dark:border-stone-700">
             <i class="fas fa-user-edit text-4xl text-stone-300 mb-4"></i>
-            <p class="text-stone-500 dark:text-stone-400 font-medium">Aún no hay contribuidores de la comunidad.</p>
-            <a href="/Contribute/" class="inline-block mt-4 text-red-600 dark:text-red-400 hover:underline">¡Sé el
-                primero!</a>
+            <p class="text-stone-500 dark:text-stone-400 font-medium">{{ t.community.no_contributors }}</p>
+            <a href="{{ t.dir }}Contribute/" class="inline-block mt-4 text-red-600 dark:text-red-400 hover:underline">{{ t.community.be_first }}</a>
         </div>
     </div>
 
     <div class="text-center mt-12 mb-8">
-        <a href="/"
+        <a href="{{ t.dir }}"
             class="inline-flex items-center gap-2 px-8 py-3 bg-red-600 text-white font-bold rounded-xl shadow-lg hover:bg-red-700 hover:-translate-y-1 transition-all duration-300 no-underline">
             <i class="fas fa-home"></i>
-            Volver al Inicio
+            {{ t.back_home }}
         </a>
     </div>
 

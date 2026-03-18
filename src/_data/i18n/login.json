@@ -1,0 +1,95 @@
+[
+  {
+    "code": "es",
+    "dir": "/",
+    "title": "Iniciar Sesión - PandaLatam",
+    "description": "Accede a tu cuenta de PandaLatam para continuar aprendiendo chino.",
+    "header": {
+      "title": "Bienvenido de nuevo",
+      "subtitle": "Continúa tu viaje hacia la maestría del chino"
+    },
+    "form": {
+      "email_label": "Correo Electrónico",
+      "email_placeholder": "tu@email.com",
+      "password_label": "Contraseña",
+      "password_placeholder": "••••••••",
+      "remember_me": "Recordarme",
+      "forgot_password": "¿Olvidaste tu contraseña?",
+      "submit_btn": "Iniciar Sesión",
+      "back_btn": "Volver",
+      "no_account": "¿No tienes una cuenta?",
+      "register_link": "Regístrate gratis"
+    },
+    "oauth": {
+      "divider": "O continúa con",
+      "google_btn": "Iniciar sesión con Google"
+    },
+    "messages": {
+      "login_success": "¡Bienvenido de nuevo!",
+      "login_error": "Credenciales inválidas. Por favor intente de nuevo.",
+      "session_expired": "Tu sesión ha expirado. Por favor inicia sesión de nuevo."
+    }
+  },
+  {
+    "code": "en",
+    "dir": "/en/",
+    "title": "Login - PandaLatam",
+    "description": "Log in to your PandaLatam account to continue learning Chinese.",
+    "header": {
+      "title": "Welcome Back",
+      "subtitle": "Continue your journey to Chinese mastery"
+    },
+    "form": {
+      "email_label": "Email Address",
+      "email_placeholder": "you@email.com",
+      "password_label": "Password",
+      "password_placeholder": "••••••••",
+      "remember_me": "Remember me",
+      "forgot_password": "Forgot your password?",
+      "submit_btn": "Log In",
+      "back_btn": "Back",
+      "no_account": "Don't have an account?",
+      "register_link": "Register for free"
+    },
+    "oauth": {
+      "divider": "Or continue with",
+      "google_btn": "Sign in with Google"
+    },
+    "messages": {
+      "login_success": "Welcome back!",
+      "login_error": "Invalid credentials. Please try again.",
+      "session_expired": "Your session has expired. Please log in again."
+    }
+  },
+  {
+    "code": "tr",
+    "dir": "/tr/",
+    "title": "Giriş Yap - PandaLatam",
+    "description": "Çince öğrenmeye devam etmek için PandaLatam hesabınıza giriş yapın.",
+    "header": {
+      "title": "Tekrar Hoş Geldiniz",
+      "subtitle": "Çince ustalığına giden yolculuğunuza devam edin"
+    },
+    "form": {
+      "email_label": "E-posta Adresi",
+      "email_placeholder": "siz@email.com",
+      "password_label": "Şifre",
+      "password_placeholder": "••••••••",
+      "remember_me": "Beni hatırla",
+      "forgot_password": "Şifrenizi mi unuttunuz?",
+      "submit_btn": "Giriş Yap",
+      "back_btn": "Geri",
+      "no_account": "Hesabınız yok mu?",
+      "register_link": "Ücretsiz kaydolun"
+    },
+    "oauth": {
+      "divider": "Veya şununla devam edin",
+      "google_btn": "Google ile giriş yap"
+    },
+    "messages": {
+      "login_success": "Tekrar hoş geldiniz!",
+      "login_error": "Geçersiz kimlik bilgileri. Lütfen tekrar deneyin.",
+      "session_expired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın."
+    }
+  }
+]

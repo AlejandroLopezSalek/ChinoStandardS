@@ -46,27 +46,36 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script id="i18n-common" type="application/json">{{ i18n.commonByCode[lang] | dump | safe }}</script>
+    <script>
+        try {
+            window.I18N_COMMON = JSON.parse(document.getElementById('i18n-common').textContent);
+        } catch(e) {
+            console.error('Error loading common i18n:', e);
+            window.I18N_COMMON = {};
+        }
+    </script>
     
     <!-- Auth UI Logic (Loaded early to define globals) -->
-    <script src="/js/auth-ui.js?v={{ timestamp }}"></script>
+    <script src="/js/auth/auth-ui.js?v={{ timestamp }}"></script>
 </head>
 <body class="auth-page">
     {{ content | safe }}
     
     <!-- Scripts in correct order -->
     <!-- 1. Cache Manager FIRST -->
-    <script src="/js/cache-manager.js?v={{ timestamp }}"></script>
+    <script src="/js/core/cache-manager.js?v={{ timestamp }}"></script>
     
     <!-- 2. General utilities -->
-    <script src="/js/general.js?v={{ timestamp }}"></script>
+    <script src="/js/core/general.js?v={{ timestamp }}"></script>
     
     <!-- 3. Core systems needed for auth -->
-    <script src="/js/config.js?v={{ timestamp }}"></script>
-    <script src="/js/toast.js?v={{ timestamp }}"></script>
-    <script src="/js/loader.js?v={{ timestamp }}"></script>
+    <script src="/js/core/config.js?v={{ timestamp }}"></script>
+    <script src="/js/ui/toast.js?v={{ timestamp }}"></script>
+    <script src="/js/ui/loader.js?v={{ timestamp }}"></script>
     
     <!-- 4. Auth system -->
-    <script src="/js/auth.js?v={{ timestamp }}"></script>
+    <script src="/js/auth/auth.js?v={{ timestamp }}"></script>
     
     <!-- Load indicator -->
     <script>

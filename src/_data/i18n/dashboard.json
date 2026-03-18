@@ -1,0 +1,257 @@
+[
+  {
+    "code": "es",
+    "title": "Dashboard - PandaLatam",
+    "description": "Conoce la misión, objetivos y funcionamiento de la plataforma PandaLatam.",
+    "hero": {
+      "title": "Una Plataforma para la Comunidad",
+      "subtitle": "Aprendizaje de chino accesible para todos los hispanohablantes"
+    },
+    "mission": {
+      "title": "La Misión",
+      "text": "PandaLatam por parte de ODL nació con el objetivo de crear recursos de calidad para aprender chino dirigidos específicamente a la comunidad hispanohablante. El idioma no debe ser una barrera para conectar culturas."
+    },
+    "features": {
+      "title": "Cómo Funciona la Plataforma",
+      "levels": {
+        "title": "Niveles de Aprendizaje",
+        "desc": "Lecciones estructuradas por niveles (A1 a C1) con soporte de audio, traducciones e iteración dinámica."
+      },
+      "community": {
+        "title": "Comunidad",
+        "desc": "Explora libros PDF y lecciones creadas por otros usuarios, ¡o contribuye compartiendo lo tuyo!"
+      },
+      "wod": {
+        "title": "Palabra del Día (IA)",
+        "desc": "Widget interactivo diario potenciado por Inteligencia Artificial con pronunciación, ejemplos y quizzes rápidos."
+      },
+      "assistant": {
+        "title": "Asistente con IA",
+        "desc": "Chat inteligente integrado que entiende tu nivel y resuelve tus dudas sobre el chino en tiempo real."
+      },
+      "multiplatform": {
+        "title": "Multiplataforma",
+        "desc": "Aprende donde estés instalando nuestra PWA. Soporte completo de modo oscuro automático.",
+        "install": "Instalar App"
+      },
+      "grammar": {
+        "title": "Gramática Segura",
+        "desc": "Diccionarios, plataformas validadas como Quizlet y clases sugeridas con profesores nativos de italki."
+      }
+    },
+    "about": {
+      "title": "Organización de Desarrollo Latino",
+      "subtitle": "Developers & Language Enthusiasts",
+      "text": "Apasionados por crear herramientas educativas que faciliten el aprendizaje de idiomas y mejoren la calidad de vida. PandaLatam es un proyecto personal que busca llenar el vacío de recursos de chino para hispanohablantes.",
+      "tags": ["Developer", "5 Idiomas", "Open Source"]
+    },
+    "collaboration": {
+      "title": "Colaboración y Enseñanza",
+      "items": [
+        "<strong>Abierto a colaboraciones:</strong> Si eres desarrollador, diseñador o educador y quieres contribuir al proyecto, ¡contáctame!",
+        "<strong>Equipos de trabajo:</strong> Interesado en formar equipos para proyectos educativos y tecnológicos similares.",
+        "<strong>Mentoría:</strong> Dispuesto a enseñar y compartir conocimientos sobre desarrollo web, apps móviles y sistemas de aprendizaje.",
+        "<strong>Proyectos futuros:</strong> Expansión a otros idiomas, más funcionalidades en la app, sistema de comunidad y más."
+      ]
+    },
+    "support": {
+      "title": "Apoya el Proyecto",
+      "text": "PandaLatam es un proyecto gratuito y de código abierto. Si te ha sido útil y quieres apoyar su desarrollo continuo, considera hacer una donación. Tu apoyo ayuda a mantener los servidores, desarrollar nuevas funciones y crear más contenido educativo de calidad.",
+      "why_title": "¿Por qué donar?",
+      "why_list": [
+        "Mantén el proyecto gratuito para todos",
+        "Acelera el desarrollo de nuevas funciones",
+        "Apoya la creación de más contenido educativo",
+        "Ayuda a expandir a más idiomas",
+        "Contribuye al mantenimiento de servidores"
+      ],
+      "btn_main": "Apoyar en WhyDonate",
+      "btn_sub": "Cada contribución cuenta",
+      "thanks": "<strong>¡Gracias por tu apoyo!</strong> Cada donación, sin importar el monto, hace una diferencia real en el proyecto."
+    },
+    "contact": {
+      "title": "Contacto",
+      "text": "¿Tienes preguntas, sugerencias o quieres colaborar?",
+      "email_btn": "Email"
+    },
+    "acknowledgements": {
+      "title": "Agradecimientos",
+      "text": "Gracias a todos los usuarios, colaboradores y a la comunidad de aprendices de chino que hacen este proyecto posible. Especial agradecimiento a:",
+      "list": [
+        "La comunidad de desarrolladores open source",
+        "Cada usuario que confía en PandaLatam para su aprendizaje"
+      ]
+    },
+    "back_home": "Volver al Inicio"
+  },
+  {
+    "code": "en",
+    "title": "Dashboard - PandaLatam",
+    "description": "Learn about the mission, goals and operation of the PandaLatam platform.",
+    "hero": {
+      "title": "A Community Platform",
+      "subtitle": "Accessible Chinese learning for Spanish speakers"
+    },
+    "mission": {
+      "title": "The Mission",
+      "text": "PandaLatam by ODL was born with the goal of creating quality resources to learn Chinese tailored specifically for the Spanish-speaking community. Language should not be a barrier to connecting cultures."
+    },
+    "features": {
+      "title": "How the Platform Works",
+      "levels": {
+        "title": "Learning Levels",
+        "desc": "Lessons structured by levels (A1 to C1) with audio support, translations and dynamic iteration."
+      },
+      "community": {
+        "title": "Community",
+        "desc": "Explore PDF books and lessons created by other users, or contribute by sharing your own!"
+      },
+      "wod": {
+        "title": "Word of the Day (AI)",
+        "desc": "Daily interactive widget powered by Artificial Intelligence with pronunciation, examples and quick quizzes."
+      },
+      "assistant": {
+        "title": "AI Assistant",
+        "desc": "Smart chat integrated that understands your level and solves your Chinese doubts in real time."
+      },
+      "multiplatform": {
+        "title": "Multiplatform",
+        "desc": "Learn wherever you are by installing our PWA. Full support for automatic dark mode.",
+        "install": "Install App"
+      },
+      "grammar": {
+        "title": "Reliable Grammar",
+        "desc": "Dictionaries, validated platforms like Quizlet and suggested classes with native teachers on italki."
+      }
+    },
+    "about": {
+      "title": "ODL - Latin Development Organization",
+      "subtitle": "Developers & Language Enthusiasts",
+      "text": "Passionate about creating educational tools that facilitate language learning and improve quality of life. PandaLatam is a personal project that seeks to fill the void of Chinese resources for Spanish speakers.",
+      "tags": ["Developer", "5 Languages", "Open Source"]
+    },
+    "collaboration": {
+      "title": "Collaboration and Teaching",
+      "items": [
+        "<strong>Open to collaborations:</strong> If you are a developer, designer or educator and want to contribute to the project, contact me!",
+        "<strong>Work teams:</strong> Interested in forming teams for similar educational and technological projects.",
+        "<strong>Mentoring:</strong> Willing to teach and share knowledge about web development, mobile apps and learning systems.",
+        "<strong>Future projects:</strong> Expansion to other languages, more features in the app, community system and more."
+      ]
+    },
+    "support": {
+      "title": "Support the Project",
+      "text": "PandaLatam is a free and open source project. If it has been useful to you and you want to support its continuous development, consider making a donation. Your support helps maintain the servers, develop new features and create more quality educational content.",
+      "why_title": "Why donate?",
+      "why_list": [
+        "Keep the project free for everyone",
+        "Accelerate the development of new features",
+        "Support the creation of more educational content",
+        "Help expand to more languages",
+        "Contribute to server maintenance"
+      ],
+      "btn_main": "Support on WhyDonate",
+      "btn_sub": "Every contribution counts",
+      "thanks": "<strong>Thank you for your support!</strong> Every donation, no matter the amount, makes a real difference in the project."
+    },
+    "contact": {
+      "title": "Contact",
+      "text": "Do you have questions, suggestions or want to collaborate?",
+      "email_btn": "Email"
+    },
+    "acknowledgements": {
+      "title": "Acknowledgments",
+      "text": "Thank you to all users, collaborators and the community of Chinese learners who make this project possible. Special thanks to:",
+      "list": [
+        "The open source developer community",
+        "Every user who trusts PandaLatam for their learning"
+      ]
+    },
+    "back_home": "Back to Home"
+  },
+  {
+    "code": "tr",
+    "title": "Panel - PandaLatam",
+    "description": "PandaLatam platformunun misyonu, hedefleri ve işleyişi hakkında bilgi edinin.",
+    "hero": {
+      "title": "Bir Topluluk Platformu",
+      "subtitle": "İspanyolca konuşanlar için erişilebilir Çince öğrenimi"
+    },
+    "mission": {
+      "title": "Misyon",
+      "text": "ODL tarafından hayata geçirilen PandaLatam, özellikle İspanyolca konuşan topluluğa yönelik Çince öğrenmek için kaliteli kaynaklar oluşturma amacıyla doğdu. Dil, kültürleri birbirine bağlamak için bir engel olmamalıdır."
+    },
+    "features": {
+      "title": "Platform Nasıl Çalışır?",
+      "levels": {
+        "title": "Öğrenme Seviyeleri",
+        "desc": "Ses desteği, çeviriler ve dinamik yineleme ile seviyelere göre yapılandırılmış dersler (A1'den C1'e)."
+      },
+      "community": {
+        "title": "Topluluk",
+        "desc": "Diğer kullanıcılar tarafından oluşturulan PDF kitaplarını ve dersleri keşfedin veya kendi derslerinizi paylaşarak katkıda bulunun!"
+      },
+      "wod": {
+        "title": "Günün Kelimesi (Yapay Zeka)",
+        "desc": "Telaffuz, örnekler ve hızlı testler içeren Yapay Zeka destekli günlük interaktif bileşen."
+      },
+      "assistant": {
+        "title": "Yapay Zeka Asistanı",
+        "desc": "Seviyenizi anlayan ve Çince hakkındaki şüphelerinizi gerçek zamanlı olarak çözen entegre akıllı sohbet."
+      },
+      "multiplatform": {
+        "title": "Çoklu Platform",
+        "desc": "PWA'mızı yükleyerek nerede olursanız olun öğrenin. Tam otomatik karanlık mod desteği.",
+        "install": "Uygulamayı Yükle"
+      },
+      "grammar": {
+        "title": "Güvenilir Dilbilgisi",
+        "desc": "Sözlükler, Quizlet gibi onaylanmış platformlar ve italki'deki yerli öğretmenlerle önerilen dersler."
+      }
+    },
+    "about": {
+      "title": "ODL - Latin Geliştirme Organizasyonu",
+      "subtitle": "Geliştiriciler ve Dil Meraklıları",
+      "text": "Dil öğrenmeyi kolaylaştıran ve yaşam kalitesini artıran eğitim araçları yaratma konusunda tutkuluyuz. PandaLatam, İspanyolca konuşanlar için Çince kaynak boşluğunu doldurmayı amaçlayan kişisel bir projedir.",
+      "tags": ["Geliştirici", "5 Dil", "Açık Kaynak"]
+    },
+    "collaboration": {
+      "title": "İşbirliği ve Öğretim",
+      "items": [
+        "<strong>İşbirliğine açık:</strong> Eğer bir geliştirici, tasarımcı veya eğitimciyseniz ve projeye katkıda bulunmak istiyorsanız, benimle iletişime geçin!",
+        "<strong>Çalışma ekipleri:</strong> Benzer eğitimsel ve teknolojik projeler için ekipler kurmakla ilgileniyorum.",
+        "<strong>Mentorluk:</strong> Web geliştirme, mobil uygulamalar ve öğrenme sistemleri hakkında bilgi öğretmeye ve paylaşmaya istekliyim.",
+        "<strong>Gelecek projeler:</strong> Diğer dillere genişleme, uygulamada daha fazla özellik, topluluk sistemi ve daha fazlası."
+      ]
+    },
+    "support": {
+      "title": "Projeyi Destekleyin",
+      "text": "PandaLatam ücretsiz ve açık kaynaklı bir projedir. Sizin için faydalı olduysa ve sürekli gelişimini desteklemek istiyorsanız bağış yapmayı düşünün. Desteğiniz sunucuları korumaya, yeni özellikler geliştirmeye ve daha fazla kaliteli eğitim içeriği oluşturmaya yardımcı olur.",
+      "why_title": "Neden bağış yapmalısınız?",
+      "why_list": [
+        "Projeyi herkes için ücretsiz tutun",
+        "Yeni özelliklerin geliştirilmesini hızlandırın",
+        "Daha fazla eğitim içeriği oluşturulmasını destekleyin",
+        "Daha fazla dile genişlemeye yardımcı olun",
+        "Sunucu bakımına katkıda bulunun"
+      ],
+      "btn_main": "WhyDonate'de Destekleyin",
+      "btn_sub": "Her katkı önemlidir",
+      "thanks": "<strong>Desteğiniz için teşekkürler!</strong> Miktarı ne olursa olsun her bağış, projede gerçek bir fark yaratır."
+    },
+    "contact": {
+      "title": "İletişim",
+      "text": "Sorularınız, önerileriniz mi var yoksa işbirliği mi yapmak istiyorsunuz?",
+      "email_btn": "E-posta"
+    },
+    "acknowledgements": {
+      "title": "Teşekkürler",
+      "text": "Bu projeyi mümkün kılan tüm kullanıcılara, işbirlikçilere ve Çince öğrenen topluluğa teşekkür ederiz. Özellikle şunlara teşekkürler:",
+      "list": [
+        "Açık kaynak geliştirici topluluğu",
+        "Öğrenimi için PandaLatam'a güvenen her kullanıcı"
+      ]
+    },
+    "back_home": "Anasayfaya Dön"
+  }
+]
