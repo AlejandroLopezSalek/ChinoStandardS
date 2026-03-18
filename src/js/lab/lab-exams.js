@@ -53,6 +53,9 @@ class LabExams {
         });
 
         document.getElementById('generate-exam-btn').onclick = () => this.handleGenerate();
+        
+        const historyBtn = document.getElementById('view-history-btn');
+        if (historyBtn) historyBtn.onclick = () => this.fetchHistory();
     }
 
     async handleGenerate() {
@@ -67,28 +70,21 @@ class LabExams {
             const mode = document.querySelector('.mode-btn.border-red-500')?.dataset.mode || 'classic';
             const prompt = document.getElementById('exam-prompt').value;
             const isPublic = document.getElementById('public-toggle').checked;
+            const lang = document.documentElement.lang || 'es';
 
             const headers = globalThis.AuthService?.getAuthHeaders() || { 'Content-Type': 'application/json' };
             
-            // Debugging 401: Log headers safely (without full token)
-            console.log('[ExamLab] Headers check:', headers.Authorization ? 'Bearer token present' : 'No token');
-
             const response = await fetch('/api/chat/lab/generate-exam', {
                 method: 'POST',
                 headers: headers,
-                body: JSON.stringify({ level, mode, prompt, is_public: isPublic })
+                body: JSON.stringify({ level, mode, prompt, is_public: isPublic, lang })
             });
-
-            if (response.status === 401) {
-                this.notify("Tu sesión expiró o no tienes permiso. Inicia sesión de nuevo.", "error");
-                this.setState('initial');
-                return;
-            }
 
             const data = await response.json();
             if (data.error) throw new Error(data.error);
 
             this.currentExam = data;
+            this.db_id = data.db_id; // Store for grading and history update
             this.currentSectionIdx = 0;
             this.renderExam();
             localStorage.setItem('last_exam_panda_date', new Date().toDateString());
@@ -99,6 +95,55 @@ class LabExams {
         }
     }
 
+    async fetchHistory() {
+        this.setState('loading');
+        try {
+            const headers = globalThis.AuthService?.getAuthHeaders() || {};
+            const res = await fetch('/api/chat/lab/exams/history', { headers });
+            const data = await res.json();
+            this.renderHistory(data);
+        } catch (e) {
+            this.notify("Error al cargar historial.", "error");
+            this.setState('initial');
+        }
+    }
+
+    renderHistory(exams) {
+        this.setState('results');
+        const container = document.getElementById('results-content');
+        const historyTitle = window.I18N?.history_btn || "Mis Retos";
+        const backBtn = window.I18N?.prev_btn || "Volver";
+        const emptyMsg = "No hay exámenes realizados aún.";
+
+        container.innerHTML = `
+            <div class="space-y-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h4 class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">${historyTitle}</h4>
+                    <button onclick="location.reload()" class="text-xs font-bold text-red-500 hover:underline">${backBtn}</button>
+                </div>
+                ${exams.length === 0 ? `<p class="text-center text-slate-500 italic py-12">${emptyMsg}</p>` : ''}
+                <div class="grid grid-cols-1 gap-4">
+                    ${exams.map(e => `
+                        <div class="p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-white/5 flex items-center justify-between group hover:border-red-500/50 transition-all cursor-pointer">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-xl">
+                                    ${e.score >= 60 ? '🏆' : '📝'}
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">${e.title}</h5>
+                                    <p class="text-[10px] text-slate-500 font-medium uppercase">${e.level} • ${new Date(e.date).toLocaleDateString()}</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-black ${e.score >= 60 ? 'text-emerald-500' : 'text-slate-400'}">${e.score || 0}%</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
     renderExam() {
         this.setState('exam');
         this.renderSection();
@@ -270,11 +315,17 @@ class LabExams {
     async gradeExam() {
         this.setState('loading');
         try {
+            const lang = document.documentElement.lang || 'es';
             const headers = globalThis.AuthService?.getAuthHeaders() || { 'Content-Type': 'application/json' };
             const response = await fetch('/api/chat/lab/grade-exam', {
                 method: 'POST',
                 headers: headers,
-                body: JSON.stringify({ answers: this.userAnswers, original_exam: this.currentExam })
+                body: JSON.stringify({ 
+                    answers: this.userAnswers, 
+                    original_exam: this.currentExam,
+                    db_id: this.db_id,
+                    lang: lang
+                })
             });
             const data = await response.json();
             this.renderResults(data);
@@ -289,6 +340,9 @@ class LabExams {
                 <div class="p-8 rounded-3xl bg-red-500/10 border border-red-500/20 text-center">
                     <div class="text-5xl font-black text-red-600 mb-2">${data.score}%</div>
                     <p class="font-bold text-slate-800 dark:text-slate-200">${window.I18N?.score_label || 'Resultado Final'}</p>
+                </div>
+                <div class="p-6 bg-slate-50 dark:bg-white/5 rounded-2xl">
+                    <p class="text-sm italic text-slate-600 dark:text-slate-300">"${data.panda_advice}"</p>
                 </div>
                 <div class="space-y-4">
                     ${data.feedback.map(f => `
