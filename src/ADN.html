@@ -10,6 +10,14 @@ eleventyComputed:
   description: "{{ t.description }}"
 ---
 <script id="i18n-messages" type="application/json">{{ t.messages | dump | safe }}</script>
+<script>
+    try {
+        window.I18N = JSON.parse(document.getElementById('i18n-messages').textContent);
+    } catch(e) {
+        console.error('Error loading i18n:', e);
+        window.I18N = {};
+    }
+</script>
 
 <div class="max-width-7xl mx-auto px-4 py-12">
     <div class="max-w-4xl mx-auto">

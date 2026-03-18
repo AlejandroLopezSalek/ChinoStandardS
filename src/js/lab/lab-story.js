@@ -424,7 +424,7 @@ class LabStory {
         const list = document.getElementById('history-list');
         list.innerHTML = '';
         if (this.history.length === 0) {
-            list.innerHTML = '<div class="text-[10px] text-slate-400 italic">No hay historias guardadas.</div>';
+            list.innerHTML = `<div class="text-[10px] text-slate-400 italic">${window.I18N?.no_stories || "No hay historias guardadas."}</div>`;
             return;
         }
         this.history.forEach(h => {

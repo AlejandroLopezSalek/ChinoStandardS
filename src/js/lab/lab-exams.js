@@ -107,13 +107,14 @@ class LabExams {
             this.setState('initial');
         }
     }
-
     renderHistory(exams) {
         this.setState('results');
         const container = document.getElementById('results-content');
         const historyTitle = window.I18N?.history_btn || "Mis Retos";
         const backBtn = window.I18N?.prev_btn || "Volver";
-        const emptyMsg = "No hay exámenes realizados aún.";
+        const emptyMsg = window.I18N?.no_history || "No hay exámenes realizados aún.";
+
+        this.examsHistory = exams; // Cache locally for viewing
 
         container.innerHTML = `
             <div class="space-y-6">
@@ -123,25 +124,42 @@ class LabExams {
                 </div>
                 ${exams.length === 0 ? `<p class="text-center text-slate-500 italic py-12">${emptyMsg}</p>` : ''}
                 <div class="grid grid-cols-1 gap-4">
-                    ${exams.map(e => `
-                        <div class="p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-white/5 flex items-center justify-between group hover:border-red-500/50 transition-all cursor-pointer">
+                    ${exams.map((e, idx) => `
+                        <div onclick="globalThis.labExams.renderHistoricResult(${idx})" 
+                             class="p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-white/5 flex items-center justify-between group hover:border-red-500/50 transition-all cursor-pointer">
                             <div class="flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-xl">
                                     ${e.score >= 60 ? '🏆' : '📝'}
                                 </div>
-                                <div>
-                                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">${e.title}</h5>
+                                <div class="flex-1 min-w-0">
+                                    <h5 class="font-bold text-slate-900 dark:text-white text-sm truncate">${e.title}</h5>
                                     <p class="text-[10px] text-slate-500 font-medium uppercase">${e.level} • ${new Date(e.date).toLocaleDateString()}</p>
                                 </div>
                             </div>
                             <div class="text-right">
                                 <div class="text-lg font-black ${e.score >= 60 ? 'text-emerald-500' : 'text-slate-400'}">${e.score || 0}%</div>
+                                <div class="text-[9px] text-slate-400 uppercase font-black tracking-widest group-hover:text-red-500">VER <i class="fas fa-eye ml-1"></i></div>
                             </div>
                         </div>
                     `).join('')}
                 </div>
             </div>
         `;
+    }
+
+    renderHistoricResult(idx) {
+        const exam = this.examsHistory[idx];
+        if (!exam || !exam.results) return;
+
+        // Mock the grading result object structure
+        const resultsObj = {
+            score: exam.score,
+            feedback: exam.results,
+            panda_advice: exam.panda_advice
+        };
+
+        this.currentExam = exam.exam_data;
+        this.renderResults(resultsObj);
     }
     
     renderExam() {

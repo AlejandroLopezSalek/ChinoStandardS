@@ -790,10 +790,16 @@ router.post('/lab/grade-exam', authenticateToken, async (req, res) => {
             }),
             prompt: `
 Grade this Chinese exam. 
-User Language: ${languageName}. 
-Original Exam: ${JSON.stringify(original_exam)}. 
+User Native Language: ${languageName}. 
+Original Exam (Questions/Correct Answers): ${JSON.stringify(original_exam)}. 
 User Answers: ${JSON.stringify(answers)}.
-Provide the explanation and advice in ${languageName}.`,
+
+CRITICAL:
+1. Accept answers in ${languageName} if the user translated or gave the meaning correctly.
+2. Be flexible with synonymous terms, punctuation, and capitalization.
+3. If an answer is semantically identical to the correct one (in ${languageName}), mark it as correct.
+4. Provide the explanation and advice ONLY in ${languageName}.
+5. Score should be an integer from 0 to 100.`,
         });
 
         // Update History if db_id provided
@@ -801,7 +807,8 @@ Provide the explanation and advice in ${languageName}.`,
             await LabExam.findByIdAndUpdate(db_id, {
                 answers,
                 results: object.feedback,
-                score: object.score
+                score: object.score,
+                panda_advice: object.panda_advice
             });
         }
 
@@ -816,7 +823,7 @@ Provide the explanation and advice in ${languageName}.`,
 router.get('/lab/exams/history', authenticateToken, async (req, res) => {
     try {
         const exams = await LabExam.find({ userId: req.user._id })
-            .select('title level score type date exam_data')
+            .select('title level score type date exam_data answers results panda_advice')
             .sort({ date: -1 });
         
         // Map to include a clean title from exam_data if missing in root
@@ -826,7 +833,11 @@ router.get('/lab/exams/history', authenticateToken, async (req, res) => {
             level: e.level,
             score: e.score,
             date: e.date,
-            type: e.type
+            type: e.type,
+            exam_data: e.exam_data,
+            answers: e.answers,
+            results: e.results,
+            panda_advice: e.panda_advice
         }));
 
         res.json(formatted);
