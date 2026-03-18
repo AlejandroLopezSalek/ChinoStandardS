@@ -676,7 +676,7 @@ router.get('/lab/analyze-dna', authenticateToken, async (req, res) => {
 // POST /lab/generate-exam
 router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
     try {
-        const { level = 'A1', mode = 'classic', prompt: userPrompt, is_public } = req.body;
+        const { level = 'HSK1', mode = 'classic', prompt: userPrompt, is_public } = req.body;
         
         const user = req.user;
         if (!user) return res.status(401).json({ error: 'Unauthorized' });
@@ -686,25 +686,44 @@ router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
             return res.status(429).json({ error: 'Ya realizaste tu examen diario.' });
         }
 
+        // Determine question count based on HSK level
+        let totalQuestions = 10;
+        if (level === 'HSK3') totalQuestions = 13;
+        else if (level === 'HSK4') totalQuestions = 15;
+        else if (level === 'HSK5' || level === 'HSK6') totalQuestions = 20;
+
         const systemPrompt = mode === 'custom' 
             ? `Genera un examen personalizado de CHINO. Tema enfocado en: ${userPrompt}. Nivel aproximado: ${level}.`
-            : `Genera un examen de Chino nivel ${level} siguiendo el estándar HSK.`;
+            : `Genera un examen de Chino nivel ${level} siguiendo el estándar oficial HSK.`;
 
         const { object } = await generateObject({
             model: groq.chat('moonshotai/kimi-k2-instruct'),
             schema: z.object({
                 exam_id: z.string(),
                 title: z.string(),
-                questions: z.array(z.object({
-                    id: z.number(),
-                    type: z.enum(['multiple_choice', 'translation']),
-                    question: z.string(),
-                    options: z.array(z.string()).optional(),
-                    correct_answer: z.string(),
-                    hint: z.string().optional()
+                sections: z.array(z.object({
+                    type: z.enum(['listening', 'reading', 'writing']),
+                    title: z.string(),
+                    instructions: z.string(),
+                    questions: z.array(z.object({
+                        id: z.number(),
+                        type: z.enum(['multiple_choice', 'translation', 'pinyin']),
+                        audio_text: z.string().optional(), // Chinese text for TTS in listening section
+                        question: z.string(),
+                        options: z.array(z.string()).optional(),
+                        correct_answer: z.string(),
+                        hint: z.string().optional()
+                    }))
                 }))
             }),
-            prompt: systemPrompt + " Incluye 5 preguntas: 3 de opción múltiple y 2 de traducción.",
+            prompt: `${systemPrompt}
+El examen DEBE tener exactamente 3 secciones:
+1. "listening" (Comprensión Auditiva): El campo "audio_text" debe contener una oración en chino que el usuario debe escuchar (vía TTS) y responder una pregunta sobre ella.
+2. "reading" (Comprensión Lectora): Preguntas de opción múltiple o traducción sobre textos cortos.
+3. "writing" (Escritura): Ejercicios de traducción o completar con Pinyin/Caracteres.
+
+Total de preguntas para este nivel (${level}): ${totalQuestions}. Distribuye las preguntas equitativamente entre las 3 secciones (aprox ${Math.floor(totalQuestions/3)} por sección).
+Asegúrate de que el Pinyin use marcas de tono correctas.`,
         });
 
         // Track usage

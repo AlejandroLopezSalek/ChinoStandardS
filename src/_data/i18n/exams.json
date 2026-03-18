@@ -38,7 +38,13 @@
       "retry_btn": "REINTENTAR",
       "score_label": "Resultado Final",
       "correct_status": "CORRECTO",
-      "incorrect_status": "INCORRECTO"
+      "incorrect_status": "INCORRECTO",
+      "prev_btn": "ANTERIOR",
+      "next_btn": "SIGUIENTE",
+      "listening_title": "Comprensión Auditiva",
+      "reading_title": "Comprensión Lectora",
+      "writing_title": "Escritura",
+      "page_label": "Página"
     }
   },
   {
@@ -80,7 +86,13 @@
       "retry_btn": "RETRY",
       "score_label": "Final Score",
       "correct_status": "CORRECTO",
-      "incorrect_status": "INCORRECTO"
+      "incorrect_status": "INCORRECTO",
+      "prev_btn": "PREVIOUS",
+      "next_btn": "NEXT",
+      "listening_title": "Listening Comprehension",
+      "reading_title": "Reading Comprehension",
+      "writing_title": "Writing",
+      "page_label": "Page"
     }
   },
   {
@@ -122,7 +134,13 @@
       "retry_btn": "YENİDEN DENE",
       "score_label": "Final Puanı",
       "correct_status": "DOĞRU",
-      "incorrect_status": "YANLIŞ"
+      "incorrect_status": "YANLIŞ",
+      "prev_btn": "GERİ",
+      "next_btn": "İLERİ",
+      "listening_title": "Dinleme Anlama",
+      "reading_title": "Okuma Anlama",
+      "writing_title": "Yazma",
+      "page_label": "Sayfa"
     }
   }
 ]
