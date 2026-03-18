@@ -751,6 +751,16 @@ Asegúrate de que el Pinyin use marcas de tono correctas.`,
 
         res.json(object);
     } catch (error) {
+        const fs = require('fs');
+        const path = require('path');
+        try {
+            const logPath = path.join(__dirname, '../error.log');
+            fs.appendFileSync(logPath, `[${new Date().toISOString()}] Exam Error: ${error.stack}\n`);
+            if (error.response?.data) {
+                fs.appendFileSync(logPath, `[${new Date().toISOString()}] API Response Data: ${JSON.stringify(error.response.data)}\n`);
+            }
+        } catch (e) { console.error('Failed to log to file:', e); }
+        
         console.error('[generate-exam] Error:', error);
         res.status(500).json({ error: 'Generation failed' });
     }

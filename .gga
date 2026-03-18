@@ -16,6 +16,16 @@ PROVIDER="opencode:google/gemini-2.0-flash"
 #   PROVIDER="github:gpt-4o"
 #   PROVIDER="github:deepseek-r1"
 #   PROVIDER="claude"
+#   PROVIDER="codex"
+#   PROVIDER="opencode"
+#   PROVIDER="opencode:anthropic/claude-opus-4-5"
+#   PROVIDER="ollama:llama3.2"
+#   PROVIDER="ollama:codellama"
+#   PROVIDER="lmstudio"
+#   PROVIDER="lmstudio:qwen2.5-coder-7b-instruct"
+#   PROVIDER="github:gpt-4o"
+#   PROVIDER="github:deepseek-r1"
+#   PROVIDER="claude"
 
 # File patterns to include in review (comma-separated)
 # Default: * (all files)
