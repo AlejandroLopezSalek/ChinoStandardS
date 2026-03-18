@@ -1,294 +1,263 @@
-﻿---
+---
+pagination:
+  data: i18n.contribute
+  size: 1
+  alias: t
+permalink: "{{ t.dir }}Contribute/index.html"
 layout: base.njk
-
+eleventyComputed:
+  title: "{{ t.title }}"
+  description: "{{ t.description }}"
 scripts:
-- lesson-editor.js
-- contribute.js
-- carousel-universal.js
+- admin/lesson-editor.js
+- admin/contribute.js
+- ui/carousel-universal.js
 ---
 
-<div class="content contribute-page max-w-4xl mx-auto">
+<div class="content contribute-page max-w-4xl mx-auto pt-8">
     <!-- Compact Header for Mobile Edit Mode -->
     <div class="compact-header mb-4">
-        <a href="/" aria-label="Volver" class="compact-back-btn text-white hover:text-red-200 transition-colors">
+        <a href="/{{ t.dir }}" aria-label="Volver" class="compact-back-btn text-white hover:text-red-200 transition-colors">
             <i class="fas fa-times"></i>
         </a>
-
     </div>
 
     <div class="page-header relative z-10">
         <!-- Main Card Container -->
-        <div
-            class="bg-white dark:bg-stone-800 rounded-3xl shadow-2xl p-6 md:p-8 backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95 border border-white/20 dark:border-stone-700/50">
+        <div class="bg-white dark:bg-stone-800 rounded-3xl shadow-2xl p-6 md:p-8 backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95 border border-white/20 dark:border-stone-700/50">
 
             <!-- Contribution Selection (Selection Cards) -->
             <div id="selectionContainer" class="selection-container">
-                <h2 class="text-center text-2xl md:text-3xl font-bold mb-2 text-stone-800 dark:text-white">¡Ayuda a tu
-                    comunidad!</h2>
-                <p class="text-center text-stone-500 dark:text-stone-400 mb-8 max-w-lg mx-auto">Comparte tus
-                    conocimientos creando lecciones o recomendando libros útiles.</p>
+                <h2 class="text-center text-2xl md:text-3xl font-bold mb-2 text-stone-800 dark:text-white">{{ t.selection.title }}</h2>
+                <p class="text-center text-stone-500 dark:text-stone-400 mb-8 max-w-lg mx-auto">{{ t.selection.subtitle }}</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <button type="button"
                         class="flex flex-col items-center text-center p-6 rounded-2xl bg-gradient-to-br from-red-50 to-red-50 dark:from-stone-700 dark:to-stone-700/50 border-2 border-transparent hover:border-red-400 dark:hover:border-red-500 transition-all duration-300 hover:shadow-lg group"
                         onclick="selectContributionType('lesson')">
-                        <span
-                            class="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform block">
+                        <span class="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform block">
                             <i class="fas fa-book-open"></i>
                         </span>
-                        <strong class="text-xl font-bold text-stone-800 dark:text-white mb-2 block">Crear
-                            Lección</strong>
-                        <span class="text-sm text-stone-600 dark:text-stone-300 block">Crea una lección completa con
-                            formato
-                            profesional, secciones y explicaciones.</span>
+                        <strong class="text-xl font-bold text-stone-800 dark:text-white mb-2 block">{{ t.selection.type_lesson.title }}</strong>
+                        <span class="text-sm text-stone-600 dark:text-stone-300 block">{{ t.selection.type_lesson.desc }}</span>
                     </button>
 
                     <button type="button"
                         class="flex flex-col items-center text-center p-6 rounded-2xl bg-gradient-to-br from-orange-50 to-pink-50 dark:from-stone-700 dark:to-stone-700/50 border-2 border-transparent hover:border-orange-400 dark:hover:border-orange-500 transition-all duration-300 hover:shadow-lg group"
                         onclick="selectContributionType('book')">
-                        <span
-                            class="w-16 h-16 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform block">
+                        <span class="w-16 h-16 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform block">
                             <i class="fas fa-file-pdf"></i>
                         </span>
-                        <strong class="text-xl font-bold text-stone-800 dark:text-white mb-2 block">Compartir
-                            Libro</strong>
-                        <span class="text-sm text-stone-600 dark:text-stone-300 block">Comparte un enlace a un libro o
-                            recurso
-                            PDF útil para la comunidad.</span>
+                        <strong class="text-xl font-bold text-stone-800 dark:text-white mb-2 block">{{ t.selection.type_book.title }}</strong>
+                        <span class="text-sm text-stone-600 dark:text-stone-300 block">{{ t.selection.type_book.desc }}</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Lesson Creation Form (SIMPLIFIED) -->
-            <form id="lessonEditForm"
-                class="contribution-form hidden space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-                <div
-                    class="flex items-center justify-between mb-6 pb-4 border-b border-stone-100 dark:border-stone-700">
+            <!-- Lesson Creation Form -->
+            <form id="lessonEditForm" class="contribution-form hidden space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-stone-100 dark:border-stone-700">
                     <h2 class="text-2xl font-bold text-red-600 dark:text-red-400 flex items-center gap-2">
-                        <i class="fas fa-edit"></i> Editor de Lección
+                        <i class="fas fa-edit"></i> {{ t.lesson_editor.title }}
                     </h2>
-                    <button type="button"
-                        class="text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-white flex items-center gap-2 font-medium transition-colors"
-                        onclick="showSelection()">
-                        <i class="fas fa-arrow-left"></i> Volver
+                    <button type="button" class="text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-white flex items-center gap-2 font-medium transition-colors" onclick="showSelection()">
+                        <i class="fas fa-arrow-left"></i> {{ t.lesson_editor.back }}
                     </button>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
-                        <label for="lessonTitle"
-                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Título de la Lección
-                            <span class="text-red-500">*</span></label>
-                        <input type="text" id="lessonTitle" required placeholder="Ej: Presente Simple - Nivel A1"
+                        <label for="lessonTitle" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">
+                            {{ t.lesson_editor.field_title }} <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="lessonTitle" required placeholder="{{ t.lesson_editor.placeholder_title }}"
                             class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all">
                     </div>
 
                     <div class="space-y-2">
-                        <label for="lessonLevel"
-                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Nivel <span
-                                class="text-red-500">*</span></label>
-                        <select id="lessonLevel" required
-                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
-                            <option value="">Seleccionar nivel</option>
-                            <option value="A1">A1 - Principiante</option>
-                            <option value="A2">A2 - Elemental</option>
-                            <option value="B1">B1 - Intermedio</option>
-                            <option value="B2">B2 - Intermedio Alto</option>
-                            <option value="C1">C1 - Avanzado</option>
+                        <label for="lessonLevel" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">
+                            {{ t.lesson_editor.field_level }} <span class="text-red-500">*</span>
+                        </label>
+                        <select id="lessonLevel" required class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                            <option value="">{{ t.lesson_editor.field_level }}</option>
+                            <option value="A1">{{ t.lesson_editor.levels[0] }}</option>
+                            <option value="A2">{{ t.lesson_editor.levels[1] }}</option>
+                            <option value="B1">{{ t.lesson_editor.levels[2] }}</option>
+                            <option value="B2">{{ t.lesson_editor.levels[3] }}</option>
+                            <option value="C1">{{ t.lesson_editor.levels[4] }}</option>
                         </select>
                     </div>
 
                     <div class="space-y-2">
-                        <label for="lessonBadge"
-                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Dificultad <span
-                                class="text-red-500">*</span></label>
-                        <select id="lessonBadge" required
-                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
-                            <option value="">Seleccionar dificultad</option>
-                            <option value="Básico">Básico</option>
-                            <option value="Intermedio">Intermedio</option>
-                            <option value="Avanzado">Avanzado</option>
-                            <option value="Nuevo">Nuevo</option>
+                        <label for="lessonBadge" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">
+                            {{ t.lesson_editor.field_difficulty }} <span class="text-red-500">*</span>
+                        </label>
+                        <select id="lessonBadge" required class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                            <option value="">{{ t.lesson_editor.field_difficulty }}</option>
+                            <option value="Básico">{{ t.lesson_editor.difficulties[0] }}</option>
+                            <option value="Intermedio">{{ t.lesson_editor.difficulties[1] }}</option>
+                            <option value="Avanzado">{{ t.lesson_editor.difficulties[2] }}</option>
+                            <option value="Nuevo">{{ t.lesson_editor.difficulties[3] }}</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="space-y-2">
-                    <label for="lessonDescription"
-                        class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Descripción Breve <span
-                            class="text-red-500">*</span></label>
-                    <textarea id="lessonDescription" required rows="2"
-                        placeholder="Breve descripción de qué trata la lección..."
+                    <label for="lessonDescription" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">
+                        {{ t.lesson_editor.field_desc }} <span class="text-red-500">*</span>
+                    </label>
+                    <textarea id="lessonDescription" required rows="2" placeholder="{{ t.lesson_editor.placeholder_desc }}"
                         class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all resize-none"></textarea>
                 </div>
 
                 <div class="space-y-2">
-                    <div class="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">Contenido de la
-                        Lección <span class="text-red-500">*</span></div>
-                    <div
-                        class="lesson-editor rounded-xl border border-stone-300 dark:border-stone-600 overflow-hidden focus-within:ring-2 focus-within:ring-red-500 transition-all">
-                        <div id="lessonContentEditor"
-                            class="min-h-[400px] p-6 bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200 prose dark:prose-invert max-w-none focus:outline-none">
-                            <h2 class="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">Título de la
-                                Sección</h2>
-                            <p>Escribe aquí el contenido de tu lección...</p>
+                    <div class="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">
+                        {{ t.lesson_editor.field_content }} <span class="text-red-500">*</span>
+                    </div>
+                    <div class="lesson-editor rounded-xl border border-stone-300 dark:border-stone-600 overflow-hidden focus-within:ring-2 focus-within:ring-red-500 transition-all">
+                        <div id="lessonContentEditor" class="min-h-[400px] p-6 bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-200 prose dark:prose-invert max-w-none focus:outline-none">
+                            <h2 class="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">{{ t.lesson_editor.field_title }}</h2>
+                            <p>{{ t.lesson_editor.placeholder_editor }}</p>
                         </div>
                     </div>
                     <p class="text-xs text-stone-500 dark:text-stone-400 flex items-center gap-1 mt-1">
-                        <i class="fas fa-info-circle"></i> Usa la barra de herramientas que aparece arriba para dar
-                        formato.
+                        <i class="fas fa-info-circle"></i> {{ t.lesson_editor.editor_info }}
                     </p>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-4 border-t border-stone-100 dark:border-stone-700">
-                    <button type="button"
-                        class="px-6 py-2.5 rounded-xl border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 font-medium hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors"
-                        onclick="showSelection()">
-                        Cancelar
+                    <button type="button" class="px-6 py-2.5 rounded-xl border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 font-medium hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors" onclick="showSelection()">
+                        {{ t.lesson_editor.btn_cancel }}
                     </button>
-                    <button type="submit"
-                        class="px-8 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold shadow-lg shadow-red-500/30 hover:-translate-y-0.5 transition-all flex items-center gap-2">
-                        <i class="fas fa-paper-plane"></i> Enviar Lección
+                    <button type="submit" class="px-8 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold shadow-lg shadow-red-500/30 hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                        <i class="fas fa-paper-plane"></i> {{ t.lesson_editor.btn_send }}
                     </button>
                 </div>
             </form>
 
-            <!-- Book Upload Form (UNCHANGED logic, updated styles) -->
-            <form id="bookUploadForm"
-                class="contribution-form hidden space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
-                <div
-                    class="flex items-center justify-between mb-6 pb-4 border-b border-stone-100 dark:border-stone-700">
+            <!-- Book Upload Form -->
+            <form id="bookUploadForm" class="contribution-form hidden space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-stone-100 dark:border-stone-700">
                     <h2 class="text-2xl font-bold text-orange-600 dark:text-orange-400 flex items-center gap-2">
-                        <i class="fas fa-book"></i> Compartir Libro
+                        <i class="fas fa-book"></i> {{ t.book_editor.title }}
                     </h2>
-                    <button type="button"
-                        class="text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-white flex items-center gap-2 font-medium transition-colors"
-                        onclick="showSelection()">
-                        <i class="fas fa-arrow-left"></i> Volver
+                    <button type="button" class="text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-white flex items-center gap-2 font-medium transition-colors" onclick="showSelection()">
+                        <i class="fas fa-arrow-left"></i> {{ t.lesson_editor.back }}
                     </button>
                 </div>
 
                 <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 rounded-r-lg flex gap-3">
                     <i class="fas fa-info-circle text-red-500 mt-1"></i>
-                    <p class="text-sm text-red-800 dark:text-red-200"><strong>Nota:</strong> Solo compartimos enlaces
-                        a libros. No subimos archivos directamente para ahorrar espacio en el servidor.</p>
+                    <p class="text-sm text-red-800 dark:text-red-200"><strong>{{ t.book_editor.note }}</strong></p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
-                        <label for="bookTitle"
-                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Título del Libro
-                            <span class="text-red-500">*</span></label>
-                        <input type="text" id="bookTitle" required placeholder="Ej: Gramática Turca Completa"
+                        <label for="bookTitle" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">
+                            {{ t.book_editor.field_title }} <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="bookTitle" required placeholder="{{ t.book_editor.placeholder_title }}"
                             class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all">
                     </div>
 
                     <div class="space-y-2">
-                        <label for="bookAuthor"
-                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Autor <span
-                                class="text-red-500">*</span></label>
-                        <input type="text" id="bookAuthor" required placeholder="Nombre del autor"
+                        <label for="bookAuthor" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">
+                            {{ t.book_editor.field_author }} <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="bookAuthor" required placeholder="{{ t.book_editor.placeholder_author }}"
                             class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all">
                     </div>
 
                     <div class="space-y-2">
-                        <label for="bookLevel"
-                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Nivel <span
-                                class="text-red-500">*</span></label>
-                        <select id="bookLevel" required
-                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
-                            <option value="">Seleccionar nivel</option>
-                            <option value="A1">A1 - Principiante</option>
-                            <option value="A2">A2 - Elemental</option>
-                            <option value="B1">B1 - Intermedio</option>
-                            <option value="B2">B2 - Intermedio Alto</option>
-                            <option value="C1">C1 - Avanzado</option>
-                            <option value="Todos">Todos los niveles</option>
+                        <label for="bookLevel" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">
+                            {{ t.book_editor.field_level }} <span class="text-red-500">*</span>
+                        </label>
+                        <select id="bookLevel" required class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                            <option value="">{{ t.book_editor.field_level }}</option>
+                            <option value="A1">{{ t.book_editor.levels[0] }}</option>
+                            <option value="A2">{{ t.book_editor.levels[1] }}</option>
+                            <option value="B1">{{ t.book_editor.levels[2] }}</option>
+                            <option value="B2">{{ t.book_editor.levels[3] }}</option>
+                            <option value="C1">{{ t.book_editor.levels[4] }}</option>
+                            <option value="Todos">{{ t.book_editor.levels[5] }}</option>
                         </select>
                     </div>
 
                     <div class="space-y-2">
-                        <label for="bookCategory"
-                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Categoría <span
-                                class="text-red-500">*</span></label>
-                        <select id="bookCategory" required
-                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
-                            <option value="">Seleccionar categoría</option>
-                            <option value="Gramática">Gramática</option>
-                            <option value="Vocabulario">Vocabulario</option>
-                            <option value="Lectura">Lectura</option>
-                            <option value="Ejercicios">Ejercicios</option>
-                            <option value="Cultura">Cultura</option>
-                            <option value="General">General</option>
+                        <label for="bookCategory" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">
+                            {{ t.book_editor.field_category }} <span class="text-red-500">*</span>
+                        </label>
+                        <select id="bookCategory" required class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                            <option value="">{{ t.book_editor.field_category }}</option>
+                            <option value="Gramática">{{ t.book_editor.categories[0] }}</option>
+                            <option value="Vocabulario">{{ t.book_editor.categories[1] }}</option>
+                            <option value="Lectura">{{ t.book_editor.categories[2] }}</option>
+                            <option value="Ejercicios">{{ t.book_editor.categories[3] }}</option>
+                            <option value="Cultura">{{ t.book_editor.categories[4] }}</option>
+                            <option value="General">{{ t.book_editor.categories[5] }}</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="space-y-2">
-                    <label for="bookUrl" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Enlace
-                        al Libro <span class="text-red-500">*</span></label>
-                    <input type="url" id="bookUrl" required placeholder="https://ejemplo.com/libro.pdf"
+                    <label for="bookUrl" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">
+                        {{ t.book_editor.field_url }} <span class="text-red-500">*</span>
+                    </label>
+                    <input type="url" id="bookUrl" required placeholder="{{ t.book_editor.placeholder_url }}"
                         class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all">
-                    <p class="text-xs text-stone-500 dark:text-stone-400">Google Drive, Dropbox, o cualquier enlace
-                        público</p>
+                    <p class="text-xs text-stone-500 dark:text-stone-400">{{ t.book_editor.url_info }}</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
-                        <label for="bookFormat"
-                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Formato <span
-                                class="text-red-500">*</span></label>
-                        <select id="bookFormat" required
-                            class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
-                            <option value="">Seleccionar formato</option>
-                            <option value="PDF">PDF</option>
-                            <option value="EPUB">EPUB</option>
-                            <option value="MOBI">MOBI</option>
-                            <option value="Otro">Otro</option>
+                        <label for="bookFormat" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">
+                            {{ t.book_editor.field_format }} <span class="text-red-500">*</span>
+                        </label>
+                        <select id="bookFormat" required class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                            <option value="">{{ t.book_editor.field_format }}</option>
+                            <option value="PDF">{{ t.book_editor.formats[0] }}</option>
+                            <option value="EPUB">{{ t.book_editor.formats[1] }}</option>
+                            <option value="MOBI">{{ t.book_editor.formats[2] }}</option>
+                            <option value="Otro">{{ t.book_editor.formats[3] }}</option>
                         </select>
                     </div>
 
                     <div class="space-y-2">
-                        <label for="bookSize"
-                            class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Tamaño
-                            Aproximado</label>
-                        <input type="text" id="bookSize" placeholder="Ej: 5 MB"
+                        <label for="bookSize" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">
+                            {{ t.book_editor.field_size }}
+                        </label>
+                        <input type="text" id="bookSize" placeholder="{{ t.book_editor.placeholder_size }}"
                             class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all">
                     </div>
                 </div>
 
                 <div class="space-y-2">
-                    <label for="bookDescription"
-                        class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Descripción <span
-                            class="text-red-500">*</span></label>
-                    <textarea id="bookDescription" required rows="4"
-                        placeholder="Describe el contenido del libro y por qué es útil..."
+                    <label for="bookDescription" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">
+                        {{ t.book_editor.field_desc }} <span class="text-red-500">*</span>
+                    </label>
+                    <textarea id="bookDescription" required rows="4" placeholder="{{ t.book_editor.placeholder_desc }}"
                         class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all resize-none"></textarea>
                 </div>
 
                 <div class="space-y-2">
-                    <label for="bookLanguage"
-                        class="block text-sm font-semibold text-stone-700 dark:text-stone-300">Idioma del Libro <span
-                            class="text-red-500">*</span></label>
-                    <select id="bookLanguage" required
-                        class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
-                        <option value="">Seleccionar idioma</option>
-                        <option value="Español">Español</option>
-                        <option value="Chino">Chino</option>
-                        <option value="Inglés">Inglés</option>
-                        <option value="Bilingüe">Bilingüe</option>
+                    <label for="bookLanguage" class="block text-sm font-semibold text-stone-700 dark:text-stone-300">
+                        {{ t.book_editor.field_lang }} <span class="text-red-500">*</span>
+                    </label>
+                    <select id="bookLanguage" required class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                        <option value="">{{ t.book_editor.field_lang }}</option>
+                        <option value="Español">{{ t.book_editor.languages[0] }}</option>
+                        <option value="Chino">{{ t.book_editor.languages[1] }}</option>
+                        <option value="Inglés">{{ t.book_editor.languages[2] }}</option>
+                        <option value="Bilingüe">{{ t.book_editor.languages[3] }}</option>
                     </select>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-4 border-t border-stone-100 dark:border-stone-700">
-                    <button type="button"
-                        class="px-6 py-2.5 rounded-xl border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 font-medium hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors"
-                        onclick="window.location.href='/'">
-                        Cancelar
+                    <button type="button" class="px-6 py-2.5 rounded-xl border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 font-medium hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors" onclick="showSelection()">
+                        {{ t.book_editor.btn_cancel }}
                     </button>
-                    <button type="submit"
-                        class="px-8 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold shadow-lg shadow-orange-500/30 hover:-translate-y-0.5 transition-all flex items-center gap-2">
-                        <i class="fas fa-paper-plane"></i> Enviar Propuesta
+                    <button type="submit" class="px-8 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold shadow-lg shadow-orange-500/30 hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                        <i class="fas fa-paper-plane"></i> {{ t.book_editor.btn_send }}
                     </button>
                 </div>
             </form>
@@ -296,7 +265,7 @@ scripts:
             <!-- My Contributions Section -->
             <div class="my-contributions mt-12 pt-8 border-t-2 border-stone-100 dark:border-stone-700">
                 <h2 class="text-xl font-bold text-stone-800 dark:text-white mb-6 flex items-center gap-2">
-                    <i class="fas fa-list text-red-500"></i> Mis Contribuciones
+                    <i class="fas fa-list text-red-500"></i> {{ t.my_contributions }}
                 </h2>
                 <div id="myContributionsList" class="contributions-list grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Populated by JS -->

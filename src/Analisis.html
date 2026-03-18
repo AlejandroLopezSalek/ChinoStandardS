@@ -1,10 +1,15 @@
 ---
-title: Análisis Gramatical - LabPanda
-description: Desmonta cualquier frase en chino para entender su estructura.
 layout: base.njk
-scripts:
-- lab-analysis.js
+pagination:
+  data: i18n.analysis
+  size: 1
+  alias: t
+permalink: "{{ t.dir }}Analisis/index.html"
+eleventyComputed:
+  title: "{{ t.title }}"
+  description: "{{ t.description }}"
 ---
+<script id="i18n-messages" type="application/json">{{ t.messages | dump | safe }}</script>
 
 <div class="max-w-7xl mx-auto px-4 py-12">
     <div class="max-w-4xl mx-auto">
@@ -14,9 +19,8 @@ scripts:
                 class="w-16 h-16 bg-orange-100 dark:bg-orange-900/30 text-orange-600 rounded-2xl flex items-center justify-center mx-auto text-2xl mb-6">
                 <i class="fas fa-microscope"></i>
             </div>
-            <h2 class="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">Análisis de Oración</h2>
-            <p class="text-slate-600 dark:text-slate-400">Analiza gramática, partículas y el significado profundo de
-                cualquier frase.</p>
+            <h2 class="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">{{ t.subtitle }}</h2>
+            <p class="text-slate-600 dark:text-slate-400">{{ t.desc }}</p>
         </div>
 
         <!-- Input -->
@@ -24,26 +28,26 @@ scripts:
             class="bg-white dark:bg-slate-800 rounded-3xl p-8 border border-slate-200 dark:border-white/5 shadow-2xl mb-8">
             <textarea id="analysis-input"
                 class="w-full bg-slate-50 dark:bg-white/5 border-2 border-transparent focus:border-orange-500 rounded-2xl p-6 text-xl text-slate-900 dark:text-white outline-none transition-all h-32 resize-none"
-                placeholder="Ingresa una frase en chino..."></textarea>
+                placeholder="{{ t.placeholder }}"></textarea>
             <button id="run-analysis-btn" type="button"
                 class="w-full mt-6 bg-orange-600 hover:bg-orange-700 text-white font-black py-4 rounded-2xl shadow-lg shadow-orange-500/30 transition-all flex items-center justify-center gap-3">
-                <i class="fas fa-wand-magic-sparkles"></i> ANALIZAR ESTRUCTURA
+                <i class="fas fa-wand-magic-sparkles"></i> {{ t.btn_text }}
             </button>
-            <p class="text-center text-[10px] text-slate-500 mt-4">Límite: 1 análisis detallado al día.</p>
+            <p class="text-center text-[10px] text-slate-500 mt-4">{{ t.limit_note }}</p>
         </div>
 
         <div id="analysis-loading" class="hidden py-20 text-center">
             <div
                 class="w-12 h-12 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin mx-auto mb-4">
             </div>
-            <p class="font-bold text-slate-900 dark:text-white">Desglosando sintaxis...</p>
+            <p class="font-bold text-slate-900 dark:text-white">{{ t.loading }}</p>
         </div>
 
         <!-- Results Area -->
         <div id="analysis-results" class="hidden space-y-8 animate-slideUp">
             <div
                 class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-white/5 shadow-xl">
-                <h4 class="text-orange-600 font-black uppercase text-xs tracking-widest mb-4">Significado Global</h4>
+                <h4 class="text-orange-600 font-black uppercase text-xs tracking-widest mb-4">{{ t.res_global }}</h4>
                 <p id="res-meaning" class="text-2xl font-bold text-slate-900 dark:text-white"></p>
             </div>
 
@@ -51,8 +55,7 @@ scripts:
 
             <div
                 class="p-8 bg-gradient-to-br from-orange-900 to-orange-950 rounded-3xl text-white shadow-2xl relative overflow-hidden">
-                <h4 class="text-orange-400 font-black uppercase text-xs tracking-widest mb-4">Notas Gramaticales &amp;
-                    Contexto</h4>
+                <h4 class="text-orange-400 font-black uppercase text-xs tracking-widest mb-4">{{ t.res_notes }}</h4>
                 <div id="res-culture" class="prose prose-invert text-orange-100 text-lg"></div>
             </div>
         </div>

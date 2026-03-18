@@ -1,26 +1,31 @@
 ---
-title: Exámenes de IA - LabPanda
-description: Pon a prueba tu chino con exámenes adaptativos de Panda AI.
 layout: base.njk
-scripts:
-- lab-exams.js
+pagination:
+  data: i18n.exams
+  size: 1
+  alias: t
+permalink: "{{ t.dir }}Examenes/index.html"
+eleventyComputed:
+  title: "{{ t.title }}"
+  description: "{{ t.description }}"
 ---
+<script id="i18n-messages" type="application/json">{{ t.messages | dump | safe }}</script>
 
 <div class="max-w-7xl mx-auto px-4 py-12">
     <!-- Header Section -->
     <div class="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
             <h2 class="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">
-                <i class="fas fa-pencil-alt text-red-500 mr-3"></i>Centro de Exámenes
+                <i class="fas fa-pencil-alt text-red-500 mr-3"></i>{{ t.hero_title }}
             </h2>
             <p class="text-lg text-slate-600 dark:text-slate-400">
-                Pon a prueba tus conocimientos de HSK o crea retos temáticos.
+                {{ t.hero_desc }}
             </p>
         </div>
         <div class="flex gap-3">
             <button id="view-history-btn" type="button"
                 class="px-6 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 transition-all">
-                <i class="fas fa-history mr-2"></i> Mis Retos
+                <i class="fas fa-history mr-2"></i> {{ t.history_btn }}
             </button>
         </div>
     </div>
@@ -33,32 +38,31 @@ scripts:
                 <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center">
                     <span
                         class="w-8 h-8 bg-red-500 text-white rounded-lg flex items-center justify-center mr-3 text-sm">1</span>
-                    Ajustes de IA
+                    {{ t.settings_title }}
                 </h3>
 
                 <div class="space-y-6">
                     <div>
                         <span
-                            class="block text-sm font-black text-slate-500 uppercase tracking-widest mb-3">Formato</span>
+                            class="block text-sm font-black text-slate-500 uppercase tracking-widest mb-3">{{ t.format_label }}</span>
                         <div class="grid grid-cols-1 gap-3">
                             <button type="button"
                                 class="mode-btn p-4 rounded-2xl border-2 border-red-500 bg-red-500/10 text-red-600 dark:text-red-400 text-left transition-all"
                                 data-mode="classic">
-                                <span class="block font-bold">HSK Estándar</span>
-                                <span class="block text-xs opacity-70">Vocabulario y gramática por nivel.</span>
+                                <span class="block font-bold">{{ t.formats.classic.title }}</span>
+                                <span class="block text-xs opacity-70">{{ t.formats.classic.desc }}</span>
                             </button>
                             <button type="button"
                                 class="mode-btn p-4 rounded-2xl border-2 border-transparent bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 text-left hover:border-red-500/50 transition-all"
                                 data-mode="custom">
-                                <span class="block font-bold">Tema Personalizado</span>
-                                <span class="block text-xs opacity-70">Practica temas específicos.</span>
+                                <span class="block font-bold">{{ t.formats.custom.title }}</span>
+                                <span class="block text-xs opacity-70">{{ t.formats.custom.desc }}</span>
                             </button>
                         </div>
                     </div>
 
                     <div id="level-container">
-                        <span class="block text-sm font-black text-slate-500 uppercase tracking-widest mb-3">Nivel
-                            HSK</span>
+                        <span class="block text-sm font-black text-slate-500 uppercase tracking-widest mb-3">{{ t.level_label }}</span>
                         <div class="grid grid-cols-3 gap-2">
                             <button type="button"
                                 class="level-btn p-2 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 text-sm font-bold active"
@@ -83,21 +87,20 @@ scripts:
 
                     <div id="prompt-container" class="hidden">
                         <label for="exam-prompt"
-                            class="block text-sm font-black text-slate-500 uppercase tracking-widest mb-3">¿En qué
-                            quieres enfocarte?</label>
+                            class="block text-sm font-black text-slate-500 uppercase tracking-widest mb-3">{{ t.prompt_label }}</label>
                         <textarea id="exam-prompt"
                             class="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-4 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-red-500 outline-none h-32"
-                            placeholder="Ej: Vocabulario de viajes y el uso de 'le'..."></textarea>
+                            placeholder="{{ t.prompt_placeholder }}"></textarea>
                     </div>
 
                     <div class="p-4 bg-red-50 dark:bg-red-900/20 rounded-2xl">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm font-bold text-red-700 dark:text-red-300">Publicar en Comunidad</span>
+                            <span class="text-sm font-bold text-red-700 dark:text-red-300">{{ t.public_label }}</span>
                             <div class="relative inline-flex items-center">
                                 <input type="checkbox" id="public-toggle" class="sr-only peer">
                                 <label for="public-toggle"
                                     class="w-11 h-6 bg-slate-500 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600 cursor-pointer">
-                                    <span class="sr-only">Publicar en Comunidad</span>
+                                    <span class="sr-only">{{ t.public_label }}</span>
                                 </label>
                             </div>
                         </div>
@@ -105,9 +108,9 @@ scripts:
 
                     <button id="generate-exam-btn" type="button"
                         class="w-full bg-gradient-to-r from-red-600 to-orange-600 text-white font-black py-4 rounded-2xl shadow-lg shadow-red-500/30 hover:-translate-y-1 transition-all">
-                        GENERAR EXAMEN
+                        {{ t.generate_btn }}
                     </button>
-                    <p class="text-center text-[10px] text-slate-500">Límite: 1 examen diario.</p>
+                    <p class="text-center text-[10px] text-slate-500">{{ t.limit_note }}</p>
                 </div>
             </div>
         </div>
@@ -121,16 +124,15 @@ scripts:
                         class="w-24 h-24 bg-red-500/10 rounded-full flex items-center justify-center mx-auto text-red-500 text-4xl mb-6">
                         <i class="fas fa-brain"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">Área de Evaluación</h3>
-                    <p class="text-slate-600 dark:text-slate-400 max-w-sm mx-auto">Configura los parámetros para que
-                        Panda prepare tus preguntas.</p>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">{{ t.workspace_title }}</h3>
+                    <p class="text-slate-600 dark:text-slate-400 max-w-sm mx-auto">{{ t.workspace_desc }}</p>
                 </div>
 
                 <div id="loading-state" class="hidden">
                     <div
                         class="w-20 h-20 border-4 border-red-500/20 border-t-red-500 rounded-full animate-spin mx-auto mb-6">
                     </div>
-                    <p class="font-bold text-slate-900 dark:text-white">Panda está redactando tu examen...</p>
+                    <p class="font-bold text-slate-900 dark:text-white">{{ t.loading_text }}</p>
                 </div>
 
                 <div id="exam-content" class="hidden w-full text-left"></div>
@@ -182,3 +184,5 @@ scripts:
         background-color: #94a3b8 !important;
     }
 </style>
+
+<script src="/js/lab/lab-exams.js"></script>

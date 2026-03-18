@@ -1,10 +1,24 @@
 ---
 layout: base.njk
+pagination:
+  data: i18n.community
+  size: 1
+  alias: t
+permalink: "{{ t.dir }}Community-Lessons/index.html"
+eleventyComputed:
+  title: "{{ t.title }}"
+  description: "{{ t.description }}"
 styles:
 - tailwind-output.css
 scripts:
-- community.js
+- core/community.js
 ---
+
+<script id="i18n-messages" type="application/json">{{ t.messages | dump | safe }}</script>
+<script id="i18n-community" type="application/json">{{ t | dump | safe }}</script>
+<script>
+    window.I18N_COMMUNITY = JSON.parse(document.getElementById('i18n-community').textContent);
+</script>
 
 <div class="px-4 sm:px-8 py-6 max-w-7xl mx-auto">
 
@@ -17,7 +31,7 @@ scripts:
         {# Search #}
         <div class="relative mb-5">
             <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-base"></i>
-            <input type="text" id="communitySearch" placeholder="Buscar lecciones o libros..." class="w-full pl-12 pr-4 py-3 border-2 border-stone-200 dark:border-stone-600
+            <input type="text" id="communitySearch" placeholder="{{ t.search_placeholder }}" class="w-full pl-12 pr-4 py-3 border-2 border-stone-200 dark:border-stone-600
                        rounded-xl text-base bg-stone-50 dark:bg-stone-700
                        text-stone-900 dark:text-stone-100
                        focus:outline-none focus:border-red-500 focus:bg-white dark:focus:bg-stone-600
@@ -30,13 +44,13 @@ scripts:
             {# Type Filter #}
             <div class="flex items-center gap-3">
                 <span
-                    class="text-xs font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider w-10 shrink-0">Tipo</span>
+                    class="text-xs font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider w-10 shrink-0">{{ t.filter_type }}</span>
                 <div id="typeFilterTabs" class="flex flex-wrap gap-2">
                     <button type="button" class="type-tab" data-type="books">
-                        <i class="fas fa-book"></i>Libros
+                        <i class="fas fa-book"></i>{{ t.types.books }}
                     </button>
                     <button type="button" class="type-tab" data-type="lessons">
-                        <i class="fas fa-chalkboard-teacher"></i>Lecciones
+                        <i class="fas fa-chalkboard-teacher"></i>{{ t.types.lessons }}
                     </button>
                 </div>
             </div>
@@ -44,7 +58,7 @@ scripts:
             {# Level Filter #}
             <div class="flex items-center gap-2">
                 <span
-                    class="text-xs font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider w-10 shrink-0">Nivel</span>
+                    class="text-xs font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider w-10 shrink-0">{{ t.filter_level }}</span>
                 <div class="filter-tabs flex flex-nowrap overflow-x-auto gap-2 py-1 scrollbar-hide">
                     {{ components.levelFilterTab('A1', 'A1') }}
                     {{ components.levelFilterTab('A2', 'A2') }}
@@ -62,12 +76,12 @@ scripts:
     {# Contribute Button #}
     <div
         class="text-center my-8 p-6 bg-stone-50 dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700 transition-all">
-        <h3 class="mb-4 text-stone-900 dark:text-stone-100 text-xl font-semibold">¿Quieres contribuir?</h3>
+        <h3 class="mb-4 text-stone-900 dark:text-stone-100 text-xl font-semibold">{{ t.contribute.title }}</h3>
         <a href="/Contribute/" id="communityCreateBtn" class="btn btn-primary inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 
                   text-white font-semibold rounded-md shadow-lg hover:shadow-xl hover:from-red-700 hover:to-red-800 
                   transition-all duration-300 hover:-translate-y-0.5">
             <i class="fas fa-plus"></i>
-            Crear Nueva Lección
+            {{ t.contribute.btn }}
         </a>
     </div>
 
@@ -105,18 +119,18 @@ scripts:
                 class="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4 text-red-600 dark:text-red-500">
                 <i class="fas fa-exclamation-triangle text-3xl"></i>
             </div>
-            <h3 class="text-2xl font-bold text-stone-900 dark:text-stone-100">¿Eliminar Lección?</h3>
+            <h3 class="text-2xl font-bold text-stone-900 dark:text-stone-100">{{ t.modals.delete_confirm.title }}</h3>
         </div>
         <p class="text-stone-600 dark:text-stone-400 mb-8 text-base leading-relaxed">
-            Esta acción no se puede deshacer. La lección se eliminará permanentemente.
+            {{ t.modals.delete_confirm.desc }}
         </p>
         <div class="flex justify-center gap-4">
             <button type="button"
                 class="px-6 py-2.5 bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300 font-semibold rounded-lg hover:bg-stone-200 dark:hover:bg-stone-600 transition-colors"
-                onclick="closeDeleteModal()">Cancelar</button>
+                onclick="closeDeleteModal()">{{ t.modals.delete_confirm.cancel }}</button>
             <button type="button" id="confirmDeleteBtn"
                 class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-red-500/30 transition-all duration-300 hover:-translate-y-0.5">
-                Sí, Eliminar
+                {{ t.modals.delete_confirm.confirm }}
             </button>
         </div>
     </div>

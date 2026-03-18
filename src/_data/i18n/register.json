@@ -1,0 +1,143 @@
+[
+  {
+    "code": "es",
+    "dir": "/",
+    "title": "Registro - PandaLatam",
+    "description": "Crea una cuenta en PandaLatam para comenzar tu aventura con el idioma chino hoy mismo.",
+    "header": {
+      "title": "Únete a PandaLatam",
+      "subtitle": "Tu puerta de entrada a la maestría del chino"
+    },
+    "form": {
+      "username_label": "Nombre de Usuario",
+      "username_placeholder": "panda_fan",
+      "email_label": "Correo Electrónico",
+      "email_placeholder": "tu@email.com",
+      "password_label": "Contraseña",
+      "password_placeholder": "••••••••",
+      "confirm_password_label": "Confirmar Contraseña",
+      "confirm_password_placeholder": "••••••••",
+      "strength": {
+        "weak": "Débil",
+        "medium": "Media",
+        "strong": "Fuerte"
+      },
+      "match": {
+        "match": "¡Coinciden!",
+        "mismatch": "Las contraseñas no coinciden"
+      },
+      "country_label": "País",
+      "country_placeholder": "Selecciona tu país",
+      "terms_label": "Acepto los <a href='/Privacy/' class='text-red-600 hover:underline'>Términos y condiciones</a>",
+      "submit_btn": "Crear Cuenta",
+      "back_btn": "Volver",
+      "has_account": "¿Ya tienes una cuenta?",
+      "login_link": "Inicia sesión"
+    },
+    "oauth": {
+      "divider": "O regístrate con",
+      "google_btn": "Registrarse con Google"
+    },
+    "messages": {
+      "register_success": "¡Cuenta creada exitosamente! Redirigiendo...",
+      "register_error": "Error al crear la cuenta. Por favor verifica tus datos.",
+      "passwords_mismatch": "Las contraseñas no coinciden.",
+      "username_taken": "El nombre de usuario ya está en uso.",
+      "email_taken": "El correo electrónico ya está registrado."
+    }
+  },
+  {
+    "code": "en",
+    "dir": "/en/",
+    "title": "Register - PandaLatam",
+    "description": "Create a PandaLatam account to start your Chinese language adventure today.",
+    "header": {
+      "title": "Join PandaLatam",
+      "subtitle": "Your gateway to Chinese mastery"
+    },
+    "form": {
+      "username_label": "Username",
+      "username_placeholder": "panda_fan",
+      "email_label": "Email Address",
+      "email_placeholder": "you@email.com",
+      "password_label": "Password",
+      "password_placeholder": "••••••••",
+      "confirm_password_label": "Confirm Password",
+      "confirm_password_placeholder": "••••••••",
+      "strength": {
+        "weak": "Weak",
+        "medium": "Medium",
+        "strong": "Strong"
+      },
+      "match": {
+        "match": "Match!",
+        "mismatch": "Passwords do not match"
+      },
+      "country_label": "Country",
+      "country_placeholder": "Select your country",
+      "terms_label": "I agree to the <a href='/en/Privacy/' class='text-red-600 hover:underline'>Terms and conditions</a>",
+      "submit_btn": "Create Account",
+      "back_btn": "Back",
+      "has_account": "Already have an account?",
+      "login_link": "Log in"
+    },
+    "oauth": {
+      "divider": "Or sign up with",
+      "google_btn": "Sign up with Google"
+    },
+    "messages": {
+      "register_success": "Account created successfully! Redirecting...",
+      "register_error": "Error creating account. Please check your details.",
+      "passwords_mismatch": "Passwords do not match.",
+      "username_taken": "Username is already taken.",
+      "email_taken": "Email is already registered."
+    }
+  },
+  {
+    "code": "tr",
+    "dir": "/tr/",
+    "title": "Kaydol - PandaLatam",
+    "description": "Çince dil maceranıza bugün başlamak için bir PandaLatam hesabı oluşturun.",
+    "header": {
+      "title": "PandaLatam'a Katılın",
+      "subtitle": "Çince ustalığına giden kapınız"
+    },
+    "form": {
+      "username_label": "Kullanıcı Adı",
+      "username_placeholder": "panda_fan",
+      "email_label": "E-posta Adresi",
+      "email_placeholder": "siz@email.com",
+      "password_label": "Şifre",
+      "password_placeholder": "••••••••",
+      "confirm_password_label": "Şifreyi Onayla",
+      "confirm_password_placeholder": "••••••••",
+      "strength": {
+        "weak": "Zayıf",
+        "medium": "Orta",
+        "strong": "Güçlü"
+      },
+      "match": {
+        "match": "Eşleşiyor!",
+        "mismatch": "Şifreler eşleşmiyor"
+      },
+      "country_label": "Ülke",
+      "country_placeholder": "Ülkenizi seçin",
+      "terms_label": "<a href='/tr/Privacy/' class='text-red-600 hover:underline'>Şartlar ve koşulları</a> kabul ediyorum",
+      "submit_btn": "Hesap Oluştur",
+      "back_btn": "Geri",
+      "has_account": "Zaten hesabınız var mı?",
+      "login_link": "Giriş yap"
+    },
+    "oauth": {
+      "divider": "Veya şununla kaydolun",
+      "google_btn": "Google ile kaydol"
+    },
+    "messages": {
+      "register_success": "Hesap başarıyla oluşturuldu! Yönlendiriliyor...",
+      "register_error": "Hesap oluşturulurken hata oluştu. Lütfen bilgilerinizi kontrol edin.",
+      "passwords_mismatch": "Şifreler eşleşmiyor.",
+      "username_taken": "Kullanıcı adı zaten alınmış.",
+      "email_taken": "E-posta adresi zaten kayıtlı."
+    }
+  }
+]

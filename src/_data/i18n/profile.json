@@ -1,0 +1,134 @@
+[
+  {
+    "code": "es",
+    "dir": "",
+    "title": "Mi Perfil - PandaLatam",
+    "description": "Gestiona tu cuenta, racha y preferencias en PandaLatam.",
+    "header": {
+      "change_photo": "Click para cambiar foto",
+      "loading": "Cargando...",
+      "level_label": "Nivel"
+    },
+    "streak": {
+      "title": "Tu Racha",
+      "current": "días actuales",
+      "record": "Récord",
+      "total": "Total días",
+      "last_activity": "Última actividad",
+      "today": "Hoy"
+    },
+    "preferences": {
+      "title": "Preferencias",
+      "dark_mode": { "title": "Tema Oscuro", "subtitle": "Modo nocturno" },
+      "notifications": { "title": "Notificaciones", "subtitle": "Recordatorios" },
+      "sound": { "title": "Sonido", "subtitle": "Efectos de audio" },
+      "font_size": { 
+        "title": "Fuente", "subtitle": "Tamaño",
+        "options": [
+          { "value": "small", "label": "Pequeño" },
+          { "value": "medium", "label": "Medio" },
+          { "value": "large", "label": "Grande" }
+        ]
+      },
+      "daily_goal": { "title": "Meta Diaria", "subtitle": "Minutos" },
+      "btn_save": "Guardar Preferencias"
+    },
+    "admin": {
+      "title": "Panel de Administrador",
+      "contributions": { "title": "Contribuciones", "subtitle": "Revisar lecciones" }
+    },
+    "account": {
+      "title": "Cuenta",
+      "btn_password": "Cambiar Contraseña",
+      "btn_logout": "Cerrar Sesión"
+    }
+  },
+  {
+    "code": "en",
+    "dir": "en/",
+    "title": "My Profile - PandaLatam",
+    "description": "Manage your account, streak, and preferences on PandaLatam.",
+    "header": {
+      "change_photo": "Click to change photo",
+      "loading": "Loading...",
+      "level_label": "Level"
+    },
+    "streak": {
+      "title": "Your Streak",
+      "current": "current days",
+      "record": "Record",
+      "total": "Total days",
+      "last_activity": "Last activity",
+      "today": "Today"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "dark_mode": { "title": "Dark Theme", "subtitle": "Night mode" },
+      "notifications": { "title": "Notifications", "subtitle": "Reminders" },
+      "sound": { "title": "Sound", "subtitle": "Audio effects" },
+      "font_size": { 
+        "title": "Font", "subtitle": "Size",
+        "options": [
+          { "value": "small", "label": "Small" },
+          { "value": "medium", "label": "Medium" },
+          { "value": "large", "label": "Large" }
+        ]
+      },
+      "daily_goal": { "title": "Daily Goal", "subtitle": "Minutes" },
+      "btn_save": "Save Preferences"
+    },
+    "admin": {
+      "title": "Admin Panel",
+      "contributions": { "title": "Contributions", "subtitle": "Review lessons" }
+    },
+    "account": {
+      "title": "Account",
+      "btn_password": "Change Password",
+      "btn_logout": "Sign Out"
+    }
+  },
+  {
+    "code": "tr",
+    "dir": "tr/",
+    "title": "Profilim - PandaLatam",
+    "description": "PandaLatam'daki hesabınızı, serinizi ve tercihlerinizi yönetin.",
+    "header": {
+      "change_photo": "Fotoğrafı değiştirmek için tıklayın",
+      "loading": "Yükleniyor...",
+      "level_label": "Seviye"
+    },
+    "streak": {
+      "title": "Seriniz",
+      "current": "güncel gün",
+      "record": "Rekor",
+      "total": "Toplam gün",
+      "last_activity": "Son aktivite",
+      "today": "Bugün"
+    },
+    "preferences": {
+      "title": "Tercihler",
+      "dark_mode": { "title": "Karanlık Tema", "subtitle": "Gece modu" },
+      "notifications": { "title": "Bildirimler", "subtitle": "Hatırlatıcılar" },
+      "sound": { "title": "Ses", "subtitle": "Ses efektleri" },
+      "font_size": { 
+        "title": "Yazı Tipi", "subtitle": "Boyut",
+        "options": [
+          { "value": "small", "label": "Küçük" },
+          { "value": "medium", "label": "Orta" },
+          { "value": "large", "label": "Büyük" }
+        ]
+      },
+      "daily_goal": { "title": "Günlük Hedef", "subtitle": "Dakika" },
+      "btn_save": "Tercihleri Kaydet"
+    },
+    "admin": {
+      "title": "Yönetici Paneli",
+      "contributions": { "title": "Katkılar", "subtitle": "Dersleri incele" }
+    },
+    "account": {
+      "title": "Hesap",
+      "btn_password": "Şifreyi Değiştir",
+      "btn_logout": "Oturumu Kapat"
+    }
+  }
+]

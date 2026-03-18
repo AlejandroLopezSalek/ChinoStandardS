@@ -1,0 +1,131 @@
+[
+  {
+    "code": "es",
+    "title": "Gramática y Recursos - PandaLatam",
+    "description": "Recursos de gramática, diccionarios y plataformas para aprender chino.",
+    "web_pages": "Páginas de Internet",
+    "sections": {
+      "grammar": {
+        "title": "Gramática",
+        "icon": "grammar",
+        "links": [
+          ["https://quizlet.com", "Quizlet"],
+          ["https://elon.io/", "Elon"],
+          ["https://www.chinesetextbook.com/", "ChineseTextBook"],
+          ["https://chinese.littlefox.com/en", "Little Fox Chinese"],
+          ["https://mandarinbean.com/", "Mandarin Bean"],
+          ["https://freechineselessons.com/", "Free Chinese Lessons"],
+          ["https://gratisglobal.com/learn-chinese-free/", "Gratis Global (Learn Chinese Free)"]
+        ]
+      },
+      "dictionaries": {
+        "title": "Diccionarios",
+        "icon": "book",
+        "links": [
+          ["https://www.pleco.com/", "Pleco Dictionary"],
+          ["https://www.mdbg.net/chinese/dictionary", "MDBG"],
+          ["https://wordreference.com", "WordReference"]
+        ]
+      },
+      "courses": {
+        "title": "Cursos y Plataformas",
+        "icon": "laptop-house",
+        "links": [
+          ["https://ci.cn/en/zwkt", "Confucius Institute Online Classes"],
+          ["https://ci.um.edu.mo/mandarin-certificate-courses/", "Confucius Institute Mandarin Courses (UM)"],
+          ["https://www.eduincn.com/confucius-institute-scholarship/", "Confucius Institute Scholarships"],
+          ["https://kavrakoglu.com/cin-71-konfucyus-enstituleri/", "Konfüçyüs Enstitüleri (Kavrakoglu)"],
+          ["https://boenstitu.com/online-egitimler/cince-kursu-temel-seviye", "Boğaziçi Enstitüsü (Çince Kursu)"],
+          ["https://www.open.edu/openlearn/education-development/university-ready/free-online-chinese-courses", "OpenLearn Free Chinese Courses"],
+          ["https://www.livelingua.com/courses/Chinese", "Live Lingua Chinese"]
+        ]
+      }
+    }
+  },
+  {
+    "code": "en",
+    "title": "Grammar and Resources - PandaLatam",
+    "description": "Grammar resources, dictionaries and platforms to learn Chinese.",
+    "web_pages": "Web Pages",
+    "sections": {
+      "grammar": {
+        "title": "Grammar",
+        "icon": "grammar",
+        "links": [
+          ["https://quizlet.com", "Quizlet"],
+          ["https://elon.io/", "Elon"],
+          ["https://www.chinesetextbook.com/", "ChineseTextBook"],
+          ["https://chinese.littlefox.com/en", "Little Fox Chinese"],
+          ["https://mandarinbean.com/", "Mandarin Bean"],
+          ["https://freechineselessons.com/", "Free Chinese Lessons"],
+          ["https://gratisglobal.com/learn-chinese-free/", "Gratis Global (Learn Chinese Free)"]
+        ]
+      },
+      "dictionaries": {
+        "title": "Dictionaries",
+        "icon": "book",
+        "links": [
+          ["https://www.pleco.com/", "Pleco Dictionary"],
+          ["https://www.mdbg.net/chinese/dictionary", "MDBG"],
+          ["https://wordreference.com", "WordReference"]
+        ]
+      },
+      "courses": {
+        "title": "Courses and Platforms",
+        "icon": "laptop-house",
+        "links": [
+          ["https://ci.cn/en/zwkt", "Confucius Institute Online Classes"],
+          ["https://ci.um.edu.mo/mandarin-certificate-courses/", "Confucius Institute Mandarin Courses (UM)"],
+          ["https://www.eduincn.com/confucius-institute-scholarship/", "Confucius Institute Scholarships"],
+          ["https://kavrakoglu.com/cin-71-konfucyus-enstituleri/", "Konfüçyüs Enstitüleri (Kavrakoglu)"],
+          ["https://boenstitu.com/online-egitimler/cince-kursu-temel-seviye", "Boğaziçi Enstitüsü (Çince Kursu)"],
+          ["https://www.open.edu/openlearn/education-development/university-ready/free-online-chinese-courses", "OpenLearn Free Chinese Courses"],
+          ["https://www.livelingua.com/courses/Chinese", "Live Lingua Chinese"]
+        ]
+      }
+    }
+  },
+  {
+    "code": "tr",
+    "title": "Gramer ve Kaynaklar - PandaLatam",
+    "description": "Çince öğrenmek için dilbilgisi kaynakları, sözlükler ve platformlar.",
+    "web_pages": "Web Sayfaları",
+    "sections": {
+      "grammar": {
+        "title": "Gramer",
+        "icon": "grammar",
+        "links": [
+          ["https://quizlet.com", "Quizlet"],
+          ["https://elon.io/", "Elon"],
+          ["https://www.chinesetextbook.com/", "ÇinceTextBook"],
+          ["https://chinese.littlefox.com/en", "Little Fox Çince"],
+          ["https://mandarinbean.com/", "Mandarin Bean"],
+          ["https://freechineselessons.com/", "Free Çince Dersler"],
+          ["https://gratisglobal.com/learn-chinese-free/", "Gratis Global (Learn Çince Free)"]
+        ]
+      },
+      "dictionaries": {
+        "title": "Sözlükler",
+        "icon": "book",
+        "links": [
+          ["https://www.pleco.com/", "Pleco Dictionary"],
+          ["https://www.mdbg.net/chinese/dictionary", "MDBG"],
+          ["https://wordreference.com", "WordReference"]
+        ]
+      },
+      "courses": {
+        "title": "Kurslar ve Platformlar",
+        "icon": "laptop-house",
+        "links": [
+          ["https://ci.cn/tr/zwkt", "Confucius Institute Online Classes"],
+          ["https://ci.um.edu.mo/mandarin-certificate-courses/", "Confucius Institute Mandarin Courses (UM)"],
+          ["https://www.eduincn.com/confucius-institute-scholarship/", "Confucius Institute Scholarships"],
+          ["https://kavrakoglu.com/cin-71-konfucyus-enstituleri/", "Konfüçyüs Enstitüleri (Kavrakoglu)"],
+          ["https://boenstitu.com/online-egitimler/cince-kursu-temel-seviye", "Boğaziçi Enstitüsü (Çince Kursu)"],
+          ["https://www.open.edu/openlearn/education-development/university-ready/free-online-chinese-courses", "OpenLearn Free Çince Courses"],
+          ["https://www.livelingua.com/courses/Çince", "Live Lingua Çince"]
+        ]
+      }
+    }
+  }
+]

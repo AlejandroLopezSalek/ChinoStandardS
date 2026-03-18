@@ -1,0 +1,131 @@
+[
+  {
+    "code": "es",
+    "dir": "",
+    "title": "Nuestros Contribuidores - PandaLatam",
+    "description": "Conoce a las personas que hacen posible este proyecto.",
+    "hero": {
+      "title": "Nuestros Contribuidores",
+      "text": "Conoce a las personas que hacen posible este proyecto y a la comunidad que comparte su conocimiento."
+    },
+    "core_team": {
+      "title": "Equipo Principal",
+      "members": [
+        {
+          "name": "Alejandro",
+          "role": "Desarrollador Principal",
+          "desc": "Creador de la plataforma, arquitectura y desarrollo full-stack."
+        },
+        {
+          "name": "Kübra Algan",
+          "role": "Gramática & QA",
+          "desc": "Supervisión gramatical, críticas constructivas y debugging."
+        },
+        {
+          "name": "Miguel",
+          "role": "Beta Tester",
+          "desc": "Pruebas exhaustivas de funcionalidad y reporte de errores."
+        },
+        {
+          "name": "Stefany",
+          "role": "Publicidad & Testing",
+          "desc": "Difusión del proyecto, marketing y pruebas de usuario."
+        }
+      ]
+    },
+    "community": {
+      "title": "Comunidad",
+      "text": "Usuarios increíbles que han contribuido creando lecciones para la plataforma.",
+      "load_more": "Ver más contribuidores",
+      "no_contributors": "Aún no hay contribuidores de la comunidad.",
+      "be_first": "¡Sé el primero!"
+    },
+    "back_home": "Volver al Inicio"
+  },
+  {
+    "code": "en",
+    "dir": "en/",
+    "title": "Our Contributors - PandaLatam",
+    "description": "Meet the people who make this project possible.",
+    "hero": {
+      "title": "Our Contributors",
+      "text": "Meet the people who make this project possible and the community that shares its knowledge."
+    },
+    "core_team": {
+      "title": "Core Team",
+      "members": [
+        {
+          "name": "Alejandro",
+          "role": "Lead Developer",
+          "desc": "Platform creator, architecture and full-stack development."
+        },
+        {
+          "name": "Kübra Algan",
+          "role": "Grammar & QA",
+          "desc": "Grammar supervision, constructive feedback and debugging."
+        },
+        {
+          "name": "Miguel",
+          "role": "Beta Tester",
+          "desc": "Extensive functional testing and bug reporting."
+        },
+        {
+          "name": "Stefany",
+          "role": "Advertising & Testing",
+          "desc": "Project promotion, marketing and user testing."
+        }
+      ]
+    },
+    "community": {
+      "title": "Community",
+      "text": "Incredible users who have contributed by creating lessons for the platform.",
+      "load_more": "See more contributors",
+      "no_contributors": "There are no community contributors yet.",
+      "be_first": "Be the first!"
+    },
+    "back_home": "Back to Home"
+  },
+  {
+    "code": "tr",
+    "dir": "tr/",
+    "title": "Katkıda Bulunanlarımız - PandaLatam",
+    "description": "Bu projeyi mümkün kılan insanlarla tanışın.",
+    "hero": {
+      "title": "Katkıda Bulunanlarımız",
+      "text": "Bu projeyi mümkün kılan insanlarla tanışın ve bilgilerini paylaşan toplulukla."
+    },
+    "core_team": {
+      "title": "Çekirdek Ekip",
+      "members": [
+        {
+          "name": "Alejandro",
+          "role": "Baş Geliştirici",
+          "desc": "Platform yaratıcısı, mimari ve full-stack geliştirme."
+        },
+        {
+          "name": "Kübra Algan",
+          "role": "Dilbilgisi ve Kalite Kontrol",
+          "desc": "Dilbilgisi denetimi, yapıcı geri bildirim ve hata ayıklama."
+        },
+        {
+          "name": "Miguel",
+          "role": "Beta Test Edici",
+          "desc": "Kapsamlı fonksiyonel testler ve hata raporlama."
+        },
+        {
+          "name": "Stefany",
+          "role": "Reklam ve Test",
+          "desc": "Proje tanıtımı, pazarlama ve kullanıcı testleri."
+        }
+      ]
+    },
+    "community": {
+      "title": "Topluluk",
+      "text": "Platform için dersler oluşturarak katkıda bulunan inanılmaz kullanıcılar.",
+      "load_more": "Daha fazla katkıda bulunanı gör",
+      "no_contributors": "Henüz topluluk katkıda bulunan yok.",
+      "be_first": "İlk siz olun!"
+    },
+    "back_home": "Ana Sayfaya Dön"
+  }
+]

@@ -1,0 +1,326 @@
+[
+  {
+    "code": "es",
+    "dir": "",
+    "title": "Panel de Administración - PandaLatam",
+    "description": "Gestiona las contribuciones de la comunidad y usuarios.",
+    "header_title": "Panel de Administración",
+    "header_subtitle": "Gestiona las contribuciones de la comunidad",
+    "stats": {
+      "pending": "Pendientes",
+      "approved": "Aprobadas",
+      "rejected": "Rechazadas",
+      "total": "Total"
+    },
+    "tabs": {
+      "requests": "Solicitudes",
+      "lessons": "Lecciones Publicadas",
+      "users": "Usuarios"
+    },
+    "filters": {
+      "all": "Todas",
+      "lessons": "Lecciones",
+      "books": "Libros"
+    },
+    "requests": {
+      "title": "Solicitudes Pendientes",
+      "update_btn": "Actualizar",
+      "empty_title": "¡Todo al día!",
+      "empty_desc": "No hay solicitudes pendientes de revisión",
+      "type_lesson": "Edición de Lección",
+      "type_book": "Libro Compartido",
+      "view_btn": "Ver",
+      "approve_quick": "Aprobar Rápido",
+      "reject_quick": "Rechazar Rápido",
+      "error_load": "Error al cargar las solicitudes",
+      "error_retry": "Reintentar"
+    },
+    "lessons": {
+      "search_placeholder": "Buscar por título, nivel o autor...",
+      "reload_btn": "Recargar",
+      "table": {
+        "title": "Título",
+        "level": "Nivel",
+        "author": "Autor",
+        "updated": "Actualizado",
+        "actions": "Acciones"
+      },
+      "empty": "No hay lecciones publicadas.",
+      "error_load": "Error al cargar lecciones"
+    },
+    "users": {
+        "search_placeholder": "Buscar por nombre, email o rol...",
+        "reload_btn": "Recargar",
+        "table": {
+            "user": "Usuario",
+            "email": "Email",
+            "role": "Rol",
+            "streak": "Racha / Registro",
+            "actions": "Acciones"
+        }
+    },
+    "modals": {
+      "detail": {
+        "title": "Detalles de la Solicitud",
+        "general_info": "Información General",
+        "level": "Nivel",
+        "lesson_id": "ID de Lección",
+        "submitted_by": "Enviado por",
+        "date": "Fecha",
+        "description": "Descripción",
+        "content": "Contenido",
+        "edit_btn": "Editar Contenido",
+        "preview_btn": "Ver Vista Previa",
+        "no_content": "Sin contenido",
+        "editor_error": "Editor no disponible",
+        "book_info": "Información del Libro",
+        "category": "Categoría",
+        "language": "Idioma",
+        "format": "Formato",
+        "size": "Tamaño",
+        "file_link": "Enlace al Archivo",
+        "approve_btn": "Aprobar",
+        "reject_btn": "Rechazar",
+        "cancel_btn": "Cancelar"
+      },
+      "confirm": {
+        "title": "Confirmar Acción",
+        "approve_title": "Confirmar Aprobación",
+        "approve_msg": "¿Estás seguro de que quieres aprobar esta solicitud?",
+        "reject_title": "Confirmar Rechazo",
+        "reject_msg": "¿Estás seguro de que quieres rechazar esta solicitud?",
+        "reason_label": "Razón del rechazo (opcional):",
+        "reason_placeholder": "Explica por qué se rechaza esta solicitud...",
+        "confirm_btn": "Confirmar",
+        "cancel_btn": "Cancelar"
+      }
+    },
+    "messages": {
+      "access_denied": "Acceso denegado. Solo administradores pueden acceder a esta página.",
+      "session_expired": "Tu sesión ha expirado. Redirigiendo al login...",
+      "approve_success": "Solicitud aprobada correctamente",
+      "approve_error": "Error al aprobar la solicitud. Por favor, intenta nuevamente.",
+      "reject_info": "Solicitud rechazada",
+      "reject_error": "Error al rechazar la solicitud. Por favor, intenta nuevamente.",
+      "delete_confirm": "Solicitud eliminada",
+      "delete_error": "Error al eliminar",
+      "delete_permanent_confirm": "¿Estás seguro de que deseas eliminar esta solicitud permanentemente?"
+    }
+  },
+  {
+    "code": "en",
+    "dir": "en/",
+    "title": "Admin Dashboard - PandaLatam",
+    "description": "Manage community contributions and users.",
+    "header_title": "Admin Dashboard",
+    "header_subtitle": "Manage community contributions",
+    "stats": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "total": "Total"
+    },
+    "tabs": {
+      "requests": "Requests",
+      "lessons": "Published Lessons",
+      "users": "Users"
+    },
+    "filters": {
+      "all": "All",
+      "lessons": "Lessons",
+      "books": "Books"
+    },
+    "requests": {
+      "title": "Pending Requests",
+      "update_btn": "Update",
+      "empty_title": "All caught up!",
+      "empty_desc": "No pending review requests",
+      "type_lesson": "Lesson Edit",
+      "type_book": "Shared Book",
+      "view_btn": "View",
+      "approve_quick": "Quick Approve",
+      "reject_quick": "Quick Reject",
+      "error_load": "Error loading requests",
+      "error_retry": "Retry"
+    },
+    "lessons": {
+      "search_placeholder": "Search by title, level or author...",
+      "reload_btn": "Reload",
+      "table": {
+        "title": "Title",
+        "level": "Level",
+        "author": "Author",
+        "updated": "Updated",
+        "actions": "Actions"
+      },
+      "empty": "No published lessons.",
+      "error_load": "Error loading lessons"
+    },
+    "users": {
+        "search_placeholder": "Search by name, email or role...",
+        "reload_btn": "Reload",
+        "table": {
+            "user": "User",
+            "email": "Email",
+            "role": "Role",
+            "streak": "Streak / Registered",
+            "actions": "Actions"
+        }
+    },
+    "modals": {
+      "detail": {
+        "title": "Request Details",
+        "general_info": "General Information",
+        "level": "Level",
+        "lesson_id": "Lesson ID",
+        "submitted_by": "Submitted by",
+        "date": "Date",
+        "description": "Description",
+        "content": "Content",
+        "edit_btn": "Edit Content",
+        "preview_btn": "View Preview",
+        "no_content": "No content",
+        "editor_error": "Editor not available",
+        "book_info": "Book Information",
+        "category": "Category",
+        "language": "Language",
+        "format": "Format",
+        "size": "Size",
+        "file_link": "File Link",
+        "approve_btn": "Approve",
+        "reject_btn": "Reject",
+        "cancel_btn": "Cancel"
+      },
+      "confirm": {
+        "title": "Confirm Action",
+        "approve_title": "Confirm Approval",
+        "approve_msg": "Are you sure you want to approve this request?",
+        "reject_title": "Confirm Rejection",
+        "reject_msg": "Are you sure you want to reject this request?",
+        "reason_label": "Rejection reason (optional):",
+        "reason_placeholder": "Explain why this request is being rejected...",
+        "confirm_btn": "Confirm",
+        "cancel_btn": "Cancel"
+      }
+    },
+    "messages": {
+      "access_denied": "Access denied. Only administrators can access this page.",
+      "session_expired": "Your session has expired. Redirecting to login...",
+      "approve_success": "Request successfully approved",
+      "approve_error": "Error approving request. Please try again.",
+      "reject_info": "Request rejected",
+      "reject_error": "Error rejecting request. Please try again.",
+      "delete_confirm": "Request deleted",
+      "delete_error": "Error deleting",
+      "delete_permanent_confirm": "Are you sure you want to permanently delete this request?"
+    }
+  },
+  {
+    "code": "tr",
+    "dir": "tr/",
+    "title": "Yönetici Paneli - PandaLatam",
+    "description": "Topluluk katkılarını ve kullanıcıları yönetin.",
+    "header_title": "Yönetici Paneli",
+    "header_subtitle": "Topluluk katkılarını yönetin",
+    "stats": {
+      "pending": "Bekleyen",
+      "approved": "Onaylanan",
+      "rejected": "Reddedilen",
+      "total": "Toplam"
+    },
+    "tabs": {
+      "requests": "İstekler",
+      "lessons": "Yayınlanan Dersler",
+      "users": "Kullanıcılar"
+    },
+    "filters": {
+      "all": "Hepsi",
+      "lessons": "Dersler",
+      "books": "Kitaplar"
+    },
+    "requests": {
+      "title": "Bekleyen İstekler",
+      "update_btn": "Güncelle",
+      "empty_title": "Her şey güncel!",
+      "empty_desc": "İncelenecek bekleyen istek yok",
+      "type_lesson": "Ders Düzenleme",
+      "type_book": "Paylaşılan Kitap",
+      "view_btn": "Görüntüle",
+      "approve_quick": "Hızlı Onay",
+      "reject_quick": "Hızlı Red",
+      "error_load": "İstekler yüklenirken hata oluştu",
+      "error_retry": "Yeniden Dene"
+    },
+    "lessons": {
+      "search_placeholder": "Başlık, seviye veya yazara göre ara...",
+      "reload_btn": "Yeniden Yükle",
+      "table": {
+        "title": "Başlık",
+        "level": "Seviye",
+        "author": "Yazar",
+        "updated": "Güncellendi",
+        "actions": "Eylemler"
+      },
+      "empty": "Yayınlanan ders yok.",
+      "error_load": "Dersler yüklenirken hata oluştu"
+    },
+    "users": {
+        "search_placeholder": "İsim, e-posta veya role göre ara...",
+        "reload_btn": "Yeniden Yükle",
+        "table": {
+            "user": "Kullanıcı",
+            "email": "E-posta",
+            "role": "Rol",
+            "streak": "Seri / Kayıt",
+            "actions": "Eylemler"
+        }
+    },
+    "modals": {
+      "detail": {
+        "title": "İstek Detayları",
+        "general_info": "Genel Bilgi",
+        "level": "Seviye",
+        "lesson_id": "Ders Kimliği",
+        "submitted_by": "Gönderen",
+        "date": "Tarih",
+        "description": "Açıklama",
+        "content": "İçerik",
+        "edit_btn": "İçeriği Düzenle",
+        "preview_btn": "Önizlemeyi Görüntüle",
+        "no_content": "İçerik yok",
+        "editor_error": "Editör mevcut değil",
+        "book_info": "Kitap Bilgisi",
+        "category": "Kategori",
+        "language": "Dil",
+        "format": "Format",
+        "size": "Boyut",
+        "file_link": "Dosya Bağlantısı",
+        "approve_btn": "Onayla",
+        "reject_btn": "Reddet",
+        "cancel_btn": "İptal"
+      },
+      "confirm": {
+        "title": "Eylemi Onayla",
+        "approve_title": "Onayı Onayla",
+        "approve_msg": "Bu isteği onaylamak istediğinizden emin misiniz?",
+        "reject_title": "Reddi Onayla",
+        "reject_msg": "Bu isteği reddetmek istediğinizden emin misiniz?",
+        "reason_label": "Red nedeni (isteğe bağlı):",
+        "reason_placeholder": "Bu isteğin neden reddedildiğini açıklayın...",
+        "confirm_btn": "Onayla",
+        "cancel_btn": "İptal"
+      }
+    },
+    "messages": {
+      "access_denied": "Erişim engellendi. Sadece yöneticiler bu sayfaya erişebilir.",
+      "session_expired": "Oturumunuz sona erdi. Giriş sayfasına yönlendiriliyorsunuz...",
+      "approve_success": "İstek başarıyla onaylandı",
+      "approve_error": "İstek onaylanırken hata oluştu. Lütfen tekrar deneyin.",
+      "reject_info": "İstek reddedildi",
+      "reject_error": "İstek reddedilirken hata oluştu. Lütfen tekrar deneyin.",
+      "delete_confirm": "İstek silindi",
+      "delete_error": "Silinirken hata oluştu",
+      "delete_permanent_confirm": "Bu isteği kalıcı olarak silmek istediğinizden emin misiniz?"
+    }
+  }
+]

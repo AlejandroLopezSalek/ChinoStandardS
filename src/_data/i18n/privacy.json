@@ -1,0 +1,104 @@
+[
+  {
+    "code": "es",
+    "dir": "",
+    "title": "Política de Privacidad - PandaLatam",
+    "description": "Política de privacidad y uso de cookies de PandaLatam.",
+    "h1": "Política de Privacidad",
+    "intro": "La privacidad de nuestros visitantes es de extrema importancia para nosotros. Este documento de política de privacidad describe los tipos de información personal que se reciben y recopilan y cómo se utilizan.",
+    "sections": [
+      {
+        "title": "Archivos de registro",
+        "content": "Al igual que muchos otros sitios web, este sitio utiliza archivos de registro. La información dentro de los archivos de registro incluye direcciones de protocolo de Internet (IP), tipo de navegador, proveedor de servicios de Internet (ISP), fecha y hora, páginas de referencia/salida y número de clics para analizar tendencias, administrar el sitio, rastrear el movimiento del usuario alrededor del sitio y recopilar información demográfica. Las direcciones IP y otra información similar no están vinculadas a ninguna información que sea personalmente identificable."
+      },
+      {
+        "title": "Cookies y Web Beacons",
+        "content": "Este sitio utiliza cookies para almacenar información sobre las preferencias de los visitantes, registrar información específica del usuario sobre las páginas a las que el usuario accede o visita, personalizar el contenido de la página web según el tipo de navegador de los visitantes u otra información que el visitante envíe a través de su navegador."
+      },
+      {
+        "title": "Cookie DoubleClick DART",
+        "content": "<ul><li>Google, como proveedor asociado, utiliza cookies para publicar anuncios en este sitio.</li><li>El uso de la cookie DART por parte de Google le permite servir anuncios a los usuarios basados en su visita a este sitio y a otros sitios en Internet.</li><li>Los usuarios pueden inhabilitar el uso de la cookie de DART visitando la política de privacidad de la red de contenido y anuncios de Google en la siguiente URL: <a href=\"https://policies.google.com/technologies/ads\" target=\"_blank\" rel=\"nofollow noopener\" class=\"text-red-500 hover:text-red-700 underline\">https://policies.google.com/technologies/ads</a></li></ul>"
+      },
+      {
+        "title": "Nuestros socios publicitarios",
+        "content": "Algunos de nuestros socios publicitarios pueden utilizar cookies y web beacons en nuestro sitio. Nuestro socio publicitario incluye: <ul><li><strong>Google AdSense</strong></li></ul> Estos servidores de anuncios de terceros o redes publicitarias utilizan tecnología para los anuncios y enlaces que aparecen en este sitio y que se envían directamente a su navegador. Reciben automáticamente su dirección IP cuando esto ocurre. Otras tecnologías (como cookies, JavaScript o Web Beacons) también pueden ser utilizadas por las redes publicitarias de terceros para medir la efectividad de sus anuncios y / o para personalizar el contenido publicitario que usted ve.<br><br>Este sitio no tiene acceso ni control sobre estas cookies que son utilizadas por anunciantes de terceros."
+      },
+      {
+        "title": "Consentimiento",
+        "content": "Al utilizar nuestro sitio web, usted acepta nuestra política de privacidad y acepta sus términos."
+      },
+      {
+        "title": "Actualización",
+        "content": "Esta Política de Privacidad fue actualizada por última vez el: 16 de Enero de 2026."
+      }
+    ]
+  },
+  {
+    "code": "en",
+    "dir": "en/",
+    "title": "Privacy Policy - PandaLatam",
+    "description": "Privacy policy and use of cookies of PandaLatam.",
+    "h1": "Privacy Policy",
+    "intro": "The privacy of our visitors is of extreme importance to us. This privacy policy document describes the types of personal information is received and collected by us and how it is used.",
+    "sections": [
+      {
+        "title": "Log Files",
+        "content": "Like many other Web sites, this site makes use of log files. The information inside the log files includes internet protocol (IP) addresses, type of browser, Internet Service Provider (ISP), date/time stamp, referring/exit pages, and number of clicks to analyze trends, administer the site, track user's movement around the site, and gather demographic information. IP addresses, and other such information are not linked to any information that is personally identifiable."
+      },
+      {
+        "title": "Cookies and Web Beacons",
+        "content": "This site uses cookies to store information about visitors' preferences, record user-specific information on which pages the user access or visit, customize Web page content based on visitors browser type or other information that the visitor sends via their browser."
+      },
+      {
+        "title": "DoubleClick DART Cookie",
+        "content": "<ul><li>Google, as a third vendor, uses cookies to serve ads on this site.</li><li>Google's use of the DART cookie enables it to serve ads to users based on their visit to this site and other sites on the Internet.</li><li>Users may opt out of the use of the DART cookie by visiting the Google ad and content network privacy policy at the following URL: <a href=\"https://policies.google.com/technologies/ads\" target=\"_blank\" rel=\"nofollow noopener\" class=\"text-red-500 hover:text-red-700 underline\">https://policies.google.com/technologies/ads</a></li></ul>"
+      },
+      {
+        "title": "Our Advertising Partners",
+        "content": "Some of our advertising partners may use cookies and web beacons on our site. Our advertising partners include: <ul><li><strong>Google AdSense</strong></li></ul> These third-party ad servers or ad networks use technology to the advertisements and links that appear on this site and are sent directly to your browser. They automatically receive your IP address when this occurs. Other technologies (such as cookies, JavaScript, or Web Beacons) may also be used by the third-party ad networks to measure the effectiveness of their advertisements and / or to personalize the advertising content that you see.<br><br>This site has no access to or control over these cookies that are used by third-party advertisers."
+      },
+      {
+        "title": "Consent",
+        "content": "By using our website, you hereby consent to our privacy policy and agree to its terms."
+      },
+      {
+        "title": "Update",
+        "content": "This Privacy Policy was last updated on: January 16, 2026."
+      }
+    ]
+  },
+  {
+    "code": "tr",
+    "dir": "tr/",
+    "title": "Gizlilik Politikası - PandaLatam",
+    "description": "PandaLatam'ın gizlilik politikası ve çerez kullanımı.",
+    "h1": "Gizlilik Politikası",
+    "intro": "Ziyaretçilerimizin gizliliği bizim için son derece önemlidir. Bu gizlilik politikası belgesi, tarafımızca alınan ve toplanan kişisel bilgi türlerini ve bunların nasıl kullanıldığını açıklar.",
+    "sections": [
+      {
+        "title": "Günlük Dosyaları",
+        "content": "Diğer birçok Web sitesi gibi, bu site de günlük dosyalarından yararlanır. Günlük dosyalarındaki bilgiler; trendleri analiz etmek, siteyi yönetmek, kullanıcının site etrafındaki hareketini izlemek ve demografik bilgiler toplamak için internet protokolü (IP) adreslerini, tarayıcı türünü, İnternet Servis Sağlayıcısını (ISP), tarih/saat damgasını, yönlendiren/çıkış sayfalarını ve tıklama sayısını içerir. IP adresleri ve diğer bu tür bilgiler, kişisel olarak tanımlanabilir herhangi bir bilgiyle bağlantılı değildir."
+      },
+      {
+        "title": "Çerezler ve Web İşaretçileri",
+        "content": "Bu site; ziyaretçilerin tercihleri hakkında bilgi depolamak, kullanıcının hangi sayfalara eriştiği veya ziyaret ettiği hakkında kullanıcıya özel bilgileri kaydetmek, Web sayfası içeriğini ziyaretçilerin tarayıcı türüne veya ziyaretçinin tarayıcısı aracılığıyla gönderdiği diğer bilgilere göre özelleştirmek için çerezleri kullanır."
+      },
+      {
+        "title": "DoubleClick DART Çerezi",
+        "content": "<ul><li>Google, üçüncü taraf satıcı olarak bu sitede reklam sunmak için çerezleri kullanır.</li><li>Google'ın DART çerezini kullanması, kullanıcılara bu siteye ve internetteki diğer sitelere yaptıkları ziyaretlere dayanarak reklam sunmasını sağlar.</li><li>Kullanıcılar, şu URL'deki Google reklam ve içerik ağı gizlilik politikasını ziyaret ederek DART çerezinin kullanımından vazgeçebilirler: <a href=\"https://policies.google.com/technologies/ads\" target=\"_blank\" rel=\"nofollow noopener\" class=\"text-red-500 hover:text-red-700 underline\">https://policies.google.com/technologies/ads</a></li></ul>"
+      },
+      {
+        "title": "Reklam Ortaklarımız",
+        "content": "Bazı reklam ortaklarımız sitemizde çerezler ve web işaretçileri kullanabilir. Reklam ortaklarımız şunları içerir: <ul><li><strong>Google AdSense</strong></li></ul> Bu üçüncü taraf reklam sunucuları veya reklam ağları, bu sitede görünen ve doğrudan tarayıcınıza gönderilen reklamlar ve bağlantılar için teknoloji kullanır. Bu gerçekleştiğinde IP adresinizi otomatik olarak alırlar. Diğer teknolojiler (çerezler, JavaScript veya Web İşaretçileri gibi) de üçüncü taraf reklam ağları tarafından reklamlarının etkinliğini ölçmek ve/veya gördüğünüz reklam içeriğini kişiselleştirmek için kullanılabilir.<br><br>Bu sitenin, üçüncü taraf reklamverenler tarafından kullanılan bu çerezler üzerinde erişimi veya kontrolü yoktur."
+      },
+      {
+        "title": "Rıza",
+        "content": "Web sitemizi kullanarak, gizlilik politikamızı kabul etmiş ve şartlarını onaylamış olursunuz."
+      },
+      {
+        "title": "Güncelleme",
+        "content": "Bu Gizlilik Politikası en son şu tarihte güncellenmiştir: 16 Ocak 2026."
+      }
+    ]
+  }
+]

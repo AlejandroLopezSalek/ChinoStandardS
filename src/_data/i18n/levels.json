@@ -1,0 +1,380 @@
+[
+  {
+    "code": "es",
+    "dir": "",
+    "search_placeholder": "Buscar por tema...",
+    "search_title": "Buscar Temas",
+    "edit_lesson": "Editar Lección",
+    "lesson_title": "Título de la Lección",
+    "description_label": "Descripción (opcional)",
+    "content_label": "Contenido de la Lección",
+    "save_changes": "Guardar Cambios",
+    "create_lesson": "Crear Nueva Lección",
+    "levels": {
+      "A1": {
+        "title": "Nivel A1 - Chino Básico",
+        "description": "Recursos de aprendizaje de Chino Nivel A1.",
+        "tools_title": "Herramientas Recomendadas para A1",
+        "affiliate": {
+          "title": "italki",
+          "description": "No esperes a ser 'fluido'. Encuentra un profesor paciente y empieza a hablar hoy mismo.",
+          "btn": "Encontrar Profesor"
+        },
+        "grammar": [
+          ["Alfabeto Chino (Pinyin)", "Básico", "El sistema de romanización Pinyin y los 4 tonos fundamentales.", "pinyin"],
+          ["Pronombres Personales", "Básico", "Yo (我), Tú (你), Él/Ella (他/她) y sus plurales con 'men' (们).", "pronombres"],
+          ["El Verbo 'Ser' (是)", "Básico", "Uso de 是 (shì) para identificar personas o cosas. NO se conjuga.", "verbo-shi"],
+          ["Partícula 'ma' (吗)", "Básico", "Convierte una afirmación en una pregunta de sí/no al final de la oración.", "particula-ma"],
+          ["Posesión con 'de' (的)", "Básico", "Indica posesión o relación: mi libro (我的书).", "posesion-de"],
+          ["Orden SVO", "Básico", "El orden básico: Sujeto + Verbo + Objeto, como en español.", "orden-svo"],
+          ["Tener y Haber (有)", "Básico", "El verbo 有 (yǒu) significa 'tener' o 'haber'. Su negación es 没 (méi).", "verbo-you"],
+          ["Clasificadores Básicos (个)", "Básico", "Palabras de medida entre número y sustantivo. 'Un' (个) libro.", "clasificadores"],
+          ["Preguntas Básicas", "Básico", "Qué (什么), Quién (谁), Dónde (哪里), Cuándo (什么时候).", "preguntas-basicas"],
+          ["Estar / En (在)", "Básico", "Uso de 在 (zài) para expresar ubicación o el lugar de la acción.", "verbo-zai"],
+          ["Números y Fechas", "Básico", "Sistema numérico del 1 al 100, la hora, el día y los meses.", "numeros-fechas"],
+          ["Querer (想 / 要)", "Básico", "Diferencias entre Xiǎng (gustaría/pensar) y Yào (querer/necesitar).", "querer-xiang-yao"]
+        ]
+      },
+      "A2": {
+        "title": "Nivel A2 - Chino Elemental",
+        "description": "Recursos de aprendizaje de Chino Nivel A2.",
+        "tools_title": "Potencia tu nivel A2",
+        "affiliate": {
+          "title": "italki",
+          "description": "Mejora tu fluidez conversando con nativos. Rompe el miedo a hablar.",
+          "btn": "Practicar Conversación"
+        },
+        "grammar": [
+          ["Verbos Modales (能, 会, 可以)", "Elemental", "Diferencias entre capacidad aprendida, posibilidad y permiso.", "verbos-modales"],
+          ["Acciones Pasadas (了)", "Elemental", "La partícula 了 (le) para indicar cambio de estado o acción completada.", "particula-le"],
+          ["Experiencias (过)", "Elemental", "Uso de 过 (guo) para expresar experiencias pasadas: 'Alguna vez he...'.", "experiencias-guo"],
+          ["Haciendo algo (正在)", "Elemental", "Formar el presente continuo o gerundio: 'Estar + -ando/-iendo'.", "presente-continuo"],
+          ["Comparaciones (比)", "Elemental", "Estructura A 比 B + Adjetivo para decir 'A es más X que B'.", "comparaciones-bi"],
+          ["Dirección Básica (来 / 去)", "Elemental", "Complementos direccionales simples usando 'Venir' (来) e 'Ir' (去).", "direccion-basica"],
+          ["Partícula 'de' (得)", "Elemental", "Para describir cómo se realiza una acción: Verbo + 得 + Adjetivo.", "particula-de-adverbial"],
+          ["Un poco (一点 / 一下)", "Elemental", "Diferencias entre usar Yīdiǎn para sustantivos y Yīxià para verbos.", "un-poco"],
+          ["Porque / Por lo tanto", "Elemental", "Conectores lógicos de causa-efecto: 因为 (Yīnwèi) ... 所以 (Suǒyǐ).", "porque-por-tanto"],
+          ["Aunque / Pero", "Elemental", "Contraste en las ideas: 虽然 (Suīrán) ... 但是 (Dànshì).", "aunque-pero"],
+          ["Reduplicación de Verbos", "Elemental", "Repetir verbos (ej. 看看) para suavizar el tono o decir 'echar un vistazo'.", "reduplicacion-verbos"],
+          ["Frases de Tiempo (的 时候)", "Elemental", "Expresar 'Cuando...' o 'En el momento de...' usando 的时候.", "frases-tiempo"]
+        ]
+      },
+      "B1": {
+        "title": "Nivel B1 - Chino Intermedio",
+        "description": "Recursos de aprendizaje de Chino Nivel B1.",
+        "tools_title": "Para Nivel Intermedio B1",
+        "affiliate": {
+          "title": "italki",
+          "description": "Perfecciona tu acento y fluidez hablando sobre temas complejos con hablantes nativos.",
+          "btn": "Practicar Conversación"
+        },
+        "grammar": [
+          ["Estructura con 'Ba' (把)", "Intermedio", "Mover el objeto antes del verbo para enfatizar el resultado de la acción.", "estructura-ba"],
+          ["Voz Pasiva (被)", "Intermedio", "Uso de 被 (bèi) para formar oraciones pasivas enfocadas en quien recibe la acción.", "voz-pasiva-bei"],
+          ["Complementos de Resultado", "Intermedio", "Verbos seguidos de 完, 到, 见 para indicar el resultado de la acción.", "complementos-resultado"],
+          ["Enfatizar con 'Shi... de' (是...的)", "Intermedio", "Estructura para destacar tiempo, lugar o manera de un evento pasado.", "enfasisi-shi-de"],
+          ["Complementos Potenciales", "Intermedio", "Añadir 得 o 不 para indicar si la acción se puede lograr o no (ej. 听得懂).", "complementos-potenciales"],
+          ["Si... Entonces (如果...就)", "Intermedio", "Condicionales en chino: Si Rúguǒ ocurre, entonces Jiù pasa algo.", "condicional-si"],
+          ["Aparte de... (除了...以外)", "Intermedio", "Decir 'Excepto por X' o 'Además de X'.", "aparte-de"],
+          ["Ni siquiera (连...都/也)", "Intermedio", "Estructura Lián... dōu para añadir énfasis extremo: 'Incluso...'.", "ni-siquiera-lian"],
+          ["Tan pronto como (一...就)", "Intermedio", "Secuencia rápida: Tan pronto como ocurre A (一), sucede B (就).", "tan-pronto-como"],
+          ["Volverse (变得 / 越来越)", "Intermedio", "Expresar cambio de estado o grado incremental: 'Cada vez más...'.", "volverse-mas"],
+          ["Hacer que / Dejar (让 / 叫)", "Intermedio", "Uso de Ràng y Jiào como verbos causativos: 'Me hizo reír'.", "hacer-que-rang"],
+          ["No importa... (无论...都)", "Intermedio", "Expresar condicional incondicional: 'Sin importar qué..., siempre...'.", "no-importa"]
+        ]
+      },
+      "B2": {
+        "title": "Nivel B2 - Chino Intermedio Alto",
+        "description": "Recursos de aprendizaje de Chino Nivel B2.",
+        "tools_title": "Domina la Fluidez (B2)",
+        "affiliate": {
+          "title": "italki",
+          "description": "En este nivel, necesitas práctica real. Encuentra hablantes nativos para perfeccionar tu acento y dialecto.",
+          "btn": "Conectar con Nativos"
+        },
+        "grammar": [
+          ["Complementos de Dirección Avanzados", "Avanzado", "Usos figurados de 起来, 下去, 出来 para indicar inicio, continuación o surgimiento de un estado.", "direccion-avanzada"],
+          ["Preguntas Retóricas (难道)", "Avanzado", "El uso de Nándào para enmarcar una pregunta donde la respuesta es obvia: '¿Acaso...?'", "preguntas-retoricas"],
+          ["Condicional Múltiple (只要...就 / 只有...才)", "Avanzado", "Diferencia entre condición suficiente ('Solo con que...') y necesaria ('Únicamente si...').", "condicional-multiple"],
+          ["Ya que... Entonces (既然...就)", "Avanzado", "Jìrán... jiù: 'Dado que ya ocurrió esto, entonces haremos esto'.", "ya-que-jiran"],
+          ["No es que... Sino que (不是...而是)", "Avanzado", "Corregir falsas suposiciones: No es A, es B.", "no-es-sino"],
+          ["Tener que (非...不可)", "Avanzado", "Doble negación para expresar una necesidad absoluta o determinación fuerte.", "tener-que-fei"],
+          ["Adverbio 'Jingran' (竟然)", "Avanzado", "Expresar sorpresa o algo inesperado ante un evento: 'Inesperadamente...'.", "sorpresa-jingran"],
+          ["Pasaje con 'Er' (而)", "Avanzado", "Conector formal utilizado para contraste ('pero / sin embargo') o progresión.", "conector-er"],
+          ["Apenas / Con dificultad (好不容易)", "Avanzado", "Hǎobù róngyì: Indicar que algo tomó muchísimo esfuerzo lograrse.", "apenas-haobu"],
+          ["Modismos (成语 - Chengyu)", "Avanzado", "Introducción a los proverbios de 4 caracteres chinos que encapsulan historias y moral.", "modismos-chengyu"]
+        ]
+      },
+      "C1": {
+        "title": "Nivel C1 - Chino Avanzado",
+        "description": "Recursos de aprendizaje de Chino Nivel C1.",
+        "tools_title": "Perfeccionamiento (C1+)",
+        "affiliate": {
+          "title": "italki",
+          "description": "Mantén tu nivel alto. Conversa sobre política, cultura y literatura con expertos.",
+          "btn": "Debates Avanzados"
+        },
+        "grammar": [
+          ["Lenguaje Escrito Formativo (书面语)", "Avanzado", "Transición del lenguaje oral (口语) al lenguaje formal usado en noticias, literatura y negocios.", "lenguaje-escrito"],
+          ["El Uso Clásico de 'Yi' (以)", "Avanzado", "Partícula formal equivalente a 用 (con), Porque (因为), o para indicar propósito.", "uso-de-yi"],
+          ["Matices de Sinónimos", "Avanzado", "Diferenciar entre verbos y adjetivos casi idénticos basados en el contexto formal o intención emocional.", "sinonimos-matices"],
+          ["Frases Complejas sin Conectores", "Avanzado", "Uso implícito de relaciones lógicas donde el contexto rige la gramática.", "frases-complejas"],
+          ["Estructuras Retóricas", "Avanzado", "Expresiones como '¿Cómo no iba a saberlo?' utilizadas en persuasión y argumentación.", "retorica-voz"],
+          ["Aplicación de Chengyu", "Avanzado", "Insertar 成语 en oraciones avanzadas de manera natural como adjetivos, sustantivos o adverbios.", "aplicacion-chengyu"]
+        ]
+      }
+    }
+  },
+  {
+    "code": "en",
+    "dir": "en/",
+    "search_placeholder": "Search by topic...",
+    "search_title": "Search Topics",
+    "edit_lesson": "Edit Lesson",
+    "lesson_title": "Lesson Title",
+    "description_label": "Description (optional)",
+    "content_label": "Lesson Content",
+    "save_changes": "Save Changes",
+    "create_lesson": "Create New Lesson",
+    "levels": {
+      "A1": {
+        "title": "Level A1 - Basic Chinese",
+        "description": "Learning resources for Chinese Level A1.",
+        "tools_title": "Recommended Tools for A1",
+        "affiliate": {
+          "title": "italki",
+          "description": "Don't wait to be 'fluent'. Find a patient teacher and start speaking today.",
+          "btn": "Find a Teacher"
+        },
+        "grammar": [
+          ["Chinese Alphabet (Pinyin)", "Basic", "The Pinyin romanization system and the 4 fundamental tones.", "pinyin"],
+          ["Personal Pronouns", "Basic", "I (我), You (你), He/She (他/她) and their plurals with 'men' (们).", "pronombres"],
+          ["The Verb 'To Be' (是)", "Basic", "Use of 是 (shì) to identify people or things. It is NOT conjugated.", "verbo-shi"],
+          ["Question Particle 'ma' (吗)", "Basic", "Turns a statement into a yes/no question at the end of the sentence.", "particula-ma"],
+          ["Possession with 'de' (的)", "Basic", "Indicates possession or relationship: my book (我的书).", "posesion-de"],
+          ["SVO Word Order", "Basic", "The basic order: Subject + Verb + Object, just like in English.", "orden-svo"],
+          ["To Have / There Is (有)", "Basic", "The verb 有 (yǒu) means 'to have' or 'there is'. Its negation is 没 (méi).", "verbo-you"],
+          ["Basic Measure Words (个)", "Basic", "Measure words between a number and a noun. 'One' (个) person.", "clasificadores"],
+          ["Basic Questions", "Basic", "What (什么), Who (谁), Where (哪里), When (什么时候).", "preguntas-basicas"],
+          ["To Be At / In (在)", "Basic", "Use of 在 (zài) to express location or where an action happens.", "verbo-zai"],
+          ["Numbers & Dates", "Basic", "Number system from 1 to 100, time, days, and months.", "numeros-fechas"],
+          ["To Want (想 / 要)", "Basic", "Differences between Xiǎng (would like) and Yào (want/need).", "querer-xiang-yao"]
+        ]
+      },
+      "A2": {
+        "title": "Level A2 - Elementary Chinese",
+        "description": "Learning resources for Chinese Level A2.",
+        "tools_title": "Boost your A2 level",
+        "affiliate": {
+          "title": "italki",
+          "description": "Improve your fluency by chatting with natives. Break the fear of speaking.",
+          "btn": "Practice Conversation"
+        },
+        "grammar": [
+          ["Modal Verbs (能, 会, 可以)", "Elementary", "Differences between learned ability, possibility, and permission.", "verbos-modales"],
+          ["Past Actions (了)", "Elementary", "The particle 了 (le) to indicate change of state or completed action.", "particula-le"],
+          ["Experiences (过)", "Elementary", "Use of 过 (guo) to express past experiences: 'I have once...'.", "experiencias-guo"],
+          ["Doing something (正在)", "Elementary", "Forming the present continuous: 'To be + -ing'.", "presente-continuo"],
+          ["Comparisons (比)", "Elementary", "A 比 B + Adjective structure to say 'A is more X than B'.", "comparaciones-bi"],
+          ["Basic Direction (来 / 去)", "Elementary", "Simple directional complements using 'Come' (来) and 'Go' (去).", "direccion-basica"],
+          ["Particle 'de' (得)", "Elementary", "To describe how an action is performed: Verb + 得 + Adjective.", "particula-de-adverbial"],
+          ["A bit (一点 / 一下)", "Elementary", "Differences between using Yīdiǎn for nouns and Yīxià for verbs.", "un-poco"],
+          ["Because / Therefore", "Elementary", "Logical cause-effect connectors: 因为 (Yīnwèi) ... 所以 (Suǒyǐ).", "porque-por-tanto"],
+          ["Although / But", "Elementary", "Contrast in ideas: 虽然 (Suīrán) ... 但是 (Dànshì).", "aunque-pero"],
+          ["Verb Reduplication", "Elementary", "Repeating verbs (e.g., 看看) to soften the tone or say 'take a look'.", "reduplicacion-verbos"],
+          ["Time Phrases (的 时候)", "Elementary", "Expressing 'When...' or 'At the time of...' using 的时候.", "frases-tiempo"]
+        ]
+      },
+      "B1": {
+        "title": "Level B1 - Intermediate Chinese",
+        "description": "Learning resources for Chinese Level B1.",
+        "tools_title": "For Intermediate Level B1",
+        "affiliate": {
+          "title": "italki",
+          "description": "Perfect your accent and fluency by talking about complex topics with native speakers.",
+          "btn": "Practice Conversation"
+        },
+        "grammar": [
+          ["Structure with 'Ba' (把)", "Intermediate", "Move the object before the verb to emphasize the result of the action.", "estructura-ba"],
+          ["Passive Voice (被)", "Intermediate", "Use of 被 (bèi) to form passive sentences focused on the receiver of the action.", "voz-pasiva-bei"],
+          ["Result Complements", "Intermediate", "Verbs followed by 完, 到, 见 to indicate the result of the action.", "complementos-resultado"],
+          ["Emphasize with 'Shi... de' (是...的)", "Intermediate", "Structure to highlight time, place, or manner of a past event.", "enfasisi-shi-de"],
+          ["Potential Complements", "Intermediate", "Add 得 or 不 to indicate if the action can be achieved or not (e.g., 听得懂).", "complementos-potenciales"],
+          ["If... Then (如果...就)", "Intermediate", "Conditionals in Chinese: If Rúguǒ occurs, then Jiù something happens.", "condicional-si"],
+          ["Apart from... (除了...以外)", "Intermediate", "Saying 'Except for X' or 'In addition to X'.", "aparte-de"],
+          ["Not even (连...都/也)", "Intermediate", "Lián... dōu structure for extreme emphasis: 'Even...'.", "ni-siquiera-lian"],
+          ["As soon as (一...就)", "Intermediate", "Quick sequence: As soon as A (一) happens, B (就) occurs.", "tan-pronto-como"],
+          ["To become (变得 / 越来越)", "Intermediate", "Expressing change of state or incremental degree: 'More and more...'.", "volverse-mas"],
+          ["Make / Let (让 / 叫)", "Intermediate", "Use of Ràng and Jiào as causative verbs: 'He made me laugh'.", "hacer-que-rang"],
+          ["No matter... (无论...都)", "Intermediate", "Expressing unconditional conditional: 'Regardless of what..., always...'.", "no-importa"]
+        ]
+      },
+      "B2": {
+        "title": "Level B2 - Upper Intermediate Chinese",
+        "description": "Learning resources for Chinese Level B2.",
+        "tools_title": "Master Fluency (B2)",
+        "affiliate": {
+          "title": "italki",
+          "description": "At this level, you need real practice. Find native speakers to perfect your accent and dialect.",
+          "btn": "Connect with Natives"
+        },
+        "grammar": [
+          ["Advanced Directional Complements", "Advanced", "Figurative uses of 起来, 下去, 出来 to indicate start, continuation, or emergence of a state.", "direccion-avanzada"],
+          ["Rhetorical Questions (难道)", "Advanced", "The use of Nándào to frame a question where the answer is obvious: 'Could it be...?'", "preguntas-retoricas"],
+          ["Multiple Conditional (只要...就 / 只有...才)", "Advanced", "Difference between sufficient condition ('As long as...') and necessary ('Only if...').", "condicional-multiple"],
+          ["Since... Then (既然...就)", "Advanced", "Jìrán... jiù: 'Since this already happened, then we will do this'.", "ya-que-jiran"],
+          ["It's not that... But (不是...而是)", "Advanced", "Correcting false assumptions: It's not A, it's B.", "no-es-sino"],
+          ["Have to (非...不可)", "Advanced", "Double negation to express absolute necessity or strong determination.", "tener-que-fei"],
+          ["Adverb 'Jingran' (竟然)", "Advanced", "Expressing surprise or something unexpected: 'Unexpectedly...'.", "sorpresa-jingran"],
+          ["Passage with 'Er' (而)", "Advanced", "Formal connector used for contrast ('but / however') or progression.", "conector-er"],
+          ["Hardly / With difficulty (好不容易)", "Advanced", "Hǎobù róngyì: Indicating that something took a lot of effort to achieve.", "apenas-haobu"],
+          ["Idioms (成语 - Chengyu)", "Advanced", "Introduction to 4-character Chinese proverbs that encapsulate stories and morals.", "modismos-chengyu"]
+        ]
+      },
+      "C1": {
+        "title": "Level C1 - Advanced Chinese",
+        "description": "Learning resources for Chinese Level C1.",
+        "tools_title": "Refinement (C1+)",
+        "affiliate": {
+          "title": "italki",
+          "description": "Keep your level high. Talk about politics, culture, and literature with experts.",
+          "btn": "Advanced Debates"
+        },
+        "grammar": [
+          ["Formal Written Language (书面语)", "Advanced", "Transition from spoken (口语) to formal language used in news, literature, and business.", "lenguaje-escrito"],
+          ["The Classical Use of 'Yi' (以)", "Advanced", "Formal particle equivalent to 用 (with), Because (因为), or to indicate purpose.", "uso-de-yi"],
+          ["Synonym Nuances", "Advanced", "Differentiating between almost identical verbs and adjectives based on formal context or emotional intent.", "sinonimos-matices"],
+          ["Complex Phrases without Connectors", "Advanced", "Implicit use of logical relations where context governs grammar.", "frases-complejas"],
+          ["Rhetorical Structures", "Advanced", "Expressions like 'How could I not know?' used in persuasion and argumentation.", "retorica-voz"],
+          ["Chengyu Application", "Advanced", "Inserting 成语 into advanced sentences naturally as adjectives, nouns, or adverbs.", "aplicacion-chengyu"]
+        ]
+      }
+    }
+  },
+  {
+    "code": "tr",
+    "dir": "tr/",
+    "search_placeholder": "Konuya göre ara...",
+    "search_title": "Konu Ara",
+    "edit_lesson": "Dersi Düzenle",
+    "lesson_title": "Ders Başlığı",
+    "description_label": "Açıklama (isteğe bağlı)",
+    "content_label": "Ders İçeriği",
+    "save_changes": "Değişiklikleri Kaydet",
+    "create_lesson": "Yeni Ders Oluştur",
+    "levels": {
+      "A1": {
+        "title": "Seviye A1 - Temel Çince",
+        "description": "Çince Seviye A1 için öğrenme kaynakları.",
+        "tools_title": "A1 İçin Önerilen Araçlar",
+        "affiliate": {
+          "title": "italki",
+          "description": "'Akıcı' olmayı beklemeyin. Sabırlı bir öğretmen bulun ve bugün konuşmaya başlayın.",
+          "btn": "Öğretmen Bul"
+        },
+        "grammar": [
+          ["Çince Alfabesi (Pinyin)", "Temel", "Pinyin romanizasyon sistemi ve 4 temel ton.", "pinyin"],
+          ["Kişi Zamirleri", "Temel", "Ben (我), Sen (你), O (他/她) ve çoğulları (们).", "pronombres"],
+          ["'Olmak' Fiili (是)", "Temel", "Kişileri veya nesneleri tanımlamak için 是 (shì) kullanımı. Çekimlenmez.", "verbo-shi"],
+          ["Soru Eki 'ma' (吗)", "Temel", "Cümlenin sonuna gelerek ifadeyi evet/hayır sorusuna dönüştürür.", "particula-ma"],
+          ["'de' ile İyelik (的)", "Temel", "Sahiplik veya ilişki belirtir: benim kitabım (我的书).", "posesion-de"],
+          ["ÖYN Söz Dizimi", "Temel", "Temel söz dizimi: Özne + Yüklem + Nesne, tıpkı İngilizcedeki gibi.", "orden-svo"],
+          ["Sahip Olmak / Var (有)", "Temel", "有 (yǒu) fiili 'sahip olmak' veya 'var' anlamına gelir. Olumsuzu 没 (méi)'dir.", "verbo-you"],
+          ["Temel Ölçü Birimleri (个)", "Temel", "Bir sayı ve isim arasında kullanılan ölçü birimleri. 'Bir' (个) kişi.", "clasificadores"],
+          ["Temel Sorular", "Temel", "Ne (什么), Kim (谁), Nerede (哪里), Ne Zaman (什么时候).", "preguntas-basicas"],
+          ["Bulunma Hal Eki (在)", "Temel", "Konumu veya eylemin nerede gerçekleştiğini ifade etmek için 在 (zài) kullanımı.", "verbo-zai"],
+          ["Sayılar ve Tarihler", "Temel", "1'den 100'e kadar sayı sistemi, zaman, günler ve aylar.", "numeros-fechas"],
+          ["İstemek (想 / 要)", "Temel", "Xiǎng (istemek/arzu etmek) ile Yào (istemek/ihtiyaç duymak) arasındaki farklar.", "querer-xiang-yao"]
+        ]
+      },
+      "A2": {
+        "title": "Seviye A2 - Başlangıç Üstü Çince",
+        "description": "Çince Seviye A2 için öğrenme kaynakları.",
+        "tools_title": "A2 seviyenizi yükseltin",
+        "affiliate": {
+          "title": "italki",
+          "description": "Yerlilerle sohbet ederek akıcılığınızı geliştirin. Konuşma korkusunu yenin.",
+          "btn": "Konuşma Pratiği"
+        },
+        "grammar": [
+          ["Tarz Fiiller (能, 会, 可以)", "Başlangıç Üstü", "Öğrenilmiş yetenek, olasılık ve izin arasındaki farklar.", "verbos-modales"],
+          ["Geçmiş Eylemler (了)", "Başlangıç Üstü", "Durum değişikliğini veya tamamlanmış eylemi belirtmek için 了 (le) parçacığı.", "particula-le"],
+          ["Deneyimler (过)", "Başlangıç Üstü", "Geçmiş deneyimleri ifade etmek için 过 (guo) kullanımı: 'Bir keresinde...'.", "experiencias-guo"],
+          ["Bir şey yapmak (正在)", "Başlangıç Üstü", "Şimdiki devam eden zamanı oluşturma: 'Yapıyor olmak'.", "presente-continuo"],
+          ["Karşılaştırmalar (比)", "Başlangıç Üstü", "'A, B'den daha X'tir' demek için A 比 B + Sıfat yapısı.", "comparaciones-bi"],
+          ["Temel Yönelim (来 / 去)", "Başlangıç Üstü", "'Gelmek' (来) ve 'Gitmek' (去) kullanarak basit yönelim tamlayıcıları.", "direccion-basica"],
+          ["'de' Parçacığı (得)", "Başlangıç Üstü", "Bir eylemin nasıl yapıldığını açıklamak için: Fiil + 得 + Sıfat.", "particula-de-adverbial"],
+          ["Biraz (一点 / 一下)", "Başlangıç Üstü", "İsimler için Yīdiǎn ve fiiller için Yīxià kullanımı arasındaki farklar.", "un-poco"],
+          ["Çünkü / Bu Yüzden", "Başlangıç Üstü", "Mantıksal neden-sonuç bağlaçları: 因为 (Yīnwèi) ... 所以 (Suǒyǐ).", "porque-por-tanto"],
+          ["Rağmen / Ama", "Başlangıç Üstü", "Fikirlerde zıtlık: 虽然 (Suīrán) ... 但是 (Dànshì).", "aunque-pero"],
+          ["Fiil Yinelemesi", "Başlangıç Üstü", "Tonu yumuşatmak veya 'bir göz atmak' demek için fiilleri yinelemek (örn. 看看).", "reduplicacion-verbos"],
+          ["Zaman İfadeleri (的 时候)", "Başlangıç Üstü", "时候 kullanarak '... olduğunda' veya '... zamanında' ifadesi.", "frases-tiempo"]
+        ]
+      },
+      "B1": {
+        "title": "Seviye B1 - Orta Seviye Çince",
+        "description": "Çince Seviye B1 için öğrenme kaynakları.",
+        "tools_title": "Orta Seviye B1 İçin",
+        "affiliate": {
+          "title": "italki",
+          "description": "Anadilini konuşanlarla karmaşık konular hakkında konuşarak aksanınızı ve akıcılığınızı mükemmelleştirin.",
+          "btn": "Konuşma Pratiği"
+        },
+        "grammar": [
+          ["'Ba' Yapısı (把)", "Orta", "Eylemin sonucunu vurgulamak için nesneyi fiilden önceye taşıyın.", "estructura-ba"],
+          ["Edilgen Çatı (被)", "Orta", "Eylemi alana odaklanan edilgen cümleler kurmak için 被 (bèi) kullanımı.", "voz-pasiva-bei"],
+          ["Sonuç Tamlayıcıları", "Orta", "Eylemin sonucunu belirtmek için 完, 到, 见 ile takip edilen fiiller.", "complementos-resultado"],
+          ["'Shi... de' ile Vurgulama (是...的)", "Orta", "Geçmiş bir olayın zamanını, yerini veya şeklini vurgulamak için yapı.", "enfasisi-shi-de"],
+          ["Potansiyel Tamlayıcılar", "Orta", "Eylemin başarılabilir olup olmadığını belirtmek için 得 veya 不 ekleyin (örn. 听得懂).", "complementos-potenciales"],
+          ["Eğer... O zaman (如果...就)", "Orta", "Çince'de koşullu cümleler: Eğer Rúguǒ olursa, o zaman Jiù bir şey olur.", "condicional-si"],
+          ["... Haricinde (除了...以外)", "Orta", "'X hariç' veya 'X'e ek olarak' demek.", "aparte-de"],
+          ["Bile değil (连...都/ayrıca)", "Orta", "Aşırı vurgu için Lián... dōu yapısı: 'Bile...'.", "ni-siquiera-lian"],
+          ["Yapar yapmaz (一...就)", "Orta", "Hızlı dizi: A (一) olur olmaz, B (就) gerçekleşir.", "tan-pronto-como"],
+          ["Haline gelmek (变得 / 越来越)", "Orta", "Durum değişikliğini veya artan dereceyi ifade etme: 'Gittikçe daha fazla...'.", "volverse-mas"],
+          ["Yaptırmak / İzin vermek (让 / 叫)", "Orta", "Ettirgen fiiller olarak Ràng ve Jiào kullanımı: 'Beni güldürdü'.", "hacer-que-rang"],
+          ["Ne olursa olsun... (无论...都)", "Orta", "Koşulsuz koşul ifadesi: 'Ne olursa olsun..., her zaman...'.", "no-importa"]
+        ]
+      },
+      "B2": {
+        "title": "Seviye B2 - Üst Orta Seviye Çince",
+        "description": "Çince Seviye B2 için öğrenme kaynakları.",
+        "tools_title": "Akıcılıkta Ustalaşın (B2)",
+        "affiliate": {
+          "title": "italki",
+          "description": "Bu seviyede gerçek pratiğe ihtiyacınız var. Aksanınızı ve lehçenizi mükemmelleştirmek için anadilini konuşanları bulun.",
+          "btn": "Yerlilerle Bağlanın"
+        },
+        "grammar": [
+          ["Gelişmiş Yönelim Tamlayıcıları", "İleri", "Bir durumun başlangıcını, devamını veya ortaya çıkışını belirtmek için 起来, 下去, 出来'nin mecazi kullanımı.", "direccion-avanzada"],
+          ["Sözde Sorular (难道)", "İleri", "Cevabın bariz olduğu bir soruyu çerçevelemek için Nándào kullanımı: 'Yoksa... mı?'", "preguntas-retoricas"],
+          ["Çoklu Koşul (只要...就 / 只有...才)", "İleri", "Yeterli koşul ('... sürece') ve gerekli koşul ('Ancak ... ise') arasındaki fark.", "condicional-multiple"],
+          ["Madem... O zaman (既然...就)", "İleri", "Jìrán... jiù: 'Madem bu zaten oldu, o zaman bunu yapacağız'.", "ya-que-jiran"],
+          ["Öyle değil... Ama (不是...而是)", "İleri", "Yanlış varsayımları düzeltme: A değil, B.", "no-es-sino"],
+          ["Zorunda olmak (非...不可)", "İleri", "Mutlak gerekliliği veya güçlü kararlılığı ifade etmek için çift olumsuzlama.", "tener-que-fei"],
+          ["'Jingran' Zarfı (竟然)", "İleri", "Şaşkınlık veya beklenmedik bir şeyi ifade etme: 'Beklenmedik bir şekilde...'.", "sorpresa-jingran"],
+          ["'Er' ile Geçiş (而)", "İleri", "Zıtlık ('ama / ancak') veya ilerleme için kullanılan resmi bağlaç.", "conector-er"],
+          ["Zor bela / Güçlükle (好不容易)", "İleri", "Hǎobù róngyì: Bir şeyin başarılmasının çok çaba gerektirdiğini belirtme.", "apenas-haobu"],
+          ["Deyimler (成语 - Chengyu)", "İleri", "Hikayeleri ve ahlakı özetleyen 4 karakterli Çince atasözlerine giriş.", "modismos-chengyu"]
+        ]
+      },
+      "C1": {
+        "title": "Seviye C1 - İleri Seviye Çince",
+        "description": "Çince Seviye C1 için öğrenme kaynakları.",
+        "tools_title": "Mükemmelleştirme (C1+)",
+        "affiliate": {
+          "title": "italki",
+          "description": "Seviyenizi yüksek tutun. Uzmanlarla siyaset, kültür ve edebiyat hakkında konuşun.",
+          "btn": "İleri Düzey Tartışmalar"
+        },
+        "grammar": [
+          ["Resmi Yazı Dili (书面语)", "İleri", "Konuşma dilinden (口语) haberlerde, edebiyatta ve iş dünyasında kullanılan resmi dile geçiş.", "lenguaje-escrito"],
+          ["'Yi'nin Klasik Kullanımı (以)", "İleri", "用 (ile), Çünkü (因为) ile eşdeğer resmi parçacık veya amaç belirtmek için.", "uso-de-yi"],
+          ["Eş anlamlı Nüanslar", "İleri", "Resmi bağlam veya duygusal niyete dayalı neredeyse özdeş fiiller ve sıfatlar arasındaki farkı ayırt etme.", "sinonimos-matices"],
+          ["Bağlaçsız Karmaşık Cümleler", "İleri", "Bağlamın dilbilgisini yönettiği mantıksal ilişkilerin örtük kullanımı.", "frases-complejas"],
+          ["Sözde Yapılar", "İleri", "İkna ve tartışmada kullanılan 'Nasıl bilmezdim?' gibi ifadeler.", "retorica-voz"],
+          ["Chengyu Uygulaması", "İleri", "成语'yu ileri düzey cümlelere sıfat, isim veya zarf olarak doğal bir şekilde yerleştirme.", "aplicacion-chengyu"]
+        ]
+      }
+    }
+  }
+]

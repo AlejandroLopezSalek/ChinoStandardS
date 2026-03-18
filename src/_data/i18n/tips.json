@@ -1,0 +1,302 @@
+[
+  {
+    "code": "es",
+    "title": "Consejos de Estudio - PandaLatam",
+    "description": "Horarios de estudio, recursos y canales recomendados para aprender chino.",
+    "schedule": {
+      "title": "Horario de Estudio Intensivo",
+      "morning": {
+        "title": "Mañana",
+        "items": [
+          ["7:30 - 8:15", "Leer un texto en chino", "Buscar en BaulChino/sacar un texto de noticias", "book-open"],
+          ["8:15 - 8:45", "Practicar vocabulario", "Diccionarios online o pdfs de verbos o vocabularios", "language"],
+          ["9:00 - 9:45", "Podcast Chinos o noticias", "Luego tomar resumen", "podcast"],
+          ["9:45 - 10:30", "Gramática", "Usar una web de gramática o texto o clases", "book"]
+        ]
+      },
+      "afternoon": {
+        "title": "Tarde",
+        "items": [
+          ["11:15 - 12:00", "Práctica de escritura", "Tema diario, pedir a AI o buscar en internet", "pen"],
+          ["13:00 - 13:45", "Leer un texto avanzado", "Tratar de reconocer patrones", "book"],
+          ["13:45 - 14:15", "Mirar video sin subtítulos", "Práctica de comprensión auditiva", "video"],
+          ["14:15 - 14:45", "Práctica de refranes", "Buscar en libros de HSK o internet o AI", "quote-right"],
+          ["15:00 - 15:45", "Gramática avanzada", "Profesores de YouTube o Italki", "graduation-cap"],
+          ["17:15 - 18:00", "Revisión general", "Escritura + recitarlo (Tema diario)", "check-circle"]
+        ]
+      }
+    },
+    "youtube": {
+      "title": "Canales de YouTube",
+      "categories": [
+        {
+          "title": "Aprender Chino en Español",
+          "icon": "language",
+          "channels": [
+            ["https://www.youtube.com/@clasesdechinomandarin", "Clases de Chino Mandarín"],
+            ["https://www.youtube.com/@aprendechinoconmarco", "Aprende Chino con Marco"],
+            ["https://www.youtube.com/@Nininterprete", "Nininterprete"],
+            ["https://www.youtube.com/@Olechinese", "Olechinese"],
+            ["https://www.youtube.com/@AprenderChino", "Aprender Chino"]
+          ]
+        },
+        {
+          "title": "Gramática y Clases (Inglés/Global)",
+          "icon": "chalkboard-teacher",
+          "channels": [
+            ["https://www.youtube.com/@YoyoChinese", "Yoyo Chinese"],
+            ["https://www.youtube.com/@EverydayChinese", "Everyday Chinese"],
+            ["https://www.youtube.com/@MandarinBlueprint", "Mandarin Blueprint"],
+            ["https://www.youtube.com/@MandarinCorner", "Mandarin Corner"],
+            ["https://www.youtube.com/@JackEasyChinese", "Jack Easy Chinese"],
+            ["https://www.youtube.com/@LearnMandarinChineseNow", "Learn Mandarin Chinese Now"],
+            ["https://www.youtube.com/@ZhangkaiChinese", "Zhangkai Chinese"],
+            ["https://www.youtube.com/@easychinese376", "Easy Chinese"],
+            ["https://www.youtube.com/@AskAndy", "Ask Andy"],
+            ["https://www.youtube.com/@EasyMandarin", "Easy Mandarin"],
+            ["https://www.youtube.com/@ChineseInMinutes", "Chinese In Minutes"],
+            ["https://www.youtube.com/@BeijingChinese101", "Beijing Chinese 101"],
+            ["https://www.youtube.com/@YaChinese", "Ya Chinese"],
+            ["https://www.youtube.com/@learn-chinese-semplicinese", "Learn Chinese Semplicinese"],
+            ["https://www.youtube.com/@LearnChinesewithSawh", "Learn Chinese with Sawh"],
+            ["https://www.youtube.com/@ThatsMandarin", "That's Mandarin"],
+            ["https://www.youtube.com/@CCChineseTeacher", "CC Chinese Teacher"],
+            ["https://www.youtube.com/@LittleStepsChinese", "Little Steps Chinese"],
+            ["https://www.youtube.com/@SylviasChinese", "Sylvia's Chinese"],
+            ["https://www.youtube.com/@FluentUChinese", "FluentU Chinese"],
+            ["https://www.youtube.com/@ChineseForUsOfficial", "Chinese For Us Official"],
+            ["https://www.youtube.com/@jiayouchinese2023", "Jiayou Chinese"],
+            ["https://www.youtube.com/@MandarinAmerican", "Mandarin American"],
+            ["https://www.youtube.com/@chinesewithlia", "Chinese with Lia"],
+            ["https://www.youtube.com/@lichaochinese4961", "Li Chao Chinese"],
+            ["https://www.youtube.com/@ChineseKK", "ChineseKK"],
+            ["https://www.youtube.com/@lazychinese", "Lazy Chinese"],
+            ["https://www.youtube.com/@ComprehensibleMandarin", "Comprehensible Mandarin"],
+            ["https://www.youtube.com/@froglang", "FROGLANG – Learn Chinese"],
+            ["https://www.youtube.com/@LittleFoxChinese", "Little Fox Chinese"],
+            ["https://www.youtube.com/@bubblechinese", "Bubble Chinese"],
+            ["https://www.youtube.com/@Chinese-learning", "Chinese Learning"],
+            ["https://www.youtube.com/@HongCha-aaa", "Hong Cha"]
+          ]
+        },
+        {
+          "title": "Cultura y Práctica de Escucha",
+          "icon": "headphones",
+          "channels": [
+            ["https://www.youtube.com/@ShuoshuoChinese", "ShuoshuoChinese说说中文"],
+            ["https://www.youtube.com/@talkinchinese_redred", "talkinchinese_redred"],
+            ["https://www.youtube.com/@MandarinClick", "Mandarin Click"],
+            ["https://www.youtube.com/@Chinative", "Chinative"],
+            ["https://www.youtube.com/@chi-native", "Chi-native"],
+            ["https://www.youtube.com/@user-mv9wu8ow9u", "喵喵放映室"],
+            ["https://www.youtube.com/@user-zo8ps7it2o", "野生鱼白"],
+            ["https://www.youtube.com/@ManuShi", "Manu Shi"],
+            ["https://www.youtube.com/@Yuanyuanpoem", "Yuanyuan Poem"],
+            ["https://www.youtube.com/@realtimemandarin", "Real Time Mandarin"],
+            ["https://www.youtube.com/@Redro-", "Redro"]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "code": "en",
+    "title": "Study Tips - PandaLatam",
+    "description": "Study schedules, resources and recommended channels to learn Chinese.",
+    "schedule": {
+      "title": "Intensive Study Schedule",
+      "morning": {
+        "title": "Morning",
+        "items": [
+          ["7:30 - 8:15", "Read a Chinese text", "Search on BaulChino/extract a news text", "book-open"],
+          ["8:15 - 8:45", "Practice vocabulary", "Online dictionaries or verb/vocabulary PDFs", "language"],
+          ["9:00 - 9:45", "Chinese Podcasts or news", "Take notes afterwards", "podcast"],
+          ["9:45 - 10:30", "Grammar", "Use a grammar website or textbook or classes", "book"]
+        ]
+      },
+      "afternoon": {
+        "title": "Afternoon",
+        "items": [
+          ["11:15 - 12:00", "Writing practice", "Daily topic, ask AI or search online", "pen"],
+          ["13:00 - 13:45", "Read an advanced text", "Try to recognize patterns", "book"],
+          ["13:45 - 14:15", "Watch video without subtitles", "Listening comprehension practice", "video"],
+          ["14:15 - 14:45", "Sayings practice", "Search in HSK books or internet or AI", "quote-right"],
+          ["15:00 - 15:45", "Advanced grammar", "YouTube teachers or Italki", "graduation-cap"],
+          ["17:15 - 18:00", "General review", "Writing + reciting (Daily topic)", "check-circle"]
+        ]
+      }
+    },
+    "youtube": {
+      "title": "YouTube Channels",
+      "categories": [
+        {
+          "title": "Learn Chinese in Spanish",
+          "icon": "language",
+          "channels": [
+            ["https://www.youtube.com/@clasesdechinomandarin", "Clases de Chino Mandarín"],
+            ["https://www.youtube.com/@aprendechinoconmarco", "Aprende Chino con Marco"],
+            ["https://www.youtube.com/@Nininterprete", "Nininterprete"],
+            ["https://www.youtube.com/@Olechinese", "Olechinese"],
+            ["https://www.youtube.com/@AprenderChino", "Aprender Chino"]
+          ]
+        },
+        {
+          "title": "Grammar & Classes (English/Global)",
+          "icon": "chalkboard-teacher",
+          "channels": [
+            ["https://www.youtube.com/@YoyoChinese", "Yoyo Chinese"],
+            ["https://www.youtube.com/@EverydayChinese", "Everyday Chinese"],
+            ["https://www.youtube.com/@MandarinBlueprint", "Mandarin Blueprint"],
+            ["https://www.youtube.com/@MandarinCorner", "Mandarin Corner"],
+            ["https://www.youtube.com/@JackEasyChinese", "Jack Easy Chinese"],
+            ["https://www.youtube.com/@LearnMandarinChineseNow", "Learn Mandarin Chinese Now"],
+            ["https://www.youtube.com/@ZhangkaiChinese", "Zhangkai Chinese"],
+            ["https://www.youtube.com/@easychinese376", "Easy Chinese"],
+            ["https://www.youtube.com/@AskAndy", "Ask Andy"],
+            ["https://www.youtube.com/@EasyMandarin", "Easy Mandarin"],
+            ["https://www.youtube.com/@ChineseInMinutes", "Chinese In Minutes"],
+            ["https://www.youtube.com/@BeijingChinese101", "Beijing Chinese 101"],
+            ["https://www.youtube.com/@YaChinese", "Ya Chinese"],
+            ["https://www.youtube.com/@learn-chinese-semplicinese", "Learn Chinese Semplicinese"],
+            ["https://www.youtube.com/@LearnChinesewithSawh", "Learn Chinese with Sawh"],
+            ["https://www.youtube.com/@ThatsMandarin", "That's Mandarin"],
+            ["https://www.youtube.com/@CCChineseTeacher", "CC Chinese Teacher"],
+            ["https://www.youtube.com/@LittleStepsChinese", "Little Steps Chinese"],
+            ["https://www.youtube.com/@SylviasChinese", "Sylvia's Chinese"],
+            ["https://www.youtube.com/@FluentUChinese", "FluentU Chinese"],
+            ["https://www.youtube.com/@ChineseForUsOfficial", "Chinese For Us Official"],
+            ["https://www.youtube.com/@jiayouchinese2023", "Jiayou Chinese"],
+            ["https://www.youtube.com/@MandarinAmerican", "Mandarin American"],
+            ["https://www.youtube.com/@chinesewithlia", "Chinese with Lia"],
+            ["https://www.youtube.com/@lichaochinese4961", "Li Chao Chinese"],
+            ["https://www.youtube.com/@ChineseKK", "ChineseKK"],
+            ["https://www.youtube.com/@lazychinese", "Lazy Chinese"],
+            ["https://www.youtube.com/@ComprehensibleMandarin", "Comprehensible Mandarin"],
+            ["https://www.youtube.com/@froglang", "FROGLANG – Learn Chinese"],
+            ["https://www.youtube.com/@LittleFoxChinese", "Little Fox Chinese"],
+            ["https://www.youtube.com/@bubblechinese", "Bubble Chinese"],
+            ["https://www.youtube.com/@Chinese-learning", "Chinese Learning"],
+            ["https://www.youtube.com/@HongCha-aaa", "Hong Cha"]
+          ]
+        },
+        {
+          "title": "Culture & Listening",
+          "icon": "headphones",
+          "channels": [
+            ["https://www.youtube.com/@ShuoshuoChinese", "ShuoshuoChinese说说中文"],
+            ["https://www.youtube.com/@talkinchinese_redred", "talkinchinese_redred"],
+            ["https://www.youtube.com/@MandarinClick", "Mandarin Click"],
+            ["https://www.youtube.com/@Chinative", "Chinative"],
+            ["https://www.youtube.com/@chi-native", "Chi-native"],
+            ["https://www.youtube.com/@user-mv9wu8ow9u", "喵喵放映室"],
+            ["https://www.youtube.com/@user-zo8ps7it2o", "野生鱼白"],
+            ["https://www.youtube.com/@ManuShi", "Manu Shi"],
+            ["https://www.youtube.com/@Yuanyuanpoem", "Yuanyuan Poem"],
+            ["https://www.youtube.com/@realtimemandarin", "Real Time Mandarin"],
+            ["https://www.youtube.com/@Redro-", "Redro"]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "code": "tr",
+    "title": "Çalışma İpuçları - PandaLatam",
+    "description": "Çince öğrenmek için çalışma programları, kaynaklar ve önerilen kanallar.",
+    "schedule": {
+      "title": "Yoğun Çalışma Programı",
+      "morning": {
+        "title": "Sabah",
+        "items": [
+          ["7:30 - 8:15", "Çince bir metin okuyun", "BaulChino'da arayın/bir haber metni çıkarın", "book-open"],
+          ["8:15 - 8:45", "Kelime Pratiği Yapın", "Çevrimiçi sözlükler veya fiil/kelime PDF'leri", "language"],
+          ["9:00 - 9:45", "Çince Podcast'ler veya haberler", "Sonrasında not alın", "podcast"],
+          ["9:45 - 10:30", "Gramer", "Bir dilbilgisi web sitesi, ders kitabı veya sınıfları kullanın", "book"]
+        ]
+      },
+      "afternoon": {
+        "title": "Öğleden Sonra",
+        "items": [
+          ["11:15 - 12:00", "Yazma pratiği", "Günlük konu, yapay zekaya sorun veya çevrimiçi arayın", "pen"],
+          ["13:00 - 13:45", "İleri düzey bir metin okuyun", "Kalıpları tanımaya çalışın", "book"],
+          ["13:45 - 14:15", "Altyazısız video izleyin", "Dinlediğini anlama pratiği", "video"],
+          ["14:15 - 14:45", "Deyim pratiği", "HSK kitaplarında, internette veya yapay zekada arayın", "quote-right"],
+          ["15:00 - 15:45", "İleri gramer", "YouTube öğretmenleri veya Italki", "graduation-cap"],
+          ["17:15 - 18:00", "Genel tekrar", "Yazma + ezberden okuma (Günlük konu)", "check-circle"]
+        ]
+      }
+    },
+    "youtube": {
+      "title": "YouTube Kanalları",
+      "categories": [
+        {
+          "title": "İspanyolca Çince Öğren",
+          "icon": "language",
+          "channels": [
+            ["https://www.youtube.com/@clasesdechinomandarin", "Clases de Chino Mandarín"],
+            ["https://www.youtube.com/@aprendechinoconmarco", "Aprende Chino con Marco"],
+            ["https://www.youtube.com/@Nininterprete", "Nininterprete"],
+            ["https://www.youtube.com/@Olechinese", "Olechinese"],
+            ["https://www.youtube.com/@AprenderChino", "Aprender Chino"]
+          ]
+        },
+        {
+          "title": "Gramer & Dersler (İngilizce/Global)",
+          "icon": "chalkboard-teacher",
+          "channels": [
+            ["https://www.youtube.com/@YoyoChinese", "Yoyo Chinese"],
+            ["https://www.youtube.com/@EverydayChinese", "Everyday Chinese"],
+            ["https://www.youtube.com/@MandarinBlueprint", "Mandarin Blueprint"],
+            ["https://www.youtube.com/@MandarinCorner", "Mandarin Corner"],
+            ["https://www.youtube.com/@JackEasyChinese", "Jack Easy Chinese"],
+            ["https://www.youtube.com/@LearnMandarinChineseNow", "Learn Mandarin Chinese Now"],
+            ["https://www.youtube.com/@ZhangkaiChinese", "Zhangkai Chinese"],
+            ["https://www.youtube.com/@easychinese376", "Easy Chinese"],
+            ["https://www.youtube.com/@AskAndy", "Ask Andy"],
+            ["https://www.youtube.com/@EasyMandarin", "Easy Mandarin"],
+            ["https://www.youtube.com/@ChineseInMinutes", "Chinese In Minutes"],
+            ["https://www.youtube.com/@BeijingChinese101", "Beijing Chinese 101"],
+            ["https://www.youtube.com/@YaChinese", "Ya Chinese"],
+            ["https://www.youtube.com/@learn-chinese-semplicinese", "Learn Chinese Semplicinese"],
+            ["https://www.youtube.com/@LearnChinesewithSawh", "Learn Chinese with Sawh"],
+            ["https://www.youtube.com/@ThatsMandarin", "That's Mandarin"],
+            ["https://www.youtube.com/@CCChineseTeacher", "CC Chinese Teacher"],
+            ["https://www.youtube.com/@LittleStepsChinese", "Little Steps Chinese"],
+            ["https://www.youtube.com/@SylviasChinese", "Sylvia's Chinese"],
+            ["https://www.youtube.com/@FluentUChinese", "FluentU Chinese"],
+            ["https://www.youtube.com/@ChineseForUsOfficial", "Chinese For Us Official"],
+            ["https://www.youtube.com/@jiayouchinese2023", "Jiayou Chinese"],
+            ["https://www.youtube.com/@MandarinAmerican", "Mandarin American"],
+            ["https://www.youtube.com/@chinesewithlia", "Chinese with Lia"],
+            ["https://www.youtube.com/@lichaochinese4961", "Li Chao Chinese"],
+            ["https://www.youtube.com/@ChineseKK", "ChineseKK"],
+            ["https://www.youtube.com/@lazychinese", "Lazy Chinese"],
+            ["https://www.youtube.com/@ComprehensibleMandarin", "Comprehensible Mandarin"],
+            ["https://www.youtube.com/@froglang", "FROGLANG – Learn Chinese"],
+            ["https://www.youtube.com/@LittleFoxChinese", "Little Fox Chinese"],
+            ["https://www.youtube.com/@bubblechinese", "Bubble Chinese"],
+            ["https://www.youtube.com/@Chinese-learning", "Chinese Learning"],
+            ["https://www.youtube.com/@HongCha-aaa", "Hong Cha"]
+          ]
+        },
+        {
+          "title": "Kültür ve Dinleme",
+          "icon": "headphones",
+          "channels": [
+            ["https://www.youtube.com/@ShuoshuoChinese", "ShuoshuoChinese说说中文"],
+            ["https://www.youtube.com/@talkinchinese_redred", "talkinchinese_redred"],
+            ["https://www.youtube.com/@MandarinClick", "Mandarin Click"],
+            ["https://www.youtube.com/@Chinative", "Chinative"],
+            ["https://www.youtube.com/@chi-native", "Chi-native"],
+            ["https://www.youtube.com/@user-mv9wu8ow9u", "喵喵放映室"],
+            ["https://www.youtube.com/@user-zo8ps7it2o", "野生鱼白"],
+            ["https://www.youtube.com/@ManuShi", "Manu Shi"],
+            ["https://www.youtube.com/@Yuanyuanpoem", "Yuanyuan Poem"],
+            ["https://www.youtube.com/@realtimemandarin", "Real Time Mandarin"],
+            ["https://www.youtube.com/@Redro-", "Redro"]
+          ]
+        }
+      ]
+    }
+  }
+]

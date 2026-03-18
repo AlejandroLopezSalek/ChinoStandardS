@@ -1,0 +1,65 @@
+[
+  {
+    "code": "es",
+    "dir": "",
+    "title": "Análisis Gramatical - LabPanda",
+    "description": "Desmonta cualquier frase en chino para entender su estructura.",
+    "subtitle": "Análisis de Oración",
+    "desc": "Analiza gramática, partículas y el significado profundo de cualquier frase.",
+    "placeholder": "Ingresa una frase en chino...",
+    "btn_text": "ANALIZAR ESTRUCTURA",
+    "limit_note": "Límite: 1 análisis detallado al día.",
+    "loading": "Desglosando sintaxis...",
+    "res_global": "Significado Global",
+    "res_notes": "Notas Gramaticales & Contexto",
+    "messages": {
+      "input_required": "Por favor, ingresa una frase para analizar.",
+      "network_error": "Error en el análisis. Verifica tu conexión.",
+      "limit_reached": "Ya has realizado tu análisis del día.",
+      "generic_error": "Error en el análisis.",
+      "overall_meaning_title": "Significado Global"
+    }
+  },
+  {
+    "code": "en",
+    "dir": "en/",
+    "title": "Grammar Analysis - LabPanda",
+    "description": "Break down any Chinese sentence to understand its structure.",
+    "subtitle": "Sentence Analysis",
+    "desc": "Analyze grammar, particles and deep meaning of any sentence.",
+    "placeholder": "Enter a Chinese sentence...",
+    "btn_text": "ANALYZE STRUCTURE",
+    "limit_note": "Limit: 1 detailed analysis per day.",
+    "loading": "Breaking down syntax...",
+    "res_global": "Global Meaning",
+    "res_notes": "Grammar Notes & Context",
+    "messages": {
+      "input_required": "Please enter a sentence to analyze.",
+      "network_error": "Error in analysis. Check your connection.",
+      "limit_reached": "You have already performed your analysis for today.",
+      "generic_error": "Error in analysis.",
+      "overall_meaning_title": "Global Meaning"
+    }
+  },
+  {
+    "code": "tr",
+    "dir": "tr/",
+    "title": "Dilbilgisi Analizi - LabPanda",
+    "description": "Yapısını anlamak için herhangi bir Çince cümleyi parçalara ayırın.",
+    "subtitle": "Cümle Analizi",
+    "desc": "Herhangi bir cümlenin dilbilgisini, parçacıklarını ve derin anlamını analiz edin.",
+    "placeholder": "Bir Çince cümle girin...",
+    "btn_text": "YAPIYI ANALİZ ET",
+    "limit_note": "Limit: Günde 1 detaylı analiz.",
+    "loading": "Sözdizimi çözümleniyor...",
+    "res_global": "Genel Anlam",
+    "res_notes": "Dilbilgisi Notları ve Bağlam",
+    "messages": {
+      "input_required": "Lütfen analiz etmek için bir cümle girin.",
+      "network_error": "Analiz hatası. Bağlantınızı kontrol edin.",
+      "limit_reached": "Bugün zaten analizinizi gerçekleştirdiniz.",
+      "generic_error": "Analiz hatası.",
+      "overall_meaning_title": "Genel Anlam"
+    }
+  }
+]

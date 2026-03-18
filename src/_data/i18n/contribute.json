@@ -1,0 +1,185 @@
+[
+  {
+    "code": "es",
+    "dir": "",
+    "title": "Contribuir - PandaLatam",
+    "description": "Ayuda a la comunidad compartiendo tus conocimientos.",
+    "selection": {
+      "title": "¡Ayuda a tu comunidad!",
+      "subtitle": "Comparte tus conocimientos creando lecciones o recomendando libros útiles.",
+      "type_lesson": {
+        "title": "Crear Lección",
+        "desc": "Crea una lección completa con formato profesional, secciones y explicaciones."
+      },
+      "type_book": {
+        "title": "Compartir Libro",
+        "desc": "Comparte un enlace a un libro o recurso PDF útil para la comunidad."
+      }
+    },
+    "lesson_editor": {
+      "title": "Editor de Lección",
+      "back": "Volver",
+      "field_title": "Título de la Lección",
+      "field_level": "Nivel",
+      "field_difficulty": "Dificultad",
+      "field_desc": "Descripción Breve",
+      "field_content": "Contenido de la Lección",
+      "placeholder_title": "Ej: Presente Simple - Nivel A1",
+      "placeholder_desc": "Breve descripción de qué trata la lección...",
+      "placeholder_editor": "Escribe aquí el contenido de tu lección...",
+      "editor_info": "Usa la barra de herramientas que aparece arriba para dar formato.",
+      "btn_cancel": "Cancelar",
+      "btn_send": "Enviar Lección",
+      "levels": ["A1 - Principiante", "A2 - Elemental", "B1 - Intermedio", "B2 - Intermedio Alto", "C1 - Avanzado"],
+      "difficulties": ["Básico", "Intermedio", "Avanzado", "Nuevo"]
+    },
+    "book_editor": {
+      "title": "Compartir Libro",
+      "note": "Nota: Solo compartimos enlaces a libros. No subimos archivos directamente para ahorrar espacio en el servidor.",
+      "field_title": "Título del Libro",
+      "field_author": "Autor",
+      "field_level": "Nivel",
+      "field_category": "Categoría",
+      "field_url": "Enlace al Libro",
+      "field_format": "Formato",
+      "field_size": "Tamaño Aproximado",
+      "field_desc": "Descripción",
+      "field_lang": "Idioma del Libro",
+      "placeholder_title": "Ej: Gramática Turca Completa",
+      "placeholder_author": "Nombre del autor",
+      "placeholder_url": "https://ejemplo.com/libro.pdf",
+      "placeholder_size": "Ej: 5 MB",
+      "placeholder_desc": "Describe el contenido del libro y por qué es útil...",
+      "url_info": "Google Drive, Dropbox, o cualquier enlace público",
+      "btn_cancel": "Cancelar",
+      "btn_send": "Enviar Propuesta",
+      "levels": ["A1 - Principiante", "A2 - Elemental", "B1 - Intermedio", "B2 - Intermedio Alto", "C1 - Avanzado", "Todos los niveles"],
+      "categories": ["Gramática", "Vocabulario", "Lectura", "Ejercicios", "Cultura", "General"],
+      "formats": ["PDF", "EPUB", "MOBI", "Otro"],
+      "languages": ["Español", "Chino", "Inglés", "Bilingüe"]
+    },
+    "my_contributions": "Mis Contribuciones"
+  },
+  {
+    "code": "en",
+    "dir": "en/",
+    "title": "Contribute - PandaLatam",
+    "description": "Help the community by sharing your knowledge.",
+    "selection": {
+      "title": "Help your community!",
+      "subtitle": "Share your knowledge by creating lessons or recommending useful books.",
+      "type_lesson": {
+        "title": "Create Lesson",
+        "desc": "Create a complete lesson with professional formatting, sections, and explanations."
+      },
+      "type_book": {
+        "title": "Share Book",
+        "desc": "Share a link to a useful book or PDF resource for the community."
+      }
+    },
+    "lesson_editor": {
+      "title": "Lesson Editor",
+      "back": "Back",
+      "field_title": "Lesson Title",
+      "field_level": "Level",
+      "field_difficulty": "Difficulty",
+      "field_desc": "Brief Description",
+      "field_content": "Lesson Content",
+      "placeholder_title": "e.g., Simple Present - Level A1",
+      "placeholder_desc": "Brief description of what the lesson is about...",
+      "placeholder_editor": "Write your lesson content here...",
+      "editor_info": "Use the toolbar that appears above to format.",
+      "btn_cancel": "Cancel",
+      "btn_send": "Send Lesson",
+      "levels": ["A1 - Beginner", "A2 - Elementary", "B1 - Intermediate", "B2 - Upper Intermediate", "C1 - Advanced"],
+      "difficulties": ["Basic", "Intermediate", "Advanced", "New"]
+    },
+    "book_editor": {
+      "title": "Share Book",
+      "note": "Note: We only share links to books. We don't upload files directly to save server space.",
+      "field_title": "Book Title",
+      "field_author": "Author",
+      "field_level": "Level",
+      "field_category": "Category",
+      "field_url": "Book Link",
+      "field_format": "Format",
+      "field_size": "Approximate Size",
+      "field_desc": "Description",
+      "field_lang": "Book Language",
+      "placeholder_title": "e.g., Complete Turkish Grammar",
+      "placeholder_author": "Author name",
+      "placeholder_url": "https://example.com/book.pdf",
+      "placeholder_size": "e.g., 5 MB",
+      "placeholder_desc": "Describe the content of the book and why it's useful...",
+      "url_info": "Google Drive, Dropbox, or any public link",
+      "btn_cancel": "Cancel",
+      "btn_send": "Send Proposal",
+      "levels": ["A1 - Beginner", "A2 - Elementary", "B1 - Intermediate", "B2 - Upper Intermediate", "C1 - Advanced", "All levels"],
+      "categories": ["Grammar", "Vocabulary", "Reading", "Exercises", "Culture", "General"],
+      "formats": ["PDF", "EPUB", "MOBI", "Other"],
+      "languages": ["Spanish", "Chinese", "English", "Bilingual"]
+    },
+    "my_contributions": "My Contributions"
+  },
+  {
+    "code": "tr",
+    "dir": "tr/",
+    "title": "Katkıda Bulun - PandaLatam",
+    "description": "Bilginizi paylaşarak topluluğa yardım edin.",
+    "selection": {
+      "title": "Topluluğunuza yardım edin!",
+      "subtitle": "Dersler oluşturarak veya yararlı kitaplar önererek bilginizi paylaşın.",
+      "type_lesson": {
+        "title": "Ders Oluştur",
+        "desc": "Profesyonel formatta, bölümler ve açıklamalar içeren eksiksiz bir ders oluşturun."
+      },
+      "type_book": {
+        "title": "Kitap Paylaş",
+        "desc": "Topluluk için yararlı bir kitap veya PDF kaynağına bağlantı paylaşın."
+      }
+    },
+    "lesson_editor": {
+      "title": "Ders Editörü",
+      "back": "Geri",
+      "field_title": "Ders Başlığı",
+      "field_level": "Seviye",
+      "field_difficulty": "Zorluk",
+      "field_desc": "Kısa Açıklama",
+      "field_content": "Ders İçeriği",
+      "placeholder_title": "örn: Geniş Zaman - Seviye A1",
+      "placeholder_desc": "Dersin ne hakkında olduğuna dair kısa bir açıklama...",
+      "placeholder_editor": "Ders içeriğinizi buraya yazın...",
+      "editor_info": "Biçimlendirmek için yukarıda görünen araç çubuğunu kullanın.",
+      "btn_cancel": "İptal",
+      "btn_send": "Dersi Gönder",
+      "levels": ["A1 - Yeni Başlayan", "A2 - Başlangıç Üstü", "B1 - Orta Seviye", "B2 - Üst Orta Seviye", "C1 - İleri Seviye"],
+      "difficulties": ["Temel", "Orta", "İleri", "Yeni"]
+    },
+    "book_editor": {
+      "title": "Kitap Paylaş",
+      "note": "Not: Sadece kitaplara bağlantı paylaşıyoruz. Sunucu alanından tasarruf etmek için dosyaları doğrudan yüklemiyoruz.",
+      "field_title": "Kitap Başlığı",
+      "field_author": "Yazar",
+      "field_level": "Seviye",
+      "field_category": "Kategori",
+      "field_url": "Kitap Bağlantısı",
+      "field_format": "Format",
+      "field_size": "Yaklaşık Boyut",
+      "field_desc": "Açıklama",
+      "field_lang": "Kitap Dili",
+      "placeholder_title": "örn: Tam Türkçe Dilbilgisi",
+      "placeholder_author": "Yazar adı",
+      "placeholder_url": "https://orntek.com/kitap.pdf",
+      "placeholder_size": "örn: 5 MB",
+      "placeholder_desc": "Kitabın içeriğini ve neden yararlı olduğunu açıklayın...",
+      "url_info": "Google Drive, Dropbox veya herhangi bir genel bağlantı",
+      "btn_cancel": "İptal",
+      "btn_send": "Teklif Gönder",
+      "levels": ["A1 - Yeni Başlayan", "A2 - Başlangıç Üstü", "B1 - Orta Seviye", "B2 - Üst Orta Seviye", "C1 - İleri Seviye", "Tüm seviyeler"],
+      "categories": ["Dilbilgisi", "Kelime Bilgisi", "Okuma", "Egzersizler", "Kültür", "Genel"],
+      "formats": ["PDF", "EPUB", "MOBI", "Diğer"],
+      "languages": ["İspanyolca", "Çince", "İngilizce", "İki Dilli"]
+    },
+    "my_contributions": "Katkılarım"
+  }
+]

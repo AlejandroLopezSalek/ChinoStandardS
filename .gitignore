@@ -1,87 +1,45 @@
 
-# Ignora todas las dependencias de Node. 
+# Dependencies
 node_modules/
+package-lock.json
 
-# Archivos de log de npm
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-node_modules/
-_site_tmp/
-_site/
-
+# Environment
 .env
 .env.development
 .env.production
 .env.local
 .env.*.local
 
+# OS Files
 .DS_Store
 .AppleDouble
 .LSOverride
-
-# Windows
 Thumbs.db
 ehthumbs.db
 desktop.ini
 
-# VS Code
-# .vscode/ (Allowed for project settings)
-src/css/tailwind-output.css
-
-# Ignora todas las dependencias de Node. 
-node_modules/
-
-# Archivos de log de npm
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-node_modules/
-_site_tmp/
-_site/
-
-.env
-.env.local
-.env.*.local
-
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Windows
-Thumbs.db
-ehthumbs.db
-desktop.ini
-
-# VS Code
-# .vscode/ (Allowed for project settings)
-src/css/tailwind-output.css
-
-
-pdfs/
-
-
-
-# Bruno API Collection
-# Permitir la colección (requests) pero ignorar los entornos con secretos
-!bruno/
-bruno/environments/*.bru
-debug-contributions.js
-fix-contributions.js
-check-contributions.js
-check-users.js
-
+# IDE & Tools
+.vscode/
 .agent
 .agents/
 .agent.lock
 AGENTS.md
+.gga
+bruno/environments/*.bru
 
-clear-cache.js
-test-wod.mjs
+# Build & Site
+_site/
+_site_tmp/
+src/css/tailwind-output.css
 
-# AI & Local Databases
+# Data & Scripts
 qdrant_data/
+pdfs/
+scripts/
+!bruno/
+
+# Temporary / Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
