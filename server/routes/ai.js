@@ -9,6 +9,7 @@ const striptags = require('striptags');
 const User = require('../models/User');
 const ChatLog = require('../models/ChatLog');
 const LabStory = require('../models/LabStory');
+const LabExam = require('../models/LabExam');
 const redisClient = require('../redisClient');
 const { authenticateToken } = require('../middleware/auth');
 
@@ -696,6 +697,9 @@ router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
             ? `Genera un examen personalizado de CHINO. Tema enfocado en: ${userPrompt}. Nivel aproximado: ${level}.`
             : `Genera un examen de Chino nivel ${level} siguiendo el estándar oficial HSK.`;
 
+        const languageMap = { 'es': 'Spanish', 'en': 'English', 'tr': 'Turkish' };
+        const languageName = languageMap[lang] || 'Spanish';
+
         const { object } = await generateObject({
             model: groq.chat('moonshotai/kimi-k2-instruct'),
             schema: z.object({
@@ -716,40 +720,49 @@ router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
                     }))
                 }))
             }),
-            prompt: `${systemPrompt}
-El examen DEBE tener exactamente 3 secciones:
-1. "listening" (Comprensión Auditiva): El campo "audio_text" debe contener una oración en chino que el usuario debe escuchar (vía TTS) y responder una pregunta sobre ella.
-2. "reading" (Comprensión Lectora): Preguntas de opción múltiple o traducción sobre textos cortos.
-3. "writing" (Escritura): Ejercicios de traducción o completar con Pinyin/Caracteres.
-
-Total de preguntas para este nivel (${level}): ${totalQuestions}. Distribuye las preguntas equitativamente entre las 3 secciones (aprox ${Math.floor(totalQuestions/3)} por sección).
-Asegúrate de que el Pinyin use marcas de tono correctas.`,
+            prompt: `
+Create a Chinese HSK Exam for a ${languageName} speaker. 
+Level: ${level}. Total questions: ${totalQuestions}.
+Generate the titles, instructions, questions, options, and hints in ${languageName}.
+The exam MUST have exactly 3 sections:
+1. "listening": The "audio_text" field must contain a Chinese sentence the user hears (via TTS).
+2. "reading": Translation or multiple choice.
+3. "writing": Pinyin or Characters tasks.
+Ensure tone marks are correct in Pinyin.
+Include ${Math.floor(totalQuestions/4)} questions for listening, ${Math.floor(totalQuestions/3)} for reading, and the rest for writing.`,
         });
 
-        // Track usage
+        // Save to History (Private)
+        const savedExam = await LabExam.create({
+            userId: user._id,
+            type: mode,
+            level: level,
+            prompt: customPrompt,
+            exam_data: object
+        });
+
+        // Logic for public community lessons
+        if (is_public) {
+            console.log(`[ExamLab] Saving public exam: ${object.exam_id}`);
+            const Contribution = require('../models/Contribution');
+            await Contribution.create({
+                type: 'community_exam',
+                title: object.title,
+                description: `Examen generado por IA - Nivel ${level} (${languageName})`,
+                data: { ...object, savedExamId: savedExam._id },
+                submittedBy: { id: user._id, username: user.username, email: user.email },
+                status: 'pending' 
+            });
+        }
+
+        // Track usage date
         if (user.role !== 'admin') {
             await User.findByIdAndUpdate(user._id, {
                 'stats.labUsage.examDate': today
             });
         }
 
-        // Logic for public community lessons (to be implemented: save to dedicated CommunityExam collection)
-        // Logic for public community lessons
-        if (is_public) {
-            console.log(`[ExamLab] Saving public exam: ${object.exam_id}`);
-            // Save to Community Lessons as a special type
-            const Contribution = require('../models/Contribution');
-            await Contribution.create({
-                type: 'community_exam',
-                title: object.title,
-                description: `Examen generado por IA - Nivel ${level}`,
-                data: object,
-                submittedBy: { id: user._id, username: user.username, email: user.email },
-                status: 'pending' // Must be approved by admin
-            });
-        }
-
-        res.json(object);
+        res.json({ ...object, db_id: savedExam._id });
     } catch (error) {
         console.error('[generate-exam] Error:', error);
         res.status(500).json({ error: 'Generation failed' });
@@ -759,8 +772,11 @@ Asegúrate de que el Pinyin use marcas de tono correctas.`,
 // POST /lab/grade-exam
 router.post('/lab/grade-exam', authenticateToken, async (req, res) => {
     try {
-        const { answers, original_exam, lang = 'es' } = req.body;
+        const { answers, original_exam, lang = 'es', db_id } = req.body;
         
+        const languageMap = { 'es': 'Spanish', 'en': 'English', 'tr': 'Turkish' };
+        const languageName = languageMap[lang] || 'Spanish';
+
         const { object } = await generateObject({
             model: groq.chat('moonshotai/kimi-k2-instruct'),
             schema: z.object({
@@ -772,13 +788,50 @@ router.post('/lab/grade-exam', authenticateToken, async (req, res) => {
                 })),
                 panda_advice: z.string()
             }),
-            prompt: `Grade this Chinese exam for a ${lang} speaker. Exam: ${JSON.stringify(original_exam)}. Answers: ${JSON.stringify(answers)}.`,
+            prompt: `
+Grade this Chinese exam. 
+User Language: ${languageName}. 
+Original Exam: ${JSON.stringify(original_exam)}. 
+User Answers: ${JSON.stringify(answers)}.
+Provide the explanation and advice in ${languageName}.`,
         });
+
+        // Update History if db_id provided
+        if (db_id) {
+            await LabExam.findByIdAndUpdate(db_id, {
+                answers,
+                results: object.feedback,
+                score: object.score
+            });
+        }
 
         res.json(object);
     } catch (error) {
         console.error('[grade-exam] Error:', error);
         res.status(500).json({ error: 'Grading failed' });
+    }
+});
+
+// GET /lab/exams/history
+router.get('/lab/exams/history', authenticateToken, async (req, res) => {
+    try {
+        const exams = await LabExam.find({ userId: req.user._id })
+            .select('title level score type date exam_data')
+            .sort({ date: -1 });
+        
+        // Map to include a clean title from exam_data if missing in root
+        const formatted = exams.map(e => ({
+            id: e._id,
+            title: e.exam_data?.title || 'Examen HSK',
+            level: e.level,
+            score: e.score,
+            date: e.date,
+            type: e.type
+        }));
+
+        res.json(formatted);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 

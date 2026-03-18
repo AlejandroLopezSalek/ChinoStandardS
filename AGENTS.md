@@ -10,23 +10,24 @@ PandaLatam uses a hybrid, high-performance architecture:
 - **Database**: MongoDB with Mongoose (`server/models/`).
 - **Authentication**: JWT & OAuth2 (Google).
 - **AI Core**: Vercel AI SDK (`@ai-sdk/openai`) configured with Groq API. Models: `moonshotai/kimi-k2-instruct` (Kimi) and `llama-3.3-70b`. Features: Chat, Word of the Day, DNA analysis, Exams.
-- **Exam Architecture (New)**: Exams are structured into 3 sections (Listening, Reading, Writing) with level-specific question counts (HSK 1/2: 10, HSK 3: 13, HSK 4: 15, HSK 5/6: 20). The Listening section uses AI-generated text and frontend TTS for audio comprehension.
+- **Exam Architecture (Updated)**: Exams feature 3 sections (Listening, Reading, Writing) with level-specific question counts. Results and history are persisted in `LabExam` model. Audio is played via **Browser Native Speech Synthesis** (`zh-CN` voice) with a server-side robotic fallback.
+- **TTS Strategy**: Prefer Browser Native SpeechSynthesis for realistic Chinese pronunciation. Fallback to `/api/chat/tts` only if unsupported.
 
 ## Coding Standards & Architecture (New)
 
 ### 1. Directory Structure
 - `src/js/`: Modularized by function.
   - `auth/`: Session and user management.
-  - `lab/`: AI-driven experimental features.
+  - `lab/`: AI-driven experimental features (`lab-exams.js`, `lab-story.js`, `lab-dna.js`).
   - `admin/`: Internal management tools.
   - `ui/`: Reusable interface components.
   - `core/`: Global application logic.
 - `scripts/`: Development and maintenance utilities (outside `src/`).
 
 ### 2. Multi-language (i18n) Strategy
-- **Data-Driven Templates**: Avoid cloning `.html` files for different languages.
-- Use `src/_data/i18n.json` for UI strings.
-- Leverage Eleventy **Pagination** to generate localized pages (e.g., `/StoryLab.html`, `/en/StoryLab.html`, `/tr/StoryLab.html`) from a single Nunjucks source.
+- **Data-Driven Templates**: Avoid cloning `.html` files. Use Eleventy Pagination from `src/_data/i18n/*.json`.
+- **Routing & SEO**: Use a directory-based structure for localized pages (e.g., `permalink: "{{ t.dir }}PageName/index.html"`) to ensure trailing slash support and correct language context via `document.documentElement.lang`.
+- **AI Language Context**: Pass the `lang` parameter to AI routes (`/generate-exam`, `/start-story`) to ensure the agent generates content (instructions, feedback) in the user's native tongue.
 
 ## Coding Guidelines
 1. **Frontend**: Keep the frontend purely static and vanilla. Use `localStorage` for state management where needed.
