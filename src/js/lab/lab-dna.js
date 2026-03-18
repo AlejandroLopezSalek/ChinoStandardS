@@ -75,6 +75,27 @@ class LabDNA {
         localStorage.setItem('last_dna_date', new Date().toDateString());
     }
 
+    /**
+     * Browser Native TTS playback
+     */
+    async playTTS(text) {
+        if (!text) return;
+        try {
+            if (!('speechSynthesis' in window)) throw new Error('Not supported');
+            window.speechSynthesis.cancel();
+            const ut = new SpeechSynthesisUtterance(text);
+            const voices = window.speechSynthesis.getVoices();
+            const zh = voices.find(v => v.lang.includes('zh-CN')) || voices.find(v => v.lang.includes('zh'));
+            if (zh) ut.voice = zh;
+            ut.lang = 'zh-CN';
+            ut.rate = 0.8;
+            window.speechSynthesis.speak(ut);
+        } catch (e) {
+            console.warn('TTS failed:', e);
+            new Audio(`/api/chat/tts?text=${encodeURIComponent(text)}`).play().catch(() => {});
+        }
+    }
+
     notify(msg, type) {
         if (globalThis.toast) globalThis.toast(msg, type);
         else alert(msg);

@@ -209,12 +209,52 @@ class LabExams {
         container.appendChild(footer);
     }
 
+    /**
+     * Plays audio for listening questions using Browser Native TTS (SpeechSynthesis)
+     * for more realistic or high-quality voices than server-side robotic TTS.
+     */
     async playTTS(text) {
+        if (!text) return;
+
         try {
-            const audio = new Audio(`/api/chat/tts?text=${encodeURIComponent(text)}`);
-            await audio.play();
+            // Check if SpeechSynthesis is supported
+            if (!('speechSynthesis' in window)) {
+                throw new Error('Speech synthesis not supported');
+            }
+
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            // Find a suitable Chinese voice
+            const voices = window.speechSynthesis.getVoices();
+            // Preference: zh-CN (Mainland), then zh-HK (Cantonese - fallback), then zh-TW (Taiwan)
+            const zhVoice = voices.find(v => v.lang.includes('zh-CN')) || 
+                            voices.find(v => v.lang.includes('zh')) || 
+                            voices.find(v => v.lang.toLowerCase().includes('chinese'));
+
+            if (zhVoice) {
+                utterance.voice = zhVoice;
+            }
+
+            // Set natural parameters for language learning
+            utterance.lang = 'zh-CN';
+            utterance.rate = 0.85; // Slightly slower for better comprehension
+            utterance.pitch = 1.0;
+
+            window.speechSynthesis.speak(utterance);
+
+            console.log('[ExamLab] Playing Browser TTS:', text);
         } catch (e) {
-            console.error('[ExamLab] TTS Error:', e);
+            console.warn('[ExamLab] Browser TTS failed, falling back to server:', e);
+            // Fallback to robotic server TTS if browser fails
+            try {
+                const audio = new Audio(`/api/chat/tts?text=${encodeURIComponent(text)}`);
+                await audio.play();
+            } catch (fallbackError) {
+                console.error('[ExamLab] All TTS methods failed:', fallbackError);
+            }
         }
     }
 
