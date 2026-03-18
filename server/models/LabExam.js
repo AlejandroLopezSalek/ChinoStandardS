@@ -8,6 +8,7 @@ const LabExamSchema = new mongoose.Schema({
     exam_data: { type: Object, required: true },
     answers: { type: Object },
     results: { type: Object },
+    panda_advice: { type: String },
     score: { type: Number },
     date: { type: Date, default: Date.now }
 });

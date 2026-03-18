@@ -10,7 +10,7 @@ PandaLatam uses a hybrid, high-performance architecture:
 - **Database**: MongoDB with Mongoose (`server/models/`).
 - **Authentication**: JWT & OAuth2 (Google).
 - **AI Core**: Vercel AI SDK (`@ai-sdk/openai`) configured with Groq API. Models: `moonshotai/kimi-k2-instruct` (Kimi) and `llama-3.3-70b`. Features: Chat, Word of the Day, DNA analysis, Exams.
-- **Exam Architecture (Updated)**: Exams feature 3 sections (Listening, Reading, Writing) with level-specific question counts. Results and history are persisted in `LabExam` model. Audio is played via **Browser Native Speech Synthesis** (`zh-CN` voice) with a server-side robotic fallback.
+- **Exam Architecture (Updated)**: Exams feature 3 sections (Listening, Reading, Writing) with level-specific question counts. Results, history, and user feedback are persisted in `LabExam` model. Users can view past results from a dedicated history view. Audio is played via **Browser Native Speech Synthesis** (`zh-CN` voice) with a server-side robotic fallback.
 - **TTS Strategy**: Prefer Browser Native SpeechSynthesis for realistic Chinese pronunciation. Fallback to `/api/chat/tts` only if unsupported.
 
 ## Coding Standards & Architecture (New)
@@ -26,8 +26,9 @@ PandaLatam uses a hybrid, high-performance architecture:
 
 ### 2. Multi-language (i18n) Strategy
 - **Data-Driven Templates**: Avoid cloning `.html` files. Use Eleventy Pagination from `src/_data/i18n/*.json`.
-- **Routing & SEO**: Use a directory-based structure for localized pages (e.g., `permalink: "{{ t.dir }}PageName/index.html"`) to ensure trailing slash support and correct language context via `document.documentElement.lang`.
-- **AI Language Context**: Pass the `lang` parameter to AI routes (`/generate-exam`, `/start-story`) to ensure the agent generates content (instructions, feedback) in the user's native tongue.
+- **Initialization**: Each lab page (`ADN`, `Examenes`, `StoryLab`, `Analisis`) parses `i18n-messages` into `window.I18N` for client-side logic to ensure consistent translation in dynamic UI updates.
+- **Routing & SEO**: Use a directory-based structure for localized pages (e.g., `permalink: "{{ t.dir }}PageName/index.html"`). All links in `base.njk` are normalized to avoid double-slash issues in localized paths.
+- **AI Language Context**: Pass the `lang` parameter to AI routes (`/generate-exam`, `/start-story`) to ensure the agent generates content (instructions, feedback) in the user's native tongue. Grading is flexible with synonyms in the target language.
 
 ## Coding Guidelines
 1. **Frontend**: Keep the frontend purely static and vanilla. Use `localStorage` for state management where needed.
