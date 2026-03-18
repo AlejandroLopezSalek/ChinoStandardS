@@ -10,6 +10,7 @@ PandaLatam uses a hybrid, high-performance architecture:
 - **Database**: MongoDB with Mongoose (`server/models/`).
 - **Authentication**: JWT & OAuth2 (Google).
 - **AI Core**: Vercel AI SDK (`@ai-sdk/openai`) configured with Groq API. Models: `moonshotai/kimi-k2-instruct` (Kimi) and `llama-3.3-70b`. Features: Chat, Word of the Day, DNA analysis, Exams.
+- **Exam Architecture (New)**: Exams are structured into 3 sections (Listening, Reading, Writing) with level-specific question counts (HSK 1/2: 10, HSK 3: 13, HSK 4: 15, HSK 5/6: 20). The Listening section uses AI-generated text and frontend TTS for audio comprehension.
 
 ## Coding Standards & Architecture (New)
 

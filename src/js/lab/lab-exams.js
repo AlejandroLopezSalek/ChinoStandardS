@@ -11,7 +11,18 @@ class LabExams {
     }
 
     init() {
+        this.loadI18N();
         this.setupEventListeners();
+    }
+
+    loadI18N() {
+        try {
+            const data = document.getElementById('i18n-messages')?.textContent;
+            window.I18N = data ? JSON.parse(data) : {};
+        } catch (e) {
+            console.error('[ExamLab] Failed to load I18N:', e);
+            window.I18N = {};
+        }
     }
 
     setupEventListeners() {
@@ -52,23 +63,37 @@ class LabExams {
         this.setState('loading');
         
         try {
-            const level = document.querySelector('.level-btn.active')?.dataset.level || 'HSK 1';
+            const level = document.querySelector('.level-btn.active')?.dataset.level || 'HSK1';
             const mode = document.querySelector('.mode-btn.border-red-500')?.dataset.mode || 'classic';
             const prompt = document.getElementById('exam-prompt').value;
             const isPublic = document.getElementById('public-toggle').checked;
 
             const headers = globalThis.AuthService?.getAuthHeaders() || { 'Content-Type': 'application/json' };
+            
+            // Debugging 401: Log headers safely (without full token)
+            console.log('[ExamLab] Headers check:', headers.Authorization ? 'Bearer token present' : 'No token');
+
             const response = await fetch('/api/chat/lab/generate-exam', {
                 method: 'POST',
                 headers: headers,
                 body: JSON.stringify({ level, mode, prompt, is_public: isPublic })
             });
 
+            if (response.status === 401) {
+                this.notify("Tu sesión expiró o no tienes permiso. Inicia sesión de nuevo.", "error");
+                this.setState('initial');
+                return;
+            }
+
             const data = await response.json();
+            if (data.error) throw new Error(data.error);
+
             this.currentExam = data;
+            this.currentSectionIdx = 0;
             this.renderExam();
             localStorage.setItem('last_exam_panda_date', new Date().toDateString());
         } catch (e) {
+            console.error('[ExamLab] Generation error:', e);
             this.notify(window.I18N?.generic_error || "Fallo en generación.", "error");
             this.setState('initial');
         }
@@ -76,11 +101,34 @@ class LabExams {
 
     renderExam() {
         this.setState('exam');
+        this.renderSection();
+    }
+
+    renderSection() {
         const container = document.getElementById('exam-content');
-        container.innerHTML = `<h2 class="text-2xl font-black mb-8">${this.currentExam.title}</h2>`;
+        container.innerHTML = '';
         
+        const section = this.currentExam.sections[this.currentSectionIdx];
+        
+        // Section Header
+        const header = document.createElement('div');
+        header.className = 'mb-8 animate-fadeIn';
+        
+        const pageLabel = window.I18N?.page_label || "Página";
+        const sectionTitle = this.getSectionTitle(section.type);
+
+        header.innerHTML = `
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-black uppercase tracking-widest text-red-500">${pageLabel} ${this.currentSectionIdx + 1} de 3</span>
+                <span class="text-xs font-bold text-slate-400">${section.type.toUpperCase()}</span>
+            </div>
+            <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-2">${sectionTitle}</h2>
+            <p class="text-slate-600 dark:text-slate-400 text-sm italic">${section.instructions}</p>
+        `;
+        container.appendChild(header);
+
         const template = document.getElementById('question-template');
-        this.currentExam.questions.forEach((q, idx) => {
+        section.questions.forEach((q, idx) => {
             const clone = template.content.cloneNode(true);
             clone.querySelector('.q-number').textContent = idx + 1;
             clone.querySelector('.q-text').textContent = q.question;
@@ -88,15 +136,31 @@ class LabExams {
             const optionsBox = clone.querySelector('.q-options');
             const inputBox = clone.querySelector('.q-input-container');
 
+            // Listening Support
+            if (section.type === 'listening' && q.audio_text) {
+                const audioBtn = document.createElement('button');
+                audioBtn.type = 'button';
+                audioBtn.className = 'mb-4 flex items-center gap-2 px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-xl text-sm font-bold hover:scale-105 transition-all';
+                audioBtn.innerHTML = '<i class="fas fa-volume-up"></i> Escuchar Pista';
+                audioBtn.onclick = () => this.playTTS(q.audio_text);
+                clone.querySelector('.question-block').insertBefore(audioBtn, optionsBox);
+            }
+
             if (q.type === 'multiple_choice') {
                 q.options.forEach(opt => {
                     const b = document.createElement('button');
                     b.type = 'button';
-                    b.className = 'p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-left hover:bg-red-500 hover:text-white transition-all text-sm';
+                    b.className = `p-3 rounded-xl border transition-all text-sm text-left ${
+                        this.userAnswers[q.id] === opt 
+                        ? 'bg-red-600 text-white border-red-600' 
+                        : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 hover:border-red-500'
+                    }`;
                     b.textContent = opt;
                     b.onclick = () => {
-                        optionsBox.querySelectorAll('button').forEach(btn => btn.classList.remove('bg-red-600', 'text-white'));
-                        b.classList.add('bg-red-600', 'text-white');
+                        optionsBox.querySelectorAll('button').forEach(btn => {
+                            btn.className = 'p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-left hover:border-red-500 transition-all text-sm';
+                        });
+                        b.className = 'p-3 rounded-xl bg-red-600 text-white border-red-600 text-left transition-all text-sm';
                         this.userAnswers[q.id] = opt;
                     };
                     optionsBox.appendChild(b);
@@ -104,17 +168,63 @@ class LabExams {
             } else {
                 optionsBox.classList.add('hidden');
                 inputBox.classList.remove('hidden');
-                inputBox.querySelector('input').onchange = (e) => this.userAnswers[q.id] = e.target.value;
+                const input = inputBox.querySelector('input');
+                input.value = this.userAnswers[q.id] || '';
+                input.oninput = (e) => this.userAnswers[q.id] = e.target.value;
             }
             container.appendChild(clone);
         });
 
-        const finish = document.createElement('button');
-        finish.type = 'button';
-        finish.className = 'mt-8 w-full py-4 bg-emerald-600 text-white font-black rounded-2xl';
-        finish.textContent = window.I18N?.grade_btn || 'CALIFICAR';
-        finish.onclick = () => this.gradeExam();
-        container.appendChild(finish);
+        // Navigation Footer
+        const footer = document.createElement('div');
+        footer.className = 'mt-12 pt-8 border-t border-slate-100 dark:border-white/5 flex gap-4';
+        
+        if (this.currentSectionIdx > 0) {
+            const prev = document.createElement('button');
+            prev.className = 'flex-1 py-4 px-6 border-2 border-slate-200 dark:border-slate-700 rounded-2xl font-bold flex items-center justify-center gap-2';
+            prev.innerHTML = `<i class="fas fa-arrow-left"></i> ${window.I18N?.prev_btn || 'ANTERIOR'}`;
+            prev.onclick = () => {
+                this.currentSectionIdx--;
+                this.renderSection();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+            footer.appendChild(prev);
+        }
+
+        const next = document.createElement('button');
+        if (this.currentSectionIdx < this.currentExam.sections.length - 1) {
+            next.className = 'flex-[2] py-4 px-6 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black flex items-center justify-center gap-2 shadow-xl';
+            next.innerHTML = `${window.I18N?.next_btn || 'SIGUIENTE'} <i class="fas fa-arrow-right"></i>`;
+            next.onclick = () => {
+                this.currentSectionIdx++;
+                this.renderSection();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+        } else {
+            next.className = 'flex-[2] py-4 px-6 bg-emerald-600 text-white rounded-2xl font-black shadow-lg shadow-emerald-500/30';
+            next.textContent = window.I18N?.grade_btn || 'CALIFICAR EXAMEN';
+            next.onclick = () => this.gradeExam();
+        }
+        footer.appendChild(next);
+        container.appendChild(footer);
+    }
+
+    async playTTS(text) {
+        try {
+            const audio = new Audio(`/api/chat/tts?text=${encodeURIComponent(text)}`);
+            await audio.play();
+        } catch (e) {
+            console.error('[ExamLab] TTS Error:', e);
+        }
+    }
+
+    getSectionTitle(type) {
+        switch (type) {
+            case 'listening': return window.I18N?.listening_title || 'Comprensión Auditiva';
+            case 'reading': return window.I18N?.reading_title || 'Comprensión Lectora';
+            case 'writing': return window.I18N?.writing_title || 'Escritura';
+            default: return type.toUpperCase();
+        }
     }
 
     async gradeExam() {
@@ -154,10 +264,21 @@ class LabExams {
     }
 
     setState(state) {
+        const workspace = document.getElementById('exam-workspace');
         ['initial', 'loading', 'exam', 'results'].forEach(s => {
             document.getElementById(`${s}-state`)?.classList.add('hidden');
             document.getElementById(`${s}-content`)?.classList.add('hidden');
         });
+        
+        // Adjust workspace alignment
+        if (state === 'exam' || state === 'results') {
+            workspace.classList.remove('items-center', 'justify-center', 'text-center');
+            workspace.classList.add('items-start', 'text-left');
+        } else {
+            workspace.classList.add('items-center', 'justify-center', 'text-center');
+            workspace.classList.remove('items-start', 'text-left');
+        }
+
         document.getElementById(`${state}-${state === 'loading' || state === 'initial' ? 'state' : 'content'}`).classList.remove('hidden');
     }
 
