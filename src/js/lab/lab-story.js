@@ -191,25 +191,36 @@ class LabStory {
 
     formatSegment(seg) {
         const mode = this.currentDisplayMode;
+        // Basic TTS call for segments
+        const ttsBtn = `<button onclick="this.closest('.segment-container').dataset.text ? globalThis.labStory.playTTS(this.closest('.segment-container').dataset.text) : ''" class="ml-2 text-slate-300 hover:text-red-500 transition-colors text-xs">
+            <i class="fas fa-volume-up"></i>
+        </button>`;
+
         if (mode === 'hz') {
             return `
-                <div class="segment-box flex flex-col items-center group">
-                    <span class="pinyin-text text-[9px] md:text-[10px] text-red-500 font-bold opacity-0 group-hover:opacity-100 transition-opacity mb-0.5">${seg.py}</span>
-                    <span class="chinese-text text-2xl md:text-4xl font-black text-slate-800 dark:text-white border-b-2 border-dotted border-red-200">${seg.hz}</span>
-                    <span class="translation-text text-[8px] md:text-[9px] text-slate-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">${seg.tr}</span>
+                <div class="segment-container flex items-center group mb-2" data-text="${seg.hz}">
+                    <div class="segment-box flex flex-col items-center">
+                        <span class="pinyin-text text-[9px] md:text-[10px] text-red-500 font-bold opacity-0 group-hover:opacity-100 transition-opacity mb-0.5">${seg.py}</span>
+                        <span class="chinese-text text-2xl md:text-4xl font-black text-slate-800 dark:text-white border-b-2 border-dotted border-red-200">${seg.hz}</span>
+                        <span class="translation-text text-[8px] md:text-[9px] text-slate-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">${seg.tr}</span>
+                    </div>
+                    ${ttsBtn}
                 </div>`;
         }
         if (mode === 'py') {
             return `
-                <div class="segment-box flex flex-col items-center group">
-                    <span class="chinese-text text-[10px] md:text-sm text-slate-400 opacity-50 group-hover:opacity-100 transition-opacity mb-0.5">${seg.hz}</span>
-                    <span class="pinyin-text text-lg md:text-2xl text-red-600 font-black border-b border-red-200">${seg.py}</span>
-                    <span class="translation-text text-[8px] md:text-[9px] text-slate-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">${seg.tr}</span>
+                <div class="segment-container flex items-center group mb-2" data-text="${seg.hz}">
+                    <div class="segment-box flex flex-col items-center">
+                        <span class="chinese-text text-[10px] md:text-sm text-slate-400 opacity-50 group-hover:opacity-100 transition-opacity mb-0.5">${seg.hz}</span>
+                        <span class="pinyin-text text-lg md:text-2xl text-red-600 font-black border-b border-red-200">${seg.py}</span>
+                        <span class="translation-text text-[8px] md:text-[9px] text-slate-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">${seg.tr}</span>
+                    </div>
+                    ${ttsBtn}
                 </div>`;
         }
         // Full mode (Hanzi + Pinyin ruby)
         return `
-            <div class="group relative inline-block cursor-help border-b-2 border-dotted border-red-400 pb-0.5">
+            <div class="segment-container inline-flex items-center group relative cursor-help border-b-2 border-dotted border-red-400 pb-0.5 mr-4 mb-2" data-text="${seg.hz}">
                 <ruby class="text-2xl md:text-3xl font-medium text-slate-900 dark:text-white">
                     ${seg.hz}
                     <rt class="text-[10px] md:text-xs text-red-500 font-bold mb-1">${seg.py.trim()}</rt>
@@ -219,7 +230,30 @@ class LabStory {
                     ${seg.note ? `<div class="text-[10px] text-slate-500 leading-tight">${seg.note}</div>` : ''}
                     <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-white dark:border-t-slate-800"></div>
                 </div>
+                ${ttsBtn}
             </div>`;
+    }
+
+    /**
+     * Helper for TTS playback using Browser Native Speech Synthesis
+     */
+    async playTTS(text) {
+        if (!text) return;
+        try {
+            if (!('speechSynthesis' in window)) throw new Error('Not supported');
+            window.speechSynthesis.cancel();
+            const ut = new SpeechSynthesisUtterance(text);
+            const voices = window.speechSynthesis.getVoices();
+            const zh = voices.find(v => v.lang.includes('zh-CN')) || voices.find(v => v.lang.includes('zh'));
+            if (zh) ut.voice = zh;
+            ut.lang = 'zh-CN';
+            ut.rate = 0.85;
+            window.speechSynthesis.speak(ut);
+        } catch (e) {
+            console.warn('TTS failed:', e);
+            // Fallback to robotic server TTS
+            new Audio(`/api/chat/tts?text=${encodeURIComponent(text)}`).play().catch(() => {});
+        }
     }
 
     toggleText() {

@@ -66,13 +66,19 @@ eleventyComputed:
 
 <template id="dna-card-template">
     <div class="p-6 bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-white/5 shadow-sm">
-        <div class="flex items-center gap-4 mb-4">
-            <div class="char-display text-5xl font-black text-slate-900 dark:text-white"></div>
-            <div>
-                <div class="radical-label text-xs font-bold text-red-500 uppercase tracking-widest">{{ t.radical_label }}<span
-                        class="radical-val"></span></div>
-                <div class="radical-meaning text-[10px] text-slate-500 uppercase font-black"></div>
+        <div class="flex items-center justify-between gap-4 mb-4">
+            <div class="flex items-center gap-4">
+                <div class="char-display text-5xl font-black text-slate-900 dark:text-white"></div>
+                <div>
+                    <div class="radical-label text-xs font-bold text-red-500 uppercase tracking-widest">{{ t.radical_label }}<span
+                            class="radical-val"></span></div>
+                    <div class="radical-meaning text-[10px] text-slate-500 uppercase font-black"></div>
+                </div>
             </div>
+            <button onclick="globalThis.labDna.playTTS(this.closest('.p-6').querySelector('.char-display').textContent)" 
+                class="w-10 h-10 rounded-full bg-slate-50 dark:bg-white/5 text-slate-400 hover:text-red-500 transition-all flex items-center justify-center">
+                <i class="fas fa-volume-up"></i>
+            </button>
         </div>
         <p class="explanation-text text-sm text-slate-600 dark:text-slate-400 leading-relaxed"></p>
     </div>
