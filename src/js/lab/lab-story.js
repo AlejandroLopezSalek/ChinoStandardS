@@ -34,6 +34,25 @@ class LabStory {
 
         this.fetchHistory();
         this.checkActiveStory();
+        this.setupGenreListener();
+    }
+
+    setupGenreListener() {
+        const genreSelect = document.getElementById('story-genre');
+        const customContainer = document.getElementById('custom-genre-container');
+        if (!genreSelect || !customContainer) return;
+
+        const handleGenreChange = (val) => {
+            if (val === 'custom') {
+                customContainer.classList.remove('hidden');
+            } else {
+                customContainer.classList.add('hidden');
+            }
+        };
+
+        genreSelect.addEventListener('change', (e) => handleGenreChange(e.target.value));
+        // Check initial state
+        handleGenreChange(genreSelect.value);
     }
 
     async fetchHistory() {
@@ -395,14 +414,6 @@ class LabStory {
                  }
              };
              list.appendChild(div);
-        });
-        document.getElementById('story-genre').addEventListener('change', (e) => {
-            const container = document.getElementById('custom-genre-container');
-            if (e.target.value === 'custom') {
-                container.classList.remove('hidden');
-            } else {
-                container.classList.add('hidden');
-            }
         });
     }
 
