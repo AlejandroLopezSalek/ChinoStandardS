@@ -708,11 +708,11 @@ router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
                     questions: z.array(z.object({
                         id: z.number(),
                         type: z.enum(['multiple_choice', 'translation', 'pinyin']),
-                        audio_text: z.string().optional(), // Chinese text for TTS in listening section
+                        audio_text: z.string(), // Provide empty string if not applicable
                         question: z.string(),
-                        options: z.array(z.string()).optional(),
+                        options: z.array(z.string()), // Provide empty array if not applicable
                         correct_answer: z.string(),
-                        hint: z.string().optional()
+                        hint: z.string() // Provide empty string if not applicable
                     }))
                 }))
             }),
@@ -751,16 +751,6 @@ Asegúrate de que el Pinyin use marcas de tono correctas.`,
 
         res.json(object);
     } catch (error) {
-        const fs = require('fs');
-        const path = require('path');
-        try {
-            const logPath = path.join(__dirname, '../error.log');
-            fs.appendFileSync(logPath, `[${new Date().toISOString()}] Exam Error: ${error.stack}\n`);
-            if (error.response?.data) {
-                fs.appendFileSync(logPath, `[${new Date().toISOString()}] API Response Data: ${JSON.stringify(error.response.data)}\n`);
-            }
-        } catch (e) { console.error('Failed to log to file:', e); }
-        
         console.error('[generate-exam] Error:', error);
         res.status(500).json({ error: 'Generation failed' });
     }
