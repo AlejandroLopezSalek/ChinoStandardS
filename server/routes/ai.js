@@ -658,7 +658,7 @@ router.get('/lab/analyze-dna', authenticateToken, async (req, res) => {
 // POST /lab/generate-exam
 router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
     try {
-        const { level = 'HSK1', mode = 'classic', prompt: userPrompt, is_public } = req.body;
+        const { level = 'HSK1', mode = 'classic', prompt: userPrompt, is_public, lang = 'es' } = req.body;
         
         const user = req.user;
         if (!user) return res.status(401).json({ error: 'Unauthorized' });
@@ -720,7 +720,7 @@ router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
         });
 
         const jsonMatch = examRaw.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) throw new Error('AI did not return valid JSON for Exam');
+        if (!jsonMatch) throw new Error('AI did not return valid JSON structure');
         const object = JSON.parse(jsonMatch[0]);
 
         // Save to History (Private)

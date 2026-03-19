@@ -63,6 +63,12 @@ class LabExams {
             return this.notify(window.I18N?.limit_reached || "Vuelve mañana para tu siguiente examen diario.", "warning");
         }
 
+        if (!globalThis.AuthService?.isLoggedIn()) {
+            this.notify(window.I18N?.login_required || "Debes iniciar sesión para generar un examen.", "warning");
+            this.setState('initial');
+            return;
+        }
+
         this.setState('loading');
         
         try {
@@ -79,6 +85,12 @@ class LabExams {
                 headers: headers,
                 body: JSON.stringify({ level, mode, prompt, is_public: isPublic, lang })
             });
+
+            if (response.status === 401) {
+                this.notify(window.I18N?.session_expired || "Tu sesión ha expirado. Inicia sesión de nuevo.", "error");
+                setTimeout(() => window.location.href = '/login/', 2000);
+                return;
+            }
 
             const data = await response.json();
             if (data.error) throw new Error(data.error);
