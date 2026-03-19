@@ -186,8 +186,51 @@ class LabExams {
                 <span class="text-xs font-bold text-slate-400">${section.type.toUpperCase()}</span>
             </div>
             <h2 class="text-3xl font-black text-slate-900 dark:text-white mb-2">${sectionTitle}</h2>
-            <p class="text-slate-600 dark:text-slate-400 text-sm italic">${section.instructions}</p>
+            <p class="text-slate-600 dark:text-slate-400 text-sm italic mb-6">${section.instructions}</p>
         `;
+        
+        // Reading Passage Modal Button
+        if (section.reading_passage) {
+            const passageBtn = document.createElement('button');
+            passageBtn.type = 'button';
+            passageBtn.className = 'w-full mb-8 p-6 rounded-2xl bg-red-600 text-white font-black flex items-center justify-between group hover:scale-[1.02] transition-all shadow-lg shadow-red-500/20';
+            passageBtn.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-xl">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="block text-[10px] uppercase font-bold opacity-80 line-height-1">Comprensión</span>
+                        <span class="block text-lg">LEER TEXTO</span>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right group-hover:translate-x-1 transition-transform"></i>
+            `;
+            passageBtn.onclick = () => this.showReadingModal(section.reading_passage);
+            header.appendChild(passageBtn);
+        }
+
+        // Listening Passage Button
+        if (section.listening_passage) {
+            const audioBtn = document.createElement('button');
+            audioBtn.type = 'button';
+            audioBtn.className = 'w-full mb-8 p-6 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black flex items-center justify-between group hover:scale-[1.02] transition-all shadow-xl';
+            audioBtn.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-white/20 dark:bg-slate-900/20 rounded-xl flex items-center justify-center text-xl">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="block text-[10px] uppercase font-bold opacity-80 line-height-1">Audio</span>
+                        <span class="block text-lg">ESCUCHAR CONVERSACIÓN</span>
+                    </div>
+                </div>
+                <i class="fas fa-headphones text-2xl opacity-50"></i>
+            `;
+            audioBtn.onclick = () => this.playTTS(section.listening_passage);
+            header.appendChild(audioBtn);
+        }
+
         container.appendChild(header);
 
         const template = document.getElementById('question-template');
@@ -199,8 +242,8 @@ class LabExams {
             const optionsBox = clone.querySelector('.q-options');
             const inputBox = clone.querySelector('.q-input-container');
 
-            // Listening Support
-            if (section.type === 'listening' && q.audio_text) {
+            // Per-question Listening Support (Legacy or specific tasks)
+            if (section.type === 'listening' && q.audio_text && !section.listening_passage) {
                 const audioBtn = document.createElement('button');
                 audioBtn.type = 'button';
                 audioBtn.className = 'mb-4 flex items-center gap-2 px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-xl text-sm font-bold hover:scale-105 transition-all';
@@ -270,6 +313,16 @@ class LabExams {
         }
         footer.appendChild(next);
         container.appendChild(footer);
+    }
+
+    showReadingModal(text) {
+        const modal = document.getElementById('reading-modal');
+        const textContainer = document.getElementById('modal-reading-text');
+        if (modal && textContainer) {
+            textContainer.textContent = text;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
     }
 
     /**

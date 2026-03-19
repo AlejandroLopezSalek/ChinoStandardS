@@ -20,7 +20,7 @@ PandaLatam uses a hybrid, high-performance architecture:
   - `auth/`: Session and user management.
   - `lab/`: AI-driven experimental features (`lab-exams.js`, `lab-story.js`, `lab-dna.js`).
   - `admin/`: Internal management tools.
-  - `ui/`: Reusable interface components.
+  - `ui/`: Reusable interface components (e.g., `ai-mascot.js`).
   - `core/`: Global application logic.
 - `scripts/`: Development and maintenance utilities (outside `src/`).
 
@@ -33,7 +33,7 @@ PandaLatam uses a hybrid, high-performance architecture:
 ## Coding Guidelines
 1. **Frontend**: Keep the frontend purely static and vanilla. Use `localStorage` for state management where needed.
 2. **Backend**: Follow strict security practices (input sanitization with `mongo-sanitize`, rate limiting, helmet, and CORS protection).
-3. **Language**: User-facing interfaces and content English,Turkish and Spanish as native for  learning Chinese.
+3. **Language**: User-facing interfaces and content English, Turkish and Spanish as native for learning Chinese.
 4. **Consistency**: Follow existing configurations (like Prettier/ESLint rules, Tailwind setup).
 
 ## Vercel AI SDK Implementation
