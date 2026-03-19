@@ -65,9 +65,8 @@
             mask-image: linear-gradient(to right, transparent 0px, black 20px, black calc(100% - 20px), transparent 100%);
         }
 
-        /* Body Load Transition */
-        body { opacity: 0; transition: opacity 0.3s ease; }
-        body.loaded { opacity: 1; }
+        /* Body Load Transition removed to fix flicker */
+        body { opacity: 1; }
 
         /* Custom Background Pattern */
         .custom-bg-layer {
