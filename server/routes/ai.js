@@ -233,46 +233,38 @@ router.get('/word-of-day', async (req, res) => {
 async function generateNewWod(languageName, lang, recentWords = []) {
     const avoidPrompt = recentWords.length > 0 ? `\n\nAvoid these recently used words: ${recentWords.join(', ')}.` : '';
     
-    const { object } = await generateObject({
-        model: groq.chat('moonshotai/kimi-k2-instruct'),
-        schema: z.object({
-            character: z.string(),
-            pinyin: z.string(),
-            word_translation: z.string(),
-            level_badge: z.string(),
-            tip: z.string(),
-            sentence_character: z.string(),
-            sentence_pinyin: z.string(),
-            sentence_translation: z.string()
-        }),
+    const { text: wodRaw } = await generateText({
+        model: groq.chat('llama-3.3-70b-versatile'),
+        responseFormat: { type: 'json' },
         system: `Act as a Chinese learning API. Generate a "Word of the Day" in Simplified Chinese. 
 REGLA CRÍTICA 1: En "sentence_translation", mantén la palabra objetivo en caracteres chinos dentro del texto (ej. "Mi 父亲 es...").
 REGLA CRÍTICA 2: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à) y NUNCA caracteres de tono separados o números.`,
-        prompt: `Generate a vocabulary (HSK 1-6) for a ${languageName} speaker. ${avoidPrompt}`,
+        prompt: `Generate a vocabulary (HSK 1-6) for a ${languageName} speaker. Output JSON: { "character": string, "pinyin": string, "word_translation": string, "level_badge": string, "tip": string, "sentence_character": string, "sentence_pinyin": string, "sentence_translation": string } ${avoidPrompt}`,
     });
 
-    return object;
+    const jsonMatch = wodRaw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('AI failed to provide valid JSON for WOD');
+    return JSON.parse(jsonMatch[0]);
 }
 
 // Helper: Translate existing WOD character to new language
 async function generateWodTranslation(existingData, languageName, lang) {
-    const { object } = await generateObject({
-        model: groq.chat('moonshotai/kimi-k2-instruct'),
-        schema: z.object({
-            word_translation: z.string(),
-            level_badge: z.string(),
-            tip: z.string(),
-            sentence_translation: z.string()
-        }),
-        system: `Act as a Chinese learning API. Translate the descriptive fields of this Word of the Day to ${languageName}.
-REGLA CRÍTICA 1: En "sentence_translation", mantén la palabra objetivo ("${existingData.character}") en caracteres chinos dentro del texto al ${languageName}.
-REGLA CRÍTICA 2: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à). NUNCA uses marcas de tono separadas o números. Ejemplo: "ǎ" en vez de "a" + "ˇ".`,
-        prompt: `Translate this metadata to ${languageName}: ${JSON.stringify(existingData)}`,
+    const { text: transRaw } = await generateText({
+        model: groq.chat('llama-3.3-70b-versatile'),
+        responseFormat: { type: 'json' },
+        system: `Act as a Chinese learning API. Translate descriptive fields to ${languageName}. 
+REGLA CRÍTICA 1: En "sentence_translation", mantén "${existingData.character}" en caracteres chinos.
+REGLA CRÍTICA 2: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à).`,
+        prompt: `Translate to ${languageName}: ${JSON.stringify(existingData)}. Output JSON: { "word_translation": string, "level_badge": string, "tip": string, "sentence_translation": string }`,
     });
+
+    const jsonMatch = transRaw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('AI failed to provide valid JSON for Translation');
+    const transObj = JSON.parse(jsonMatch[0]);
 
     return {
         ...existingData,
-        ...object
+        ...transObj
     };
 }
 
@@ -337,23 +329,16 @@ router.post('/grade-sentence', async (req, res) => {
             return res.status(400).json({ error: 'target_sentence and user_translation are required' });
         }
 
-        const { object } = await generateObject({
-            model: groq.chat('moonshotai/kimi-k2-instruct'),
-            schema: z.object({
-                score: z.number().min(0).max(100),
-                is_correct: z.boolean(),
-                grammar_analysis: z.string(),
-                vocabulary_notes: z.array(z.object({
-                    word: z.string(),
-                    meaning: z.string(),
-                    usage_note: z.string()
-                })),
-                corrected_sentence: z.string(),
-                pedagogical_advice: z.string()
-            }),
-            system: `You are a native Chinese teacher. Grade a student's translation into Chinese from ${lang}. Be encouraging but pedantically precise about grammar and tone.`,
-            prompt: `Target (in ${lang}): "${target_sentence}"\nStudent Translation: "${user_translation}"\nEvaluate the student's Chinese input.`,
+        const { text: gradeRaw } = await generateText({
+            model: groq.chat('llama-3.3-70b-versatile'),
+            responseFormat: { type: 'json' },
+            system: `You are a native Chinese teacher. Grade a student's translation into Chinese from ${lang}.`,
+            prompt: `Target: "${target_sentence}". Student: "${user_translation}". Output JSON: { "score": number, "is_correct": boolean, "grammar_analysis": string, "vocabulary_notes": [{ "word": string, "meaning": string, "usage_note": string }], "corrected_sentence": string, "pedagogical_advice": string }`,
         });
+
+        const jsonMatch = gradeRaw.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) throw new Error('AI failed for Sentence Grade');
+        const object = JSON.parse(jsonMatch[0]);
 
         res.json(object);
     } catch (error) {
@@ -643,20 +628,16 @@ router.get('/lab/analyze-dna', authenticateToken, async (req, res) => {
         const cached = await getCachedWod(cacheKey); // Reusing getCachedWod as general helper
         if (cached) return res.json(cached);
 
-        const { object } = await generateObject({
-            model: groq.chat('moonshotai/kimi-k2-instruct'),
-            schema: z.object({
-                word: z.string(),
-                overall_meaning: z.string(),
-                analysis: z.array(z.object({
-                    char: z.string(),
-                    radical: z.string(),
-                    radical_meaning: z.string(),
-                    explanation: z.string()
-                }))
-            }),
-            prompt: `Act as a linguistic expert in Chinese and ${lang}. Perform a "Linguistic DNA" analysis of the word: "${text}".`,
+        const { text: dnaRaw } = await generateText({
+            model: groq.chat('llama-3.3-70b-versatile'),
+            responseFormat: { type: 'json' },
+            prompt: `Act as a linguistic expert in Chinese and ${lang}. Perform a "Linguistic DNA" analysis of the Chinese word: "${text}".
+            Output JSON with schema: { "word": string, "overall_meaning": string, "analysis": [{ "char": string, "radical": string, "radical_meaning": string, "explanation": string }] }`,
         });
+
+        const jsonMatch = dnaRaw.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) throw new Error('AI failed to provide valid JSON for DNA');
+        const object = JSON.parse(jsonMatch[0]);
 
         // 3. Update User Activity
         if (user.role !== 'admin') {
@@ -693,44 +674,54 @@ router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
         else if (level === 'HSK4') totalQuestions = 15;
         else if (level === 'HSK5' || level === 'HSK6') totalQuestions = 20;
 
-        const systemPrompt = mode === 'custom' 
-            ? `Genera un examen personalizado de CHINO. Tema enfocado en: ${userPrompt}. Nivel aproximado: ${level}.`
-            : `Genera un examen de Chino nivel ${level} siguiendo el estándar oficial HSK.`;
-
         const languageMap = { 'es': 'Spanish', 'en': 'English', 'tr': 'Turkish' };
         const languageName = languageMap[lang] || 'Spanish';
 
-        const { object } = await generateObject({
-            model: groq.chat('moonshotai/kimi-k2-instruct'),
-            schema: z.object({
-                exam_id: z.string(),
-                title: z.string(),
-                sections: z.array(z.object({
-                    type: z.enum(['listening', 'reading', 'writing']),
-                    title: z.string(),
-                    instructions: z.string(),
-                    questions: z.array(z.object({
-                        id: z.number(),
-                        type: z.enum(['multiple_choice', 'translation', 'pinyin']),
-                        audio_text: z.string(), // Provide empty string if not applicable
-                        question: z.string(),
-                        options: z.array(z.string()), // Provide empty array if not applicable
-                        correct_answer: z.string(),
-                        hint: z.string() // Provide empty string if not applicable
-                    }))
-                }))
-            }),
-            prompt: `
-Create a Chinese HSK Exam for a ${languageName} speaker. 
-Level: ${level}. Total questions: ${totalQuestions}.
-Generate the titles, instructions, questions, options, and hints in ${languageName}.
-The exam MUST have exactly 3 sections:
-1. "listening": The "audio_text" field must contain a Chinese sentence the user hears (via TTS).
-2. "reading": Translation or multiple choice.
-3. "writing": Pinyin or Characters tasks.
-Ensure tone marks are correct in Pinyin.
-Include ${Math.floor(totalQuestions/4)} questions for listening, ${Math.floor(totalQuestions/3)} for reading, and the rest for writing.`,
+        const systemPrompt = mode === 'custom' 
+            ? `Genera un examen personalizado de CHINO HSK. Tema: ${userPrompt}. Nivel: ${level}.`
+            : `Genera un examen de Chino HSK nivel ${level}.`;
+
+        const { text: examRaw } = await generateText({
+            model: groq.chat('llama-3.3-70b-versatile'),
+            responseFormat: { type: 'json' },
+            prompt: `${systemPrompt} 
+            All instructions and feedback MUST be in ${languageName}.
+            
+            DIFFICULTY RULES:
+            - HSK 1/2: Basics, PinYin, direct translation.
+            - HSK 3: Intermediate grammar.
+            - HSK 4/5/6: STRICT ADVANCED DIFFICULTY. Use complex academic vocabulary, idiomatic expressions (Chéngyǔ), and complex sub-clauses. Questions MUST be challenging.
+            
+            STRUCTURE:
+            1. Listening: ${Math.floor(totalQuestions/4)} questions. Generate ONE "listening_passage" (a detailed conversation in Chinese, ~1 minute of speech). Questions MUST refer to it.
+            2. Reading: ${Math.floor(totalQuestions/3)} questions. Generate ONE "reading_passage" (story/article).
+            3. Writing: Remaining questions. HSK grammar.
+            
+            Complexity MUST match HSK Level ${level}.
+            Output JSON with schema: { 
+                "exam_id": string, 
+                "title": string, 
+                "sections": [{ 
+                    "type": "listening"|"reading"|"writing", 
+                    "instructions": string, 
+                    "reading_passage": string,
+                    "listening_passage": string, 
+                    "questions": [{ 
+                        "id": number, 
+                        "type": "multiple_choice"|"translation"|"pinyin", 
+                        "question": string, 
+                        "options": string[], 
+                        "correct_answer": string, 
+                        "audio_text": string, 
+                        "hint": string 
+                    }] 
+                }] 
+            }`
         });
+
+        const jsonMatch = examRaw.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) throw new Error('AI did not return valid JSON for Exam');
+        const object = JSON.parse(jsonMatch[0]);
 
         // Save to History (Private)
         const savedExam = await LabExam.create({
@@ -1031,29 +1022,20 @@ router.post('/lab/start-story', authenticateToken, async (req, res) => {
         const limitMap = { 'HSK 1': '3 líneas', 'HSK 2': '3 líneas', 'HSK 3': '4 líneas', 'HSK 4': '5 líneas', 'HSK 5': '6 líneas', 'HSK 6': '6 líneas' };
         const maxLines = limitMap[level] || '4 líneas';
 
-        const { object } = await generateObject({
-            model: groq.chat('moonshotai/kimi-k2-instruct'),
-            maxTokens: 1000,
-            schema: z.object({
-                title: z.string(),
-                first_chapter: z.object({
-                    text: z.string(),
-                    segments: z.array(z.object({
-                        hz: z.string(),
-                        py: z.string(),
-                        tr: z.string(),
-                        note: z.string()
-                    })),
-                    options: z.array(z.string())
-                })
-            }),
-            system: `Narrador Panda Latino. HSK: ${level}.
-- "text": Historia en ${languageName}. MÁXIMO ${maxLines} (IMPORTANTE). Sin Hanzi/Pinyin.
-- "segments": Historia íntegra en chino frase por frase.
-- Pinyin: Unicode precompuesto (ā, á, ǎ, à). Unir sílabas (lǎoshī).
-- Seguridad: No +18/Violencia.`,
-            prompt: `Nueva historia. Género: ${genre}. Protagonista: ${charName}. Extra: ${userPrompt}. Nivel ${level}. Respeta el límite de ${maxLines}.`,
+        const { text: storyRaw } = await generateText({
+            model: groq.chat('llama-3.3-70b-versatile'),
+            responseFormat: { type: 'json' },
+            system: `Narrador Panda Latino. HSK: ${level}. MÁXIMO 6 capítulos por aventura.
+- "text": Historia en ${languageName}. MÁXIMO ${maxLines}.
+- "segments": Historia íntegra frase por frase.
+- Pinyin: Unicode precompuesto (ā, á, ǎ, à).`,
+            prompt: `Inicia historia. Género: ${genre}. Protagonista: ${charName}. Extra: ${userPrompt}. Nivel ${level}. 
+            Output JSON: { "title": string, "first_chapter": { "text": string, "segments": [{ "hz": string, "py": string, "tr": string, "note": string }], "options": string[] } }`,
         });
+
+        const jsonMatch = storyRaw.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) throw new Error('AI failed for Start Story');
+        const object = JSON.parse(jsonMatch[0]);
 
         const storyId = `story_${Date.now()}`;
         
@@ -1160,27 +1142,16 @@ router.post('/lab/continue-story', authenticateToken, async (req, res) => {
         const limitMap = { 'HSK 1': '3 líneas', 'HSK 2': '3 líneas', 'HSK 3': '4 líneas', 'HSK 4': '5 líneas', 'HSK 5': '6 líneas', 'HSK 6': '6 líneas' };
         const maxLines = limitMap[storyState.level] || '4 líneas';
 
-        const { object } = await generateObject({
-            model: groq.chat('moonshotai/kimi-k2-instruct'),
-            maxTokens: 800,
-            schema: z.object({
-                next_chapter: z.object({
-                    text: z.string(),
-                    segments: z.array(z.object({
-                        hz: z.string(),
-                        py: z.string(),
-                        tr: z.string(),
-                        note: z.string()
-                    })),
-                    options: z.array(z.string())
-                })
-            }),
-            system: `Continuación. Nivel ${storyState.level}. Contexto: ${historyPrompt}
-- "text": En ${languageName}. MÁXIMO ${maxLines}. Sin Pinyin/Chino.
-- "segments": Capítulo completo en bloques chinos.
-- Pinyin: Unicode precompuesto. Une sílabas.`,
-            prompt: `Elección: "${option}". Continúa. Máximo ${maxLines}.`,
+        const { text: nextRaw } = await generateText({
+            model: groq.chat('llama-3.3-70b-versatile'),
+            responseFormat: { type: 'json' },
+            system: `Continuación. Nivel ${storyState.level}. Contexto: ${historyPrompt}. Si lleva 6 capítulos, concluye la historia.`,
+            prompt: `Elección: "${option}". Output JSON: { "next_chapter": { "text": string, "segments": [{ "hz": string, "py": string, "tr": string, "note": string }], "options": string[] } }`,
         });
+
+        const jsonMatch = nextRaw.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) throw new Error('AI failed for Continue Story');
+        const object = JSON.parse(jsonMatch[0]);
 
         // Update Persistence
         storyState.history.push({ role: 'user', content_data: option });
