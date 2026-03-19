@@ -692,10 +692,16 @@ router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
             - HSK 3: Intermediate grammar.
             - HSK 4/5/6: STRICT ADVANCED DIFFICULTY. Use complex academic vocabulary, idiomatic expressions (Chéngyǔ), and complex sub-clauses. Questions MUST be challenging.
             
-            STRUCTURE:
-            1. Listening: ${Math.floor(totalQuestions/4)} questions. Generate ONE "listening_passage" (a detailed conversation in Chinese, ~1 minute of speech). Questions MUST refer to it.
+            STRUCTURE & LANGUAGE RULES:
+            1. Listening: ${Math.floor(totalQuestions/4)} questions. Generate ONE "listening_passage" (a detailed conversation in Chinese, ~1 minute of speech).
             2. Reading: ${Math.floor(totalQuestions/3)} questions. Generate ONE "reading_passage" (story/article).
             3. Writing: Remaining questions. HSK grammar.
+
+            STRICT IMMERSION RULES:
+            - HSK 1: Questions in ${languageName}, Options in Chinese characters.
+            - HSK 2, 3, 4, 5, 6: ALL Questions and Options MUST be in Chinese characters (No native translations).
+            - Reading & Listening Passages: MUST be 100% in Chinese characters (No native translation) for ALL LEVELS.
+            - Instructions and Section titles: ALWAYS in ${languageName}.
             
             Complexity MUST match HSK Level ${level}.
             Output JSON with schema: { 
