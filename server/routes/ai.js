@@ -1124,18 +1124,32 @@ router.post('/lab/start-story', authenticateToken, async (req, res) => {
             messages: [
                 {
                     role: 'system',
-                    content: `Narrador Panda Latino. HSK: ${level}. MÁXIMO 6 capítulos.
-- "text": Historia en ${languageName}.
-- "segments": TRADUCCIÓN COMPLETA. Los segmentos sumados deben formar la traducción TOTAL de la historia al Chino. NO omitas ninguna oración.
-- Divide en segmentos CORTOS (MÁXIMO 4 Hanzi por segmento).
-- REGLA DE VIDA O MUERTE: EL CAMPO "hanzi" DEBE TENER CARACTERES CHINOS REALES en cada objeto. NUNCA VACÍO.
-- Si el segmento es un nombre (ej: Xiao Long), DEBES buscar su Hanzi (肖龙).
-- Pinyin: Unicode precompuesto (ā, á, ǎ, à).`
+                    content: `Panda Learning Narrator. HSK: ${level}. MÁXIMO 6 capítulos.
+- "text": Natural story in ${languageName} (~3-5 sentences).
+- "segments": FULL 1:1 TRANSLATION. Every sentence in "text" MUST be translated into segments. No summaries.
+- Divide into SHORT segments (MAX 4 Hanzi per segment).
+- LIFE OR DEATH RULE: The "hanzi" field MUST contain real Chinese characters. NEVER EMPTY.
+- Critical: Names (e.g., Xiao Long) MUST use their Hanzi (肖龙).
+- Pinyin: Precomposed Unicode (ā, á, ǎ, à).`
                 },
                 {
                     role: 'user',
-                    content: `Inicia historia. Género: ${genre}. Protagonista: ${charName}. Nivel ${level}. 
-                    Output JSON: { "title": "...", "first_chapter": { "text": "...", "segments": [{ "hanzi": "肖龙", "py": "Xiāo Lóng", "tr": "Xiao Long" }], "options": ["..."] } }`
+                    content: `Start story. Genre: ${genre}. Hero: ${charName}. Level ${level}. 
+                    Output JSON Example: { 
+                        "title": "...", 
+                        "first_chapter": { 
+                            "text": "Xiao Long lives in the mountains and practices kung-fu every morning.", 
+                            "segments": [
+                                { "hanzi": "肖龙", "py": "Xiāo Lóng", "tr": "Xiao Long" },
+                                { "hanzi": "住在", "py": "zhù zài", "tr": "lives in" },
+                                { "hanzi": "山里", "py": "shān lǐ", "tr": "the mountains" },
+                                { "hanzi": "每天", "py": "měitiān", "tr": "every day" },
+                                { "hanzi": "早上", "py": "zǎoshang", "tr": "morning" },
+                                { "hanzi": "练习功夫", "py": "liànxí gōngfu", "tr": "practices kung-fu" }
+                            ], 
+                            "options": ["...", "..."] 
+                        } 
+                    }`
                 }
             ],
             responseFormat: { type: 'json' },
@@ -1265,15 +1279,27 @@ router.post('/lab/continue-story', authenticateToken, async (req, res) => {
             messages: [
                 {
                     role: 'system',
-                    content: `Continuación. Nivel ${storyState.level}. Contexto: ${historyPrompt}.
-- "segments": TRADUCCIÓN COMPLETA del nuevo capítulo. Los segmentos deben formar la traducción TOTAL al Chino. NO omitas nada.
-- Cada segmento MÁXIMO 4 Hanzi. NUNCA oraciones largas.
-- REGLA DE VIDA O MUERTE: EL CAMPO "hanzi" DEBE TENER CARACTERES CHINOS REALES. NUNCA VACÍO.
-- Pinyin Unicode con tildes (ā, á, ǎ, à).`
+                    content: `Panda Learning Narrator. Continuation. Level ${storyState.level}. Context: ${historyPrompt}.
+- "segments": FULL 1:1 TRANSLATION of the new chapter. Must cover 100% of the "text" content. No summaries.
+- MAX 4 Hanzi per segment.
+- LIFE OR DEATH RULE: The "hanzi" field MUST contain real Chinese characters. NEVER EMPTY.
+- Pinyin: Precomposed Unicode (ā, á, ǎ, à).`
                 },
                 {
                     role: 'user',
-                    content: `Elección: "${option}". Output JSON: { "next_chapter": { "text": "...", "segments": [{ "hanzi": "肖龙", "py": "Xiāo Lóng", "tr": "Xiao Long" }], "options": ["..."] } }`
+                    content: `Choice: "${option}". Output JSON Example: { 
+                        "next_chapter": { 
+                            "text": "Xiao Long finds a secret scroll.", 
+                            "segments": [
+                                { "hanzi": "肖龙", "py": "Xiāo Lóng", "tr": "Xiao Long" },
+                                { "hanzi": "发现了", "py": "fāxiàn le", "tr": "finds" },
+                                { "hanzi": "一个", "py": "yí gè", "tr": "a" },
+                                { "hanzi": "秘密", "py": "mìmì", "tr": "secret" },
+                                { "hanzi": "卷轴", "py": "juànzhóu", "tr": "scroll" }
+                            ], 
+                            "options": ["...", "..."] 
+                        } 
+                    }`
                 }
             ],
             responseFormat: { type: 'json' },
