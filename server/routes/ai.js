@@ -1126,7 +1126,8 @@ router.post('/lab/start-story', authenticateToken, async (req, res) => {
                     role: 'system',
                     content: `Narrador Panda Latino. HSK: ${level}. MÁXIMO 6 capítulos.
 - "text": Historia en ${languageName}.
-- "segments": Divide la historia íntegra en segmentos CORTOS (MÁXIMO 4 Hanzi). 
+- "segments": TRADUCCIÓN COMPLETA. Los segmentos sumados deben formar la traducción TOTAL de la historia al Chino. NO omitas ninguna oración.
+- Divide en segmentos CORTOS (MÁXIMO 4 Hanzi por segmento).
 - REGLA DE VIDA O MUERTE: EL CAMPO "hanzi" DEBE TENER CARACTERES CHINOS REALES en cada objeto. NUNCA VACÍO.
 - Si el segmento es un nombre (ej: Xiao Long), DEBES buscar su Hanzi (肖龙).
 - Pinyin: Unicode precompuesto (ā, á, ǎ, à).`
@@ -1265,10 +1266,10 @@ router.post('/lab/continue-story', authenticateToken, async (req, res) => {
                 {
                     role: 'system',
                     content: `Continuación. Nivel ${storyState.level}. Contexto: ${historyPrompt}.
-- REGLA 1: "segments" DEBEN incluir "hanzi", "py" y "tr". 
-- REGLA 2: Cada segmento MÁXIMO 4 Hanzi. NUNCA oraciones largas.
+- "segments": TRADUCCIÓN COMPLETA del nuevo capítulo. Los segmentos deben formar la traducción TOTAL al Chino. NO omitas nada.
+- Cada segmento MÁXIMO 4 Hanzi. NUNCA oraciones largas.
 - REGLA DE VIDA O MUERTE: EL CAMPO "hanzi" DEBE TENER CARACTERES CHINOS REALES. NUNCA VACÍO.
-- REGLA 3: Pinyin Unicode con tildes (ā, á, ǎ, à).`
+- Pinyin Unicode con tildes (ā, á, ǎ, à).`
                 },
                 {
                     role: 'user',
