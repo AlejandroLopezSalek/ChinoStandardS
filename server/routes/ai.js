@@ -696,8 +696,9 @@ router.get('/lab/analyze-dna', authenticateToken, async (req, res) => {
         if (!user) return res.status(401).json({ error: 'Access restricted to registered users' });
 
         // 1. Check Daily Limit (Backend Enforcement)
-        const today = new Date().toDateString();
-        if (user.stats?.labUsage?.dnaDate === today && user.role !== 'admin') {
+        const today = new Date().toISOString().split('T')[0];
+        const bypass = process.env.BYPASS_LAB_LIMITS === 'true';
+        if (!bypass && user.stats?.labUsage?.dnaDate === today && user.role !== 'admin') {
             return res.status(429).json({ error: 'Límite diario alcanzado: 1 análisis de ADN por día.' });
         }
 
@@ -741,8 +742,9 @@ router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
         const user = req.user;
         if (!user) return res.status(401).json({ error: 'Unauthorized' });
 
-        const today = new Date().toDateString();
-        if (user.stats?.labUsage?.examDate === today && user.role !== 'admin') {
+        const today = new Date().toISOString().split('T')[0];
+        const bypass = process.env.BYPASS_LAB_LIMITS === 'true';
+        if (!bypass && user.stats?.labUsage?.examDate === today && user.role !== 'admin') {
             return res.status(429).json({ error: 'Ya realizaste tu examen diario.' });
         }
 
@@ -1105,7 +1107,8 @@ router.post('/lab/start-story', authenticateToken, async (req, res) => {
         const languageMap = { 'es': 'Spanish', 'en': 'English', 'tr': 'Turkish' };
         const languageName = languageMap[lang] || 'Spanish';
 
-        if (user.stats?.labUsage?.storyDate === today && user.role !== 'admin') {
+        const bypass = process.env.BYPASS_LAB_LIMITS === 'true';
+        if (!bypass && user.stats?.labUsage?.storyDate === today && user.role !== 'admin') {
             return res.status(429).json({ error: 'Límite de 1 historia diaria.' });
         }
 
