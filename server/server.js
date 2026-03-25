@@ -345,37 +345,51 @@ process.on('uncaughtException', (error) => {
 // ================================
 
 const startServer = async () => {
-  // Wait for database before starting listener
-  const mongoose = require('mongoose');
-  if (mongoose.connection.readyState !== 1) {
-    const { connectDB } = require('./config/database');
-    await connectDB();
-  }
-
-  // Start listening
-  app.listen(PORT, () => {
-    console.log('\n╔═══════════════════════════════════════╗');
-    console.log('║   PandaLatam MVP Server Started   ║');
-    console.log('╚═══════════════════════════════════════╝');
-    console.log(` Server (API): http://localhost:${PORT}`);
-    console.log(` Health:       http://localhost:${PORT}/health`);
-    console.log(` Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(` CORS: ${getAllowedOrigins().length} origins allowed`);
-    console.log('\n Ready to accept connections!\n');
-
-    // ================================
-    // CRON JOBS & PRE-GENERATION
-    // ================================
+  try {
+    // 1. Ensure Database Connection
+    console.log('🔄 Checking database connection...');
+    const mongoose = require('mongoose');
+    const { connectDB, isDatabaseConnected } = require('./config/database');
     
-    // 1. Initial pre-generation on startup
-    console.log('[Startup] Checking Word of the Day...');
-    preGenerateWod();
-
-    // 2. Scheduled daily generation at 00:01
-    cron.schedule('1 0 * * *', () => {
-        preGenerateWod();
+    // Set up event listener for first connection or reconnection
+    mongoose.connection.on('connected', async () => {
+      console.log('✅ [Startup/Event] DB Connected. Checking Word of the Day...');
+      try {
+        const { preGenerateWod } = require('./routes/ai');
+        await preGenerateWod();
+      } catch (err) {
+        console.error('[Startup] WoD pre-generation failed:', err.message);
+      }
     });
-  });
+
+    // Initial attempt
+    await connectDB();
+    
+    // 2. Start Express Listener
+    app.listen(PORT, async () => {
+      console.log('\n╔═══════════════════════════════════════╗');
+      console.log('║   PandaLatam MVP Server Started   ║');
+      console.log('╚═══════════════════════════════════════╝');
+      console.log(` Server (API): http://localhost:${PORT}`);
+      console.log(` Health:       http://localhost:${PORT}/health`);
+      console.log(` Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(` CORS: ${getAllowedOrigins().length} origins allowed`);
+      console.log('\n Ready to accept connections!\n');
+
+      // 3. Schedule Cron
+      cron.schedule('1 0 * * *', async () => {
+        try {
+          const { preGenerateWod } = require('./routes/ai');
+          await preGenerateWod();
+        } catch (err) {
+          console.error('[Cron] Error in scheduled task:', err.message);
+        }
+      });
+    });
+  } catch (error) {
+    console.error('❌ Failed to start server:', error.message);
+    process.exit(1);
+  }
 };
 
 startServer();
