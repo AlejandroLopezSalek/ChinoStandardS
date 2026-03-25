@@ -198,36 +198,36 @@ class LabStory {
 
         if (mode === 'hz') {
             return `
-                <div class="segment-container flex items-center group mb-2" data-text="${seg.hz}">
+                <div class="segment-container flex items-center group mb-2 md:mb-4" data-text="${seg.hz}">
                     <div class="segment-box flex flex-col items-center">
-                        <span class="pinyin-text text-[9px] md:text-[10px] text-red-500 font-bold opacity-0 group-hover:opacity-100 transition-opacity mb-0.5">${seg.py}</span>
-                        <span class="chinese-text text-2xl md:text-4xl font-black text-slate-800 dark:text-white border-b-2 border-dotted border-red-200">${seg.hz}</span>
-                        <span class="translation-text text-[8px] md:text-[9px] text-slate-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">${seg.tr}</span>
+                        <span class="pinyin-text text-[10px] md:text-xs text-red-500 font-bold opacity-0 group-hover:opacity-100 transition-opacity mb-0.5">${seg.py}</span>
+                        <span class="chinese-text text-3xl md:text-4xl font-black text-slate-800 dark:text-white border-b-2 border-dotted border-red-200">${seg.hz}</span>
+                        <span class="translation-text text-[9px] md:text-xs text-slate-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">${seg.tr}</span>
                     </div>
                     ${ttsBtn}
                 </div>`;
         }
         if (mode === 'py') {
             return `
-                <div class="segment-container flex items-center group mb-2" data-text="${seg.hz}">
+                <div class="segment-container flex items-center group mb-2 md:mb-4" data-text="${seg.hz}">
                     <div class="segment-box flex flex-col items-center">
-                        <span class="chinese-text text-[10px] md:text-sm text-slate-400 opacity-50 group-hover:opacity-100 transition-opacity mb-0.5">${seg.hz}</span>
-                        <span class="pinyin-text text-lg md:text-2xl text-red-600 font-black border-b border-red-200">${seg.py}</span>
-                        <span class="translation-text text-[8px] md:text-[9px] text-slate-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">${seg.tr}</span>
+                        <span class="chinese-text text-xs md:text-lg text-slate-400 opacity-50 group-hover:opacity-100 transition-opacity mb-0.5">${seg.hz}</span>
+                        <span class="pinyin-text text-xl md:text-3xl text-red-600 font-black border-b border-red-200">${seg.py}</span>
+                        <span class="translation-text text-[9px] md:text-xs text-slate-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">${seg.tr}</span>
                     </div>
                     ${ttsBtn}
                 </div>`;
         }
         // Full mode (Hanzi + Pinyin ruby)
         return `
-            <div class="segment-container inline-flex items-center group relative cursor-help border-b-2 border-dotted border-red-400 pb-0.5 mr-4 mb-2" data-text="${seg.hz}">
-                <ruby class="text-2xl md:text-3xl font-medium text-slate-900 dark:text-white">
+            <div class="segment-container inline-flex flex-col md:flex-row items-center group relative cursor-help border-b border-dotted border-red-400/50 pb-1 mr-2 md:mr-4 mb-4 md:mb-6" data-text="${seg.hz}">
+                <ruby class="text-2xl md:text-4xl font-medium text-slate-900 dark:text-white leading-relaxed">
                     ${seg.hz}
-                    <rt class="text-[10px] md:text-xs text-red-500 font-bold mb-1">${seg.py.trim()}</rt>
+                    <rt class="text-[10px] md:text-sm text-red-500 font-bold mb-1 select-none">${seg.py.trim()}</rt>
                 </ruby>
                 <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-48 p-3 bg-white dark:bg-slate-800 border border-slate-100 dark:border-white/10 rounded-xl shadow-2xl opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all pointer-events-none z-50">
-                    <div class="text-[9px] font-bold text-red-600 mb-1 uppercase tracking-widest">${seg.tr}</div>
-                    ${seg.note ? `<div class="text-[10px] text-slate-500 leading-tight">${seg.note}</div>` : ''}
+                    <div class="text-[10px] font-bold text-red-600 mb-1 uppercase tracking-widest">${seg.tr}</div>
+                    ${seg.note ? `<div class="text-[11px] text-slate-500 leading-tight">${seg.note}</div>` : ''}
                     <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-white dark:border-t-slate-800"></div>
                 </div>
                 ${ttsBtn}
