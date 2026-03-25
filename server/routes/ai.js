@@ -761,6 +761,9 @@ router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
             ? `Genera un examen personalizado de CHINO HSK. Tema: ${userPrompt}. Nivel: ${level}.`
             : `Genera un examen de Chino HSK nivel ${level}.`;
 
+        // Use the prompt from the user if it exists
+        const promptToUse = userPrompt || "";
+        
         const { text: examRaw } = await generateText({
             model: groq.chat('moonshotai/kimi-k2-instruct'),
             messages: [
@@ -801,11 +804,12 @@ Output JSON: {
             "question": "question string", 
             "options": ["opt1", "opt2", "opt3", "opt4"], 
             "correct_answer": "exact_option_string", 
-            "audio_text": "for listening", 
+            "audio_text": "STRICTLY REQUIRED for listening - The exact Chinese text spoken", 
             "hint": "In ${languageName}" 
         }] 
     }] 
-}`
+}
+IMPORTANTE: Cada pregunta de "listening" DEBE tener el campo "audio_text" con el texto en chino. NUNCA lo omitas.`
                 }
             ],
             responseFormat: { type: 'json' },
@@ -1312,6 +1316,17 @@ router.post('/lab/continue-story', authenticateToken, async (req, res) => {
         res.status(500).json({ error: 'Failed to continue story' });
     }
 });
+
+// Aliases for underscored routes (compat with old/cached frontends)
+router.post('/lab/start_story', (req, res, next) => {
+    req.url = '/lab/start-story';
+    next();
+}, (req, res) => router.handle(req, res));
+
+router.post('/lab/continue_story', (req, res, next) => {
+    req.url = '/lab/continue-story';
+    next();
+}, (req, res) => router.handle(req, res));
 
 // Exportable: Pre-generate WOD for all languages
 async function preGenerateWod() {
