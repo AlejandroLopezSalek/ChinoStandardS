@@ -35,9 +35,11 @@ class LabHub {
         else if (path.startsWith("/tr/")) langPrefix = "/tr";
 
         // Access Control: Check if user is logged in
-        if (globalThis.AuthService && !globalThis.AuthService.isLoggedIn()) {
+        const isLoggedIn = globalThis.AuthService ? globalThis.AuthService.isLoggedIn() : !!localStorage.getItem('authToken');
+        
+        if (!isLoggedIn) {
             const currentUrl = encodeURIComponent(globalThis.location.pathname);
-            const msg = "LabPanda requiere registro para acceder a las herramientas experimentales.";
+            const msg = window.I18N?.guest_restriction || "Atención: Necesitás estar registrado para acceder a las herramientas de LabPanda.";
             
             if (globalThis.toastWarning) {
                 globalThis.toastWarning(msg, "Acceso Restringido");
@@ -47,7 +49,7 @@ class LabHub {
             
             setTimeout(() => {
                 globalThis.location.href = `${langPrefix}/login/?returnUrl=${currentUrl}`;
-            }, 1000);
+            }, 1500);
             return;
         }
 

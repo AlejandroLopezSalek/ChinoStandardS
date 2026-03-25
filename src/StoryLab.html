@@ -6,6 +6,7 @@ pagination:
 permalink: "{{ t.dir }}StoryLab/index.html"
 layout: base.njk
 scripts:
+- auth/auth-gate.js
 - lab/lab-story.js
 ---
 <script id="i18n-messages" type="application/json">{{ t.messages | dump | safe }}</script>
