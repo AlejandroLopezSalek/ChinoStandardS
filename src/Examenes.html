@@ -9,6 +9,7 @@ eleventyComputed:
   title: "{{ t.title }}"
   description: "{{ t.description }}"
 scripts:
+  - auth/auth-gate.js
   - lab/lab-exams.js
 ---
 <script id="i18n-messages" type="application/json">{{ t.messages | dump | safe }}</script>

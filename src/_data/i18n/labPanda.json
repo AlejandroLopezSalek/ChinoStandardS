@@ -39,8 +39,9 @@
         "link_text": "Analizar Frase"
       }
     },
-    "footer_note": "LabPanda es una zona viva. Estamos añadiendo experimentos constantemente. ¡Propón los tuyos!",
-    "messages": {}
+    "messages": {
+      "guest_restriction": "Vení, no te quedés afuera. LabPanda requiere que inicies sesión para usar estas herramientas experimentales."
+    }
   },
   {
     "code": "en",
@@ -83,7 +84,9 @@
       }
     },
     "footer_note": "LabPanda is a living zone. We're constantly adding experiments. Propose yours!",
-    "messages": {}
+    "messages": {
+      "guest_restriction": "Hey, don't stay out! LabPanda requires you to log in to use these experimental tools."
+    }
   },
   {
     "code": "tr",
@@ -126,6 +129,8 @@
       }
     },
     "footer_note": "LabPanda yaşayan bir bölgedir. Sürekli deneyler ekliyoruz. Kendi önerilerinizi sunun!",
-    "messages": {}
+    "messages": {
+      "guest_restriction": "Hey, dışarıda kalma! LabPanda bu deneysel araçları kullanmak için giriş yapmanı gerektirir."
+    }
   }
 ]
