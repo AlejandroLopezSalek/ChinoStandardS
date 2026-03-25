@@ -1107,15 +1107,24 @@ router.post('/lab/start-story', authenticateToken, async (req, res) => {
         const maxLines = limitMap[level] || '4 líneas';
 
         const { text: storyRaw } = await generateText({
-            model: groq.chat('llama-3.3-70b-versatile'),
-            responseFormat: { type: 'json' },
-            system: `Narrador Panda Latino. HSK: ${level}. MÁXIMO 6 capítulos.
+            model: groq.chat('moonshotai/kimi-k2-instruct'),
+            messages: [
+                {
+                    role: 'system',
+                    content: `Narrador Panda Latino. HSK: ${level}. MÁXIMO 6 capítulos.
 - "text": Historia en ${languageName}.
 - "segments": Divide la historia íntegra en segmentos CORTOS (MÁXIMO 4 Hanzi). 
-- REGLA INQUEBRANTABLE: EL CAMPO "hanzi" DEBE TENER CARACTERES CHINOS. NUNCA VACÍO.
-- Pinyin: Unicode precompuesto (ā, á, ǎ, à).`,
-            prompt: `Inicia historia. Género: ${genre}. Protagonista: ${charName}. Nivel ${level}. 
-            Output JSON: { "title": "...", "first_chapter": { "text": "...", "segments": [{ "hanzi": "肖龙", "py": "Xiāo Lóng", "tr": "Xiao Long" }], "options": ["..."] } }`,
+- REGLA DE VIDA O MUERTE: EL CAMPO "hanzi" DEBE TENER CARACTERES CHINOS REALES en cada objeto. NUNCA VACÍO.
+- Si el segmento es un nombre (ej: Xiao Long), DEBES buscar su Hanzi (肖龙).
+- Pinyin: Unicode precompuesto (ā, á, ǎ, à).`
+                },
+                {
+                    role: 'user',
+                    content: `Inicia historia. Género: ${genre}. Protagonista: ${charName}. Nivel ${level}. 
+                    Output JSON: { "title": "...", "first_chapter": { "text": "...", "segments": [{ "hanzi": "肖龙", "py": "Xiāo Lóng", "tr": "Xiao Long" }], "options": ["..."] } }`
+                }
+            ],
+            responseFormat: { type: 'json' },
         });
 
         const jsonMatch = storyRaw.match(/\{[\s\S]*\}/);
@@ -1238,14 +1247,22 @@ router.post('/lab/continue-story', authenticateToken, async (req, res) => {
         const maxLines = limitMap[storyState.level] || '4 líneas';
 
         const { text: nextRaw } = await generateText({
-            model: groq.chat('llama-3.3-70b-versatile'),
+            model: groq.chat('moonshotai/kimi-k2-instruct'),
+            messages: [
+                {
+                    role: 'system',
+                    content: `Continuación. Nivel ${storyState.level}. Contexto: ${historyPrompt}.
+- REGLA 1: "segments" DEBEN incluir "hanzi", "py" y "tr". 
+- REGLA 2: Cada segmento MÁXIMO 4 Hanzi. NUNCA oraciones largas.
+- REGLA DE VIDA O MUERTE: EL CAMPO "hanzi" DEBE TENER CARACTERES CHINOS REALES. NUNCA VACÍO.
+- REGLA 3: Pinyin Unicode con tildes (ā, á, ǎ, à).`
+                },
+                {
+                    role: 'user',
+                    content: `Elección: "${option}". Output JSON: { "next_chapter": { "text": "...", "segments": [{ "hanzi": "肖龙", "py": "Xiāo Lóng", "tr": "Xiao Long" }], "options": ["..."] } }`
+                }
+            ],
             responseFormat: { type: 'json' },
-            system: `Continuación. Nivel ${storyState.level}. Contexto: ${historyPrompt}.
-REGLA 1: "segments" DEBEN incluir "hanzi", "py" y "tr". 
-REGLA 2: Cada segmento MÁXIMO 4 Hanzi. NUNCA oraciones largas.
-REGLA 3: EL CAMPO "hanzi" DEBE TENER CARACTERES CHINOS. NUNCA VACÍO.
-REGLA 4: Pinyin Unicode con tildes (ā, á, ǎ, à).`,
-            prompt: `Elección: "${option}". Output JSON: { "next_chapter": { "text": "...", "segments": [{ "hanzi": "...", "py": "...", "tr": "..." }], "options": ["..."] } }`,
         });
 
         const jsonMatch = nextRaw.match(/\{[\s\S]*\}/);
