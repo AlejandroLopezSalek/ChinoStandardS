@@ -760,47 +760,53 @@ router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
             : `Genera un examen de Chino HSK nivel ${level}.`;
 
         const { text: examRaw } = await generateText({
-            model: groq.chat('llama-3.3-70b-versatile'),
-            responseFormat: { type: 'json' },
-            prompt: `${systemPrompt} 
-            All instructions and feedback MUST be in ${languageName}.
-            
-            DIFFICULTY RULES:
-            - HSK 1/2: Basics, PinYin, direct translation.
-            - HSK 3: Intermediate grammar.
-            - HSK 4/5/6: STRICT ADVANCED DIFFICULTY. Use complex academic vocabulary, idiomatic expressions (Chéngyǔ), and complex sub-clauses. Questions MUST be challenging.
-            
-            STRUCTURE & LANGUAGE RULES:
-            1. Listening: ${Math.floor(totalQuestions/4)} questions. Generate ONE "listening_passage" (a detailed conversation in Chinese, ~1 minute of speech).
-            2. Reading: ${Math.floor(totalQuestions/3)} questions. Generate ONE "reading_passage" (story/article).
-            3. Writing: Remaining questions. HSK grammar.
+            model: groq.chat('moonshotai/kimi-k2-instruct'),
+            messages: [
+                {
+                    role: 'system',
+                    content: `Genera un examen de Chino HSK nivel ${level}. ${systemPrompt}
+All instructions and feedback MUST be in ${languageName}.
 
-            STRICT IMMERSION RULES:
-            - HSK 1: Questions in ${languageName}, Options in Chinese characters.
-            - HSK 2, 3, 4, 5, 6: ALL Questions and Options MUST be in Chinese characters (No native translations).
-            - Reading & Listening Passages: MUST be 100% in Chinese characters (No native translation) for ALL LEVELS.
-            - Instructions and Section titles: ALWAYS in ${languageName}.
-            
-            Complexity MUST match HSK Level ${level}.
-            Output JSON with schema: { 
-                "exam_id": string, 
-                "title": string, 
-                "sections": [{ 
-                    "type": "listening"|"reading"|"writing", 
-                    "instructions": string, 
-                    "reading_passage": string,
-                    "listening_passage": string, 
-                    "questions": [{ 
-                        "id": number, 
-                        "type": "multiple_choice"|"translation"|"pinyin", 
-                        "question": string, 
-                        "options": string[], 
-                        "correct_answer": string, 
-                        "audio_text": string, 
-                        "hint": string 
-                    }] 
-                }] 
-            }`
+DIFFICULTY RULES:
+- HSK 1/2: Basics, PinYin, direct translation.
+- HSK 3: Intermediate grammar.
+- HSK 4/5/6: STRICT ADVANCED DIFFICULTY. Use complex academic vocabulary, idiomatic expressions (Chéngyǔ), and complex sub-clauses. Questions MUST be challenging.
+
+STRUCTURE & LANGUAGE RULES:
+1. Listening: ${Math.floor(totalQuestions/4)} questions. Generate ONE "listening_passage" (a detailed conversation in Chinese, ~1 minute of speech).
+2. Reading: ${Math.floor(totalQuestions/3)} questions. Generate ONE "reading_passage" (story/article).
+3. Writing: Remaining questions. HSK grammar.
+
+STRICT IMMERSION RULES:
+- HSK 1: Questions in ${languageName}, Options in Chinese characters.
+- HSK 2, 3, 4, 5, 6: ALL Questions and Options MUST be in Chinese characters (No native translations).
+- Reading & Listening Passages: MUST be 100% in Chinese characters (No native translation) for ALL LEVELS.
+- Instructions and Section titles: ALWAYS in ${languageName}.
+- Pinyin: Use precomposed Unicode tone marks (ā, á, ǎ, à).
+
+Complexity MUST match HSK Level ${level}.
+Output JSON: { 
+    "exam_id": "exam_id_string", 
+    "title": "Exam Title in ${languageName}", 
+    "sections": [{ 
+        "type": "listening"|"reading"|"writing", 
+        "instructions": "In ${languageName}", 
+        "reading_passage": "100% Hanzi",
+        "listening_passage": "100% Hanzi", 
+        "questions": [{ 
+            "id": 1, 
+            "type": "multiple_choice"|"translation"|"pinyin", 
+            "question": "question string", 
+            "options": ["opt1", "opt2", "opt3", "opt4"], 
+            "correct_answer": "exact_option_string", 
+            "audio_text": "for listening", 
+            "hint": "In ${languageName}" 
+        }] 
+    }] 
+}`
+                }
+            ],
+            responseFormat: { type: 'json' },
         });
 
         const jsonMatch = examRaw.match(/\{[\s\S]*\}/);
@@ -812,7 +818,7 @@ router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
             userId: user._id,
             type: mode,
             level: level,
-            prompt: customPrompt,
+            prompt: userPrompt,
             exam_data: object
         });
 
