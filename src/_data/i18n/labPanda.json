@@ -39,6 +39,7 @@
         "link_text": "Analizar Frase"
       }
     },
+    "footer_note": "LabPanda es una zona viva. Estamos añadiendo experimentos constantemente. ¡Propón los tuyos!",
     "messages": {
       "guest_restriction": "Vení, no te quedés afuera. LabPanda requiere que inicies sesión para usar estas herramientas experimentales."
     }
