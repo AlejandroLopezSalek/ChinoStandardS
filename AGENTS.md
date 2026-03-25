@@ -18,6 +18,7 @@ PandaLatam uses a hybrid, high-performance architecture:
   2. **Format Persistence**: `sentence_translation` MUST include the target word in Hanzi (e.g., "Mi 父亲 es...").
   3. **Unicode Pinyin**: Use precomposed Unicode tone marks (ā, á, ǎ, à). NEVER use numbers or separate marks.
   4. **One-Shot Guard**: Always provide a JSON example in the system prompt to anchor the expected output structure.
+  5. **StoryLab Segmentation**: `segments` MUST be word-by-word or short phrases (max 4 Hanzi). NEVER send long sentences in a single segment as they break the mobile layout.
 - **Exam Architecture (Updated)**: Exams feature 3 sections (Listening, Reading, Writing) with level-specific question counts. 
   - **Listening**: Uses a single `listening_passage` (long conversation/monologue) for all section questions.
   - **Reading**: Uses a `reading_passage` displayed in a dedicated modal.
