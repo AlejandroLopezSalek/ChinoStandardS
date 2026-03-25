@@ -10,6 +10,7 @@ const User = require('../models/User');
 const ChatLog = require('../models/ChatLog');
 const LabStory = require('../models/LabStory');
 const LabExam = require('../models/LabExam');
+const DailyWord = require('../models/DailyWord');
 const redisClient = require('../redisClient');
 const { authenticateToken } = require('../middleware/auth');
 
@@ -143,7 +144,55 @@ ${specialInstructions}
 NAVIGATION:
 - Only navigate if explicitly asked (e.g., "Go to profile" or "Ir a perfil").
 - Valid: /Inicio, /Consejos/, /Gramatica/, /Community-Lessons/, /NivelA1/ thru /NivelC1/, /Perfil/
-- Example: "Take me to profile" -> "Let's go. [[NAVIGATE:/Perfil/]]"`;
+- Example: "Take me to profile" -> "Let's go. [[NAVIGATE:/Perfil/]]"
+`;
+};
+
+// Helper: Get User Lab Context (Personal RAG)
+const getUserLabContext = async (userId, lang) => {
+    if (!userId) return "";
+    
+    try {
+        const now = new Date();
+        const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+        const [recentStories, recentExam, dailyWord] = await Promise.all([
+            LabStory.find({ userId }).sort({ lastUpdated: -1 }).limit(2).select('title genre level'),
+            LabExam.findOne({ userId }).sort({ date: -1 }).select('score panda_advice level'),
+            DailyWord.findOne({ date: todayStr })
+        ]);
+
+        let context = "\n*** USER LAB PROGRESS (Personal RAG) ***\n";
+        
+        // 1. Stories
+        if (recentStories.length > 0) {
+            context += "- Recent Stories Practiced:\n";
+            recentStories.forEach(s => {
+                context += `  * "${s.title}" (${s.genre}, Level ${s.level})\n`;
+            });
+        }
+
+        // 2. Exams
+        if (recentExam) {
+            context += `- Latest Exam Result: Score ${recentExam.score}/100 (Level ${recentExam.level}).\n`;
+            if (recentExam.panda_advice) {
+                context += `  * Last Advice: "${recentExam.panda_advice}"\n`;
+            }
+        }
+
+        // 3. Word of the Day
+        if (dailyWord) {
+            const wod = dailyWord.translations.get(lang) || dailyWord.translations.get('es');
+            if (wod) {
+                context += `\n*** WORD OF THE DAY (WoD) ***\nToday's featured word is: ${wod.character} (${wod.pinyin}) - "${wod.word_translation}". Encourage the user to use it!\n`;
+            }
+        }
+
+        return context;
+    } catch (error) {
+        console.warn('Error fetching User Lab Context:', error);
+        return "";
+    }
 };
 
 // --- TTS Import ---
@@ -154,8 +203,6 @@ const ttsService = require('../services/ttsService');
 
 // Redis Cache handles storage
 
-// GET /word-of-day (Mounted at /api/chat/word-of-day)
-const DailyWord = require('../models/DailyWord');
 
 // Helper: Cache Management
 async function getCachedWod(key) {
@@ -432,8 +479,11 @@ router.post('/', async (req, res) => {
                 ragContext += `[Source: "${title}" by ${author} - Level ${level}]:\n"${chunkText}"\n\n`;
             });
         }
+        
+        // --- PERSONAL LAB CONTEXT ---
+        const userLabContext = await getUserLabContext(user?._id, lang || 'es');
 
-        const systemPrompt = buildSystemPrompt(user, context, lessonContentContext, memoryContext, lang, ragContext);
+        const systemPrompt = buildSystemPrompt(user, context, lessonContentContext, memoryContext, lang, `${ragContext}\n${userLabContext}`);
 
         const messages = [{ role: "system", content: systemPrompt }];
 
