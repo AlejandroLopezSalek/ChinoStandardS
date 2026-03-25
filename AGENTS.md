@@ -9,16 +9,14 @@ PandaLatam uses a hybrid, high-performance architecture:
 - **Backend API**: Node.js and Express (`server/`).
 - **Database**: MongoDB with Mongoose (`server/models/`).
 - **Authentication**: JWT & OAuth2 (Google).
-- **AI Core**: Vercel AI SDK (`@ai-sdk/openai`). Features: Chat, Word of the Day (WoD), DNA analysis, Exams.
-- **WoD Architecture (Updated)**: 
-  - **Pre-generation**: Uses `node-cron` to generate the day's word at 00:01 and at server startup to ensure zero-latency.
-  - **Consistency**: Generates a base word (usually Spanish) and translates it to English/Turkish manually merging Hanzi/Pinyin to maintain 100% character identicality.
+- **AI Core**: Vercel AI SDK (`@ai-sdk/openai`). Features: Chat, Word of the Day (WoD), DNA analysis, Exams. **StoryLab** MUST use `moonshotai/kimi-k2-instruct` for 100% Hanzi integrity.
 - **AI Content Generation Rules (Critical)**:
-  1. **Hanzi Presence**: `character` and `sentence_character` MUST be 100% Hanzi (no empty strings or Pinyin).
+  1. **Hanzi Presence**: `character` and `sentence_character` MUST be 100% Hanzi (no empty strings or Pinyin). For StoryLab, use the `hanzi` field in the prompt and map it back to `hz`.
   2. **Format Persistence**: `sentence_translation` MUST include the target word in Hanzi (e.g., "Mi 父亲 es...").
   3. **Unicode Pinyin**: Use precomposed Unicode tone marks (ā, á, ǎ, à). NEVER use numbers or separate marks.
-  4. **One-Shot Guard**: Always provide a JSON example in the system prompt to anchor the expected output structure.
-  5. **StoryLab Segmentation**: `segments` MUST be word-by-word or short phrases (max 4 Hanzi). NEVER send long sentences in a single segment as they break the mobile layout.
+  4. **One-Shot Guard**: Always provide a JSON example in the messages array (system/user roles) with REAL Hanzi to anchor the expected output structure.
+  5. **Groq JSON Strategy**: MUST use `generateText` with `responseFormat: 'json'`. Use the `messages` array for StoryLab to ensure better JSON schema compliance.
+  6. **StoryLab Segmentation**: `segments` MUST be word-by-word or short phrases (max 4 Hanzi). NEVER send long sentences in a single segment as they break the mobile layout.
 - **Exam Architecture (Updated)**: Exams feature 3 sections (Listening, Reading, Writing) with level-specific question counts. 
   - **Listening**: Uses a single `listening_passage` (long conversation/monologue) for all section questions.
   - **Reading**: Uses a `reading_passage` displayed in a dedicated modal.
