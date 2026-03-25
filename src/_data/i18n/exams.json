@@ -45,7 +45,8 @@
       "reading_title": "Comprensión Lectora",
       "writing_title": "Escritura",
       "page_label": "Página"
-    }
+    },
+    "back_btn": "ENTENDIDO"
   },
   {
     "code": "en",
@@ -93,7 +94,8 @@
       "reading_title": "Reading Comprehension",
       "writing_title": "Writing",
       "page_label": "Page"
-    }
+    },
+    "back_btn": "GOT IT"
   },
   {
     "code": "tr",
@@ -141,6 +143,7 @@
       "reading_title": "Okuma Anlama",
       "writing_title": "Yazma",
       "page_label": "Sayfa"
-    }
+    },
+    "back_btn": "ANLADIM"
   }
 ]

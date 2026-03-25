@@ -237,9 +237,10 @@ async function generateNewWod(languageName, lang, recentWords = []) {
         model: groq.chat('llama-3.3-70b-versatile'),
         responseFormat: { type: 'json' },
         system: `Act as a Chinese learning API. Generate a "Word of the Day" in Simplified Chinese. 
-REGLA CRÍTICA 1: En "sentence_translation", mantén la palabra objetivo en caracteres chinos dentro del texto (ej. "Mi 父亲 es...").
-REGLA CRÍTICA 2: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à) y NUNCA caracteres de tono separados o números.`,
-        prompt: `Generate a vocabulary (HSK 1-6) for a ${languageName} speaker. Output JSON: { "character": string, "pinyin": string, "word_translation": string, "level_badge": string, "tip": string, "sentence_character": string, "sentence_pinyin": string, "sentence_translation": string } ${avoidPrompt}`,
+REGLA CRÍTICA 1: Los campos "character" y "sentence_character" DEBEN ser únicamente caracteres chinos (Hanzi).
+REGLA CRÍTICA 2: En "sentence_translation", mantén la palabra objetivo en caracteres chinos dentro del texto (ej. "I need to use the 电话...").
+REGLA CRÍTICA 3: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à) y NUNCA caracteres de tono separados o números.`,
+        prompt: `Generate a vocabulary (HSK 1-6) for a ${languageName} speaker. Output JSON: { "character": string (Only Hanzi), "pinyin": string, "word_translation": string, "level_badge": string, "tip": string, "sentence_character": string (Only Hanzi), "sentence_pinyin": string, "sentence_translation": string } ${avoidPrompt}`,
     });
 
     const jsonMatch = wodRaw.match(/\{[\s\S]*\}/);
@@ -253,9 +254,10 @@ async function generateWodTranslation(existingData, languageName, lang) {
         model: groq.chat('llama-3.3-70b-versatile'),
         responseFormat: { type: 'json' },
         system: `Act as a Chinese learning API. Translate descriptive fields to ${languageName}. 
-REGLA CRÍTICA 1: En "sentence_translation", mantén "${existingData.character}" en caracteres chinos.
-REGLA CRÍTICA 2: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à).`,
-        prompt: `Translate to ${languageName}: ${JSON.stringify(existingData)}. Output JSON: { "word_translation": string, "level_badge": string, "tip": string, "sentence_translation": string }`,
+REGLA CRÍTICA 1: NO TRADUZCAS ni modifiques los campos "character", "pinyin", "sentence_character", ni "sentence_pinyin".
+REGLA CRÍTICA 2: En "sentence_translation", mantén "${existingData.character}" en caracteres chinos dentro de la traducción.
+REGLA CRÍTICA 3: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à).`,
+        prompt: `Translate the fields "word_translation", "level_badge", "tip", and "sentence_translation" to ${languageName}: ${JSON.stringify(existingData)}. Output JSON: { "character": string (keep same), "pinyin": string (keep same), "word_translation": string, "level_badge": string, "tip": string, "sentence_character": string (keep same), "sentence_pinyin": string (keep same), "sentence_translation": string }`,
     });
 
     const jsonMatch = transRaw.match(/\{[\s\S]*\}/);
@@ -1151,8 +1153,11 @@ router.post('/lab/continue-story', authenticateToken, async (req, res) => {
         const { text: nextRaw } = await generateText({
             model: groq.chat('llama-3.3-70b-versatile'),
             responseFormat: { type: 'json' },
-            system: `Continuación. Nivel ${storyState.level}. Contexto: ${historyPrompt}. Si lleva 6 capítulos, concluye la historia.`,
-            prompt: `Elección: "${option}". Output JSON: { "next_chapter": { "text": string, "segments": [{ "hz": string, "py": string, "tr": string, "note": string }], "options": string[] } }`,
+            system: `Continuación. Nivel ${storyState.level}. Contexto: ${historyPrompt}. Si lleva 6 capítulos, concluye la historia.
+REGLA CRÍTICA 1: Todos los "segments" DEBEN incluir "hz" (Hanzi), "py" (Pinyin) y "tr" (Traducción).
+REGLA CRÍTICA 2: En "tr" (traducción), si es posible, mantén términos clave en caracteres chinos si ayuda al aprendizaje.
+REGLA CRÍTICA 3: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à) y NUNCA números.`,
+            prompt: `Elección: "${option}". Output JSON: { "next_chapter": { "text": string (en ${languageName}), "segments": [{ "hz": string (Hanzi), "py": string (Pinyin Unicode), "tr": string (Traducción ${languageName}), "note": string }], "options": string[] } }`,
         });
 
         const jsonMatch = nextRaw.match(/\{[\s\S]*\}/);
