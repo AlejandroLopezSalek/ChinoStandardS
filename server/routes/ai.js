@@ -1059,17 +1059,28 @@ router.post('/lab/start-story', authenticateToken, async (req, res) => {
         const { text: storyRaw } = await generateText({
             model: groq.chat('llama-3.3-70b-versatile'),
             responseFormat: { type: 'json' },
-            system: `Narrador Panda Latino. HSK: ${level}. MÁXIMO 6 capítulos por aventura.
-- "text": Historia en ${languageName}. MÁXIMO ${maxLines}.
-- "segments": Historia íntegra frase por frase.
+            system: `Narrador Panda Latino. HSK: ${level}. MÁXIMO 6 capítulos.
+- "text": Historia en ${languageName}.
+- "segments": Divide la historia íntegra en segmentos CORTOS (MÁXIMO 4 Hanzi). 
+- REGLA INQUEBRANTABLE: EL CAMPO "hanzi" DEBE TENER CARACTERES CHINOS. NUNCA VACÍO.
 - Pinyin: Unicode precompuesto (ā, á, ǎ, à).`,
-            prompt: `Inicia historia. Género: ${genre}. Protagonista: ${charName}. Extra: ${userPrompt}. Nivel ${level}. 
-            Output JSON: { "title": string, "first_chapter": { "text": string, "segments": [{ "hz": string, "py": string, "tr": string, "note": string }], "options": string[] } }`,
+            prompt: `Inicia historia. Género: ${genre}. Protagonista: ${charName}. Nivel ${level}. 
+            Output JSON: { "title": "...", "first_chapter": { "text": "...", "segments": [{ "hanzi": "肖龙", "py": "Xiāo Lóng", "tr": "Xiao Long" }], "options": ["..."] } }`,
         });
 
         const jsonMatch = storyRaw.match(/\{[\s\S]*\}/);
         if (!jsonMatch) throw new Error('AI failed for Start Story');
         const object = JSON.parse(jsonMatch[0]);
+
+        // Fix field name mapping if AI used 'hanzi' instead of 'hz'
+        if (object.first_chapter && object.first_chapter.segments) {
+            object.first_chapter.segments = object.first_chapter.segments.map(s => ({
+                hz: s.hanzi || s.hz || "",
+                py: s.py || "",
+                tr: s.tr || "",
+                note: s.note || ""
+            }));
+        }
 
         const storyId = `story_${Date.now()}`;
         
@@ -1179,16 +1190,27 @@ router.post('/lab/continue-story', authenticateToken, async (req, res) => {
         const { text: nextRaw } = await generateText({
             model: groq.chat('llama-3.3-70b-versatile'),
             responseFormat: { type: 'json' },
-            system: `Continuación. Nivel ${storyState.level}. Contexto: ${historyPrompt}. Si lleva 6 capítulos, concluye la historia.
-REGLA CRÍTICA 1: Todos los "segments" DEBEN incluir "hz" (Hanzi), "py" (Pinyin) y "tr" (Traducción).
-REGLA CRÍTICA 2: En "tr" (traducción), si es posible, mantén términos clave en caracteres chinos si ayuda al aprendizaje.
-REGLA CRÍTICA 3: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à) y NUNCA números.`,
-            prompt: `Elección: "${option}". Output JSON: { "next_chapter": { "text": string (en ${languageName}), "segments": [{ "hz": string (Hanzi), "py": string (Pinyin Unicode), "tr": string (Traducción ${languageName}), "note": string }], "options": string[] } }`,
+            system: `Continuación. Nivel ${storyState.level}. Contexto: ${historyPrompt}.
+REGLA 1: "segments" DEBEN incluir "hanzi", "py" y "tr". 
+REGLA 2: Cada segmento MÁXIMO 4 Hanzi. NUNCA oraciones largas.
+REGLA 3: EL CAMPO "hanzi" DEBE TENER CARACTERES CHINOS. NUNCA VACÍO.
+REGLA 4: Pinyin Unicode con tildes (ā, á, ǎ, à).`,
+            prompt: `Elección: "${option}". Output JSON: { "next_chapter": { "text": "...", "segments": [{ "hanzi": "...", "py": "...", "tr": "..." }], "options": ["..."] } }`,
         });
 
         const jsonMatch = nextRaw.match(/\{[\s\S]*\}/);
         if (!jsonMatch) throw new Error('AI failed for Continue Story');
         const object = JSON.parse(jsonMatch[0]);
+
+        // Fix field name mapping
+        if (object.next_chapter && object.next_chapter.segments) {
+            object.next_chapter.segments = object.next_chapter.segments.map(s => ({
+                hz: s.hanzi || s.hz || "",
+                py: s.py || "",
+                tr: s.tr || "",
+                note: s.note || ""
+            }));
+        }
 
         // Update Persistence
         storyState.history.push({ role: 'user', content_data: option });
