@@ -8,6 +8,7 @@ const path = require('node:path');
 const compression = require('compression'); // New optimization
 const mongoSanitize = require('mongo-sanitize');
 const xss = require('xss-clean');
+const cron = require('node-cron');
 
 // Import database connection
 const { connectDB } = require('./config/database'); // <- CORRECCIÓN APLICADA AQUÍ
@@ -210,7 +211,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/contributions', require('./routes/contributions'));
 app.use('/api/lessons', require('./routes/lessons'));
 app.use('/api/progress', require('./routes/progress')); // Progress Tracking
-app.use('/api/chat', require('./routes/ai')); // AI Mascot Route
+const { router: aiRoutes, preGenerateWod } = require('./routes/ai');
+app.use('/api/chat', aiRoutes); // AI Mascot Route
 app.use('/api/notifications', require('./routes/notifications')); // Push Notifications
 app.use('/api/analytics', require('./routes/analytics')); // Analytics Route (stops 404s)
 app.use('/api/wod', require('./routes/wod')); // Word of the Day Stats
@@ -343,7 +345,14 @@ process.on('uncaughtException', (error) => {
 // ================================
 
 const startServer = async () => {
-  // Start listening immediately
+  // Wait for database before starting listener
+  const mongoose = require('mongoose');
+  if (mongoose.connection.readyState !== 1) {
+    const { connectDB } = require('./config/database');
+    await connectDB();
+  }
+
+  // Start listening
   app.listen(PORT, () => {
     console.log('\n╔═══════════════════════════════════════╗');
     console.log('║   PandaLatam MVP Server Started   ║');
@@ -353,6 +362,19 @@ const startServer = async () => {
     console.log(` Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(` CORS: ${getAllowedOrigins().length} origins allowed`);
     console.log('\n Ready to accept connections!\n');
+
+    // ================================
+    // CRON JOBS & PRE-GENERATION
+    // ================================
+    
+    // 1. Initial pre-generation on startup
+    console.log('[Startup] Checking Word of the Day...');
+    preGenerateWod();
+
+    // 2. Scheduled daily generation at 00:01
+    cron.schedule('1 0 * * *', () => {
+        preGenerateWod();
+    });
   });
 };
 

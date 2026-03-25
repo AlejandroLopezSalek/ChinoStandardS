@@ -214,12 +214,11 @@ router.get('/word-of-day', async (req, res) => {
             return res.json(data);
         }
 
-        // 3. Generation
+        // 3. Generation (Simplified)
         const wordData = await getOrGenerateWodData(dailyDoc, todayStr, lang, languageName);
         if (!wordData) throw new Error("Failed to generate or translate word data");
 
-        // 4. Finalize
-        await persistWodData(dailyDoc, todayStr, lang, wordData);
+        // 4. Cache and return
         await cacheWodData(redisKey, wordData);
         res.json(wordData);
 
@@ -237,9 +236,11 @@ async function generateNewWod(languageName, lang, recentWords = []) {
         model: groq.chat('llama-3.3-70b-versatile'),
         responseFormat: { type: 'json' },
         system: `Act as a Chinese learning API. Generate a "Word of the Day" in Simplified Chinese. 
-REGLA CRÍTICA 1: Los campos "character" y "sentence_character" DEBEN ser únicamente caracteres chinos (Hanzi).
-REGLA CRÍTICA 2: En "sentence_translation", mantén la palabra objetivo en caracteres chinos dentro del texto (ej. "I need to use the 电话...").
-REGLA CRÍTICA 3: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à) y NUNCA caracteres de tono separados o números.`,
+REGLA CRÍTICA 1: Los campos "character" y "sentence_character" DEBEN ser únicamente caracteres chinos (Hanzi). NUNCA los dejes vacíos.
+REGLA CRÍTICA 2: En "sentence_translation", mantén la palabra objetivo en caracteres chinos dentro del texto (ej. "Mi 父亲 es...").
+REGLA CRÍTICA 3: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à) y NUNCA caracteres de tono separados o números.
+
+EXAMPLE: { "character": "运动", "pinyin": "yùndòng", "word_translation": "deporte", "level_badge": "HSK 2", "tip": "...", "sentence_character": "我喜欢运动", "sentence_pinyin": "wǒ xǐhuān yùndòng", "sentence_translation": "Me gusta el 运动" }`,
         prompt: `Generate a vocabulary (HSK 1-6) for a ${languageName} speaker. Output JSON: { "character": string (Only Hanzi), "pinyin": string, "word_translation": string, "level_badge": string, "tip": string, "sentence_character": string (Only Hanzi), "sentence_pinyin": string, "sentence_translation": string } ${avoidPrompt}`,
     });
 
@@ -249,24 +250,42 @@ REGLA CRÍTICA 3: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ,
 }
 
 // Helper: Translate existing WOD character to new language
+// Helper: Translate existing WOD character to new language
 async function generateWodTranslation(existingData, languageName, lang) {
+    // Only pass the fields that need translation to avoid AI confusion
+    const toTranslate = {
+        word_translation: existingData.word_translation,
+        level_badge: existingData.level_badge,
+        tip: existingData.tip,
+        sentence_translation: existingData.sentence_translation
+    };
+
     const { text: transRaw } = await generateText({
         model: groq.chat('llama-3.3-70b-versatile'),
         responseFormat: { type: 'json' },
         system: `Act as a Chinese learning API. Translate descriptive fields to ${languageName}. 
-REGLA CRÍTICA 1: NO TRADUZCAS ni modifiques los campos "character", "pinyin", "sentence_character", ni "sentence_pinyin".
-REGLA CRÍTICA 2: En "sentence_translation", mantén "${existingData.character}" en caracteres chinos dentro de la traducción.
-REGLA CRÍTICA 3: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à).`,
-        prompt: `Translate the fields "word_translation", "level_badge", "tip", and "sentence_translation" to ${languageName}: ${JSON.stringify(existingData)}. Output JSON: { "character": string (keep same), "pinyin": string (keep same), "word_translation": string, "level_badge": string, "tip": string, "sentence_character": string (keep same), "sentence_pinyin": string (keep same), "sentence_translation": string }`,
+REGLA CRÍTICA 1: En "sentence_translation", mantén "${existingData.character}" (SOLO Hanzi) dentro del texto traducido.
+REGLA CRÍTICA 2: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à).
+
+EXAMPLE: { "word_translation": "sports", "level_badge": "HSK 2", "tip": "...", "sentence_translation": "I love 运动" }`,
+        prompt: `Translate these fields to ${languageName}: ${JSON.stringify(toTranslate)}. 
+Output JSON: { "word_translation": string, "level_badge": string, "tip": string, "sentence_translation": string }`,
     });
 
     const jsonMatch = transRaw.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('AI failed to provide valid JSON for Translation');
     const transObj = JSON.parse(jsonMatch[0]);
 
+    // Manually merge to ensure Chinese characters and Pinyin are NEVER lost or modified by AI
     return {
-        ...existingData,
-        ...transObj
+        character: existingData.character,
+        pinyin: existingData.pinyin,
+        word_translation: transObj.word_translation,
+        level_badge: transObj.level_badge,
+        tip: transObj.tip,
+        sentence_character: existingData.sentence_character,
+        sentence_pinyin: existingData.sentence_pinyin,
+        sentence_translation: transObj.sentence_translation
     };
 }
 
@@ -554,7 +573,9 @@ async function getOrGenerateWodData(dailyDoc, todayStr, lang, languageName) {
 
     if (existingData?.character) {
         console.log(`[WOD] Translating "${existingData.character}" to ${languageName}`);
-        return await generateWodTranslation(existingData, languageName, lang);
+        const translatedData = await generateWodTranslation(existingData, languageName, lang);
+        await persistWodData(dailyDoc, todayStr, lang, translatedData);
+        return translatedData;
     }
 
     console.log(`[WOD] Generating brand new word for ${todayStr} (${languageName})`);
@@ -564,7 +585,12 @@ async function getOrGenerateWodData(dailyDoc, todayStr, lang, languageName) {
         return trans?.character || r.data?.character;
     }).filter(Boolean);
 
-    return await generateNewWod(languageName, lang, recentChars);
+    const wordData = await generateNewWod(languageName, lang, recentChars);
+    
+    // Persist to database
+    await persistWodData(dailyDoc, todayStr, lang, wordData);
+    
+    return wordData;
 }
 
 async function persistWodData(dailyDoc, todayStr, lang, wordData) {
@@ -1189,4 +1215,33 @@ REGLA CRÍTICA 3: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ,
     }
 });
 
-module.exports = router;
+// Exportable: Pre-generate WOD for all languages
+async function preGenerateWod() {
+    console.log('[Cron] Starting Word of the Day pre-generation at', new Date().toISOString());
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+    try {
+        let dailyDoc = await DailyWord.findOne({ date: { $regex: '^' + todayStr } });
+        const languages = [
+            { code: 'es', name: 'Spanish' },
+            { code: 'en', name: 'English' },
+            { code: 'tr', name: 'Turkish' }
+        ];
+
+        for (const { code, name } of languages) {
+            console.log(`[Cron] Preparing WoD for ${name}...`);
+            await getOrGenerateWodData(dailyDoc, todayStr, code, name);
+            // Re-fetch to keep the same doc instance updated
+            dailyDoc = await DailyWord.findOne({ date: { $regex: '^' + todayStr } });
+        }
+        console.log('[Cron] WoD pre-generation completed.');
+    } catch (err) {
+        console.error('[Cron Error]:', err.message);
+    }
+}
+
+module.exports = {
+    router,
+    preGenerateWod
+};
