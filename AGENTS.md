@@ -56,6 +56,7 @@ PandaLatam uses a hybrid, high-performance architecture:
 The project is fully integrated with the **Vercel AI SDK**:
 - `@ai-sdk/openai` configured with Groq baseURL to standardize text generation.
 - **Groq JSON Strategy**: MUST use `generateText` with `responseFormat: 'json'` and manual JSON extraction via Regex (`.match(/\{[\s\S]*\}/)`) to ensure compatibility. `generateObject` is deprecated for Groq routes due to periodic schema validation failures.
+- **Hanzi Guard**: To force Hanzi generation (especially for names), use the field name `hanzi` in the AI prompt and map it back to `hz` in the backend logic. This prevents the model from skipping the character field.
 - `streamText` for faster real-time UX in the AI Chat (`/server/routes/ai.js`).
 
 ## Persistence & Context Rule
