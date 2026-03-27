@@ -136,4 +136,11 @@ To always see the WSL instance regardless of the Windows service state:
 ### Commit & Review Policy
 - **Small Changes** (< 300 lines, < 5 files): Use default `git commit` to trigger GGA review.
 - **Large Changes** (> 500 lines or complex modules like `server/routes/ai.js`): Use `git commit --no-verify` if GGA times out due to provider limits (Gemini TPM quotas). 
-- **Verification**: If bypassing GGA, the agent MUST perform a manual logic review before committing.
+- **Verification**: If bypassing GGA, the agent MUST perform a manual logic review before committing.
+
+## Server Health Monitoring
+Useful commands for troubleshooting the Oracle Cloud 2GB RAM environment:
+- **PM2**: `pm2 status`, `pm2 monit`, `pm2 logs`
+- **Redis**: `redis-cli ping`
+- **MongoDB**: `mongosh --eval "db.adminCommand('ping')"`
+- **System**: `free -h` (check swap/RAM), `htop`, `df -h`
