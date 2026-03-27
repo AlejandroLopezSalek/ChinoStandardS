@@ -1,7 +1,7 @@
-# TurkAmerica — Características de la Plataforma
+# PandaLatam — Características de la Plataforma
 
-> Plataforma educativa de turco para hispanohablantes, desarrollada por **ODL (Organización de Desarrollo Latino)**.
-> URL: [odl-turquia.club](https://odl-turquia.club)
+> Plataforma educativa de chino para hispanohablantes, desarrollada por **ODL (Organización de Desarrollo Latino)**.
+> URL: [chinolatino.club](https://chinolatino.club)
 
 ---
 
@@ -50,9 +50,10 @@ Widget interactivo generado con IA (Groq / LLaMA 3.3 70B):
 | Revelar | Botón para ver la traducción si no se sabe |
 | Tip | Consejo de aprendizaje específico para esa palabra |
 
-- Se regenera automáticamente cada 24 horas
-- Caché en servidor (sin llamadas repetidas a la API)
-- Fallback a "Merhaba" si la IA falla
+- Se pre-genera automáticamente cada medianoche vía Cron
+- Generación inicial al arrancar el servidor
+- Caché en Redis con prefijo único `CHINO:` para evitar colisiones
+- Fallback a "你好" si la IA falla
 
 ---
 
@@ -65,13 +66,32 @@ Widget interactivo generado con IA (Groq / LLaMA 3.3 70B):
 
 ---
 
-## 🤖 Chat con IA (`/Dashboard/` o integrado en lecciones)
-
-- Chat con asistente de turco basado en **Groq / LLaMA 3.3 70B**
-- Contexto de las lecciones cargadas (A1–C1) para respuestas relevantes
+- Chat con asistente de chino basado en **Groq / Moonshot AI (Kimi)**
+- Contexto de las lecciones cargadas (HSK 1–6) para respuestas relevantes
 - Historial de conversación en sesión
 - **Rate limiting**: 50 peticiones por hora por IP para prevenir abuso
 - Logging de interacciones (solo para usuarios autenticados)
+
+---
+
+## 🧪 Laboratorio de IA (`/Lab/`)
+
+Experimentos avanzados de aprendizaje personalizados:
+
+### 🧬 ADN Lingüístico
+- Análisis morfológico profundo de caracteres chinos.
+- Descomposición en radicales y significados individuales.
+- Explicación de la etimología y mnemotecnia para memorización.
+
+### 📚 Story Lab
+- Historias interactivas generadas por IA con dificultad progresiva.
+- Segmentación por palabras para facilitar la lectura inmediata.
+- El usuario toma decisiones que afectan el curso de la historia.
+
+### 📝 Exam Lab
+- Generación automática de exámenes nivel HSK (1-6).
+- Tres secciones críticas: Escucha (con audio IA), Lectura y Escritura.
+- Calificación automática y feedback pedagógico del asistente Panda.
 
 ---
 
@@ -175,7 +195,20 @@ Acceso exclusivo para administradores autenticados:
 | Frontend | HTML + Vanilla JS + Tailwind CSS |
 | SSG | Eleventy (11ty) |
 | Backend | Node.js + Express |
-| Base de datos | MongoDB (Mongoose) |
-| IA | Groq SDK (LLaMA 3.3 70B) |
-| Auth | JWT |
-| Hosting | Servidor propio / VPS |
+| Base de datos | MongoDB (Mongoose) + Redis (Cache) |
+| IA | Groq / Vercel AI SDK (Kimi / LLaMA 3.3) |
+| Vector DB | Qdrant (Docker) |
+| Auth | JWT & Google OAuth2 |
+| Hosting | Oracle Cloud (2GB RAM) + PM2 (1 instance) + Nginx |
+
+---
+
+## 🏗️ Workflows y DevOps
+
+Infraestructura robusta para escalabilidad y mantenimiento:
+
+- **VM Setup**: Guía de instalación automatizada para dependencias (Node, Mongo, Redis).
+- **Optimización de Recursos**: Configuración PM2 ajustada a 1 instancia para maximizar la estabilidad en entornos de 2GB RAM.
+- **Redis Prefixing**: Aislamiento de sesiones y caché mediante prefijos (`CHINO:`) para permitir múltiples apps en un mismo servidor.
+- **RAG Capability**: Sistema de recuperación de información basado en vectores (Qdrant).
+- **WSL Connectivity**: Flujo de trabajo optimizado para desarrollo en Windows/WSL2.
