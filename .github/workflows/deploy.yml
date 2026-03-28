@@ -2,7 +2,7 @@ name: Deploy to Production
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   deploy:
@@ -23,7 +23,7 @@ jobs:
           
           # Force sync with repo to fix any conflicts (like package-lock.json)
           git fetch --all
-          git reset --hard origin/main
+          git reset --hard origin/master
           chmod +x deploy.sh
           
           # Ejecutar el script maestro de despliegue

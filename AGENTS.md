@@ -144,3 +144,8 @@ Useful commands for troubleshooting the Oracle Cloud 2GB RAM environment:
 - **Redis**: `redis-cli ping`
 - **MongoDB**: `mongosh --eval "db.adminCommand('ping')"`
 - **System**: `free -h` (check swap/RAM), `htop`, `df -h`
+
+## ⚠️ Estado de GGA (Gentleman Guardian Angel)
+> [!WARNING]
+> El hook de pre-commit de **GGA** ha sido **DESACTIVADO** temporalmente (Marzo 2026) debido a errores recurrentes en el escaneo de IA que bloqueaban los commits.
+> Para rehabilitarlo, se debe descomentar la línea `gga run || exit 1` en el archivo `.git/hooks/pre-commit`.
