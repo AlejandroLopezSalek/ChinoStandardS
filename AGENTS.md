@@ -17,6 +17,7 @@ PandaLatam uses a hybrid, high-performance architecture:
   4. **One-Shot Guard**: Always provide a JSON example in the messages array (system/user roles) with REAL Hanzi to anchor the expected output structure.
   5. **Groq JSON Strategy**: MUST use `generateText` with `responseFormat: 'json'`. Use the `messages` array for StoryLab to ensure better JSON schema compliance.
   6. **StoryLab Segmentation**: `segments` MUST be word-by-word or short phrases (max 4 Hanzi). NEVER send long sentences in a single segment as they break the mobile layout.
+  7. **History Retention**: AI Chat history is limited to the **last 2 hours** (server-side filter) for all users to ensure context freshness and privacy.
 - **Rate Limiting & Testing**:
   - Daily limits for DNA, Exams, and StoryLab are enforced in `server/routes/ai.js` using `toISOString().split('T')[0]`.
   - **Developer Bypass**: Set `BYPASS_LAB_LIMITS=true` in `.env` to ignore these limits during development/testing.
@@ -48,8 +49,9 @@ PandaLatam uses a hybrid, high-performance architecture:
 ## Coding Guidelines
 1. **Frontend**: Keep the frontend purely static and vanilla. Use `localStorage` for state management where needed.
 2. **Backend**: Follow strict security practices (input sanitization with `mongo-sanitize`, rate limiting, helmet, and CORS protection).
-3. **Language**: User-facing interfaces and content English, Turkish and Spanish as native for learning Chinese.
-4. **Consistency**: Follow existing configurations (like Prettier/ESLint rules, Tailwind setup).
+3. **User Property Access**: ALWAYS use safety guards or optional chaining (`?.`) when accessing `user.stats` or `user.profile` to prevent 500 errors for new users or guests.
+4. **Language**: User-facing interfaces and content English, Turkish and Spanish as native for learning Chinese.
+5. **Consistency**: Follow existing configurations (like Prettier/ESLint rules, Tailwind setup).
 5. **UI Performance**: To avoid "flicker" between page loads, do NOT use `opacity: 0` fadeIn transitions in `base.njk`. Pages should load immediately (`opacity: 1`).
 6. **Tailwind Safelist**: Any dynamic color class (e.g., based on level levels) MUST be explicitly added to `tailwind.config.js` safelist/regex.
 
