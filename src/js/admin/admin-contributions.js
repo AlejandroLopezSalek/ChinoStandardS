@@ -365,7 +365,7 @@ async function viewRequest(id) {
             globalThis.adminEditorInstance.setContent(request.data.newContent || '');
         }
 
-    } else {
+    } else if (request.type === 'book_upload') {
         modalBody.innerHTML = `
             <div class="space-y-6">
                 <div class="bg-stone-50 dark:bg-stone-800/50 p-6 rounded-2xl border border-stone-200 dark:border-stone-700">
@@ -885,32 +885,6 @@ globalThis.showHistoryAdmin = async function (id, title) {
     }
 };
 
-                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-200 dark:border-stone-700">
-                    <h3 class="flex items-center gap-2 mb-4 text-stone-800 dark:text-white font-bold">
-                        <i class="fas fa-question-circle text-red-500"></i> ${window.I18N_ADMIN?.modals?.detail?.questions || 'Preguntas'}
-                    </h3>
-                    <div class="space-y-4">
-                        ${(request.data.sections || []).flatMap(s => s.questions || []).map((q, idx) => `
-                            <div class="p-4 bg-stone-50 dark:bg-stone-900/50 rounded-xl border border-stone-100 dark:border-stone-700/50">
-                                <p class="font-bold text-stone-800 dark:text-white mb-2">${idx + 1}. ${escHtml(q.question)}</p>
-                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-                                    ${(q.options || []).map(opt => `
-                                        <li class="flex items-center gap-2 ${opt === q.correct_answer ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-stone-500'}">
-                                            <i class="fas ${opt === q.correct_answer ? 'fa-check-circle' : 'fa-circle text-[8px]'}"></i> ${escHtml(opt)}
-                                        </li>
-                                    `).join('')}
-                                </ul>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            </div>
-        `;
-    } else {
-        modalBody.innerHTML = `
-<p class="text-red-500 text-center">Error al cargar historial: ${escHtml(e.message)}</p>`;
-    }
-};
 
 globalThis.revertLessonAdmin = async function (id, version) {
     if (!confirm(`¿Estás seguro de que deseas restaurar la versión ${version}? Esto creará una nueva versión con el contenido de ese momento.`)) return;
