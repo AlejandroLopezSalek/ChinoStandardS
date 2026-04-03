@@ -20,7 +20,8 @@
     "filters": {
       "all": "Todas",
       "lessons": "Lecciones",
-      "books": "Libros"
+      "books": "Libros",
+      "exams": "Exámenes"
     },
     "requests": {
       "title": "Solicitudes Pendientes",
@@ -29,6 +30,7 @@
       "empty_desc": "No hay solicitudes pendientes de revisión",
       "type_lesson": "Edición de Lección",
       "type_book": "Libro Compartido",
+      "type_exam": "Examen de IA / Reto",
       "view_btn": "Ver",
       "approve_quick": "Aprobar Rápido",
       "reject_quick": "Rechazar Rápido",
@@ -79,6 +81,9 @@
         "format": "Formato",
         "size": "Tamaño",
         "file_link": "Enlace al Archivo",
+        "exam_info": "Información del Examen",
+        "passage": "Texto de Lectura",
+        "questions": "Preguntas",
         "approve_btn": "Aprobar",
         "reject_btn": "Rechazar",
         "cancel_btn": "Cancelar"
@@ -128,7 +133,8 @@
     "filters": {
       "all": "All",
       "lessons": "Lessons",
-      "books": "Books"
+      "books": "Books",
+      "exams": "Exams"
     },
     "requests": {
       "title": "Pending Requests",
@@ -137,6 +143,7 @@
       "empty_desc": "No pending review requests",
       "type_lesson": "Lesson Edit",
       "type_book": "Shared Book",
+      "type_exam": "AI Exam / Challenge",
       "view_btn": "View",
       "approve_quick": "Quick Approve",
       "reject_quick": "Quick Reject",
@@ -187,6 +194,9 @@
         "format": "Format",
         "size": "Size",
         "file_link": "File Link",
+        "exam_info": "Exam Information",
+        "passage": "Reading Passage",
+        "questions": "Questions",
         "approve_btn": "Approve",
         "reject_btn": "Reject",
         "cancel_btn": "Cancel"
@@ -236,7 +246,8 @@
     "filters": {
       "all": "Hepsi",
       "lessons": "Dersler",
-      "books": "Kitaplar"
+      "books": "Kitaplar",
+      "exams": "Sınavlar"
     },
     "requests": {
       "title": "Bekleyen İstekler",
@@ -245,6 +256,7 @@
       "empty_desc": "İncelenecek bekleyen istek yok",
       "type_lesson": "Ders Düzenleme",
       "type_book": "Paylaşılan Kitap",
+      "type_exam": "Yapay Zeka Sınavı",
       "view_btn": "Görüntüle",
       "approve_quick": "Hızlı Onay",
       "reject_quick": "Hızlı Red",
@@ -295,6 +307,9 @@
         "format": "Format",
         "size": "Boyut",
         "file_link": "Dosya Bağlantısı",
+        "exam_info": "Sınav Bilgisi",
+        "passage": "Okuma Metni",
+        "questions": "Sorular",
         "approve_btn": "Onayla",
         "reject_btn": "Reddet",
         "cancel_btn": "İptal"

@@ -114,7 +114,8 @@
                 approved: requests.filter(r => r.status === 'approved').length,
                 rejected: requests.filter(r => r.status === 'rejected').length,
                 lessonEdits: requests.filter(r => r.status === 'pending' && r.type === 'lesson_edit').length,
-                bookUploads: requests.filter(r => r.status === 'pending' && r.type === 'book_upload').length
+                bookUploads: requests.filter(r => r.status === 'pending' && r.type === 'book_upload').length,
+                communityExams: requests.filter(r => r.status === 'pending' && r.type === 'community_exam').length
             };
         }
 

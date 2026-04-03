@@ -175,6 +175,9 @@ async function loadStats() {
         document.getElementById('badgeAll').textContent = stats.pending;
         document.getElementById('badgeLessons').textContent = stats.lessonEdits;
         document.getElementById('badgeBooks').textContent = stats.bookUploads;
+        if (document.getElementById('badgeExams')) {
+            document.getElementById('badgeExams').textContent = stats.communityExams || 0;
+        }
 
     } catch (error) {
         console.error('Error loading stats:', error);
@@ -209,11 +212,11 @@ async function loadRequests() {
             <div class="bg-white dark:bg-stone-800 rounded-2xl p-6 border border-stone-200 dark:border-stone-700 shadow-sm hover:shadow-md transition-all duration-300 group relative overflow-hidden" data-id="${request.id}">
                 <div class="flex items-center justify-between mb-4 pb-4 border-b border-stone-100 dark:border-stone-700/50">
                     <div class="flex items-center gap-3">
-                         <div class="w-10 h-10 rounded-xl flex items-center justify-center ${request.type === 'lesson_edit' ? 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400' : 'bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400'}">
-                             <i class="fas ${request.type === 'lesson_edit' ? 'fa-book-open' : 'fa-file-pdf'}"></i>
+                         <div class="w-10 h-10 rounded-xl flex items-center justify-center ${request.type === 'lesson_edit' ? 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400' : request.type === 'community_exam' ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400' : 'bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400'}">
+                             <i class="fas ${request.type === 'lesson_edit' ? 'fa-book-open' : request.type === 'community_exam' ? 'fa-graduation-cap' : 'fa-file-pdf'}"></i>
                          </div>
                          <span class="font-semibold text-stone-700 dark:text-stone-200 text-sm">
-                             ${request.type === 'lesson_edit' ? (window.I18N_ADMIN?.requests?.type_lesson || 'Edición de Lección') : (window.I18N_ADMIN?.requests?.type_book || 'Libro Compartido')}
+                             ${request.type === 'lesson_edit' ? (window.I18N_ADMIN?.requests?.type_lesson || 'Edición de Lección') : request.type === 'community_exam' ? (window.I18N_ADMIN?.requests?.type_exam || 'Examen de IA') : (window.I18N_ADMIN?.requests?.type_book || 'Libro Compartido')}
                          </span>
                     </div>
                     <span class="text-xs font-medium text-stone-500 bg-stone-100 dark:bg-stone-700 dark:text-stone-300 px-2.5 py-1 rounded-full">
@@ -420,6 +423,57 @@ async function viewRequest(id) {
                     <div>
                         <p class="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wide">${window.I18N_ADMIN?.modals?.detail?.submitted_by || 'Enviado por'}</p>
                         <p class="font-semibold text-stone-800 dark:text-white">${request.submittedBy?.username || (window.I18N_ADMIN?.modals?.detail?.unknown_user || 'Usuario Desconocido')} <span class="text-stone-400 font-normal">(${request.submittedBy?.email || 'Sin email'})</span></p>
+                    </div>
+                </div>
+            </div>
+        `;
+    } else if (request.type === 'community_exam') {
+        modalBody.innerHTML = `
+            <div class="space-y-6">
+                <div class="bg-stone-50 dark:bg-stone-800/50 p-6 rounded-2xl border border-stone-200 dark:border-stone-700">
+                    <h3 class="flex items-center gap-2 mb-4 text-stone-800 dark:text-white font-bold pb-2 border-b border-stone-200 dark:border-stone-700">
+                        <i class="fas fa-info-circle text-red-500"></i> ${window.I18N_ADMIN?.modals?.detail?.exam_info || 'Información del Examen'}
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-1">
+                            <strong class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">${window.I18N_ADMIN?.modals?.detail?.level || 'Nivel'}</strong>
+                            <span class="font-semibold text-stone-800 dark:text-white">${request.data.level}</span>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <strong class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">${window.I18N_ADMIN?.modals?.detail?.submitted_by || 'Enviado por'}</strong>
+                            <span class="font-semibold text-stone-800 dark:text-white">${request.submittedBy?.username || 'Usuario Desconocido'}</span>
+                        </div>
+                    </div>
+                </div>
+
+                ${request.data.reading_passage ? `
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-200 dark:border-stone-700">
+                    <h3 class="flex items-center gap-2 mb-4 text-stone-800 dark:text-white font-bold">
+                        <i class="fas fa-book-reader text-red-500"></i> ${window.I18N_ADMIN?.modals?.detail?.passage || 'Texto de Lectura'}
+                    </h3>
+                    <div class="p-4 bg-stone-50 dark:bg-stone-900/50 rounded-xl border border-stone-100 dark:border-stone-700/50 text-stone-800 dark:text-stone-200 italic leading-relaxed">
+                        ${escHtml(request.data.reading_passage)}
+                    </div>
+                </div>
+                ` : ''}
+
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-200 dark:border-stone-700">
+                    <h3 class="flex items-center gap-2 mb-4 text-stone-800 dark:text-white font-bold">
+                        <i class="fas fa-question-circle text-red-500"></i> ${window.I18N_ADMIN?.modals?.detail?.questions || 'Preguntas'}
+                    </h3>
+                    <div class="space-y-4">
+                        ${(request.data.sections || []).flatMap(s => s.questions || []).map((q, idx) => `
+                            <div class="p-4 bg-stone-50 dark:bg-stone-900/50 rounded-xl border border-stone-100 dark:border-stone-700/50">
+                                <p class="font-bold text-stone-800 dark:text-white mb-2">${idx + 1}. ${escHtml(q.question)}</p>
+                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                                    ${(q.options || []).map(opt => `
+                                        <li class="flex items-center gap-2 ${opt === q.correct_answer ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-stone-500'}">
+                                            <i class="fas ${opt === q.correct_answer ? 'fa-check-circle' : 'fa-circle text-[8px]'}"></i> ${escHtml(opt)}
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
             </div>
@@ -828,6 +882,33 @@ globalThis.showHistoryAdmin = async function (id, title) {
 
     } catch (e) {
         modalBody.innerHTML = `<p class="text-red-500 text-center">Error al cargar historial: ${escHtml(e.message)}</p>`;
+    }
+};
+
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-200 dark:border-stone-700">
+                    <h3 class="flex items-center gap-2 mb-4 text-stone-800 dark:text-white font-bold">
+                        <i class="fas fa-question-circle text-red-500"></i> ${window.I18N_ADMIN?.modals?.detail?.questions || 'Preguntas'}
+                    </h3>
+                    <div class="space-y-4">
+                        ${(request.data.sections || []).flatMap(s => s.questions || []).map((q, idx) => `
+                            <div class="p-4 bg-stone-50 dark:bg-stone-900/50 rounded-xl border border-stone-100 dark:border-stone-700/50">
+                                <p class="font-bold text-stone-800 dark:text-white mb-2">${idx + 1}. ${escHtml(q.question)}</p>
+                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                                    ${(q.options || []).map(opt => `
+                                        <li class="flex items-center gap-2 ${opt === q.correct_answer ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-stone-500'}">
+                                            <i class="fas ${opt === q.correct_answer ? 'fa-check-circle' : 'fa-circle text-[8px]'}"></i> ${escHtml(opt)}
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+    } else {
+        modalBody.innerHTML = `
+<p class="text-red-500 text-center">Error al cargar historial: ${escHtml(e.message)}</p>`;
     }
 };
 

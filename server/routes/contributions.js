@@ -178,11 +178,15 @@ router.put('/:id/status', authenticateToken, requireAdmin, async (req, res) => {
 
             // HANDLE BOOK UPLOADS
             if (contribution.type === 'book_upload') {
-                // Book uploads are marked as approved
-                // The PDF URL is stored in contribution.data.pdfUrl
-                // Users can view approved book uploads from the contributions page
                 console.log('Book upload approved:', contribution.title);
                 console.log('PDF URL:', contribution.data?.pdfUrl);
+            }
+
+            // HANDLE COMMUNITY EXAMS
+            if (contribution.type === 'community_exam') {
+                // Community exams are simply marked as approved
+                // The frontend/API for public exams will filter by status: 'approved'
+                console.log('Community exam approved:', contribution.title);
             }
         }
 

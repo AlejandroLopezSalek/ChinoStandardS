@@ -28,6 +28,11 @@ PandaLatam uses a hybrid, high-performance architecture:
   - **Writing**: Level-specific HSK tasks.
   - **Persistence**: Results, history, and user feedback are persisted in `LabExam` model.
   - **Audio**: Played via **Browser Native Speech Synthesis** (`zh-CN`/`tr-TR`) with a server-side robotic fallback.
+- **Community Contributions & Admin Review**: Platform supports user-submitted content.
+  - **Contribution Types**: `lesson_edit`, `book_upload`, `community_exam`.
+  - **Flow**: User submits -> `Contribution` model (status: `pending`) -> Admin review via `/Admin-Contributions.html` -> Status change to `approved`/`rejected`.
+  - **Auto-Processing**: Upon approval of `lesson_edit`, the system automatically saves the legacy version to `LessonHistory` and updates the active `Lesson` and RAG index.
+  - **Exam Sharing**: Approved `community_exam` entries are flagged for public visibility in the lab gallery.
 - **TTS Strategy**: Prefer Browser Native SpeechSynthesis for realistic Chinese pronunciation. Fallback to `/api/chat/tts` only if unsupported.
 
 ## Coding Standards & Architecture (New)
