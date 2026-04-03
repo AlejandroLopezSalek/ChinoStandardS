@@ -148,9 +148,23 @@ class LabExams {
                                     <p class="text-[10px] text-slate-500 font-medium uppercase">${e.level} • ${new Date(e.date).toLocaleDateString()}</p>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <div class="text-lg font-black ${e.score >= 60 ? 'text-emerald-500' : 'text-slate-400'}">${e.score || 0}%</div>
-                                <div class="text-[9px] text-slate-400 uppercase font-black tracking-widest group-hover:text-red-500">VER <i class="fas fa-eye ml-1"></i></div>
+                            <div class="flex items-center gap-3">
+                                <div class="text-right">
+                                    <div class="text-lg font-black ${e.score >= 60 ? 'text-emerald-500' : 'text-slate-400'}">${e.score || 0}%</div>
+                                    <div class="text-[9px] text-slate-400 uppercase font-black tracking-widest group-hover:text-red-500">VER <i class="fas fa-eye ml-1"></i></div>
+                                </div>
+                                <div class="flex flex-col gap-1 pl-3 border-l border-slate-100 dark:border-white/5">
+                                    <button onclick="event.stopPropagation(); globalThis.labExams.publishExam('${e.id}')" 
+                                            class="w-8 h-8 rounded-lg bg-slate-50 dark:bg-white/5 text-slate-400 hover:bg-emerald-500 hover:text-white transition-all flex items-center justify-center"
+                                            title="Publicar en Comunidad">
+                                        <i class="fas fa-globe-americas"></i>
+                                    </button>
+                                    <button onclick="event.stopPropagation(); if(confirm('¿Borrar este examen?')) globalThis.labExams.deleteExam('${e.id}')" 
+                                            class="w-8 h-8 rounded-lg bg-slate-50 dark:bg-white/5 text-slate-400 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center"
+                                            title="Eliminar">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     `).join('')}
@@ -406,13 +420,44 @@ class LabExams {
                 body: JSON.stringify({ 
                     answers: this.userAnswers, 
                     original_exam: this.currentExam,
-                    db_id: this.db_id,
-                    lang: lang
+                    lang: lang,
+                    db_id: this.currentExam.db_id
                 })
             });
             const data = await response.json();
             this.renderResults(data);
         } catch (e) { this.setState('exam'); }
+    }
+
+    async deleteExam(id) {
+        try {
+            const headers = globalThis.AuthService?.getAuthHeaders() || {};
+            const res = await fetch(`/api/chat/lab/exams/${id}`, {
+                method: 'DELETE',
+                headers
+            });
+            const data = await res.json();
+            if (data.error) throw new Error(data.error);
+            this.notify("Examen eliminado", "success");
+            this.fetchHistory();
+        } catch (e) {
+            this.notify("Error al eliminar", "error");
+        }
+    }
+
+    async publishExam(id) {
+        try {
+            const headers = globalThis.AuthService?.getAuthHeaders() || {};
+            const res = await fetch(`/api/chat/lab/exams/${id}/publish`, {
+                method: 'POST',
+                headers
+            });
+            const data = await res.json();
+            if (data.error) throw new Error(data.error);
+            this.notify("Solicitud de publicación enviada", "success");
+        } catch (e) {
+            this.notify("Error al publicar", "error");
+        }
     }
 
     renderResults(data) {

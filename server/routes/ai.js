@@ -901,7 +901,7 @@ CRITICAL:
 3. If an answer is semantically identical to the correct one (in ${languageName}), mark it as correct.
 4. For Writing production tasks (A2+), evaluate coherence, grammar, and length (ensure they met the requested word count).
 5. Provide the explanation and advice ONLY in ${languageName}.
-6. Score should be an integer from 0 to 100.
+6. Score should be an integer from 0 to 100. Calculate it mathematically: (Correct Answers / Total Questions) * 100.
 Output JSON: { "score": number, "feedback": [{ "question_id": number, "status": "correct"|"incorrect", "explanation": string }], "panda_advice": string }`,
         });
 
@@ -946,6 +946,41 @@ router.get('/lab/exams/history', authenticateToken, async (req, res) => {
         }));
 
         res.json(formatted);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// DELETE /lab/exams/:id
+router.delete('/lab/exams/:id', authenticateToken, async (req, res) => {
+    try {
+        const user = req.user;
+        const exam = await LabExam.findOneAndDelete({ _id: req.params.id, userId: user._id });
+        if (!exam) return res.status(404).json({ error: 'Examen no encontrado' });
+        res.json({ message: 'Examen eliminado correctamente' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// POST /lab/exams/:id/publish
+router.post('/lab/exams/:id/publish', authenticateToken, async (req, res) => {
+    try {
+        const user = req.user;
+        const exam = await LabExam.findOne({ _id: req.params.id, userId: user._id });
+        if (!exam) return res.status(404).json({ error: 'Examen no encontrado' });
+
+        const Contribution = require('../models/Contribution');
+        await Contribution.create({
+            type: 'community_exam',
+            title: exam.exam_data?.title || `Reto IA - ${exam.level}`,
+            description: `Examen generado por usuario (${user.username})`,
+            data: { ...exam.exam_data, level: exam.level },
+            submittedBy: { id: user._id, username: user.username, email: user.email },
+            status: 'pending'
+        });
+
+        res.json({ message: 'Solicitud de publicación enviada' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
