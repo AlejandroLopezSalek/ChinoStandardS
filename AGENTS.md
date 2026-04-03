@@ -17,7 +17,8 @@ PandaLatam uses a hybrid, high-performance architecture:
   4. **One-Shot Guard**: Always provide a JSON example in the messages array (system/user roles) with REAL Hanzi to anchor the expected output structure.
   5. **Groq JSON Strategy**: MUST use `generateText` with `responseFormat: 'json'`. Use the `messages` array for StoryLab to ensure better JSON schema compliance.
   6. **StoryLab Segmentation**: `segments` MUST be word-by-word or short phrases (max 4 Hanzi). NEVER send long sentences in a single segment as they break the mobile layout.
-  7. **History Retention**: AI Chat history is limited to the **last 2 hours** (server-side filter) for all users to ensure context freshness and privacy.
+  7. **AI Chat Retention**: AI Chat history is limited to the **last 2 hours** (server-side filter) for all users to ensure context freshness and privacy.
+- **Modal Design Standard**: ALL modals MUST use a full-screen backdrop with `backdrop-blur-md` (or higher) and `bg-slate-900/80` (or darker) for a premium feel. Centers MUST be used for content.
 - **Rate Limiting & Testing**:
   - Daily limits for DNA, Exams, and StoryLab are enforced in `server/routes/ai.js` using `toISOString().split('T')[0]`.
   - **Developer Bypass**: Set `BYPASS_LAB_LIMITS=true` in `.env` to ignore these limits during development/testing.
@@ -53,7 +54,8 @@ PandaLatam uses a hybrid, high-performance architecture:
 4. **Language**: User-facing interfaces and content English, Turkish and Spanish as native for learning Chinese.
 5. **Consistency**: Follow existing configurations (like Prettier/ESLint rules, Tailwind setup).
 5. **UI Performance**: To avoid "flicker" between page loads, do NOT use `opacity: 0` fadeIn transitions in `base.njk`. Pages should load immediately (`opacity: 1`).
-6. **Tailwind Safelist**: Any dynamic color class (e.g., based on level levels) MUST be explicitly added to `tailwind.config.js` safelist/regex.
+6. **Premium Modals**: Every modal wrapper (`fixed inset-0`) MUST include `backdrop-blur-md` and a semi-transparent dark background (`bg-slate-900/90`). Content should animate with `animate-slideUp`.
+7. **Tailwind Safelist**: Any dynamic color class (e.g., based on level levels) MUST be explicitly added to `tailwind.config.js` safelist/regex.
 
 ## Vercel AI SDK Implementation
 The project is fully integrated with the **Vercel AI SDK**:

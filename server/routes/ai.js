@@ -798,12 +798,14 @@ All instructions and feedback MUST be in ${languageName}.
 DIFFICULTY RULES:
 - HSK 1/2: Basics, PinYin, direct translation.
 - HSK 3: Intermediate grammar.
-- HSK 4/5/6: STRICT ADVANCED DIFFICULTY. Use complex academic vocabulary, idiomatic expressions (Chéngyǔ), and complex sub-clauses. Questions MUST be challenging.
-
-STRUCTURE & LANGUAGE RULES:
+- HSK 4/5/6: STRICT ADVANCED DIFFICULTY.
 1. Listening: ${Math.floor(totalQuestions/4)} questions. Generate ONE "listening_passage" (a detailed conversation in Chinese, ~1 minute of speech).
 2. Reading: ${Math.floor(totalQuestions/3)} questions. Generate ONE "reading_passage" (story/article).
-3. Writing: Remaining questions. HSK grammar.
+   - Length: HSK 1 (~50 chars), HSK 2 (~120), HSK 3 (~250), HSK 4 (~400), HSK 5/6 (~600+ chars).
+3. Writing: 
+   - HSK 1: ${totalQuestions - Math.floor(totalQuestions/4) - Math.floor(totalQuestions/3)} questions. Individual sentences/translation.
+   - HSK 2+: ONE single production task.
+   - Word count requirements: HSK 2: 100 words, HSK 3: 150 words, HSK 4: 200 words, HSK 5/6: 250 words.
 
 STRICT IMMERSION RULES:
 - HSK 1: Questions in ${languageName}, Options in Chinese characters.
@@ -897,8 +899,9 @@ CRITICAL:
 1. Accept answers in ${languageName} if the user translated or gave the meaning correctly.
 2. Be flexible with synonymous terms, punctuation, and capitalization.
 3. If an answer is semantically identical to the correct one (in ${languageName}), mark it as correct.
-4. Provide the explanation and advice ONLY in ${languageName}.
-5. Score should be an integer from 0 to 100.
+4. For Writing production tasks (A2+), evaluate coherence, grammar, and length (ensure they met the requested word count).
+5. Provide the explanation and advice ONLY in ${languageName}.
+6. Score should be an integer from 0 to 100.
 Output JSON: { "score": number, "feedback": [{ "question_id": number, "status": "correct"|"incorrect", "explanation": string }], "panda_advice": string }`,
         });
 

@@ -144,7 +144,7 @@ class LabExams {
                                     ${e.score >= 60 ? '🏆' : '📝'}
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <h5 class="font-bold text-slate-900 dark:text-white text-sm truncate">${e.title}</h5>
+                                    <h5 class="font-bold text-slate-900 dark:text-white text-sm truncate">${e.title || e.exam_data?.title || "Examen Personalizado"}</h5>
                                     <p class="text-[10px] text-slate-500 font-medium uppercase">${e.level} • ${new Date(e.date).toLocaleDateString()}</p>
                                 </div>
                             </div>
@@ -428,14 +428,46 @@ class LabExams {
                     <p class="text-sm italic text-slate-600 dark:text-slate-300">"${data.panda_advice}"</p>
                 </div>
                 <div class="space-y-4">
-                    ${data.feedback.map(f => `
-                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border-l-4 ${f.status === 'correct' ? 'border-emerald-500' : 'border-red-500'}">
-                            <p class="font-bold text-xs ${f.status === 'correct' ? 'text-emerald-600' : 'text-red-600'}">${f.status === 'correct' ? (window.I18N?.correct_status || 'CORRECTO') : (window.I18N?.incorrect_status || 'INCORRECTO')}</p>
-                            <p class="text-sm">${f.explanation}</p>
+                    ${data.feedback.map(f => {
+                        // Find the original question text for context
+                        let questionText = "";
+                        let userAnswer = this.userAnswers[f.question_id] || "";
+                        
+                        if (this.currentExam?.sections) {
+                            for (const section of this.currentExam.sections) {
+                                const q = section.questions.find(q => String(q.id) === String(f.question_id));
+                                if (q) {
+                                    questionText = q.question;
+                                    break;
+                                }
+                            }
+                        }
+
+                        return `
+                        <div class="p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 shadow-sm">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${f.status === 'correct' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-red-500/10 text-red-600'}">
+                                    ${f.status === 'correct' ? (window.I18N?.correct_status || 'CORRECTO') : (window.I18N?.incorrect_status || 'INCORRECTO')}
+                                </span>
+                            </div>
+                            
+                            ${questionText ? `<p class="text-xs font-bold text-slate-400 mb-1">PREGUNTA:</p><p class="text-sm text-slate-900 dark:text-white mb-3">${questionText}</p>` : ''}
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                <div>
+                                    <p class="text-[9px] font-black text-slate-400 uppercase">TU RESPUESTA:</p>
+                                    <p class="text-xs italic ${f.status === 'correct' ? 'text-emerald-600' : 'text-red-600'}">${userAnswer || '(Sin respuesta)'}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[9px] font-black text-slate-400 uppercase">EXPLICACIÓN:</p>
+                                    <p class="text-xs text-slate-600 dark:text-slate-400">${f.explanation}</p>
+                                </div>
+                            </div>
                         </div>
-                    `).join('')}
+                        `;
+                    }).join('')}
                 </div>
-                <button type="button" onclick="location.reload()" class="w-full py-4 border-2 border-slate-200 dark:border-slate-700 rounded-2xl font-bold">${window.I18N?.retry_btn || 'REINTENTAR'}</button>
+                <button type="button" onclick="location.reload()" class="w-full py-4 border-2 border-slate-200 dark:border-slate-700 rounded-2xl font-bold">${window.I18N?.retry_btn || 'VOLVER'}</button>
             </div>
         `;
     }
