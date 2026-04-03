@@ -12,7 +12,7 @@ const LabStory = require('../models/LabStory');
 const LabExam = require('../models/LabExam');
 const DailyWord = require('../models/DailyWord');
 const redisClient = require('../redisClient');
-const { authenticateToken } = require('../middleware/auth');
+const { authenticateToken, getUserFromRequest } = require('../middleware/auth');
 
 // Load Lesson Data for Context
 let allLessons = {};
@@ -275,7 +275,21 @@ router.get('/word-of-day', async (req, res) => {
     }
 });
 
-// Helper: Generate Word of the Day from scratch
+// Helper: Generate Word of the Day from scratch// Helper: Robust JSON Extraction from AI response
+const safeJsonParse = (text, fallbackError = 'Invalid JSON from AI') => {
+    try {
+        // Find the first { and the LAST } to extract the most likely JSON object
+        const match = text.match(/\{[\s\S]*\}/);
+        if (!match) throw new Error(fallbackError);
+        
+        const jsonStr = match[0].trim();
+        return JSON.parse(jsonStr);
+    } catch (err) {
+        console.error('[AI JSON Error] Failed to parse:', text);
+        throw new Error(`${fallbackError}: ${err.message}`);
+    }
+};
+
 async function generateNewWod(languageName, lang, recentWords = []) {
     const avoidPrompt = recentWords.length > 0 ? `\n\nAvoid these recently used words: ${recentWords.join(', ')}.` : '';
     
@@ -291,9 +305,7 @@ EXAMPLE: { "character": "运动", "pinyin": "yùndòng", "word_translation": "de
         prompt: `Generate a vocabulary (HSK 1-6) for a ${languageName} speaker. Output JSON: { "character": string (Only Hanzi), "pinyin": string, "word_translation": string, "level_badge": string, "tip": string, "sentence_character": string (Only Hanzi), "sentence_pinyin": string, "sentence_translation": string } ${avoidPrompt}`,
     });
 
-    const jsonMatch = wodRaw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('AI failed to provide valid JSON for WOD');
-    return JSON.parse(jsonMatch[0]);
+    return safeJsonParse(wodRaw, 'AI failed to provide valid JSON for WOD');
 }
 
 // Helper: Translate existing WOD character to new language
@@ -319,9 +331,7 @@ EXAMPLE: { "word_translation": "sports", "level_badge": "HSK 2", "tip": "...", "
 Output JSON: { "word_translation": string, "level_badge": string, "tip": string, "sentence_translation": string }`,
     });
 
-    const jsonMatch = transRaw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('AI failed to provide valid JSON for Translation');
-    const transObj = JSON.parse(jsonMatch[0]);
+    const transObj = safeJsonParse(transRaw, 'AI failed to provide valid JSON for Translation');
 
     // Manually merge to ensure Chinese characters and Pinyin are NEVER lost or modified by AI
     return {
@@ -815,9 +825,7 @@ IMPORTANTE: Cada pregunta de "listening" DEBE tener el campo "audio_text" con el
             responseFormat: { type: 'json' },
         });
 
-        const jsonMatch = examRaw.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) throw new Error('AI did not return valid JSON structure');
-        const object = JSON.parse(jsonMatch[0]);
+        const object = safeJsonParse(examRaw, 'AI did not return valid JSON structure');
 
         // Save to History (Private)
         const savedExam = await LabExam.create({
@@ -864,17 +872,8 @@ router.post('/lab/grade-exam', authenticateToken, async (req, res) => {
         const languageMap = { 'es': 'Spanish', 'en': 'English', 'tr': 'Turkish' };
         const languageName = languageMap[lang] || 'Spanish';
 
-        const { object } = await generateObject({
+        const { text: gradeRaw } = await generateText({
             model: groq.chat('moonshotai/kimi-k2-instruct'),
-            schema: z.object({
-                score: z.number().min(0).max(100),
-                feedback: z.array(z.object({
-                    question_id: z.number(),
-                    status: z.enum(['correct', 'incorrect']),
-                    explanation: z.string()
-                })),
-                panda_advice: z.string()
-            }),
             prompt: `
 Grade this Chinese exam. 
 User Native Language: ${languageName}. 
@@ -886,8 +885,11 @@ CRITICAL:
 2. Be flexible with synonymous terms, punctuation, and capitalization.
 3. If an answer is semantically identical to the correct one (in ${languageName}), mark it as correct.
 4. Provide the explanation and advice ONLY in ${languageName}.
-5. Score should be an integer from 0 to 100.`,
+5. Score should be an integer from 0 to 100.
+Output JSON: { "score": number, "feedback": [{ "question_id": number, "status": "correct"|"incorrect", "explanation": string }], "panda_advice": string }`,
         });
+
+        const object = safeJsonParse(gradeRaw, 'AI did not return valid grading JSON');
 
         // Update History if db_id provided
         if (db_id) {
@@ -1155,9 +1157,7 @@ router.post('/lab/start-story', authenticateToken, async (req, res) => {
             responseFormat: { type: 'json' },
         });
 
-        const jsonMatch = storyRaw.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) throw new Error('AI failed for Start Story');
-        const object = JSON.parse(jsonMatch[0]);
+        const object = safeJsonParse(storyRaw, 'StoryLab failed to generate valid JSON');
 
         // Fix field name mapping if AI used 'hanzi' instead of 'hz'
         if (object.first_chapter && object.first_chapter.segments) {
@@ -1305,9 +1305,7 @@ router.post('/lab/continue-story', authenticateToken, async (req, res) => {
             responseFormat: { type: 'json' },
         });
 
-        const jsonMatch = nextRaw.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) throw new Error('AI failed for Continue Story');
-        const object = JSON.parse(jsonMatch[0]);
+        const object = safeJsonParse(nextRaw, 'StoryLab failed to continue valid JSON');
 
         // Fix field name mapping
         if (object.next_chapter && object.next_chapter.segments) {
