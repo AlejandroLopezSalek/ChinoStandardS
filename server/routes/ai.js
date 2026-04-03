@@ -104,7 +104,7 @@ const buildSystemPrompt = (user, context, lessonContentContext, memoryContext, l
     let userContext = "User: Guest";
 
     if (user) {
-        userContext = `User: ${user.username} | Level: ${user.profile?.level || 'A1'} | Streak: ${user.stats?.streak || 0} days`;
+        userContext = `User: ${user.username || 'Student'} | Level: ${user.profile?.level || 'A1'} | Streak: ${user.stats?.streak || 0} days`;
     }
 
     const contextStr = typeof context === 'object' ? JSON.stringify(context) : String(context || '');
@@ -511,13 +511,14 @@ router.post('/', async (req, res) => {
 
         // Add history
         // SECURE SERVER-SIDE MEMORY: Load recent context from the database instead of trusting the frontend array.
-        let queryVars = {};
+        const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
+        let queryVars = { timestamp: { $gte: twoHoursAgo } };
+
         if (user) {
-            queryVars = { userId: user._id };
+            queryVars.userId = user._id;
         } else {
-            // For guests, use IP to track recent history over the last 2 hours
-            const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
-            queryVars = { 'metadata.ip': req.ip, timestamp: { $gte: twoHoursAgo } };
+            // For guests, use IP to track recent history
+            queryVars['metadata.ip'] = req.ip;
         }
 
         const pastLogs = await ChatLog.find(queryVars)
@@ -1014,6 +1015,7 @@ router.get('/lab/story/:id', authenticateToken, async (req, res) => {
                 }
 
                 // Update active story in profile when loading a past one
+                if (!user.stats) user.stats = {};
                 user.stats.activeStoryId = id;
                 await user.save();
 
@@ -1196,6 +1198,7 @@ router.post('/lab/start-story', authenticateToken, async (req, res) => {
 
         // Track usage
         if (user.role !== 'admin') {
+            if (!user.stats) user.stats = {};
             user.stats.labUsage = user.stats.labUsage || {};
             user.stats.labUsage.storyDate = today;
             user.stats.activeStoryId = storyId;
