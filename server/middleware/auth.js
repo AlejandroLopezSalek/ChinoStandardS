@@ -81,8 +81,23 @@ const optionalAuth = async (req, res, next) => {
   }
 };
 
+// Helper to get user from request optionally (without blocking if no token)
+const getUserFromRequest = async (req) => {
+  try {
+    const authHeader = req.header('Authorization');
+    const token = authHeader?.split(' ')[1];
+    if (!token) return null;
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return await User.findById(decoded.userId).select('-password');
+  } catch (error) {
+    return null;
+  }
+};
+
 module.exports = {
   authenticateToken,
+  getUserFromRequest,
   requireAdmin,
   checkOwnership,
   optionalAuth
