@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TurkAmerica Deployment Script (Optimized for 1GB RAM)
+# ChinoStandard Deployment Script (Optimized for 2GB RAM)
 # Usage: ./deploy.sh
 
 set -e
@@ -9,12 +9,12 @@ echo "🚀 Starting deployment..."
 
 # 0. Optimization: Limit Node Memory for Build
 # This prevents OOM (Out Of Memory) crashes during Tailwind/Eleventy builds
-export NODE_OPTIONS="--max-old-space-size=512"
+export NODE_OPTIONS="--max-old-space-size=1024"
 
 # 1. Pull latest changes
 echo "📥 Pulling latest code..."
 git fetch origin master
-git reset --hard origin/main
+git reset --hard origin/master
 
 # Load NVM
 export NVM_DIR="$HOME/.nvm"
