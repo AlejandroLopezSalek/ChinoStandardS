@@ -290,32 +290,40 @@ router.get('/word-of-day', async (req, res) => {
 // Helper: Generate Word of the Day from scratch// Helper: Robust JSON Extraction from AI response
 const safeJsonParse = (text, fallbackError = 'Invalid JSON from AI') => {
     try {
-        // Find the first { and the LAST } to extract the most likely JSON object
-        const match = text.match(/\{[\s\S]*\}/);
+        if (!text) throw new Error('Empty response from AI');
+
+        // 1. Remove reasoning/thinking blocks commonly found in reasoning models (like Qwen/DeepSeek R1)
+        let cleanText = text.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+
+        // 2. Strip out any potential markdown blocks
+        cleanText = cleanText.replace(/```json\n?|```/g, '').trim();
+
+        // 3. Extract the JSON object using bracket matching
+        const match = cleanText.match(/\{[\s\S]*\}/);
         if (!match) throw new Error(fallbackError);
-        
-        const jsonStr = match[0].trim();
-        return JSON.parse(jsonStr);
+
+        return JSON.parse(match[0]);
     } catch (err) {
         console.error('[AI JSON Error] Failed to parse:', text);
+        if (typeof text === 'object' && text !== null) return text;
         throw new Error(`${fallbackError}: ${err.message}`);
     }
 };
 
 async function generateNewWod(languageName, lang, recentWords = []) {
     const avoidPrompt = recentWords.length > 0 ? `\n\nAvoid these recently used words: ${recentWords.join(', ')}.` : '';
-    
-    const { text: wodRaw } = await generateText({
-        model: groq.chat('llama-3.3-70b-versatile'),
+     const { text: wodRaw } = await generateText({
+        model: groq.chat('qwen/qwen3-32b'),
         responseFormat: { type: 'json' },
         system: `Act as a Chinese learning API. Generate a "Word of the Day" in Simplified Chinese. 
-REGLA CRÍTICA 1: Los campos "character" y "sentence_character" DEBEN ser únicamente caracteres chinos (Hanzi). NUNCA los dejes vacíos.
+REGLA CRÍTICA 1: Los campos "character" y "sentence_character" DEBEN ser únicamente caracteres chinos (Hanzi). NUNCA los dejes vacíos o en Pinyin.
 REGLA CRÍTICA 2: En "sentence_translation", mantén la palabra objetivo en caracteres chinos dentro del texto (ej. "Mi 父亲 es...").
 REGLA CRÍTICA 3: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à) y NUNCA caracteres de tono separados o números.
-
-EXAMPLE: { "character": "运动", "pinyin": "yùndòng", "word_translation": "deporte", "level_badge": "HSK 2", "tip": "...", "sentence_character": "我喜欢运动", "sentence_pinyin": "wǒ xǐhuān yùndòng", "sentence_translation": "Me gusta el 运动" }`,
+REGLA CRÍTICA 4: NUNCA utilices Pinyin en los campos de caracteres (Hanzi).
+REGLA CRÍTICA 5: NO generes razonamientos, ni bloques <think>, ni explicaciones extra. SOLO devuelve el objeto JSON.`,
         prompt: `Generate a vocabulary (HSK 1-6) for a ${languageName} speaker. Output JSON: { "character": string (Only Hanzi), "pinyin": string, "word_translation": string, "level_badge": string, "tip": string, "sentence_character": string (Only Hanzi), "sentence_pinyin": string, "sentence_translation": string } ${avoidPrompt}`,
     });
+
 
     return safeJsonParse(wodRaw, 'AI failed to provide valid JSON for WOD');
 }
@@ -332,13 +340,12 @@ async function generateWodTranslation(existingData, languageName, lang) {
     };
 
     const { text: transRaw } = await generateText({
-        model: groq.chat('llama-3.3-70b-versatile'),
+        model: groq.chat('qwen/qwen3-32b'),
         responseFormat: { type: 'json' },
         system: `Act as a Chinese learning API. Translate descriptive fields to ${languageName}. 
 REGLA CRÍTICA 1: En "sentence_translation", mantén "${existingData.character}" (SOLO Hanzi) dentro del texto traducido.
 REGLA CRÍTICA 2: El Pinyin DEBE usar caracteres Unicode con tildes (ā, á, ǎ, à).
-
-EXAMPLE: { "word_translation": "sports", "level_badge": "HSK 2", "tip": "...", "sentence_translation": "I love 运动" }`,
+REGLA CRÍTICA 3: NO generes razonamientos, ni bloques <think>, ni explicaciones extra. SOLO devuelve el objeto JSON.`,
         prompt: `Translate these fields to ${languageName}: ${JSON.stringify(toTranslate)}. 
 Output JSON: { "word_translation": string, "level_badge": string, "tip": string, "sentence_translation": string }`,
     });
@@ -420,9 +427,9 @@ router.post('/grade-sentence', async (req, res) => {
         }
 
         const { text: gradeRaw } = await generateText({
-            model: groq.chat('llama-3.3-70b-versatile'),
+            model: groq.chat('qwen/qwen3-32b'),
             responseFormat: { type: 'json' },
-            system: `You are a native Chinese teacher. Grade a student's translation into Chinese from ${lang}.`,
+            system: `You are a native Chinese teacher. Grade a student's translation into Chinese from ${lang}. NO generes razonamientos, ni bloques <think>, ni explicaciones extra. SOLO devuelve el objeto JSON.`,
             prompt: `Target: "${target_sentence}". Student: "${user_translation}". Output JSON: { "score": number, "is_correct": boolean, "grammar_analysis": string, "vocabulary_notes": [{ "word": string, "meaning": string, "usage_note": string }], "corrected_sentence": string, "pedagogical_advice": string }`,
         });
 
@@ -548,7 +555,7 @@ router.post('/', async (req, res) => {
         if (req.body.stream) {
             // New Streaming Text Approach for Real-time UX
             const result = streamText({
-                model: groq.chat('moonshotai/kimi-k2-instruct'),
+                model: groq.chat('qwen/qwen3-32b'),
                 messages: messages,
                 temperature: 0.6,
                 maxTokens: 1024,
@@ -564,7 +571,7 @@ router.post('/', async (req, res) => {
 
         // Fallback for non-streaming requests (Original implementation style)
         const { text } = await generateText({
-            model: groq.chat('moonshotai/kimi-k2-instruct'),
+            model: groq.chat('qwen/qwen3-32b'),
             messages: messages,
             temperature: 0.6,
             maxTokens: 1024,
@@ -731,9 +738,10 @@ router.get('/lab/analyze-dna', authenticateToken, async (req, res) => {
         if (cached) return res.json(cached);
 
         const { text: dnaRaw } = await generateText({
-            model: groq.chat('llama-3.3-70b-versatile'),
+            model: groq.chat('qwen/qwen3-32b'),
             responseFormat: { type: 'json' },
             prompt: `Act as a linguistic expert in Chinese and ${lang}. Perform a "Linguistic DNA" analysis of the Chinese word: "${text}".
+            NO generes razonamientos, ni bloques <think>, ni explicaciones extra. SOLO devuelve el objeto JSON.
             Output JSON with schema: { "word": string, "overall_meaning": string, "analysis": [{ "char": string, "radical": string, "radical_meaning": string, "explanation": string }] }`,
         });
 
@@ -788,7 +796,7 @@ router.post('/lab/generate-exam', authenticateToken, async (req, res) => {
         const promptToUse = userPrompt || "";
         
         const { text: examRaw } = await generateText({
-            model: groq.chat('moonshotai/kimi-k2-instruct'),
+            model: groq.chat('qwen/qwen3-32b'),
             messages: [
                 {
                     role: 'system',
@@ -834,6 +842,7 @@ Output JSON: {
         }] 
     }] 
 }
+IMPORTANTE: NO generes razonamientos, ni bloques <think>, ni explicaciones extra. SOLO devuelve el objeto JSON.
 IMPORTANTE: Cada pregunta de "listening" DEBE tener el campo "audio_text" con el texto en chino. NUNCA lo omitas.`
                 }
             ],
@@ -888,7 +897,7 @@ router.post('/lab/grade-exam', authenticateToken, async (req, res) => {
         const languageName = languageMap[lang] || 'Spanish';
 
         const { text: gradeRaw } = await generateText({
-            model: groq.chat('moonshotai/kimi-k2-instruct'),
+            model: groq.chat('qwen/qwen3-32b'),
             prompt: `
 Grade this Chinese exam. 
 User Native Language: ${languageName}. 
@@ -902,6 +911,7 @@ CRITICAL:
 4. For Writing production tasks (A2+), evaluate coherence, grammar, and length (ensure they met the requested word count).
 5. Provide the explanation and advice ONLY in ${languageName}.
 6. Score should be an integer from 0 to 100. Calculate it mathematically: (Correct Answers / Total Questions) * 100.
+NO generes razonamientos, ni bloques <think>, ni explicaciones extra. SOLO devuelve el objeto JSON.
 Output JSON: { "score": number, "feedback": [{ "question_id": number, "status": "correct"|"incorrect", "explanation": string }], "panda_advice": string }`,
         });
 
@@ -1174,7 +1184,7 @@ router.post('/lab/start-story', authenticateToken, async (req, res) => {
         const maxLines = limitMap[level] || '4 líneas';
 
         const { text: storyRaw } = await generateText({
-            model: groq.chat('moonshotai/kimi-k2-instruct'),
+            model: groq.chat('qwen/qwen3-32b'),
             messages: [
                 {
                     role: 'system',
@@ -1184,7 +1194,8 @@ router.post('/lab/start-story', authenticateToken, async (req, res) => {
 - Divide into SHORT segments (MAX 4 Hanzi per segment).
 - LIFE OR DEATH RULE: The "hanzi" field MUST contain real Chinese characters. NEVER EMPTY.
 - Critical: Names (e.g., Xiao Long) MUST use their Hanzi (肖龙).
-- Pinyin: Precomposed Unicode (ā, á, ǎ, à).`
+- Pinyin: Precomposed Unicode (ā, á, ǎ, à).
+- NO razonamientos, ni bloques <think>, ni explicaciones extra. SOLO devuelve el objeto JSON.`
                 },
                 {
                     role: 'user',
@@ -1328,7 +1339,7 @@ router.post('/lab/continue-story', authenticateToken, async (req, res) => {
         const maxLines = limitMap[storyState.level] || '4 líneas';
 
         const { text: nextRaw } = await generateText({
-            model: groq.chat('moonshotai/kimi-k2-instruct'),
+            model: groq.chat('qwen/qwen3-32b'),
             messages: [
                 {
                     role: 'system',
@@ -1336,7 +1347,8 @@ router.post('/lab/continue-story', authenticateToken, async (req, res) => {
 - "segments": FULL 1:1 TRANSLATION of the new chapter. Must cover 100% of the "text" content. No summaries.
 - MAX 4 Hanzi per segment.
 - LIFE OR DEATH RULE: The "hanzi" field MUST contain real Chinese characters. NEVER EMPTY.
-- Pinyin: Precomposed Unicode (ā, á, ǎ, à).`
+- Pinyin: Precomposed Unicode (ā, á, ǎ, à).
+- NO razonamientos, ni bloques <think>, ni explicaciones extra. SOLO devuelve el objeto JSON.`
                 },
                 {
                     role: 'user',
