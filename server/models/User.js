@@ -26,10 +26,10 @@ const userSchema = new mongoose.Schema({
   },
   country: {
     type: String,
-    required: [true, 'Country is required'],
+    required: function () { return !this.googleId; },
     trim: true,
     enum: {
-      values: ['AR', 'BO', 'CL', 'CO', 'CR', 'CU', 'DO', 'EC', 'SV', 'GQ', 'GT', 'HN', 'MX', 'NI', 'PA', 'PY', 'PE', 'PR', 'ES', 'UY', 'VE', 'US', 'OTHER'],
+      values: ['AR', 'BO', 'CL', 'CO', 'CR', 'CU', 'DO', 'EC', 'SV', 'GQ', 'GT', 'HN', 'MX', 'NI', 'PA', 'PY', 'PE', 'PR', 'ES', 'UY', 'VE', 'US', 'TR', 'OTHER'],
       message: '{VALUE} is not a valid country code'
     }
   },

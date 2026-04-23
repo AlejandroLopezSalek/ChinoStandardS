@@ -46,3 +46,4 @@ pnpm-debug.log*
 
 # Private Setup Docs
 vm_setup.md
+DEPLOYMENT_INFO.md
