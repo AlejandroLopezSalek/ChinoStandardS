@@ -62,6 +62,12 @@ PandaLatam uses a hybrid, high-performance architecture:
 6. **Premium Modals**: Every modal wrapper (`fixed inset-0`) MUST include `backdrop-blur-md` and a semi-transparent dark background (`bg-slate-900/90`). Content should animate with `animate-slideUp`.
 7. **Tailwind Safelist**: Any dynamic color class (e.g., based on level levels) MUST be explicitly added to `tailwind.config.js` safelist/regex.
 
+## Authentication & UI Logic (Critical)
+1. **Auth Flicker Prevention**: To prevent the registration banner from "flashing" for logged-in users, a blocking script in `base.njk` `<head>` must check `localStorage.getItem('authToken')` and inject a critical style `#noticeBar { display: none !important; }` before rendering.
+2. **Context-Aware Mascot**: The AI mascot (Panda/Capi) MUST be hidden on `/login/` and `/register/` pages to ensure a clean authentication UI.
+3. **Google OAuth Completion**: Users registering via Google must be prompted to complete their profile (Username and Country) via a mandatory `backdrop-blur-md` modal if these fields are missing.
+4. **Global Country Support**: The registration and profile completion forms MUST support a full list of global countries (ISO codes) to allow international expansion beyond Latin America.
+
 ## Vercel AI SDK Implementation
 The project is fully integrated with the **Vercel AI SDK**:
 - `@ai-sdk/openai` configured with Groq baseURL to standardize text generation.

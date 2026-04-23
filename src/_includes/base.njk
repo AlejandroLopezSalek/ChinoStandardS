@@ -10,6 +10,19 @@
             if (savedTheme === 'enabled' || (!savedTheme && prefersDark)) {
                 document.documentElement.classList.add('dark-mode');
             }
+
+            // PREVENT AUTH FLICKER
+            const token = localStorage.getItem('authToken');
+            const path = window.location.pathname;
+            const isAuthPage = path.includes('/login/') || path.includes('/register/');
+            
+            // Create a style element to hide the notice bar immediately
+            if (token || isAuthPage) {
+                const style = document.createElement('style');
+                style.id = 'critical-auth-style';
+                style.innerHTML = '#noticeBar { display: none !important; }';
+                document.head.appendChild(style);
+            }
         })();
     </script>
     <meta charset="UTF-8">
@@ -101,12 +114,15 @@
     {% endfor %}
     {% endif %}
     <script id="i18n-common" type="application/json">{{ common_t | dump | safe }}</script>
+    <script id="global-countries" type="application/json">{{ countries | dump | safe }}</script>
     <script>
         try {
             window.I18N_COMMON = JSON.parse(document.getElementById('i18n-common').textContent);
+            window.GLOBAL_COUNTRIES = JSON.parse(document.getElementById('global-countries').textContent);
         } catch(e) {
-            console.error('Error loading common i18n:', e);
+            console.error('Error loading global data:', e);
             window.I18N_COMMON = {};
+            window.GLOBAL_COUNTRIES = [];
         }
     </script>
 </head>

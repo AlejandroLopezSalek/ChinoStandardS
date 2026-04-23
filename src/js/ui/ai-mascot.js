@@ -14,6 +14,14 @@ function initMascot() {
         return;
     }
 
+    // HIDE ON AUTH PAGES
+    const path = window.location.pathname;
+    if (path.includes('/login/') || path.includes('/register/')) {
+        const btn = document.getElementById('panda-btn');
+        if (btn) btn.classList.add('hidden');
+        return;
+    }
+
     createMascotUI();
 
     // Welcome flow: Check if seen. If NOT seen, show welcome modal.

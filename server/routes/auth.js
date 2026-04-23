@@ -396,6 +396,27 @@ router.put('/profile', authenticateToken, [
             user.preferences = { ...user.preferences.toObject(), ...req.body.preferences };
         }
 
+        // Handle username update (Google completion flow)
+        if (req.body.username && req.body.username !== user.username) {
+            const username = req.body.username.trim().toLowerCase();
+            // Validate username again (3-20 chars, alphanumeric)
+            if (username.length < 3 || username.length > 20 || !/^\w+$/.test(username)) {
+                return res.status(400).json({ message: 'Nombre de usuario inválido' });
+            }
+
+            // Check uniqueness
+            const existing = await User.findOne({ username, _id: { $ne: user._id } });
+            if (existing) {
+                return res.status(400).json({ message: 'El nombre de usuario ya está en uso' });
+            }
+            user.username = username;
+        }
+
+        // Handle country update
+        if (req.body.country) {
+            user.country = req.body.country;
+        }
+
         await user.save();
 
         res.json({

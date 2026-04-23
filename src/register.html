@@ -3,11 +3,12 @@ pagination:
   data: i18n.register
   size: 1
   alias: t
-permalink: "{{ t.dir }}register.html"
+permalink: "{{ t.dir }}register/index.html"
 layout: auth_base.njk
 eleventyComputed:
   title: "{{ t.title }}"
 ---
+{% set current_lang = t.code or "es" %}
 <script id="i18n-messages" type="application/json">{{ t.messages | dump | safe }}</script>
 
 <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-stone-900 px-4">
@@ -33,30 +34,9 @@ eleventyComputed:
                 <select id="country" required
                     class="w-full px-4 py-3 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all">
                     <option value="" disabled selected>{{ t.form.country_placeholder }}</option>
-                    <option value="AR">Argentina</option>
-                    <option value="BO">Bolivia</option>
-                    <option value="CL">Chile</option>
-                    <option value="CO">Colombia</option>
-                    <option value="CR">Costa Rica</option>
-                    <option value="CU">Cuba</option>
-                    <option value="DO">República Dominicana</option>
-                    <option value="EC">Ecuador</option>
-                    <option value="SV">El Salvador</option>
-                    <option value="GQ">Guinea Ecuatorial</option>
-                    <option value="GT">Guatemala</option>
-                    <option value="HN">Honduras</option>
-                    <option value="MX">México</option>
-                    <option value="NI">Nicaragua</option>
-                    <option value="PA">Panamá</option>
-                    <option value="PY">Paraguay</option>
-                    <option value="PE">Perú</option>
-                    <option value="PR">Puerto Rico</option>
-                    <option value="ES">España</option>
-                    <option value="UY">Uruguay</option>
-                    <option value="VE">Venezuela</option>
-                    <option value="BR">Brasil</option>
-                    <option value="US">USA</option>
-                    <option value="OTHER">Otro / Other</option>
+                    {% for country in countries %}
+                    <option value="{{ country.code }}">{{ country.name[current_lang] or country.name['en'] }}</option>
+                    {% endfor %}
                 </select>
             </div>
 

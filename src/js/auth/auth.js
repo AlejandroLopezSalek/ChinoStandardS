@@ -181,12 +181,145 @@ class AuthService {
 
             this.dispatchAuthEvent(true);
 
+            // CHECK FOR MISSING INFO (Country)
+            if (!this.currentUser.country) {
+                console.log('🔄 Google user missing country, showing completion modal...');
+                this.showProfileCompletionModal();
+            }
+
             return { success: true, user: this.currentUser };
 
         } catch (error) {
             console.error('Error en Google login:', error);
             return { success: false, error: error.message };
         }
+    }
+
+    showProfileCompletionModal() {
+        // Prevent multiple modals
+        if (document.getElementById('profile-completion-modal')) return;
+
+        const lang = localStorage.getItem('language') || 'es';
+        const t = {
+            es: {
+                title: "¡Casi listo! 🎉",
+                subtitle: "Para personalizar tu experiencia, necesitamos un par de datos más.",
+                username: "Nombre de Usuario",
+                country: "Tu País",
+                submit: "Guardar y Continuar",
+                error: "Por favor, completa todos los campos."
+            },
+            en: {
+                title: "Almost ready! 🎉",
+                subtitle: "To personalize your experience, we need a few more details.",
+                username: "Username",
+                country: "Your Country",
+                submit: "Save and Continue",
+                error: "Please complete all fields."
+            },
+            tr: {
+                title: "Neredeyse hazır! 🎉",
+                subtitle: "Deneyiminizi kişiselleştirmek için birkaç detaya daha ihtiyacımız var.",
+                username: "Kullanıcı Adı",
+                country: "Ülkeniz",
+                submit: "Kaydet ve Devam Et",
+                error: "Lütfen tüm alanları doldurun."
+            }
+        }[lang] || t.es;
+
+        const countries = window.GLOBAL_COUNTRIES || [];
+        const currentLang = localStorage.getItem('language') || 'es';
+
+        const modal = document.createElement('div');
+        modal.id = 'profile-completion-modal';
+        modal.className = 'fixed inset-0 z-[10000] flex items-center justify-center bg-stone-900/80 backdrop-blur-md p-4 animate-fadeIn';
+        
+        modal.innerHTML = `
+            <div class="bg-white dark:bg-stone-800 rounded-3xl shadow-2xl p-8 w-full max-w-md border border-stone-200 dark:border-stone-700 animate-slideUp">
+                <h2 class="text-2xl font-bold text-stone-800 dark:text-white mb-2 text-center">${t.title}</h2>
+                <p class="text-stone-500 dark:text-stone-400 mb-6 text-center text-sm">${t.subtitle}</p>
+                
+                <form id="profileCompletionForm" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1 ml-1">${t.username}</label>
+                        <input type="text" id="comp-username" value="${this.currentUser.username}" required minlength="3" maxlength="20"
+                            class="w-full px-4 py-3 rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 outline-none transition-all">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1 ml-1">${t.country}</label>
+                        <select id="comp-country" required
+                            class="w-full px-4 py-3 rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 text-stone-800 dark:text-white focus:ring-2 focus:ring-red-500 outline-none transition-all">
+                            <option value="" disabled selected>${lang === 'es' ? 'Selecciona tu país' : t.country}</option>
+                            ${countries.map(c => `<option value="${c.code}">${c.name[currentLang] || c.name['en']}</option>`).join('')}
+                        </select>
+                    </div>
+
+                    <div id="comp-error" class="hidden text-red-500 text-xs font-medium text-center bg-red-50 dark:bg-red-900/20 p-2 rounded-lg"></div>
+
+                    <button type="submit" class="w-full py-4 bg-gradient-to-r from-red-600 to-orange-600 text-white rounded-2xl font-bold shadow-lg hover:shadow-red-500/30 transform hover:-translate-y-0.5 transition-all mt-4">
+                        ${t.submit}
+                    </button>
+                </form>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        const form = document.getElementById('profileCompletionForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('comp-username').value.trim();
+            const country = document.getElementById('comp-country').value;
+            const errorDiv = document.getElementById('comp-error');
+
+            if (!username || !country) {
+                errorDiv.textContent = t.error;
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            const submitBtn = form.querySelector('button');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
+
+            try {
+                const response = await fetch(`${globalThis.location.origin}/api/auth/profile`, {
+                    method: 'PUT',
+                    headers: this.getAuthHeaders(),
+                    body: JSON.stringify({
+                        profile: { level: this.currentUser.profile?.level || 'A1' },
+                        username: username,
+                        country: country
+                    })
+                });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.message || 'Error updating profile');
+                }
+
+                const data = await response.json();
+                this.currentUser = data.user;
+                localStorage.setItem(globalThis.APP_CONFIG?.AUTH.USER_KEY || 'currentUser', JSON.stringify(this.currentUser));
+                
+                // Success! Close modal and refresh UI
+                modal.classList.add('opacity-0');
+                setTimeout(() => {
+                    modal.remove();
+                    if (globalThis.ToastSystem) globalThis.ToastSystem.success(lang === 'es' ? '¡Perfil completado!' : 'Profile completed!');
+                    this.dispatchAuthEvent(true);
+                    // Force refresh if on certain pages to show new info
+                    if (window.location.pathname.includes('/Perfil/')) window.location.reload();
+                }, 300);
+
+            } catch (err) {
+                errorDiv.textContent = err.message;
+                errorDiv.classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.textContent = t.submit;
+            }
+        });
     }
 
     async logout() {
