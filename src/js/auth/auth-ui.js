@@ -172,7 +172,14 @@ globalThis.handleCredentialResponse = async function (response) {
     if (result.success) {
         // Show success message
         globalThis.toastSuccess?.('Login con Google exitoso', 'Bienvenido', 3000);
-        setTimeout(() => globalThis.location.href = '/', 1500);
+        
+        // ONLY redirect if the profile completion modal is NOT present
+        // If it is present, the modal's own logic will handle redirection after saving
+        setTimeout(() => {
+            if (!document.getElementById('profile-completion-modal')) {
+                globalThis.location.href = '/';
+            }
+        }, 1500);
     } else {
         globalThis.toastError?.(result.error, 'Error', 4000);
     }
