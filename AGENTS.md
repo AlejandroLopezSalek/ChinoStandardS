@@ -65,8 +65,14 @@ PandaLatam uses a hybrid, high-performance architecture:
 ## Authentication & UI Logic (Critical)
 1. **Auth Flicker Prevention**: To prevent the registration banner from "flashing" for logged-in users, a blocking script in `base.njk` `<head>` must check `localStorage.getItem('authToken')` and inject a critical style `#noticeBar { display: none !important; }` before rendering.
 2. **Context-Aware Mascot**: The AI mascot (Panda/Capi) MUST be hidden on `/login/` and `/register/` pages to ensure a clean authentication UI.
-3. **Google OAuth Completion**: Users registering via Google must be prompted to complete their profile (Username and Country) via a mandatory `backdrop-blur-md` modal if these fields are missing.
-4. **Global Country Support**: The registration and profile completion forms MUST support a full list of global countries (ISO codes) to allow international expansion beyond Latin America.
+3. **Google OAuth Completion**: Users registering via Google must be prompted to complete their profile (Username and Country) via a mandatory `backdrop-blur-md` modal if these fields are missing. The modal uses `window.GLOBAL_COUNTRIES` for dynamic, localized selection.
+4. **Global Country Support**: The registration and profile completion forms MUST support a full list of global countries (ISO codes) via `src/_data/countries.json`.
+
+### Dynamic Localization & Auth Standards
+- **Source of Truth**: All country-related data is centralized in `src/_data/countries.json`.
+- **Unified Layouts**: Authentication pages (`login.html`, `register.html`) must use `auth_base.njk`. Avoid creating language-specific auth layouts.
+- **Permalink Pattern**: All authentication and main pages must use the `{{ t.dir }}<page>/index.html` permalink pattern for consistent SEO and i18n routing.
+- **Dynamic Selects**: Use Eleventy's data loop to populate country selectors in templates: `{% for country in countries %}...{% endfor %}`.
 
 ## Vercel AI SDK Implementation
 The project is fully integrated with the **Vercel AI SDK**:
