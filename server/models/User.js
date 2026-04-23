@@ -28,10 +28,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: function () { return !this.googleId; },
     trim: true,
-    enum: {
-      values: ['AR', 'BO', 'CL', 'CO', 'CR', 'CU', 'DO', 'EC', 'SV', 'GQ', 'GT', 'HN', 'MX', 'NI', 'PA', 'PY', 'PE', 'PR', 'ES', 'UY', 'VE', 'US', 'TR', 'OTHER'],
-      message: '{VALUE} is not a valid country code'
-    }
+    minlength: [2, 'Country code must be at least 2 characters'],
+    maxlength: [10, 'Country code cannot exceed 10 characters']
   },
   googleId: {
     type: String,

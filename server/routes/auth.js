@@ -426,6 +426,13 @@ router.put('/profile', authenticateToken, [
 
     } catch (error) {
         console.error('Error actualizando perfil:', error);
+
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                message: 'Error de validación: ' + Object.values(error.errors).map(e => e.message).join(', ')
+            });
+        }
+
         res.status(500).json({
             message: 'Error interno del servidor'
         });
