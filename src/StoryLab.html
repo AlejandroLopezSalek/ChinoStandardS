@@ -45,19 +45,9 @@ scripts:
                     <div>
                         <label for="story-genre"
                             class="block text-xs font-bold text-slate-500 mb-2 uppercase">{{ t.genre }}</label>
-                        <select id="story-genre"
-                            class="w-full bg-slate-100 dark:bg-white/5 border-none rounded-xl p-3 text-sm text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-red-500">
-                            {% for key, val in t.genres %}
-                            <option value="{{ key }}">{{ val }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div id="custom-genre-container" class="hidden">
-                        <label for="custom-genre" class="block text-xs font-bold text-slate-500 mb-2 uppercase">{{ t.custom_genre }}</label>
-                        <input type="text" id="custom-genre"
-                            class="w-full bg-slate-100 dark:bg-white/5 border-none rounded-xl p-3 text-sm text-slate-800 dark:text-white"
-                            placeholder="{{ t.custom_genre }}">
+                        <input type="text" id="story-genre"
+                            class="w-full bg-slate-100 dark:bg-white/5 border-none rounded-xl p-3 text-sm text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-red-500"
+                            placeholder="Ej: Aventura, Misterio...">
                     </div>
 
                     <div>
