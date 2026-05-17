@@ -9,6 +9,20 @@ class LabStory {
     }
 
     async init() {
+        if (globalThis.AuthService && !globalThis.AuthService.isLoggedIn()) {
+            const currentUrl = encodeURIComponent(globalThis.location.pathname);
+            const msg = window.I18N?.login_required || "Debes iniciar sesión para acceder a StoryLab.";
+            this.notify(msg, "warning");
+            const path = window.location.pathname;
+            let langPrefix = "";
+            if (path.startsWith("/en/")) langPrefix = "/en";
+            else if (path.startsWith("/tr/")) langPrefix = "/tr";
+            setTimeout(() => {
+                globalThis.location.href = `${langPrefix}/login/?returnUrl=${currentUrl}`;
+            }, 1500);
+            return;
+        }
+
         document.getElementById('start-story-btn').onclick = () => this.startNewStory();
         
         // Close buttons (main and dropdown)

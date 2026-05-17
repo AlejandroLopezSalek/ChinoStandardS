@@ -8,6 +8,19 @@ class LabDNA {
     }
 
     init() {
+        if (globalThis.AuthService && !globalThis.AuthService.isLoggedIn()) {
+            const currentUrl = encodeURIComponent(globalThis.location.pathname);
+            const msg = window.I18N?.login_required || "Debes iniciar sesión para acceder al bio-análisis.";
+            this.notify(msg, "warning");
+            const path = window.location.pathname;
+            let langPrefix = "";
+            if (path.startsWith("/en/")) langPrefix = "/en";
+            else if (path.startsWith("/tr/")) langPrefix = "/tr";
+            setTimeout(() => {
+                globalThis.location.href = `${langPrefix}/login/?returnUrl=${currentUrl}`;
+            }, 1500);
+            return;
+        }
         document.getElementById('run-dna-btn').onclick = () => this.runAnalysis();
     }
 
@@ -26,6 +39,15 @@ class LabDNA {
         try {
             const headers = globalThis.AuthService?.getAuthHeaders() || {};
             const response = await fetch(`/api/chat/lab/analyze-dna?text=${encodeURIComponent(text)}`, { headers });
+            if (response.status === 401) {
+                this.notify(window.I18N?.session_expired || "Tu sesión ha expirado. Inicia sesión de nuevo.", "error");
+                const path = window.location.pathname;
+                let langPrefix = "";
+                if (path.startsWith("/en/")) langPrefix = "/en";
+                else if (path.startsWith("/tr/")) langPrefix = "/tr";
+                setTimeout(() => window.location.href = `${langPrefix}/login/`, 2000);
+                return;
+            }
             const data = await response.json();
             if (data.error) throw new Error(data.error);
 
